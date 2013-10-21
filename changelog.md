@@ -1,3 +1,8 @@
+### 0.0.6
+(released 21/10/2013)
+
+- version bump to test if `update-notifier` is doing anything yet
+
 ### 0.0.5
 (released 21/10/2013)
 
