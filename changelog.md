@@ -1,3 +1,8 @@
+### 0.0.4
+(released 21/10/2013)
+
+- updating version to nudge `npm publish` into cooperating
+
 ### 0.0.3
 (released 21/10/2013)
 
