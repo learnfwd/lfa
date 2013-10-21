@@ -1,3 +1,11 @@
+### 0.0.5
+(released 21/10/2013)
+
+- add `optimist` for options parsing
+- add `update-notifier` to check for new versions
+- add `shelljs` for shell process management
+- add `colors` for pretty terminal output
+
 ### 0.0.4
 (released 21/10/2013)
 

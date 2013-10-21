@@ -1,6 +1,6 @@
 {
   "name": "lfa",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "learnforward-author is a build tool for generating HTML5 textbooks",
   "keywords": [
     "textbook",
@@ -20,8 +20,10 @@
     "url": "git://github.com/tvararu/lfa.git"
   },
   "dependencies": {
-  },
-  "devDependencies": {
+    "colors": "0.6.x",
+    "shelljs": "0.2.x",
+    "update-notifier": "~0.1.3",
+    "optimist": "0.6.x"
   },
   "engines": {
     "node": ">=0.8.0"
