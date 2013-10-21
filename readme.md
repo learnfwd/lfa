@@ -1,7 +1,7 @@
 Introduction
 ------------
 
-LearnForward-Author is a fast, lightweight build tool for generating HTML5 textbooks. Application structure and functionality is heavily inspired by [roots](https://github.com/jenius/roots).
+LearnForward-Author is a build tool for generating HTML5 textbooks. Application structure and functionality is heavily inspired by [roots](https://github.com/jenius/roots).
 
 Installation
 ------------
