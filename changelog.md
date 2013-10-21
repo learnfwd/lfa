@@ -1,7 +1,7 @@
 ### 0.0.8
 (released 21/10/2013)
 
-- 
+- add `watch` command, trying to get compiler to run
 
 ### 0.0.7
 (released 21/10/2013)
