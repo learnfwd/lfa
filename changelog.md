@@ -1,3 +1,8 @@
+### 0.0.9
+(released 21/10/2013)
+
+- fix `watch` command, everything working now
+
 ### 0.0.8
 (released 21/10/2013)
 
