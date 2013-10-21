@@ -23,7 +23,6 @@
   },
   "devDependencies": {
   },
-  "man": "./setup/man/lfa.1",
   "engines": {
     "node": ">=0.8.0"
   },
