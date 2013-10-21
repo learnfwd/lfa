@@ -1,3 +1,9 @@
+### 0.0.7
+(released 21/10/2013)
+
+- add `global_config`. This generates a .lfarc file in the home directory that can be overriden with various configuration options.
+- add `new` command
+
 ### 0.0.6
 (released 21/10/2013)
 
