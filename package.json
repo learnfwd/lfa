@@ -1,6 +1,6 @@
 {
   "name": "lfa",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "learnforward-author is a build tool for generating HTML5 textbooks",
   "keywords": [
     "textbook",
@@ -13,7 +13,7 @@
   "author": "Read Forward",
   "main": "lib",
   "bin": {
-    "roots": "bin/lfa"
+    "lfa": "bin/lfa"
   },
   "repository": {
     "type": "git",

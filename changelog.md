@@ -1,3 +1,13 @@
+### 0.0.3
+(released 21/10/2013)
+
+- installing problems were from `package.json` misconfiguration
+
+### 0.0.2
+(released 21/10/2013)
+
+- remove man pages, trying to get publish/install working properly
+
 ### 0.0.1
 (released 21/10/2013)
 
