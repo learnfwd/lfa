@@ -1,10 +1,15 @@
+### 0.0.11
+(released 29/10/2013)
+
+- add `lfa-patterns` css library, all working smoothly
+
 ### 0.0.10
-(released 21/10/2013)
+(released 23/10/2013)
 
 - add `serve` and `compile` commands
 
 ### 0.0.9
-(released 21/10/2013)
+(released 23/10/2013)
 
 - fix `watch` command, everything working now
 
