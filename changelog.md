@@ -1,3 +1,9 @@
+### 0.1.0a
+(released 29/10/2013)
+
+- `watch` now copies over essential javascript libraries and Bootstrap. Can't be disabled from anywhere just yet
+- customize default template to correspond better to a textbook, but still needs work
+
 ### 0.0.11
 (released 29/10/2013)
 
