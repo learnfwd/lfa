@@ -1,3 +1,8 @@
+### 0.1.1a
+(released 29/10/2013)
+
+- fixed watch to copy files from the correct folder
+
 ### 0.1.0a
 (released 29/10/2013)
 
