@@ -1,3 +1,9 @@
+### 0.1.2
+(released 05/11/2013)
+
+- minor tweaks to help output
+- add `create-custom-config` command and change `~/.lfarc` behaviour
+
 ### 0.1.1a
 (released 29/10/2013)
 

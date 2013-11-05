@@ -17,8 +17,9 @@ if (args._.length < 1 && !args.version) {
 } else {
   var current_command = commands[args._[0]];
   if (args.version) return commands.version.execute();
+  if (args.help) return commands.help.execute();
   if (typeof current_command == "undefined") {
-    process.stdout.write("\nUndefined command.".red + "\n")
+    process.stdout.write(("\nUndefined command: " + args._[0]).red + "\n")
     return commands.help.execute();
   }
   
