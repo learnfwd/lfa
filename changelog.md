@@ -1,3 +1,8 @@
+### 0.1.5
+(released 06/11/2013)
+
+- add tests for most functionality but there are still some edge cases that I would like to cover; namely, component library importing
+
 ### 0.1.4
 (released 06/11/2013)
 

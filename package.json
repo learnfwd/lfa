@@ -1,6 +1,6 @@
 {
   "name": "lfa",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "learnforward-author is a build tool for generating HTML5 textbooks",
   "keywords": [
     "textbook",
@@ -44,10 +44,15 @@
     "update-notifier": "~0.1.3",
     "optimist": "0.6.x"
   },
+  "devDependencies": {
+    "mocha": "latest",
+    "should": "latest"
+  },
   "engines": {
     "node": ">=0.8.0"
   },
   "preferGlobal": true,
   "scripts": {
+    "test": "mocha"
   }
 }
