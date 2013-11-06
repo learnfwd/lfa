@@ -203,7 +203,7 @@ describe 'dynamic content', ->
     content = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
     content.should.match(/\<a href="\/posts\/hello_world.html"\>hello world\<\/a\>/)
     content = fs.readFileSync path.join(test_path, output_folder + '/second_post.html'), 'utf8'
-    content.should.match(/\<p\>Welcome to LFA\!\<\/p\>/)
+    content.should.match(/\<p\>second post\<\/p\>/)
 
   it 'exposes compiled content as site.post.contents', ->
     content = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'

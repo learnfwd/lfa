@@ -1,3 +1,9 @@
+### 0.1.7
+(released 06/11/2013)
+
+- minor default template adjustment; wasn't redirecting to a chapter that exists
+- change locals and frontmatter parsing engine to add local and global variables as expected
+
 ### 0.1.6
 (released 06/11/2013)
 

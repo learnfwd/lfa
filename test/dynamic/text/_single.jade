@@ -6,11 +6,11 @@ html
     meta(name='description', content='description of your site')
     meta(name='author', content= "author of the site")
 
-    title= post.title
+    title= title
     
     link(rel='stylesheet', href='/css/master.css')
   body
-    h1= post.title
+    h1= title
     != content
 
   //- add other scripts through require.js, not here
