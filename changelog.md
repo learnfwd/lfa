@@ -1,3 +1,8 @@
+### 0.1.6
+(released 06/11/2013)
+
+- replace app.coffee with config.jade global configuration file. remove almost every trace of default configuration in it as well
+
 ### 0.1.5
 (released 06/11/2013)
 

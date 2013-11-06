@@ -25,6 +25,9 @@ describe 'command', ->
     before (done) ->
       run "cd \"#{basic_root}\"; ../../bin/lfa compile", done
 
+    after ->
+      shell.rm '-rf', path.join(basic_root, output_folder)
+
     it 'should compile files to ' + output_folder, ->
       fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(5)
 
@@ -35,7 +38,6 @@ describe 'command', ->
     it 'should compile all files to ' + output_folder, ->
       css_content = fs.readFileSync path.join(basic_root, output_folder + '/css/master.css'), 'utf8'
       css_content.should.not.match /\n/
-      shell.rm '-rf', path.join(basic_root, output_folder)
 
   describe 'new', ->
     test_path = path.join(root, 'testproj')
@@ -45,7 +47,7 @@ describe 'command', ->
         files_exist(test_path,[
           '/'
           '.gitignore'
-          'app.coffee'
+          'config.jade'
           'text'
           'text/index.jade'
           'text/layout.jade'
