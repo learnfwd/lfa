@@ -1,3 +1,9 @@
+### 0.1.8
+(released 06/11/2013)
+
+- change config.jade to actually compile with the yaml parser
+- start working on the tests for the TOC generator
+
 ### 0.1.7
 (released 06/11/2013)
 

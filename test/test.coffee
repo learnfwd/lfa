@@ -234,3 +234,16 @@ describe 'multipass compiles', ->
     content = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
     content.should.match(/blarg world/)
     shell.rm '-rf', path.join(test_path, output_folder)
+
+# describe 'table of contents', ->
+#   test_path = path.join root, './toc'
+# 
+#   before (done) ->
+#     run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress", ->
+#       done()
+#   
+#   after ->
+#     shell.rm '-rf', path.join(test_path, output_folder)
+#   
+#   it 'can be generated with proper structure', ->
+#     console.log "hi"
