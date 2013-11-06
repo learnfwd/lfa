@@ -1,3 +1,9 @@
+### 0.1.4
+(released 06/11/2013)
+
+- major default template changes to match proper structure and rename output folder to `_build`
+- changed compiling behaviour. Jade files in `/text` can now be filed into as many subfolders as desired and will always output in the default compiler into `_build/`. root of project now used to store the `css` and `js` folders which get checked for matching coffeescript/stylus files before being compiled into `_build/css` and `_build/js` respectively. everything else, that is files of any other kind and any other subfolder in the project root gets copied verbatim to `_build`
+
 ### 0.1.3
 (released 06/11/2013)
 
