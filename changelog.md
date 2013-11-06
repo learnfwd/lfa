@@ -1,3 +1,8 @@
+### 0.1.3
+(released 06/11/2013)
+
+- minor .gitignore tweak for default template projects to get them to ignore /public
+
 ### 0.1.2
 (released 05/11/2013)
 
