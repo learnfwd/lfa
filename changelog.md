@@ -1,3 +1,9 @@
+### 0.1.11
+(released 07/11/2013)
+
+- minor help command documentation fixing
+- remove .gitignore and add placeholder kitten to img folder
+
 ### 0.1.10
 (released 07/11/2013)
 

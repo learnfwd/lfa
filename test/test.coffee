@@ -48,11 +48,10 @@ describe 'command', ->
   describe 'new', ->
     test_path = path.join(root, 'testproj')
 
-    it 'should use the default template if no flags present', (done) ->
+    it.only 'should use the default template if no flags present', (done) ->
       run "cd \"#{root}\"; ../bin/lfa new testproj", ->
         files_exist(test_path,[
           '/'
-          '.gitignore'
           'config.jade'
           'text'
           'text/index.jade'
@@ -67,6 +66,7 @@ describe 'command', ->
           'js/main.coffee'
           'js/require.js'
           'img'
+          'img/kitten.jpg'
         ])
         shell.rm '-rf', path.join(root, 'testproj')
         done()
