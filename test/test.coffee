@@ -38,6 +38,12 @@ describe 'command', ->
     it 'should compile all files to ' + output_folder, ->
       css_content = fs.readFileSync path.join(basic_root, output_folder + '/css/master.css'), 'utf8'
       css_content.should.not.match /\n/
+  
+    describe 'and clean', ->
+      it 'should destroy the ' + output_folder + ' folder', (done) ->
+        run "cd \"#{basic_root}\"; ../../bin/lfa clean", ->
+          fs.existsSync(path.join(basic_root, output_folder)).should.not.be.ok
+          done()
 
   describe 'new', ->
     test_path = path.join(root, 'testproj')

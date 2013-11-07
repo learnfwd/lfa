@@ -1,3 +1,8 @@
+### 0.1.10
+(released 07/11/2013)
+
+- add `clean` command, with documentation. pretty self-explanatory, deletes the output_folder
+
 ### 0.1.9
 (released 07/11/2013)
 
