@@ -29,9 +29,9 @@ describe 'command', ->
       shell.rm '-rf', path.join(basic_root, output_folder)
 
     it 'should compile files to ' + output_folder, ->
-      fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(5)
+      fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(6)
 
-    it 'should minify all css and javascript', () ->
+    it 'should minify all css and javascript', ->
       js_content = fs.readFileSync path.join(basic_root, output_folder + '/js/main.js'), 'utf8'
       js_content.should.not.match /\n/
 
@@ -44,13 +44,33 @@ describe 'command', ->
         run "cd \"#{basic_root}\"; ../../bin/lfa clean", ->
           fs.existsSync(path.join(basic_root, output_folder)).should.not.be.ok
           done()
+  
+  describe 'arguments', ->
+  
+    describe 'should allow compile to', ->
+      it 'include component library', (done) ->
+        run "cd \"#{basic_root}\"; ../../bin/lfa compile --no-compress --components=true", ->
+          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(6)
+          shell.rm '-rf', path.join(basic_root, output_folder)
+          done()
+      it 'not include component library', (done) ->
+        run "cd \"#{basic_root}\"; ../../bin/lfa compile --no-compress --components=false", ->
+          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(5)
+          shell.rm '-rf', path.join(basic_root, output_folder)
+          done()
+      it 'still not include component library when config.jade says so', (done) ->
+        path_no_comp = path.join(root, 'no-components');
+        run "cd \"#{path_no_comp}\"; ../../bin/lfa compile --no-compress", ->
+          fs.readdirSync(path.join(path_no_comp, output_folder)).should.have.lengthOf(5)
+          shell.rm '-rf', path.join(path_no_comp, output_folder)
+          done()
 
   describe 'new', ->
     test_path = path.join(root, 'testproj')
 
-    it.only 'should use the default template if no flags present', (done) ->
+    it 'should use the default template if no flags present', (done) ->
       run "cd \"#{root}\"; ../bin/lfa new testproj", ->
-        files_exist(test_path,[
+        files_exist(test_path, [
           '/'
           'config.jade'
           'text'

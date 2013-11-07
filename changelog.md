@@ -1,3 +1,9 @@
+### 0.1.12
+(released 07/11/2013)
+
+- add lfa-components inclusion in base compile pass
+- add --components argument; pass false to turn off lfa-components folder inclusion in watch or compile. default is true, and it's also configurable from config.jade. later, maybe you'll be able to use this flag to specify a different component library.
+
 ### 0.1.11
 (released 07/11/2013)
 
