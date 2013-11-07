@@ -50,8 +50,9 @@ describe 'command', ->
           'config.jade'
           'text'
           'text/index.jade'
-          'text/layout.jade'
-          'text/blank.jade'
+          'layouts'
+          'layouts/layout.jade'
+          'layouts/blank.jade'
           'text/ch01'
           'text/ch01/ch01.jade'
           'css'
@@ -228,22 +229,49 @@ describe 'multipass compiles', ->
   before (done) ->
     run "cd #{test_path}; ../../bin/lfa compile --no-compress", ->
       done()
+  
+  after ->
+    shell.rm '-rf', path.join(test_path, output_folder)
 
   it 'will compile a single file multiple times accurately', ->
     fs.existsSync(path.join(test_path, output_folder + '/index.html')).should.be.ok
     content = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
     content.should.match(/blarg world/)
-    shell.rm '-rf', path.join(test_path, output_folder)
 
-# describe 'table of contents', ->
-#   test_path = path.join root, './toc'
-# 
-#   before (done) ->
-#     run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress", ->
-#       done()
-#   
-#   after ->
-#     shell.rm '-rf', path.join(test_path, output_folder)
-#   
-#   it 'can be generated with proper structure', ->
-#     console.log "hi"
+describe 'layouts', ->
+  test_path = path.join root, './layouts'
+  output_path = path.join(test_path, output_folder)
+
+  before (done) ->
+    run "cd #{test_path}; ../../bin/lfa compile --no-compress", ->
+      done()
+  
+  after ->
+    shell.rm '-rf', output_path
+    
+  describe 'output folder', ->
+    describe 'should contain', ->
+      it 'file without frontmatter, default layout', ->
+        files_exist output_path, ['no-fm.html']
+      it 'file with frontmatter', ->
+        files_exist output_path, ['fm.html']
+      it 'file with frontmatter that specifies layout', ->
+        files_exist output_path, ['fm-layout.html']
+  
+    it 'should not contain any layout files', ->
+      files_dont_exist output_path, [
+        '/blank.html'
+        '/layout.jade'
+      ]
+
+describe 'table of contents', ->
+  test_path = path.join root, './toc'
+
+  before (done) ->
+    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress", ->
+      done()
+  
+  after ->
+    shell.rm '-rf', path.join(test_path, output_folder)
+  
+  it 'can be generated with proper structure'

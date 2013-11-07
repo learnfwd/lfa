@@ -1,3 +1,8 @@
+### 0.1.9
+(released 07/11/2013)
+
+- rehaul layout system, employ new conventions: every project must have a layouts folder, the default being `/layouts` (overridable from config.jade). You can assign various layouts to keys inside the `layouts` object in config.jade and then use these keys in front-matter. The `default` key must be declared, as it is used for files that do not specify a layout.
+
 ### 0.1.8
 (released 06/11/2013)
 

@@ -1,7 +1,7 @@
 Testing lfa
 -------------
 
-The tests are written in mocha and coffeescript, and can be run with:
+The tests are written in mocha and coffeescript. To run the entire test suite, you can run:
 
 `npm test`
 
