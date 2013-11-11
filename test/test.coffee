@@ -72,6 +72,7 @@ describe 'command', ->
       run "cd \"#{root}\"; ../bin/lfa new testproj", ->
         files_exist(test_path, [
           '/'
+          '.gitignore'
           'config.jade'
           'text'
           'text/index.jade'

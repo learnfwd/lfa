@@ -1,3 +1,8 @@
+### 0.1.14
+(released 11/11/2013)
+
+- didn't test the earlier `lfa new` change, misspelled a variable
+
 ### 0.1.13
 (released 11/11/2013)
 
