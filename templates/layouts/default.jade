@@ -7,10 +7,10 @@ html
 
     title Textbook
 
-    link(type='text/css', rel='stylesheet', media='screen', href='http://fonts.googleapis.com/css?family=Open+Sans:400,600&subset=latin-ext,latin')
-    link(type='text/css', rel='stylesheet', media='screen', href='lfa-components/bootstrap/css/bootstrap.min.css')
-    link(type='text/css', rel='stylesheet', media='screen', href='lfa-components/font-awesome/css/font-awesome.min.css')
-    link(type='text/css', rel='stylesheet', media='screen', href='css/master.css')
+    +css-ext("http://fonts.googleapis.com/css?family=Open+Sans:400,600&subset=latin-ext,latin")
+    +css("lfa-components/bootstrap/css/bootstrap.min.css")
+    +css("lfa-components/font-awesome/css/font-awesome.min.css")
+    +css("css/master.css")
   body
     .container
       .navbar.navbar-inverse.navbar-fixed-top(role='navigation')
@@ -28,7 +28,7 @@ html
           div(class="content textbook")
             != content
 
-    script(data-main="lfa-components/lfa-js/main", src="js/require.js")
+    +js-require("lfa-components/lfa-js/main", "js/require.js")
 
     //- this must be included for live reload to work in developement
     //- it will be automatically ignored when deployed

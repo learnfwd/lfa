@@ -1,3 +1,9 @@
+### 0.1.15
+(released 11/11/2013)
+
+- change the way layouts work; they are now included by default from within the tool. will be overridable from within the project in the near future
+- new mixins for the new layout and folder structure. every html element that depends on relative path, such as an image or a stylesheet, now has to be inserted via appropriate mixins, that are dynamically included into the jade pipeline during compilation
+
 ### 0.1.14
 (released 11/11/2013)
 

@@ -1,0 +1,14 @@
+mixin img(path)
+  img(src="#{path_to_root + path}")
+
+mixin css(path)
+  link(type='text/css', rel='stylesheet', media='screen', href='#{path_to_root + path}')
+
+mixin css-ext(http_path)
+  link(type='text/css', rel='stylesheet', media='screen', href='#{http_path}')
+
+mixin js(path)
+  script(type='text/javascript', src="#{path_to_root + path}")
+
+mixin js-require(path, require_path)
+  script(type='text/javascript', data-main="#{path_to_root + path}", src="#{path_to_root + require_path}")

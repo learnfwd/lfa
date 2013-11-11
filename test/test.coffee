@@ -282,3 +282,23 @@ describe 'table of contents', ->
   
   describe 'can be generated with proper structure', ->
     it 'or not'
+
+describe 'mixins', ->
+  test_path = path.join root, './mixins'
+  output_path = path.join(test_path, output_folder)
+
+  before (done) ->
+    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
+      done()
+  
+  after ->
+    shell.rm '-rf', path.join(test_path, output_folder)
+  
+  describe 'are included into the build path', ->
+    
+    it '+img() works', ->
+      content1 = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
+      content1.should.match(/\<img src=\"img\/kitten\.jpg\"\/\>/)
+    it 'relative paths in mixins resolve correctly', ->
+      content2 = fs.readFileSync path.join(test_path, output_folder + '/1/2/index.html'), 'utf8'
+      content2.should.match(/\<img src=\"\.\.\/\.\.\/img\/kitten\.jpg\"\/\>/)
