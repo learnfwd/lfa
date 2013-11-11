@@ -1,5 +1,4 @@
 {
-  "package_manager": "bower",
   "templates": {
     "default": "default"
   }

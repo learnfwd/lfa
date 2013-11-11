@@ -76,9 +76,6 @@ describe 'command', ->
           'config.jade'
           'text'
           'text/index.jade'
-          'layouts'
-          'layouts/layout.jade'
-          'layouts/blank.jade'
           'text/ch01'
           'text/ch01/ch01.jade'
           'css'
@@ -212,7 +209,6 @@ describe 'dynamic content', ->
   it 'compiles into single post templates', ->
     fs.existsSync(path.join(test_path, output_folder + '/posts/hello_world.html')).should.be.ok
     content = fs.readFileSync path.join(test_path, output_folder + '/posts/hello_world.html'), 'utf8'
-    content.should.match(/\<h1\>hello world\<\/h1\>/)
     content.should.match(/This is my first blog post/)
 
   it 'makes front matter available as locals', ->
@@ -254,8 +250,8 @@ describe 'multipass compiles', ->
     content = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
     content.should.match(/blarg world/)
 
-describe 'layouts', ->
-  test_path = path.join root, './layouts'
+describe 'frontmatter', ->
+  test_path = path.join root, './frontmatter'
   output_path = path.join(test_path, output_folder)
 
   before (done) ->
@@ -273,12 +269,6 @@ describe 'layouts', ->
         files_exist output_path, ['fm.html']
       it 'file with frontmatter that specifies layout', ->
         files_exist output_path, ['fm-layout.html']
-  
-    it 'should not contain any layout files', ->
-      files_dont_exist output_path, [
-        '/blank.html'
-        '/layout.jade'
-      ]
 
 describe 'table of contents', ->
   test_path = path.join root, './toc'
