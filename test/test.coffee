@@ -127,24 +127,13 @@ describe 'jade', ->
       shell.rm '-rf', path.join(test_path_2, output_folder)
       done()
 
-  it 'should compile templates with no regard to subfolder structure in /text', (done) ->
-    run "cd #{test_path_3}; ../../bin/lfa compile --no-compress", ->
+  it 'should compile templates with regard to subfolder structure in /text', (done) ->
+    run "cd #{test_path_3}; ../../bin/lfa compile --no-compress --components=false", ->
       files_exist path.join(test_path_3, output_folder), [
         '/one.html'
-        '/two.html'
-        '/three.html'
-        '/four.html'
-      ]
-      shell.rm '-rf', path.join(test_path_3, output_folder)
-      done()
-
-  it 'should not create empty folders from jade subfolders in /text', (done) ->
-    run "cd #{test_path_3}; ../../bin/lfa compile --no-compress", ->
-      files_dont_exist path.join(test_path_3, output_folder), [
-        '/sub1'
-        '/sub1/subsub1'
-        '/sub2'
-        '/subsub2'
+        '/sub1/two.html'
+        '/sub1/subsub1/three.html'
+        '/sub2/subsub2/four.html'
       ]
       shell.rm '-rf', path.join(test_path_3, output_folder)
       done()
@@ -154,7 +143,7 @@ describe 'coffeescript', ->
   test_path_2 = path.join root, './coffee-basic'
 
   it 'should compile coffeescript and requires should work', (done) ->
-    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress", ->
+    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
       fs.existsSync(path.join(test_path, output_folder + '/basic.js')).should.be.ok
       fs.existsSync(path.join(test_path, output_folder + '/require.js')).should.be.ok
       require_content = fs.readFileSync path.join(test_path, output_folder + '/require.js'), 'utf8'
@@ -163,7 +152,7 @@ describe 'coffeescript', ->
       done()
 
   it 'should compile without closures when specified in app.coffee', (done) ->
-    run "cd \"#{test_path_2}\"; ../../bin/lfa compile --no-compress", ->
+    run "cd \"#{test_path_2}\"; ../../bin/lfa compile --no-compress --components=false", ->
       fs.existsSync(path.join(test_path_2, output_folder + '/testz.js')).should.be.ok
       require_content = fs.readFileSync path.join(test_path_2, output_folder + '/testz.js'), 'utf8'
       require_content.should.not.match /function/
@@ -174,7 +163,7 @@ describe 'stylus', ->
   test_path = path.join root, './stylus'
 
   before (done) ->
-    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress", ->
+    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
       done()
 
   it 'should compile stylus with lfa css', ->
@@ -191,7 +180,7 @@ describe 'static files', ->
   test_path = path.join root, './static'
 
   before (done) ->
-    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress", ->
+    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
       done()
 
   it 'copies static files', ->
@@ -213,15 +202,15 @@ describe 'dynamic content', ->
   test_path = path.join root, './dynamic'
 
   before (done) ->
-    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress", ->
+    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
       done()
   
   after ->
     shell.rm '-rf', path.join(test_path, output_folder)
 
   it 'compiles into single post templates', ->
-    fs.existsSync(path.join(test_path, output_folder + '/hello_world.html')).should.be.ok
-    content = fs.readFileSync path.join(test_path, output_folder + '/hello_world.html'), 'utf8'
+    fs.existsSync(path.join(test_path, output_folder + '/posts/hello_world.html')).should.be.ok
+    content = fs.readFileSync path.join(test_path, output_folder + '/posts/hello_world.html'), 'utf8'
     content.should.match(/\<h1\>hello world\<\/h1\>/)
     content.should.match(/This is my first blog post/)
 
@@ -229,7 +218,7 @@ describe 'dynamic content', ->
     fs.existsSync(path.join(test_path, output_folder + '/index.html')).should.be.ok
     content = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
     content.should.match(/\<a href="\/posts\/hello_world.html"\>hello world\<\/a\>/)
-    content = fs.readFileSync path.join(test_path, output_folder + '/second_post.html'), 'utf8'
+    content = fs.readFileSync path.join(test_path, output_folder + '/posts/second_post.html'), 'utf8'
     content.should.match(/\<p\>second post\<\/p\>/)
 
   it 'exposes compiled content as site.post.contents', ->
@@ -240,7 +229,7 @@ describe 'precompiled templates', ->
   test_path = path.join root, './precompile'
 
   before (done) ->
-    run "cd #{test_path}; ../../bin/lfa compile --no-compress", ->
+    run "cd #{test_path}; ../../bin/lfa compile --no-compress --components=false", ->
       done()
 
   it 'precompiles templates', ->
@@ -253,7 +242,7 @@ describe 'multipass compiles', ->
   test_path = path.join root, './multipass'
 
   before (done) ->
-    run "cd #{test_path}; ../../bin/lfa compile --no-compress", ->
+    run "cd #{test_path}; ../../bin/lfa compile --no-compress --components=false", ->
       done()
   
   after ->
@@ -269,7 +258,7 @@ describe 'layouts', ->
   output_path = path.join(test_path, output_folder)
 
   before (done) ->
-    run "cd #{test_path}; ../../bin/lfa compile --no-compress", ->
+    run "cd #{test_path}; ../../bin/lfa compile --no-compress --components=false", ->
       done()
   
   after ->
@@ -294,10 +283,11 @@ describe 'table of contents', ->
   test_path = path.join root, './toc'
 
   before (done) ->
-    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress", ->
+    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
       done()
   
   after ->
     shell.rm '-rf', path.join(test_path, output_folder)
   
-  it 'can be generated with proper structure'
+  describe 'can be generated with proper structure', ->
+    it 'or not'

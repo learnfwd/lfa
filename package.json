@@ -1,6 +1,6 @@
 {
   "name": "lfa",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "learnforward-author is a build tool for generating HTML5 textbooks",
   "keywords": [
     "textbook",
@@ -9,7 +9,7 @@
     "tool"
   ],
   "homepage": "http://readfwd.com",
-  "bugs": "https://github.com/tvararu/lfa/issues",
+  "bugs": "https://github.com/learnfwd/lfa/issues",
   "author": "ReadForward LLC",
   "main": "lib",
   "bin": {
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/tvararu/lfa.git"
+    "url": "git://github.com/learnfwd/lfa.git"
   },
   "dependencies": {
     "minimatch": "0.2.x",

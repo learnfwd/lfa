@@ -1,3 +1,9 @@
+### 0.1.13
+(released 11/11/2013)
+
+- change templates to no longer all output to `_build`. Instead, they will respect their specified folder structures
+- get .gitignore properly copying over into new projects
+
 ### 0.1.12
 (released 07/11/2013)
 
