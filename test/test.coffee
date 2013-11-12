@@ -39,31 +39,9 @@ describe 'command', ->
       css_content = fs.readFileSync path.join(basic_root, output_folder + '/css/master.css'), 'utf8'
       css_content.should.not.match /\n/
   
-    describe 'and clean', ->
-      it 'should destroy the ' + output_folder + ' folder', (done) ->
-        run "cd \"#{basic_root}\"; ../../bin/lfa clean", ->
-          fs.existsSync(path.join(basic_root, output_folder)).should.not.be.ok
-          done()
-  
-  describe 'arguments', ->
-  
-    describe 'should allow compile to', ->
-      it 'include component library', (done) ->
-        run "cd \"#{basic_root}\"; ../../bin/lfa compile --no-compress --components=true", ->
-          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(6)
-          shell.rm '-rf', path.join(basic_root, output_folder)
-          done()
-      it 'not include component library', (done) ->
-        run "cd \"#{basic_root}\"; ../../bin/lfa compile --no-compress --components=false", ->
-          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(5)
-          shell.rm '-rf', path.join(basic_root, output_folder)
-          done()
-      it 'still not include component library when config.jade says so', (done) ->
-        path_no_comp = path.join(root, 'no-components');
-        run "cd \"#{path_no_comp}\"; ../../bin/lfa compile --no-compress", ->
-          fs.readdirSync(path.join(path_no_comp, output_folder)).should.have.lengthOf(5)
-          shell.rm '-rf', path.join(path_no_comp, output_folder)
-          done()
+    it 'and clean should destroy the ' + output_folder + ' folder', ->
+      run "cd \"#{basic_root}\"; ../../bin/lfa clean", ->
+        fs.existsSync(path.join(basic_root, output_folder)).should.not.be.ok
 
   describe 'new', ->
     test_path = path.join(root, 'testproj')
@@ -88,14 +66,32 @@ describe 'command', ->
         ])
         shell.rm '-rf', path.join(root, 'testproj')
         done()
-
+  
   describe 'version', ->
-
     it 'should output the correct version number for lfa', (done) ->
       version = JSON.parse(fs.readFileSync('package.json')).version
       run './bin/lfa version', (err,out) ->
         out.replace(/\n/, '').should.eql(version)
         done()
+  
+  describe 'arguments', ->
+    describe 'should allow compile to', ->
+      it 'include component library', (done) ->
+        run "cd \"#{basic_root}\"; ../../bin/lfa compile --no-compress --components=true", ->
+          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(6)
+          shell.rm '-rf', path.join(basic_root, output_folder)
+          done()
+      it 'not include component library', (done) ->
+        run "cd \"#{basic_root}\"; ../../bin/lfa compile --no-compress --components=false", ->
+          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(5)
+          shell.rm '-rf', path.join(basic_root, output_folder)
+          done()
+      it 'still not include component library when config.jade says so', (done) ->
+        path_no_comp = path.join(root, 'no-components');
+        run "cd \"#{path_no_comp}\"; ../../bin/lfa compile --no-compress", ->
+          fs.readdirSync(path.join(path_no_comp, output_folder)).should.have.lengthOf(5)
+          shell.rm '-rf', path.join(path_no_comp, output_folder)
+          done()
 
 describe 'compiler', ->
   compiler = null
@@ -261,16 +257,15 @@ describe 'frontmatter', ->
   after ->
     shell.rm '-rf', output_path
     
-  describe 'output folder', ->
-    describe 'should contain', ->
-      it 'file without frontmatter, default layout', ->
-        files_exist output_path, ['no-fm.html']
-      it 'file with frontmatter', ->
-        files_exist output_path, ['fm.html']
-      it 'file with frontmatter that specifies layout', ->
-        files_exist output_path, ['fm-layout.html']
+  describe 'output folder should contain', ->
+    it 'file without frontmatter, default layout', ->
+      files_exist output_path, ['no-fm.html']
+    it 'file with frontmatter', ->
+      files_exist output_path, ['fm.html']
+    it 'file with frontmatter that specifies layout', ->
+      files_exist output_path, ['fm-layout.html']
 
-describe 'table of contents', ->
+describe.skip 'table of contents', ->
   test_path = path.join root, './toc'
 
   before (done) ->
@@ -281,7 +276,15 @@ describe 'table of contents', ->
     shell.rm '-rf', path.join(test_path, output_folder)
   
   describe 'can be generated with proper structure', ->
-    it 'or not'
+    it 'all pages should have the complete toc', ->
+      content1 = fs.readFileSync path.join(test_path, output_folder + '/ch01/01.html'), 'utf8'
+      content1.should.match(/A great little title/)
+      content1.should.match(/Some other title/)
+    
+      content2 = fs.readFileSync path.join(test_path, output_folder + '/ch02/01.html'), 'utf8'
+      content2.should.match(/A great little title/)
+      content2.should.match(/Some other title/) 
+    
 
 describe 'mixins', ->
   test_path = path.join root, './mixins'
