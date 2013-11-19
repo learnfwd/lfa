@@ -106,30 +106,23 @@ describe 'compiler', ->
 
 describe 'jade', ->
   test_path = path.join root, './jade'
-  test_path_2 = path.join root, './no-layout'
-  test_path_3 = path.join root, './subfolders'
+  test_path_2 = path.join root, './subfolders'
 
   it 'should compile jade view templates', (done) ->
-    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress", ->
+    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
       fs.existsSync(path.join(test_path, output_folder + '/index.html')).should.be.ok
       shell.rm '-rf', path.join(test_path, output_folder)
       done()
 
-  it 'should compile templates with no layout', (done) ->
-    run "cd #{test_path_2}; ../../bin/lfa compile --no-compress", ->
-      fs.existsSync(path.join(test_path_2, output_folder + '/index.html')).should.be.ok
-      shell.rm '-rf', path.join(test_path_2, output_folder)
-      done()
-
   it 'should compile templates with regard to subfolder structure in /text', (done) ->
-    run "cd #{test_path_3}; ../../bin/lfa compile --no-compress --components=false", ->
-      files_exist path.join(test_path_3, output_folder), [
-        '/one.html'
-        '/sub1/two.html'
-        '/sub1/subsub1/three.html'
-        '/sub2/subsub2/four.html'
+    run "cd #{test_path_2}; ../../bin/lfa compile --no-compress --components=false", ->
+      files_exist path.join(test_path_2, output_folder), [
+        '/00.html'
+        '/01/00.html'
+        '/02/00.html'
+        '/02/01/00.html'
       ]
-      shell.rm '-rf', path.join(test_path_3, output_folder)
+      shell.rm '-rf', path.join(test_path_2, output_folder)
       done()
 
 describe 'coffeescript', ->
@@ -258,14 +251,12 @@ describe 'frontmatter', ->
     shell.rm '-rf', output_path
     
   describe 'output folder should contain', ->
-    it 'file without frontmatter, default layout', ->
-      files_exist output_path, ['no-fm.html']
     it 'file with frontmatter', ->
       files_exist output_path, ['fm.html']
     it 'file with frontmatter that specifies layout', ->
       files_exist output_path, ['fm-layout.html']
 
-describe.skip 'table of contents', ->
+describe 'table of contents', ->
   test_path = path.join root, './toc'
 
   before (done) ->
@@ -277,13 +268,13 @@ describe.skip 'table of contents', ->
   
   describe 'can be generated with proper structure', ->
     it 'all pages should have the complete toc', ->
-      content1 = fs.readFileSync path.join(test_path, output_folder + '/ch01/01.html'), 'utf8'
-      content1.should.match(/A great little title/)
-      content1.should.match(/Some other title/)
+      content1 = fs.readFileSync path.join(test_path, output_folder + '/02-uses-metals.html'), 'utf8'
+      content1.should.match(/Uses of common metals/)
+      content1.should.match(/Uses of common non-metals/)
     
-      content2 = fs.readFileSync path.join(test_path, output_folder + '/ch02/01.html'), 'utf8'
-      content2.should.match(/A great little title/)
-      content2.should.match(/Some other title/) 
+      content2 = fs.readFileSync path.join(test_path, output_folder + '/03-uses-non-metals.html'), 'utf8'
+      content1.should.match(/Uses of common metals/)
+      content1.should.match(/Uses of common non-metals/)
     
 
 describe 'mixins', ->
@@ -303,5 +294,5 @@ describe 'mixins', ->
       content1 = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
       content1.should.match(/\<img src=\"img\/kitten\.jpg\"\/\>/)
     it 'relative paths in mixins resolve correctly', ->
-      content2 = fs.readFileSync path.join(test_path, output_folder + '/1/2/index.html'), 'utf8'
-      content2.should.match(/\<img src=\"\.\.\/\.\.\/img\/kitten\.jpg\"\/\>/)
+      content2 = fs.readFileSync path.join(test_path, output_folder + '/1/index.html'), 'utf8'
+      content2.should.match(/\<img src=\"\.\.\/img\/kitten\.jpg\"\/\>/)

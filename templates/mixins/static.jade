@@ -12,3 +12,11 @@ mixin js(path)
 
 mixin js-require(path, require_path)
   script(type='text/javascript', data-main="#{path_to_root + path}", src="#{path_to_root + require_path}")
+
+mixin toc(chapters)
+  ul
+    - each chapter in chapters
+      li
+        span= chapter.fm.title
+        - if (chapter.children)
+          +toc(chapter.children)

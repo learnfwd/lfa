@@ -1,3 +1,8 @@
+### 0.1.16
+(released 19/11/2013)
+
+- add and test dynamic TOC generator
+
 ### 0.1.15
 (released 11/11/2013)
 
