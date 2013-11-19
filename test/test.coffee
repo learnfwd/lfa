@@ -279,6 +279,9 @@ describe 'table of contents', ->
       content1.should.not.match(/You have learned/)
       content2.should.not.match(/You have learned/)
     
+      content1.should.not.match(/Corrosion of metals/)
+      content2.should.not.match(/Corrosion of metals/)
+    
 
 describe 'mixins', ->
   test_path = path.join root, './mixins'
