@@ -267,14 +267,17 @@ describe 'table of contents', ->
     shell.rm '-rf', path.join(test_path, output_folder)
   
   describe 'can be generated with proper structure', ->
-    it 'all pages should have the complete toc', ->
+    it 'all pages should have all the other pages and no hidden pages', ->
       content1 = fs.readFileSync path.join(test_path, output_folder + '/02-uses-metals.html'), 'utf8'
-      content1.should.match(/Uses of common metals/)
-      content1.should.match(/Uses of common non-metals/)
-    
       content2 = fs.readFileSync path.join(test_path, output_folder + '/03-uses-non-metals.html'), 'utf8'
       content1.should.match(/Uses of common metals/)
+      content2.should.match(/Uses of common metals/)
+      
       content1.should.match(/Uses of common non-metals/)
+      content2.should.match(/Uses of common non-metals/)
+    
+      content1.should.not.match(/You have learned/)
+      content2.should.not.match(/You have learned/)
     
 
 describe 'mixins', ->

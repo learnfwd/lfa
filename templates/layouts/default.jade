@@ -5,7 +5,7 @@ html
     meta(http-equiv='X-UA-Compatible', content='IE=edge, chrome=1')
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
 
-    title Textbook
+    title= book_title
 
     +css-ext("http://fonts.googleapis.com/css?family=Open+Sans:400,600&subset=latin-ext,latin")
     +css("lfa-components/bootstrap/css/bootstrap.min.css")
@@ -18,7 +18,7 @@ html
           .navbar-header
             button(type="button", class="btn btn-link navbar-btn pull-left visible-sm visible-xs", data-toggle="offcanvas")
               i.icon-large.icon-align-justify
-            a.navbar-brand Textbook
+            a.navbar-brand= book_title
     
       .row.row-offcanvas
         aside.col-md-4.col-sm-9

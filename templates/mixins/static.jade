@@ -18,5 +18,17 @@ mixin toc(chapters)
     - each chapter in chapters
       li
         span= chapter.fm.title
-        - if (chapter.children)
+        - if (chapter.children && chapter.children.length)
           +toc(chapter.children)
+
+mixin redirect_home()
+  - function get_first_page(child) {
+  -   if (child.children.length) {
+  -     return get_first_page(child.children[0]);
+  -   } else {
+  -     return child.url
+  -   }
+  - }
+  - var firstPageUrl = path_to_root + get_first_page(toc[0]);
+  script.
+    window.location = "#{firstPageUrl}"
