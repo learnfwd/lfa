@@ -185,32 +185,6 @@ describe 'errors', ->
       shell.rm '-rf', path.join(test_path, output_folder)
       done()
 
-describe 'dynamic content', ->
-  test_path = path.join root, './dynamic'
-
-  before (done) ->
-    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
-      done()
-  
-  after ->
-    shell.rm '-rf', path.join(test_path, output_folder)
-
-  it 'compiles into single post templates', ->
-    fs.existsSync(path.join(test_path, output_folder + '/posts/hello_world.html')).should.be.ok
-    content = fs.readFileSync path.join(test_path, output_folder + '/posts/hello_world.html'), 'utf8'
-    content.should.match(/This is my first blog post/)
-
-  it 'makes front matter available as locals', ->
-    fs.existsSync(path.join(test_path, output_folder + '/index.html')).should.be.ok
-    content = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
-    content.should.match(/\<a href="\/posts\/hello_world.html"\>hello world\<\/a\>/)
-    content = fs.readFileSync path.join(test_path, output_folder + '/posts/second_post.html'), 'utf8'
-    content.should.match(/\<p\>second post\<\/p\>/)
-
-  it 'exposes compiled content as site.post.contents', ->
-    content = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
-    content.should.match(/\<p\>This is my first blog post.*\<\/p\>/)
-
 describe 'precompiled templates', ->
   test_path = path.join root, './precompile'
 
@@ -299,6 +273,7 @@ describe 'mixins', ->
     it '+img() works', ->
       content1 = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
       content1.should.match(/\<img src=\"img\/kitten\.jpg\"\/\>/)
+    
     it 'relative paths in mixins resolve correctly', ->
       content2 = fs.readFileSync path.join(test_path, output_folder + '/1/index.html'), 'utf8'
       content2.should.match(/\<img src=\"\.\.\/img\/kitten\.jpg\"\/\>/)

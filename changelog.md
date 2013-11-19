@@ -2,8 +2,11 @@
 (released 19/11/2013)
 
 - add and test dynamic TOC generator
-- new mixin: redirect_home(), which will generate a javascript block which will redirect the current page to the first page of the entire textbook. useful in the main index.jade block
-- new frontmatter variable: hidden_toc. when it's set to true, the jade file will not be featured in the TOC.
+- new jade mixin: `+toc(toc)`. generates the complete table of contents.
+- new jade mixin: `+link_to(path)`. generates an a(href) link to the specified chapter. specify as relative path from within /text; i.e.: `+link_to("ch01/ch01.html")`
+- new jade mixin: `+redirect_home()`, which will generate a javascript block which will redirect the current page to the first page of the entire textbook. useful in the main index.jade block
+- new jade mixin: `+parallax(path)`. generates a .parallax element with the specified image
+- new frontmatter variable: `hidden_toc`. when it's set to true, the jade file will not be featured in the TOC.
 
 ### 0.1.15
 (released 11/11/2013)
