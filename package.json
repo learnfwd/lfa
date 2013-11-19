@@ -1,6 +1,6 @@
 {
   "name": "lfa",
-  "version": "0.1.17",
+  "version": "0.2.0",
   "description": "learnforward-author is a build tool for generating HTML5 textbooks",
   "keywords": [
     "textbook",
