@@ -35,16 +35,8 @@ mixin toc(chapters)
           +toc(chapter.children)
 
 mixin redirect_home()
-  - function get_first_page(child) {
-  -   if (child.children && child.children.length) {
-  -     return get_first_page(child.children[0]);
-  -   } else {
-  -     return child.url
-  -   }
-  - }
-  - var firstPageUrl = path_to_root + get_first_page(toc[0]);
   script.
-    window.location = "#{firstPageUrl}"
+    window.location = "#{ path_to_root + toc[0].url }"
 
 mixin youtube(url)
   .video

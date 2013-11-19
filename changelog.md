@@ -1,3 +1,8 @@
+### 0.2.1
+(released 19/11/2013)
+
+- update +redirect_home() mixin. simpler and better
+
 ### 0.2.0
 (released 19/11/2013)
 
