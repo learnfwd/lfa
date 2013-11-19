@@ -45,3 +45,33 @@ mixin redirect_home()
   - var firstPageUrl = path_to_root + get_first_page(toc[0]);
   script.
     window.location = "#{firstPageUrl}"
+
+mixin youtube(url)
+  .video
+    iframe(src="https://www.youtube.com/embed/#{url}?rel=0", frameborder="0", allowfullscreen)
+
+mixin vimeo(url)
+  .video
+    iframe(src="//player.vimeo.com/video/#{url}?rel=0", frameborder="0", webkitallowfullscreen, mozallowfullscreen, allowfullscreen)
+
+//- Bootstrap modal mixin.
+mixin modal(id, title)
+  div.modal(id="#{id}", tabindex='-1', role='dialog', aria-labelledby='#{id}-label', aria-hidden='true')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h4.modal-title= title
+        .modal-body
+          if block
+            block
+          else
+            p.text-danger You forgot to add content to the modal. Like this:
+            pre.
+              //- the button to open the modal
+              .btn(href="#my-modal", data-toggle="modal")
+              
+              //- the actual modal
+              +modal("my-modal", "A title")
+                p Content.
+
