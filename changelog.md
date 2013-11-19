@@ -1,3 +1,8 @@
+### 0.1.17
+(released 19/11/2013)
+
+- update parallax mixin to also allow blocks
+
 ### 0.1.16
 (released 19/11/2013)
 
