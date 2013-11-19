@@ -1,3 +1,8 @@
+### 0.2.2
+(released 19/11/2013)
+
+- fix windows file.url
+
 ### 0.2.1
 (released 19/11/2013)
 
