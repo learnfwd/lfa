@@ -1,3 +1,8 @@
+### 0.2.4
+(released 19/11/2013)
+
+- add `+cloudfront(server, name)` mixin
+
 ### 0.2.3
 (released 19/11/2013)
 
