@@ -25,6 +25,9 @@ mixin link_to(path)
     else
       = path_to_root + path
 
+mixin widget(path)
+  iframe(src="#{path_to_root + path}")
+
 mixin toc(chapters)
   ul
     each chapter in chapters

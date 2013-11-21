@@ -1,3 +1,8 @@
+### 0.2.5
+(released 19/11/2013)
+
+- add `+widget(path)` mixin
+
 ### 0.2.4
 (released 19/11/2013)
 
