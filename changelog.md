@@ -1,3 +1,8 @@
+### 0.2.3
+(released 19/11/2013)
+
+- fix a bug where the TOC was indexing ignored files
+
 ### 0.2.2
 (released 19/11/2013)
 
