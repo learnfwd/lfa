@@ -46,6 +46,11 @@ mixin vimeo(url)
   .video
     iframe(src="//player.vimeo.com/video/#{url}?rel=0", frameborder="0", webkitallowfullscreen, mozallowfullscreen, allowfullscreen)
 
+mixin cloudfront(server, name)
+  .video
+    video(controls, preload="auto", poster="http://#{server}.cloudfront.net/#{name}.png")
+      source(src="http://#{server}.cloudfront.net/#{name}.mp4")
+
 //- Bootstrap modal mixin.
 mixin modal(id, title)
   div.modal(id="#{id}", tabindex='-1', role='dialog', aria-labelledby='#{id}-label', aria-hidden='true')
