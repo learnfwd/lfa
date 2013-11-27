@@ -1,10 +1,51 @@
-<!DOCTYPE html><html><head><meta charset="utf8"><meta http-equiv="X-UA-Compatible" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width"><meta name="description" content="LearnForward-Author is a build tool for generating HTML5 textbooks."><meta name="author" content="ReadFwd"><title>Learn Forward Author</title><link rel="stylesheet" href="css/master.css"></head><body><article><section class="intro"><img src="img/logo-learnfwd.png" alt="LFA" class="logo"><h1>Learn Forward Author</h1></section><section><h2>Installation</h2><p>Install <a href="http://nodejs.org/">node.js</a>, and then run <code>sudo npm install -g lfa</code>.</p></section><section><h2>Usage</h2><p>LFA is a command line utility. To use it, simple run <code>lfa</code> in your terminal, which should greet you with the basic help and tell you what commands are available.</p><p>To start a new project, run <code>lfa new</code> followed by your project's name. For example:</p><pre>~ $ lfa new cats
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <meta http-equiv="X-UA-Compatible" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="description" content="LearnForward-Author is a build tool for generating HTML5 textbooks.">
+    <meta name="author" content="ReadFwd">
+    <title>Learn Forward Author</title>
+    <link rel="stylesheet" href="css/master.css">
+  </head>
+  <body>
+    <article>
+      <section class="intro"><img src="img/logo-learnfwd.png" alt="LFA" class="logo">
+        <h1>Learn Forward Author</h1>
+      </section>
+      <section>
+        <h2>Installation</h2>
+        <p>Install <a href="http://nodejs.org/">node.js</a>, and then run <code>sudo npm install -g lfa</code>.</p>
+      </section>
+      <section>
+        <h2>Usage</h2>
+        <p>LFA is a command line utility. To use it, simple run <code>lfa</code> in your terminal, which should greet you with the basic help and tell you what commands are available.</p>
+        <p>To start a new project, run <code>lfa new</code> followed by your project's name. For example:</p>
+        <pre>~ $ lfa new cats
 new project created at /cats
-</pre><p>Then, navigate into your project folder:</p><pre>~ $ cd cats
+</pre>
+        <p>Then, navigate into your project folder:</p>
+        <pre>~ $ cd cats
 ~/cats $ ls
 config.jade
 css
 img
 js
 text
-</pre><p>To compile and view your project, run <code>lfa watch</code>, which will open a new tab in your default browser.</p><h3>Project structure</h3><p>By default, a blank textbook starts out with four folders and one file. The <code>config.jade</code> file is used to define things like the title of your textbook that will appear in the browser tab. By default, this is <code>"My new textbook"</code>, and you should change it when you start a new project.</p><p>As for the folders, they're rather self-explanatory:</p><ul><li><strong>css</strong>: this folder contains the <code>master.styl</code> file, which is your main option for styling the textbook beyond the defaults it ships with</li><li><strong>js</strong>: this folder contains the <code>main.coffee</code> file, which is your main option for changing the javascript behaviour of the entire textbook</li><li><strong>img</strong>: use this folder to store your images and photos</li><li><strong>text</strong>: this folder contains the actual pages and text content of the textbook</li></ul><p>In addition to these, you can add folders with any name and content of your choosing (i.e. widgets, audio) and they will be automatically copied over as-is during the build phase of your project.</p></section></article></body><script data-main="js/main" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.5/require.min.js"></script></html>
+</pre>
+        <p>To compile and view your project, run <code>lfa watch</code>, which will open a new tab in your default browser.</p>
+        <h3>Project structure</h3>
+        <p>By default, a blank textbook starts out with four folders and one file. The <code>config.jade</code> file is used to define things like the title of your textbook that will appear in the browser tab. By default, this is <code>"My new textbook"</code>, and you should change it when you start a new project.</p>
+        <p>As for the folders, they're rather self-explanatory:</p>
+        <ul>
+          <li><strong>css</strong>: this folder contains the <code>master.styl</code> file, which is your main option for styling the textbook beyond the defaults it ships with</li>
+          <li><strong>js</strong>: this folder contains the <code>main.coffee</code> file, which is your main option for changing the javascript behaviour of the entire textbook</li>
+          <li><strong>img</strong>: use this folder to store your images and photos</li>
+          <li><strong>text</strong>: this folder contains the actual pages and text content of the textbook</li>
+        </ul>
+        <p>In addition to these, you can add folders with any name and content of your choosing (i.e. widgets, audio) and they will be automatically copied over as-is during the build phase of your project.</p>
+      </section>
+    </article>
+  </body>
+  <script data-main="js/main" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.5/require.min.js"></script>
+</html>
