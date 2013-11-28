@@ -15,7 +15,7 @@
       </section>
       <section>
         <h2>Installation</h2>
-        <p>Install <a href="http://nodejs.org/">node.js</a>, and then run <code>sudo npm install -g lfa</code>.</p>
+        <p>Install <a href="http://nodejs.org/" target="_blank">node.js</a>, and then run <code>sudo npm install -g lfa</code>.</p>
       </section>
       <section>
         <h2>Usage</h2>
@@ -34,16 +34,101 @@ js
 text
 </pre>
         <p>To compile and view your project, run <code>lfa watch</code>, which will open a new tab in your default browser.</p>
-        <h3>Project structure</h3>
+      </section>
+      <section>
+        <h2>Project structure</h2>
         <p>By default, a blank textbook starts out with four folders and one file. The <code>config.jade</code> file is used to define things like the title of your textbook that will appear in the browser tab. By default, this is <code>"My new textbook"</code>, and you should change it when you start a new project.</p>
         <p>As for the folders, they're rather self-explanatory:</p>
         <ul>
-          <li><strong>css</strong>: this folder contains the <code>master.styl</code> file, which is your main option for styling the textbook beyond the defaults it ships with</li>
-          <li><strong>js</strong>: this folder contains the <code>main.coffee</code> file, which is your main option for changing the javascript behaviour of the entire textbook</li>
+          <li><strong>css</strong>: this folder contains the <strong>master.styl</strong> file, which is your main option for styling the textbook beyond the defaults it ships with. It is written in <a href="http://learnboost.github.io/stylus/" target="_blank">Stylus</a>, but you can replace it with a plain <strong>master.css</strong> file.</li>
+          <li><strong>js</strong>: this folder contains the <strong>main.coffee</strong> file, which is your main option for changing the javascript behaviour of the entire textbook. It is written in <a href="http://coffeescript.org/" target="_blank">CoffeeScript</a>, but you can replace it with a plain <strong>main.js</strong> file.</li>
           <li><strong>img</strong>: use this folder to store your images and photos</li>
           <li><strong>text</strong>: this folder contains the actual pages and text content of the textbook</li>
         </ul>
-        <p>In addition to these, you can add folders with any name and content of your choosing (i.e. widgets, audio) and they will be automatically copied over as-is during the build phase of your project.</p>
+        <p>In addition to these, you can add folders with <strong>any name and content</strong> of your choosing (i.e. widgets, audio) and they will be automatically copied over as-is during the build phase of your project.</p>
+      </section>
+      <section>
+        <h2>Editing the content</h2>
+        <p>After running <code>lfa watch</code>, a browser tab should open with the first page of your textbook. To edit it, open <code>text/ch01/00.jade</code> in your favourite code editor.</p>
+        <p>Pages are written in .jade, which is a language that compiles to plain HTML. If you are not familiar with .jade, you should peruse the <a href="http://jade-lang.com/tutorial/" target="_blank">basic tutorial</a> to get an idea, but don't sweat it if things aren't completely clear by the end of it.</p>
+        <p>Let's take a look at the source code of the first page of our textbook:</p>
+        <pre>---
+title: Chapter 1
+---
+
+h1= title
+
+p Looks like everything is working! You can edit...
+
+p Lorem ipsum dolor sit amet...
+</pre>
+        <p>Pages are comprised of two sections: <strong>frontmatter</strong>, and the <strong>content</strong>.</p>
+        <p>The <strong>frontmatter</strong> section is used to declare the <code>title</code> key, which is used to generate the table of contents. Go ahead and change it to something else, and save the file. The project should automatically recompile, and the table of contents will update. To declare additional keys, which can be anything you want or have specific meaning, simply add another <code>key: value</code> pair before the closing <code>---</code> line.</p>
+        <p>Everything after the closing <code>---</code> line is pure jade content. This is where you declare your headings, paragraphs, images, and widgets. You can go ahead and delete the boilerplate lorem ipsum paragraphs and headings in your files and start adding your own content.</p>
+        <p>LFA comes bundled with a bunch of useful <a href="patterns.html">patterns</a> that you can use to build your textbook, but you are free to delete the contents of the <code>css/master.styl</code> file and start from scratch.</p>
+      </section>
+      <section>
+        <h2>Organizing files and the table of contents</h2>
+        <p>Let's take a look at the contents of the <code>text/</code> folder. You'll notice that files are structured in a certain manner.</p>
+        <pre>text
+├── ch01
+│   ├── 00.jade
+│   ├── 01.jade
+│   └── 02.jade
+├── ch02.jade
+└── index.jade
+</pre>
+        <p>The <code>index.jade</code> file is configured by default to redirect you to the first page of your textbook. If you would prefer to have the homepage of your textbook something else, such as a cover photo of the textbook or a message, you can remove the <code>+redirect_home()</code> line in the index.jade and add whatever content you wish. The index page is also hidden from the TOC by default, which is accomplishable by adding the <code>hidden_toc: true</code> pair in the frontmatter section of any page.</p>
+        <p>Moving on, the rest of the pages are structured into folders. These have to follow certain conventions. To illustrate, say you have to build a chemistry textbook that should have the following TOC:</p>
+        <ul>
+          <li>Introduction</li>
+          <li>Properties of metals and non-metals</li>
+          <ul>
+            <li>Physical properties</li>
+            <ul>
+              <li>Metals</li>
+              <li>Non-metals</li>
+            </ul>
+          </ul>
+          <ul>
+            <li>Chemical properties</li>
+            <ul>
+              <li>Metals</li>
+              <li>Non-metals</li>
+            </ul>
+          </ul>
+          <li>Noble metals</li>
+          <li>Corrosion of metals</li>
+          <ul>
+            <li>Prevention of corrosion</li>
+          </ul>
+          <li>Alloys</li>
+          <li>Assessment</li>
+        </ul>
+        <p>To do so, you could use the following file structure:</p>
+        <pre>text
+├── ch00-intro.jade
+├── ch01-prop
+│   ├── 00-prop.jade
+│   ├── 01-phys
+│   │   ├── 00-phys.jade
+│   │   ├── 01-metals.jade
+│   │   ├── 02-non-metals.jade
+│   └── 02-chem
+│       ├── 00-chem.jade
+│       ├── 01-metals.jade
+│       └── 02-non-metals.jade
+├── ch02-noble.jade
+├── ch03-corro
+│   ├── 00-corro.jade
+│   └── 02-prevention.jade
+├── ch04-alloys.jade
+└── ch05-assessment.jade
+</pre>
+        <p>That's a bit of a doozy, isn't it? Let's try to clarify it a bit by walking you through the table of contents for the aforementioned chemistry textbook.
+          <p>The first item is called "Introduction", and it supposed to show up before everyone else in the table of contents. Since it does not have any subchapters, it can be created as just a standalone file. The only condition necessary for it to show up before all your other pages in the table of contents is for its <strong>filename to list alphabetically</strong> before the other chapters.</p>
+          <p>You are allowed to name your files and folders however you wish, but keeping in mind that since they are going to be sorted alphabetically to decide their order in the table of contents, some conventions are necessary. The model that we personally encourage is to have main chapters all start with the <code>chXX</code> label in their names, followed by some short descriptive name that can help you identify at a glance which file has the information you need to edit.</p>
+        </p>
       </section>
     </article>
   </body>
