@@ -1,3 +1,9 @@
+### 0.2.6
+(released 28/11/2013)
+
+- added orphaned gh-pages branch
+- change default template
+
 ### 0.2.5
 (released 19/11/2013)
 
