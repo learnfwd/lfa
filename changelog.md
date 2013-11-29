@@ -1,3 +1,8 @@
+### 0.2.7
+(released 29/11/2013)
+
+- make precompiler slightly smarter
+
 ### 0.2.6
 (released 28/11/2013)
 

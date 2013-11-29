@@ -29,7 +29,7 @@ describe 'command', ->
       shell.rm '-rf', path.join(basic_root, output_folder)
 
     it 'should compile files to ' + output_folder, ->
-      fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(6)
+      fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(5)
 
     it 'should minify all css and javascript', ->
       js_content = fs.readFileSync path.join(basic_root, output_folder + '/js/main.js'), 'utf8'
@@ -55,7 +55,10 @@ describe 'command', ->
           'text'
           'text/index.jade'
           'text/ch01'
-          'text/ch01/ch01.jade'
+          'text/ch01/00.jade'
+          'text/ch01/01.jade'
+          'text/ch01/02.jade'
+          'text/ch02.jade'
           'css'
           'css/master.styl'
           'js'
@@ -78,18 +81,18 @@ describe 'command', ->
     describe 'should allow compile to', ->
       it 'include component library', (done) ->
         run "cd \"#{basic_root}\"; ../../bin/lfa compile --no-compress --components=true", ->
-          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(6)
+          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(5)
           shell.rm '-rf', path.join(basic_root, output_folder)
           done()
       it 'not include component library', (done) ->
         run "cd \"#{basic_root}\"; ../../bin/lfa compile --no-compress --components=false", ->
-          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(5)
+          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(4)
           shell.rm '-rf', path.join(basic_root, output_folder)
           done()
       it 'still not include component library when config.jade says so', (done) ->
         path_no_comp = path.join(root, 'no-components');
         run "cd \"#{path_no_comp}\"; ../../bin/lfa compile --no-compress", ->
-          fs.readdirSync(path.join(path_no_comp, output_folder)).should.have.lengthOf(5)
+          fs.readdirSync(path.join(path_no_comp, output_folder)).should.have.lengthOf(4)
           shell.rm '-rf', path.join(path_no_comp, output_folder)
           done()
 
