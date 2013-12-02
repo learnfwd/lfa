@@ -26,7 +26,7 @@ module.exports = ->
     )
 
     buf = precompiler.compile()
-    buf = compressor buf, 'js'
+    buf = compressor buf, 'js' if global.options.compress
 
     output_path = path.join(process.cwd(), global.options.output_folder, '/js/templates.js')
     mkdirp.sync path.dirname(output_path)
@@ -78,12 +78,15 @@ class Precompiler
   ###
   compileTemplate: (template) ->
     basePath = template.split(path.join(process.cwd(), global.options.templates)+"/")[1]
-    templateNamespace = basePath.split('.jade')[0]
+    templateNamespace = basePath.split('.jade')[0].replace('/', '-')
 
     data = fs.readFileSync(template, 'utf8')
+    
+    data = global.options.mixins + "\n" + data if global.options.mixins
+    
     data = jade.compile(
       data,
-      {compileDebug: @debug || false, inline: @inline || false, client: true}
+      {compileDebug: @debug || false, inline: @inline || false, client: true, self: true}
     )
     "#{@namespace}['#{templateNamespace}'] = #{data};\n"
 

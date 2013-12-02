@@ -1,0 +1,24 @@
+!!!
+html
+  head
+    meta(charset='utf8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge, chrome=1')
+    meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+
+    title= book_title
+
+    link(type='text/css', rel='stylesheet', media='screen', href='css/master.css')
+  body
+    nav
+      +toc(toc)
+    #textbook
+      article
+        section
+          p Welcome!
+
+    // script(type='text/javascript', data-main="lfa-components/lfa-js/main", src="js/require.js")
+    script(type='text/javascript', data-main="js/main", src="js/require.min.js")
+    
+    //- this must be included for live reload to work in developement
+    //- it will be automatically ignored when deployed
+    != livereload

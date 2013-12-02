@@ -1,3 +1,13 @@
+mixin article(title)
+  - if (!self) { locals.title = title; }
+  article
+    block
+
+mixin section(title)
+  - if (!self) { locals.sections = locals.sections || []; locals.sections.push(title); }
+  section
+    block
+
 mixin img(path)
   img(src="#{path_to_root + path}")
 
@@ -31,9 +41,8 @@ mixin widget(path)
 mixin toc(chapters)
   ul
     each chapter in chapters
-      - function isActive() { return (url == chapter.url) ? "active" : false }
-      li(class=isActive())
-        +link_to(chapter.url)= chapter.fm.title
+      li
+        a(href="#book/#{chapter.url}")= chapter.locals.title
         if chapter.children && chapter.children.length
           +toc(chapter.children)
 
