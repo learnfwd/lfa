@@ -9,16 +9,34 @@ html
 
     link(type='text/css', rel='stylesheet', media='screen', href='css/master.css')
   body
-    nav
+    nav.sidebar
       +toc(toc)
-    #textbook
-      article
-        section
-          p Welcome!
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+      +toc(toc)
+    .content
+      .btn.btn-primary#sidebar-toggle Trigger sidebar
+      #textbook
+        article
+          section
+            p Welcome!
 
     // script(type='text/javascript', data-main="lfa-components/lfa-js/main", src="js/require.js")
     script(type='text/javascript', data-main="js/main", src="js/require.min.js")
     
-    //- this must be included for live reload to work in developement
+    //- this must be included for live reload to work in development
     //- it will be automatically ignored when deployed
     != livereload

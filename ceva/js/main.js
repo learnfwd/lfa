@@ -36,4 +36,8 @@ require([
   
   App.Router = new Workspace();
   Backbone.history.start();
+  
+  $('#sidebar-toggle').click(function(e) {
+    $("body").toggleClass("sidebar-active");
+  });
 });
