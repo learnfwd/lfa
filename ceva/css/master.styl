@@ -5,13 +5,6 @@ html, body
   height: 100%
   width: 100%
 
-nav
-  background: flat_wet_asphalt
-
-#textbook
-  background: flat_midnight_blue
-  color: white
-
 #sidebar-toggle
   display: none
   border-radius: 0px
@@ -22,20 +15,34 @@ nav
 body
   padding-left: 250px
   
-  nav
-    margin-left: -250px
+  .sidebar
+    background: flat_wet_asphalt
+    
     width: 250px
+    margin-left: -250px
     position: fixed
     height: 100%
     overflow-y: auto
     z-index: 1000
   
-  nav, .content
-    transition: all 0.4s ease
+  .content
+    background: flat_midnight_blue
+    color: white
   
-  @media (max-width: 767px)
+    article
+      @extend .container
+      background: green
+
+      section
+        @extend .row
+        background: red
+  
+  .sidebar, .content
+    transition: transform tduration ease
+  
+  @media max-phone
     padding-left: 0
     
     &.sidebar-active
-      nav, .content
-        transform: translate3d(250px, 0, 0)
+      .sidebar, .content
+        translate3d(250px, 0, 0)
