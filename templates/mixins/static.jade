@@ -1,6 +1,7 @@
-mixin article(title)
-  - if (!self) { locals.title = title; }
+mixin article(title, subtitle)
+  - if (!self) { locals.title = title; locals.subtitle = subtitle; }
   article
+    h1= title
     block
 
 mixin section(title)
@@ -42,7 +43,10 @@ mixin toc(chapters)
   ul
     each chapter in chapters
       li
-        a(href="#book/#{chapter.url}")= chapter.locals.title
+        a(href="#book/#{chapter.url}")
+          span.title= chapter.locals.title
+          - if (chapter.locals.subtitle)
+            span.subtitle= chapter.locals.subtitle
         if chapter.children && chapter.children.length
           +toc(chapter.children)
 

@@ -12,11 +12,14 @@ body
   
   #rightbar-toggle
   #leftbar-toggle
+  .btn-group
     display: none !important
+  
+  > section, #textbook
+    height: 100%
   
   > nav
   > aside
-    background: flat_midnight_blue
     width: sidebar-width
     position: fixed
     height: 100%
@@ -41,7 +44,7 @@ body
   
   @media max-tablet
     padding-right: 0
-    #rightbar-toggle
+    #rightbar-toggle, .btn-group
       display: block !important
     > aside
       right: - sidebar-width
@@ -49,7 +52,7 @@ body
       translate3d(- sidebar-width, 0, 0)
 
 // Eye candy for devices that can handle it.
-body.high-detail
+body.high-performance
   > section
     transition: opacity tduration ease
     opacity: 1
@@ -57,6 +60,10 @@ body.high-detail
   > nav
   > aside
     transition: transform tduration ease
+  
+  > nav
+    ul li a
+      transition: all 0.1s linear
   
   @media max-phone
     &.leftbar-active
@@ -68,8 +75,83 @@ body.high-detail
       > section
         opacity: 0.5
 
+// This rule is used to stop the body element from scrolling when a sidebar is in focus.
+body.leftbar-active, body.rightbar-active, body.no-scroll
+  position: fixed;
+
+halfgutter = ($grid-gutter-width / 2)
 #textbook > article
+body > nav
+body > aside
   @extend .container
-// 
-// body > nav
-//   background: green
+  padding-top: halfgutter
+
+body > nav, body > aside
+  background: flat_midnight_blue
+  color: flat_clouds
+
+body > nav
+  // padding-top: 0
+  ul
+    list-style-type: none
+    padding: 0
+    
+    li
+      cursor: pointer
+    
+    a
+      color: flat_clouds
+      height: 100%
+      width: 100%
+      display: block
+      padding: halfgutter
+      font-size: 20px
+      font-weight: 200
+      letter-spacing: 1px
+      margin-bottom: 2px
+      
+      &:hover
+        text-decoration: none
+      
+      .title, .subtitle
+        display: block
+      
+      .subtitle
+        font-size: 16px
+        color: flat_asbestos
+        letter-spacing: 0px
+        text-overflow: ellipsis
+        white-space: nowrap
+        overflow: hidden
+    
+    li.active > a, li a:hover
+      background: flat_clouds
+      color: flat_midnight_blue
+  
+  toclibgcolor = flat_wet_asphalt
+  > ul
+    > li
+      margin: 0px (- halfgutter) 2px (- halfgutter)
+      // first level chapters
+      > a
+        background: toclibgcolor
+      
+      > ul
+        > li
+          // second level chapters
+          > a
+            padding-left: (halfgutter + 10px)
+            font-size: 16px
+            background: darken(toclibgcolor, 10%)
+          
+          > ul
+            > li
+              // third level chapters and beyond
+              a
+                padding-left: (halfgutter + 20px)
+                font-size: 16px
+                background: darken(toclibgcolor, 20%)
+
+#textbook > article
+  h1:first-child
+    margin-top: 0

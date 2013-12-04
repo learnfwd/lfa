@@ -12,6 +12,10 @@ require.config({
     backboneLocalstorage: {
       deps: ['backbone'],
       exports: 'Store'
+    },
+    hammer: {
+      deps: ['jquery'],
+      exports: 'Hammer'
     }
   },
   paths: {
@@ -20,7 +24,8 @@ require.config({
     underscore: 'underscore.min',
     backbone: 'backbone.min',
     backboneLocalstorage: 'backbone.localStorage.min',
-    fastclick: '../lfa-components/lfa-js/lib/fastclick'
+    fastclick: '../lfa-components/lfa-js/lib/fastclick',
+    hammer: 'jquery.hammer.min'
   }
 });
 
@@ -28,8 +33,9 @@ require([
   'backbone',
   'views/book',
   'routers/router',
-  'fastclick'
-], function(Backbone, BookView, Workspace, FastClick) {
+  'fastclick',
+  'hammer'
+], function(Backbone, BookView, Workspace, FastClick, Hammer) {
   console.log('JavaScript loaded.');
   FastClick.attach(document.body);
   
@@ -40,18 +46,40 @@ require([
   App.Router = new Workspace();
   Backbone.history.start();
   
-  $('#detail-toggle').click(function(e) {
-    $('body').toggleClass('high-detail');
+  $('body').addClass('high-performance');
+  
+  $('#leftbar-toggle').click(function() {
+    $('body').addClass('leftbar-active');
+  });
+  $('#rightbar-toggle').click(function() {
+    $('body').addClass('rightbar-active');
   });
   
-  $('#leftbar-toggle').click(function(e) {
-    $('body').toggleClass('leftbar-active');
-  });
-  $('#rightbar-toggle').click(function(e) {
-    $('body').toggleClass('rightbar-active');
-  });
-  $('#textbook').click(function(e) {
+  $('#textbook').hammer().on('touch', function() {
     $('body').removeClass('leftbar-active');
     $('body').removeClass('rightbar-active');
+  });
+  $('body > nav').hammer().on('dragleft', function() {
+    $('body').removeClass('leftbar-active');
+  });
+  $('body > aside').hammer().on('dragright', function() {
+    $('body').removeClass('rightbar-active');
+  });
+  
+  $('body > nav ul a').click(function() {
+    $('body').removeClass('leftbar-active');
+    $('body > nav ul li').removeClass('active');
+    $(this).parent().addClass('active');
+  });
+  $('body > aside a').click(function() {
+    $('body').removeClass('rightbar-active');
+  });
+  
+  // Desktop classes to stop document scrolling while we're inside a sidebar.
+  $('body > nav, body > aside').on('mouseover', function() {
+    $('body').addClass('no-scroll');
+  });
+  $('body > nav, body > aside').on('mouseout', function() {
+    $('body').removeClass('no-scroll');
   });
 });

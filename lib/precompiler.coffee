@@ -77,8 +77,8 @@ class Precompiler
    * @private
   ###
   compileTemplate: (template) ->
-    basePath = template.split(path.join(process.cwd(), global.options.templates)+"/")[1]
-    templateNamespace = basePath.split('.jade')[0].replace('/', '-')
+    basePath = template.split(path.join(process.cwd(), global.options.templates)+ "/")[1]
+    templateNamespace = basePath.split('.jade')[0].replace(/\//g, '-')
 
     data = fs.readFileSync(template, 'utf8')
     
