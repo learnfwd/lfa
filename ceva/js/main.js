@@ -19,16 +19,19 @@ require.config({
     templates: 'templates',
     underscore: 'underscore.min',
     backbone: 'backbone.min',
-    backboneLocalstorage: 'backbone.localStorage.min'
+    backboneLocalstorage: 'backbone.localStorage.min',
+    fastclick: '../lfa-components/lfa-js/lib/fastclick'
   }
 });
 
 require([
   'backbone',
   'views/book',
-  'routers/router'
-], function(Backbone, BookView, Workspace) {
+  'routers/router',
+  'fastclick'
+], function(Backbone, BookView, Workspace, FastClick) {
   console.log('JavaScript loaded.');
+  FastClick.attach(document.body);
   
   window.App = {};
   
@@ -37,7 +40,18 @@ require([
   App.Router = new Workspace();
   Backbone.history.start();
   
-  $('#sidebar-toggle').click(function(e) {
-    $("body").toggleClass("sidebar-active");
+  $('#detail-toggle').click(function(e) {
+    $('body').toggleClass('high-detail');
+  });
+  
+  $('#leftbar-toggle').click(function(e) {
+    $('body').toggleClass('leftbar-active');
+  });
+  $('#rightbar-toggle').click(function(e) {
+    $('body').toggleClass('rightbar-active');
+  });
+  $('#textbook').click(function(e) {
+    $('body').removeClass('leftbar-active');
+    $('body').removeClass('rightbar-active');
   });
 });

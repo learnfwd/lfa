@@ -5,44 +5,71 @@ html, body
   height: 100%
   width: 100%
 
-#sidebar-toggle
-  display: none
-  border-radius: 0px
-  
-  @media (max-width: 767px)
-    display: block
-
+// "Holy Grail" layout, with left and right sidebar.
+sidebar-width = 250px
 body
-  padding-left: 250px
+  padding: 0 sidebar-width
   
-  .sidebar
-    background: flat_wet_asphalt
-    
-    width: 250px
-    margin-left: -250px
+  #rightbar-toggle
+  #leftbar-toggle
+    display: none !important
+  
+  > nav
+  > aside
+    background: flat_midnight_blue
+    width: sidebar-width
     position: fixed
     height: 100%
     overflow-y: auto
     z-index: 1000
+    top: 0px
   
-  .content
-    background: flat_midnight_blue
-    color: white
+  > nav
+    left: 0px
   
-    article
-      @extend .container
-      background: green
-
-      section
-        @extend .row
-        background: red
-  
-  .sidebar, .content
-    transition: transform tduration ease
+  > aside
+    right: 0px
   
   @media max-phone
     padding-left: 0
-    
-    &.sidebar-active
-      .sidebar, .content
-        translate3d(250px, 0, 0)
+    #leftbar-toggle
+      display: block !important
+    > nav
+      left: - sidebar-width
+    &.leftbar-active > nav
+      translate3d(sidebar-width, 0, 0)
+  
+  @media max-tablet
+    padding-right: 0
+    #rightbar-toggle
+      display: block !important
+    > aside
+      right: - sidebar-width
+    &.rightbar-active > aside
+      translate3d(- sidebar-width, 0, 0)
+
+// Eye candy for devices that can handle it.
+body.high-detail
+  > section
+    transition: opacity tduration ease
+    opacity: 1
+  
+  > nav
+  > aside
+    transition: transform tduration ease
+  
+  @media max-phone
+    &.leftbar-active
+      > section
+        opacity: 0.5
+  
+  @media max-tablet
+    &.rightbar-active
+      > section
+        opacity: 0.5
+
+#textbook > article
+  @extend .container
+// 
+// body > nav
+//   background: green
