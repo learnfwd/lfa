@@ -9,14 +9,19 @@ html
 
     link(type='text/css', rel='stylesheet', media='screen', href='css/master.css')
   body
-    nav.sidebar
+    nav
       +toc(toc)
-    section.content
-      .btn.btn-primary#sidebar-toggle Trigger sidebar
+    section
+      .btn-group.col-xs-12
+        .btn.btn-primary.col-xs-4#leftbar-toggle Trigger leftbar
+        .btn.btn-success.col-xs-4#detail-toggle Detail
+        .btn.btn-info.col-xs-4#rightbar-toggle Trigger rightbar
       #textbook
         article
           section
             p Welcome!
+    aside
+      p Lorem ipsum.
 
     // script(type='text/javascript', data-main="lfa-components/lfa-js/main", src="js/require.js")
     script(type='text/javascript', data-main="js/main", src="js/require.min.js")
