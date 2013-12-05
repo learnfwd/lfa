@@ -16,6 +16,9 @@ require.config({
     hammer: {
       deps: ['jquery'],
       exports: 'Hammer'
+    },
+    modernizr: {
+      exports: 'Modernizr'
     }
   },
   paths: {
@@ -25,7 +28,8 @@ require.config({
     backbone: 'backbone.min',
     backboneLocalstorage: 'backbone.localStorage.min',
     fastclick: '../lfa-components/lfa-js/lib/fastclick',
-    hammer: 'jquery.hammer.min'
+    hammer: 'jquery.hammer.min',
+    modernizr: '../lfa-components/lfa-js/lib/modernizr.touch.min'
   }
 });
 
@@ -34,8 +38,9 @@ require([
   'views/book',
   'routers/router',
   'fastclick',
-  'hammer'
-], function(Backbone, BookView, Workspace, FastClick, Hammer) {
+  'hammer',
+  'modernizr'
+], function(Backbone, BookView, Workspace, FastClick, Hammer, Modernizr) {
   console.log('JavaScript loaded.');
   FastClick.attach(document.body);
   
@@ -46,40 +51,107 @@ require([
   App.Router = new Workspace();
   Backbone.history.start();
   
-  $('body').addClass('high-performance');
-  
-  $('#leftbar-toggle').click(function() {
-    $('body').addClass('leftbar-active');
-  });
-  $('#rightbar-toggle').click(function() {
-    $('body').addClass('rightbar-active');
+  Modernizr.addTest('ipad', function () {
+    return navigator.userAgent.match(/iPad/i);
   });
   
-  $('#textbook').hammer().on('touch', function() {
-    $('body').removeClass('leftbar-active');
-    $('body').removeClass('rightbar-active');
-  });
-  $('body > nav').hammer().on('dragleft', function() {
-    $('body').removeClass('leftbar-active');
-  });
-  $('body > aside').hammer().on('dragright', function() {
-    $('body').removeClass('rightbar-active');
+  Modernizr.addTest('iphone', function () {
+    return navigator.userAgent.match(/iPhone/i);
   });
   
-  $('body > nav ul a').click(function() {
-    $('body').removeClass('leftbar-active');
-    $('body > nav ul li').removeClass('active');
+  Modernizr.addTest('ipod', function () {
+    return navigator.userAgent.match(/iPod/i);
+  });
+  
+  Modernizr.addTest('appleios', function () {
+    return (Modernizr.ipad || Modernizr.ipod || Modernizr.iphone);
+  });
+  
+  var $body = $('body'),
+      $leftbar = $body.find('> nav'),
+      $rightbar = $body.find('> aside'),
+      $textbook = $body.find('#textbook'),
+      $leftbarToggle = $body.find('#leftbar-toggle'),
+      $rightbarToggle = $body.find('#rightbar-toggle'),
+      $searchInput = $body.find('#search input.search'),
+      $searchErase = $body.find('#search-erase'),
+      $searchGo = $body.find('#search-go');
+  
+  $body.addClass('high-performance');
+  
+  if (!Modernizr.touch) {
+    $body.addClass('no-touch');
+  
+    // Desktop classes to stop document scrolling while we're inside a sidebar.
+    $('body > nav, body > aside')
+      .on('mouseover', function() {
+      $body.addClass('no-scroll');
+    }).on('mouseout', function() {
+      $body.removeClass('no-scroll');
+    });
+  }
+  
+  if (Modernizr.appleios) {
+    $body.addClass('appleios');
+  } else {
+    // If we're not on an iPod or iPhone, add events to open the sidebars via swiping left/right.
+    $textbook.hammer().on('dragleft', function() {
+      $body.addClass('rightbar-active');
+    });
+    $textbook.hammer().on('dragright', function() {
+      $body.addClass('leftbar-active');
+    });
+  }
+  
+  $leftbarToggle.click(function() {
+    $body.toggleClass('leftbar-active');
+  });
+  $rightbarToggle.click(function() {
+    $body.toggleClass('rightbar-active');
+  });
+  
+  // Close the sidebars when we click anywhere on the textbook content.
+  $textbook.hammer().on('tap', function() {
+    $body.removeClass('leftbar-active');
+    $body.removeClass('rightbar-active');
+    $body.removeClass('no-scroll');
+  });
+  
+  // Close the sidebars when we drag on them in their corresponding directions.
+  $leftbar.hammer().on('dragleft', function() {
+    $body.removeClass('leftbar-active');
+  });
+  $rightbar.hammer().on('dragright', function() {
+    $body.removeClass('rightbar-active');
+  });
+  
+  // When navigating somewhere else in the toc, close the leftbar, remove the active class from the previous button, and add the active class to the one that was pressed.
+  $leftbar.find('ul a').click(function() {
+    $body.removeClass('leftbar-active');
+    $leftbar.find('ul li').removeClass('active');
     $(this).parent().addClass('active');
+    $body.find('.menu .header span').html($(this).find('span:first-child').html());
   });
-  $('body > aside a').click(function() {
-    $('body').removeClass('rightbar-active');
+  $rightbar.find('a').click(function() {
+    $body.removeClass('rightbar-active');
   });
   
-  // Desktop classes to stop document scrolling while we're inside a sidebar.
-  $('body > nav, body > aside').on('mouseover', function() {
-    $('body').addClass('no-scroll');
+  $searchInput.on('input', function(e) {
+    var value = $(this).val();
+    
+    if (value.length && $searchErase.hasClass('concealed')) {
+      $searchErase.removeClass('concealed');
+      $searchGo.addClass('concealed');
+    } else if (!value.length) {
+      $searchErase.addClass('concealed');
+      $searchGo.removeClass('concealed');
+    }
   });
-  $('body > nav, body > aside').on('mouseout', function() {
-    $('body').removeClass('no-scroll');
+  
+  $searchErase.not('concealed').click(function() {
+    $searchInput.val('');
+    
+    $searchErase.addClass('concealed');
+    $searchGo.removeClass('concealed');
   });
 });

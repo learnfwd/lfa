@@ -6,56 +6,133 @@ html, body
   width: 100%
 
 // "Holy Grail" layout, with left and right sidebar.
-sidebar-width = 250px
+sidebarWidth = 250px
+toggleHitbox = 55px
 body
-  padding: 0 sidebar-width
+  padding: 0 sidebarWidth
+  
+  #leftbar-toggle, #rightbar-toggle
+    display: none
+    position: absolute
+    width: toggleHitbox
+    height: toggleHitbox
+    cursor: pointer
+    top: 0
+    > i
+      position: absolute
+      top: 15px
+      font-size: 25px
+      color: #333
+
+  #leftbar-toggle
+    left: 0
+    > i
+      left: 10px
   
   #rightbar-toggle
-  #leftbar-toggle
-  .btn-group
-    display: none !important
+    right: 0
+    > i
+      top: 17px
+      right: 10px
+  
+  > .menu-wrapper
+    position: fixed
+    top: 0
+    left: 0
+    height: 60px
+    width: 100%
+    z-index: 900
+    padding: 0 sidebarWidth
+    
+    > .menu
+      height: @height
+      width: 100%
+      position: relative
+      
+      .header
+        display: block
+        height: @height
+        width: 100%
+        background: linear-gradient(top, rgba(255,255,255,1.0) 30%, rgba(255,255,255,0.0) 100%)
+        text-align: center
+        padding-top: 5px
+        span
+          font-weight: 200
   
   > section, #textbook
     height: 100%
   
   > nav
   > aside
-    width: sidebar-width
+    width: sidebarWidth
     position: fixed
     height: 100%
-    overflow-y: auto
-    z-index: 1000
     top: 0px
+    overflow-y: auto
+    .fa
+      font-size: 50px
   
   > nav
     left: 0px
+    z-index: 1000
   
   > aside
     right: 0px
+    z-index: 1010
+  
+  @media (max-width: 600px)
+    // Make the other sidebar-toggle dissapear when your screen width is tiny.
+    &.rightbar-active
+      #leftbar-toggle
+        transform: translate3d(- toggleHitbox, 0, 0)
+        opacity(0)
+    &.leftbar-active
+      #rightbar-toggle
+        transform: translate3d(toggleHitbox, 0, 0)
+        opacity(0)
   
   @media max-phone
     padding-left: 0
-    #leftbar-toggle
-      display: block !important
+    > .menu-wrapper
+      padding-left: 0
     > nav
-      left: - sidebar-width
-    &.leftbar-active > nav
-      translate3d(sidebar-width, 0, 0)
+      left: - sidebarWidth
+    #leftbar-toggle
+      display: block
+    
+    &.leftbar-active
+      > section
+        opacity(0.2)
+      #leftbar-toggle
+        transform: translate3d(sidebarWidth, 0, 0)
+        .fa.fa-bars
+          transform: rotate(180deg)
+      > nav
+        transform: translate3d(sidebarWidth, 0, 0)
   
   @media max-tablet
     padding-right: 0
-    #rightbar-toggle, .btn-group
-      display: block !important
+    > .menu-wrapper
+      padding-right: 0
     > aside
-      right: - sidebar-width
-    &.rightbar-active > aside
-      translate3d(- sidebar-width, 0, 0)
+      right: - sidebarWidth
+    #rightbar-toggle
+      display: block
+    
+    &.rightbar-active
+      > section
+        opacity(0.2)
+      #rightbar-toggle
+        transform: translate3d(- sidebarWidth, 0, 0)
+        .fa.fa-chevron-left
+          transform: rotate(180deg)
+      > aside
+        transform: translate3d(- sidebarWidth, 0, 0)
 
 // Eye candy for devices that can handle it.
 body.high-performance
   > section
     transition: opacity tduration ease
-    opacity: 1
   
   > nav
   > aside
@@ -63,35 +140,52 @@ body.high-performance
   
   > nav
     ul li a
-      transition: all 0.1s linear
+      transition: background 0.1s linear
   
-  @media max-phone
-    &.leftbar-active
-      > section
-        opacity: 0.5
+  > .menu-wrapper > .menu
+    #leftbar-toggle, #rightbar-toggle
+      transition: transform tduration ease\, opacity tduration ease
+      > i
+        transition: transform tduration ease
   
-  @media max-tablet
-    &.rightbar-active
-      > section
-        opacity: 0.5
+  #search-go, #search-erase
+    transition: transform tduration ease
 
-// This rule is used to stop the body element from scrolling when a sidebar is in focus.
+// Special rules for Apple iOS devices.
+body.appleios
+  overflow: hidden
+  
+  > nav
+  > aside
+    -webkit-overflow-scrolling: touch
+  
+  > section
+    overflow-y: auto
+    -webkit-overflow-scrolling: touch
+
+// These rules are used to stop the body element from scrolling when a sidebar is in focus.
 body.leftbar-active, body.rightbar-active, body.no-scroll
-  position: fixed;
+  overflow: hidden
 
-halfgutter = ($grid-gutter-width / 2)
+halfGutter = ($grid-gutter-width / 2)
 #textbook > article
 body > nav
-body > aside
   @extend .container
-  padding-top: halfgutter
+  padding-top: halfGutter
 
-body > nav, body > aside
-  background: flat_midnight_blue
-  color: flat_clouds
+sidebarTextColor = flat_clouds
+sidebarTextSize = 20px
+sidebarSubtitleColor = flat_asbestos
+sidebarBackground = flat_midnight_blue
+sidebarLiColor = flat_wet_asphalt
 
 body > nav
-  // padding-top: 0
+body > aside
+  background: sidebarBackground
+  color: sidebarTextColor
+
+// The majestic table of contents itself
+body > nav
   ul
     list-style-type: none
     padding: 0
@@ -100,58 +194,101 @@ body > nav
       cursor: pointer
     
     a
-      color: flat_clouds
+      color: sidebarTextColor
       height: 100%
       width: 100%
       display: block
-      padding: halfgutter
-      font-size: 20px
+      padding: halfGutter
+      font-size: sidebarTextSize
       font-weight: 200
       letter-spacing: 1px
       margin-bottom: 2px
       
       &:hover
+        color: @color
         text-decoration: none
       
       .title, .subtitle
         display: block
       
       .subtitle
-        font-size: 16px
-        color: flat_asbestos
+        font-size: sidebarTextSize - 4px
+        color: sidebarSubtitleColor
         letter-spacing: 0px
         text-overflow: ellipsis
         white-space: nowrap
         overflow: hidden
     
-    li.active > a, li a:hover
-      background: flat_clouds
-      color: flat_midnight_blue
+    li.active > a, li > a:focus
+      background: sidebarTextColor
+      color: sidebarBackground
   
-  toclibgcolor = flat_wet_asphalt
   > ul
     > li
-      margin: 0px (- halfgutter) 2px (- halfgutter)
+      margin: 0px (- halfGutter) 2px (- halfGutter)
       // first level chapters
       > a
-        background: toclibgcolor
+        background: sidebarLiColor
       
       > ul
         > li
           // second level chapters
           > a
-            padding-left: (halfgutter + 10px)
-            font-size: 16px
-            background: darken(toclibgcolor, 10%)
+            padding-left: (halfGutter + 10px)
+            font-size: sidebarTextSize - 4px
+            background: darken(sidebarLiColor, 10%)
           
           > ul
             > li
               // third level chapters and beyond
               a
-                padding-left: (halfgutter + 20px)
-                font-size: 16px
-                background: darken(toclibgcolor, 20%)
+                padding-left: (halfGutter + 20px)
+                font-size: sidebarTextSize - 4px
+                background: darken(sidebarLiColor, 20%)
+
+// Rules for devices with no touch support. Hover states and the like.
+body.no-touch
+  > nav ul li a:hover
+    background: sidebarTextColor
+    color: sidebarBackground
 
 #textbook > article
   h1:first-child
-    margin-top: 0
+    margin-top: 45px
+
+// The right sidebar, with the search and the notes.
+body > aside
+  #search
+    padding-top: halfGutter
+    background: flat_green_sea
+    position: relative
+    
+    #search-go, #search-erase
+      position: absolute
+      top: halfGutter
+      right: 0
+      cursor: pointer
+      height: toggleHitbox + 3px
+      width: toggleHitbox
+      > i
+        padding-top: 18px
+        padding-left: 20px
+        font-size: sidebarTextSize
+      
+      > i.fa-search
+        padding-left: 18px
+      
+      &.concealed
+        transform: translate3d(toggleHitbox, 0, 0)
+    
+    input
+      cursor: pointer
+      margin: 0
+      padding: halfGutter
+      border: 0
+      border-radius: 0
+      width: 100%
+      background: flat_turquoise
+      color: sidebarTextColor
+      placeholder(sidebarTextColor)
+      font-size: sidebarTextSize
