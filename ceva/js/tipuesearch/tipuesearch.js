@@ -18,9 +18,9 @@ http://www.tipue.com/search
     
     var set = $.extend({
 
-      'show': 7,
+      'show': 5,
       'newWindow': false,
-      'showURL': true,
+      'showURL': false,
       'minimumLength': 3,
       'descriptiveWords': 25,
       'highlightTerms': true,
@@ -37,66 +37,12 @@ http://www.tipue.com/search
       var tipuesearch_in = {
         pages: []
       };
-      $.ajaxSetup({
-        async: false
-      });
-
-      if (set.mode == 'live') {
-        for (var i = 0; i < tipuesearch_pages.length; i++) {
-          $.get(tipuesearch_pages[i], '',
-            function(html) {
-              var cont = $(set.liveContent, html).text();
-              cont = cont.replace(/\s+/g, ' ');
-              var desc = $(set.liveDescription, html).text();
-              desc = desc.replace(/\s+/g, ' ');
-
-              var t_1 = html.toLowerCase().indexOf('<title>');
-              var t_2 = html.toLowerCase().indexOf('</title>', t_1 + 7);
-              if (t_1 != -1 && t_2 != -1) {
-                var tit = html.slice(t_1 + 7, t_2);
-              } else {
-                var tit = 'No title';
-              }
-
-              tipuesearch_in.pages.push({
-                "title": tit,
-                "text": desc,
-                "tags": cont,
-                "loc": tipuesearch_pages[i]
-              });
-            }
-          );
-        }
-      }
-
-      if (set.mode == 'json') {
-        $.getJSON(set.contentLocation,
-          function(json) {
-            tipuesearch_in = $.extend({}, json);
-          }
-        );
-      }
 
       if (set.mode == 'static') {
         tipuesearch_in = $.extend({}, tipuesearch);
       }
 
       var tipue_search_w = '';
-      if (set.newWindow) {
-        tipue_search_w = ' target="_blank"';
-      }
-
-      function getURLP(name) {
-        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
-      }
-      if (getURLP('q')) {
-        $searchInput.val(getURLP('q'));
-        getTipueSearch(0, true);
-      }
-
-      $('#tipue_search_button').click(function() {
-        getTipueSearch(0, true);
-      });
       
       $(this).keyup(function(event) {
         if (event.keyCode == '13') {

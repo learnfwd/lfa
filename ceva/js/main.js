@@ -86,8 +86,6 @@ require([
       $searchGo = $body.find('#search-go');
   
   $searchInput.tipuesearch({
-    'show': 5,
-    'showURL': false,
     'searchOutput': '#tipue_search_content'
   });
   
