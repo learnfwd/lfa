@@ -19,6 +19,9 @@ require.config({
     },
     modernizr: {
       exports: 'Modernizr'
+    },
+    tipue: {
+      deps: ['jquery', 'tipueSet', 'tipueContent']
     }
   },
   paths: {
@@ -29,7 +32,11 @@ require.config({
     backboneLocalstorage: 'backbone.localStorage.min',
     fastclick: '../lfa-components/lfa-js/lib/fastclick',
     hammer: 'jquery.hammer.min',
-    modernizr: '../lfa-components/lfa-js/lib/modernizr.touch.min'
+    modernizr: '../lfa-components/lfa-js/lib/modernizr.touch.min',
+    
+    tipueSet: 'tipuesearch/tipuesearch_set',
+    tipueContent: 'tipuesearch/tipuesearch_content',
+    tipue: 'tipuesearch/tipuesearch'
   }
 });
 
@@ -39,7 +46,8 @@ require([
   'routers/router',
   'fastclick',
   'hammer',
-  'modernizr'
+  'modernizr',
+  'tipue'
 ], function(Backbone, BookView, Workspace, FastClick, Hammer, Modernizr) {
   console.log('JavaScript loaded.');
   FastClick.attach(document.body);
@@ -77,6 +85,12 @@ require([
       $searchErase = $body.find('#search-erase'),
       $searchGo = $body.find('#search-go');
   
+  $searchInput.tipuesearch({
+    'show': 5,
+    'showURL': false,
+    'searchOutput': '#tipue_search_content'
+  });
+  
   $body.addClass('high-performance');
   
   if (!Modernizr.touch) {
@@ -94,7 +108,7 @@ require([
   if (Modernizr.appleios) {
     $body.addClass('appleios');
   } else {
-    // If we're not on an iPod or iPhone, add events to open the sidebars via swiping left/right.
+    // If we're not on an iPod or iPhone, add events to open the sidebars via swiping left/right. iOS doesn't get these because iOS 7 Safari uses them for back/forward.
     $textbook.hammer().on('dragleft', function() {
       $body.addClass('rightbar-active');
     });

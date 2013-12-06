@@ -32,7 +32,7 @@ body
   #rightbar-toggle
     right: 0
     > i
-      top: 17px
+      top: 16px
       right: 10px
   
   > .menu-wrapper
@@ -83,6 +83,7 @@ body
   
   @media (max-width: 600px)
     // Make the other sidebar-toggle dissapear when your screen width is tiny.
+    // 600px = sidebarWidth * 2 + 100px (breathing room for the buttons)
     &.rightbar-active
       #leftbar-toggle
         transform: translate3d(- toggleHitbox, 0, 0)
@@ -151,6 +152,11 @@ body.high-performance
   
   #search-go, #search-erase
     transition: transform tduration ease
+  
+  #results li a
+    transition: background 0.1s ease
+    .title, .body
+      transition: color 0.1s ease
 
 // Special rules for Apple iOS devices.
 body.appleios
@@ -164,7 +170,7 @@ body.appleios
     overflow-y: auto
     -webkit-overflow-scrolling: touch
 
-// These rules are used to stop the body element from scrolling when a sidebar is in focus.
+// This rule is used to stop the body element from scrolling when a sidebar is in focus.
 body.leftbar-active, body.rightbar-active, body.no-scroll
   overflow: hidden
 
@@ -176,7 +182,6 @@ body > nav
 
 sidebarTextColor = flat_clouds
 sidebarTextSize = 20px
-sidebarSubtitleColor = flat_asbestos
 sidebarBackground = flat_midnight_blue
 sidebarLiColor = flat_wet_asphalt
 
@@ -214,7 +219,7 @@ body > nav
       
       .subtitle
         font-size: sidebarTextSize - 4px
-        color: sidebarSubtitleColor
+        color: darken(@color, 30%)
         letter-spacing: 0px
         text-overflow: ellipsis
         white-space: nowrap
@@ -252,6 +257,11 @@ body.no-touch
   > nav ul li a:hover
     background: sidebarTextColor
     color: sidebarBackground
+    
+  > aside #search ul#results li a:hover
+    background: lighten(flat_turquoise, 10%)
+    .title, .body
+      color: lighten(sidebarTextColor, 10%)
 
 #textbook > article
   h1:first-child
@@ -263,8 +273,9 @@ body > aside
     padding-top: halfGutter
     background: flat_green_sea
     position: relative
-    overflow-y: hidden
+    // Fixes a really weird iOS bug.
     overflow-x: hidden
+    overflow-y: hidden
     
     #search-go, #search-erase
       position: absolute
@@ -295,3 +306,38 @@ body > aside
       color: sidebarTextColor
       placeholder(sidebarTextColor)
       font-size: sidebarTextSize
+      margin-bottom: 2px
+    
+    #results
+      list-style-type: none
+      padding: 0
+      li
+        cursor: pointer
+    
+      a
+        color: sidebarTextColor
+        height: 100%
+        width: 100%
+        display: block
+        padding: halfGutter
+        font-size: sidebarTextSize
+        font-weight: 200
+        letter-spacing: 1px
+        margin-bottom: 2px
+        background: flat_turquoise
+      
+        &:hover
+          color: @color
+          text-decoration: none
+      
+        .title, .body
+          display: block
+      
+        .body
+          font-size: sidebarTextSize - 4px
+          color: darken(@color, 10%)
+          letter-spacing: 0px
+          overflow: hidden
+          line-height: 1.5em
+          height: 3em // 2 lines.
+      
