@@ -20,8 +20,12 @@ require.config({
     modernizr: {
       exports: 'Modernizr'
     },
-    tipue: {
-      deps: ['jquery', 'tipueSet', 'tipueContent']
+    backboneQueryEngine: {
+      deps: ['backbone'],
+      exports: 'queryEngine'
+    },
+    templates: {
+      exports: 'templates'
     }
   },
   paths: {
@@ -33,10 +37,8 @@ require.config({
     fastclick: '../lfa-components/lfa-js/lib/fastclick',
     hammer: 'jquery.hammer.min',
     modernizr: '../lfa-components/lfa-js/lib/modernizr.touch.min',
-    
-    tipueSet: 'tipuesearch/tipuesearch_set',
-    tipueContent: 'tipuesearch/tipuesearch_content',
-    tipue: 'tipuesearch/tipuesearch'
+    backboneQueryEngine: 'backbone.queryEngine',
+    searchjson: 'searchjson'
   }
 });
 
@@ -47,8 +49,10 @@ require([
   'fastclick',
   'hammer',
   'modernizr',
-  'tipue'
-], function(Backbone, BookView, Workspace, FastClick, Hammer, Modernizr) {
+  'backboneQueryEngine',
+  'templates',
+  'searchjson'
+], function(Backbone, BookView, Workspace, FastClick, Hammer, Modernizr, queryEngine, templates) {
   console.log('JavaScript loaded.');
   FastClick.attach(document.body);
   
@@ -84,11 +88,7 @@ require([
       $searchInput = $body.find('#search input.search'),
       $searchErase = $body.find('#search-erase'),
       $searchGo = $body.find('#search-go');
-  
-  $searchInput.tipuesearch({
-    'searchOutput': '#tipue_search_content'
-  });
-  
+
   $body.addClass('high-performance');
   
   if (!Modernizr.touch) {
@@ -144,17 +144,47 @@ require([
     $(this).parent().addClass('active');
     $body.find('.menu .header span').html($(this).find('span:first-child').html());
   });
-  $rightbar.find('a').click(function() {
+  $rightbar.find('#search-results').click(function() {
     $body.removeClass('rightbar-active');
   });
   
+  // TODO: Refactor searching into Backbone.
+  var projectCollection, projectSearchCollection;
+  
+  projectCollection = queryEngine.createLiveCollection(SearchJSON);
+  
+  projectSearchCollection = projectCollection.createLiveChildCollection()
+  .setFilter('search', function(model, searchString) {
+    var pass = true, searchRegex;
+    if (searchString) {
+      var searchTerms = searchString.split(/\s+/);
+      for (var i = 0, len = searchTerms.length; i < len && pass; i++) {
+        searchRegex = queryEngine.createSafeRegex(searchTerms[i]);
+        pass = pass && (searchRegex.test(model.get('body')) || searchRegex.test(model.get('title')));
+      }
+    }
+    return pass;
+  }).query();
+  
   $searchInput.on('input', function(e) {
-    var value = $(this).val();
+    var searchString = $(this).val().trim();
+    if (searchString.length >= 3) {
+      var results = projectSearchCollection.setSearchString(searchString).query().models,
+          maxResults = 5;
+      
+      var buf = '';
+      for (var i = 0, len = results.length; i < len && i < maxResults; i++) {
+        buf += templates['search_result'](results[i].attributes);
+      }
+      $('#search-results').html(buf);
+    } else {
+      $('#search-results').html('');
+    }
     
-    if (value.length && $searchErase.hasClass('concealed')) {
+    if (searchString.length && $searchErase.hasClass('concealed')) {
       $searchErase.removeClass('concealed');
       $searchGo.addClass('concealed');
-    } else if (!value.length) {
+    } else if (!searchString.length) {
       $searchErase.addClass('concealed');
       $searchGo.removeClass('concealed');
     }
@@ -162,6 +192,7 @@ require([
   
   $searchErase.not('concealed').click(function() {
     $searchInput.val('');
+    $('#search-results').html('');
     
     $searchErase.addClass('concealed');
     $searchGo.removeClass('concealed');

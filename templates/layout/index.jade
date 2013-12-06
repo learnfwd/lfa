@@ -7,8 +7,6 @@ html
 
     title= book_title
     
-    | <link rel="stylesheet" type="text/css" href="js/tipuesearch/tipuesearch.css">
-    
     link(type='text/css', rel='stylesheet', media='screen', href='lfa-components/font-awesome/css/font-awesome.min.css')
     link(type='text/css', rel='stylesheet', media='screen', href='css/master.css')
   body
@@ -22,10 +20,6 @@ html
     nav
       +toc(toc)
     section
-      br
-      hr
-      br
-      #tipue_search_content
       #textbook
         article
           section
@@ -35,13 +29,7 @@ html
         #search-go: i.fa.fa-search.fa-fw
         #search-erase.concealed: i.fa.fa-times.fa-fw
         input.search(type="text", placeholder="Search")
-        mixin search_result()
-          li: a(href="#")
-            span.title Lorem ipsum
-            span.body Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        ul#results
-          each val in [1, 2, 3, 4, 5]
-            +search_result()
+        ul#search-results
 
     // script(type='text/javascript', data-main="lfa-components/lfa-js/main", src="js/require.js")
     script(type='text/javascript', data-main="js/main", src="js/require.min.js")

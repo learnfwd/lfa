@@ -24,7 +24,9 @@ module.exports = ->
     precompiler = new Precompiler(
       templates: _.map(res.files, (f) -> f.fullPath)
     )
-
+    
+    precompiler.templates.push path.join __dirname, '..', 'templates/clientjs/search_result.jade'
+    
     buf = precompiler.compile()
     buf = compressor buf, 'js' if global.options.compress
 
@@ -78,6 +80,10 @@ class Precompiler
   ###
   compileTemplate: (template) ->
     basePath = template.split(path.join(process.cwd(), global.options.templates)+ "/")[1]
+    if !basePath # if it's a template from the lfa/templates folder
+      basePathSplit = template.split('/')
+      basePath = basePathSplit[basePathSplit.length - 1]
+    
     templateNamespace = basePath.split('.jade')[0].replace(/\//g, '-')
 
     data = fs.readFileSync(template, 'utf8')

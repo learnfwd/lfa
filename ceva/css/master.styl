@@ -153,7 +153,7 @@ body.high-performance
   #search-go, #search-erase
     transition: transform tduration ease
   
-  #results li a
+  #search-results li a
     transition: background 0.1s ease
     .title, .body
       transition: color 0.1s ease
@@ -258,7 +258,7 @@ body.no-touch
     background: sidebarTextColor
     color: sidebarBackground
     
-  > aside #search ul#results li a:hover
+  > aside #search ul#search-results li a:hover
     background: lighten(flat_turquoise, 10%)
     .title, .body
       color: lighten(sidebarTextColor, 10%)
@@ -308,7 +308,7 @@ body > aside
       font-size: sidebarTextSize
       margin-bottom: 2px
     
-    #results
+    #search-results
       list-style-type: none
       padding: 0
       li
