@@ -60,15 +60,15 @@ class Precompiler
   ###
   compile: ->
     buf = ["""
-    (function(){
-      window.#{@namespace} = window.#{@namespace} || {};
+    define(function(){
+      var #{@namespace} = {};
       #{@helpers() if @include_helpers isnt false and @inline isnt true}
     """]
 
     for template in @templates
       buf.push @compileTemplate(template).toString()
 
-    buf.push '})();'
+    buf.push '; return templates;});'
     buf.join ''
 
   ###*
