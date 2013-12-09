@@ -1,17 +1,16 @@
 'use strict';
 
 define([
-  'jquery',
-  'backbone'
+  'jQuery',
+  'Backbone'
 ], function($, Backbone) {
-  var Workspace = Backbone.Router.extend({
+  var Router = Backbone.Router.extend({
     routes: {
       '': 'home',
       'book/:chapter': 'book'
     },
     
     home: function () {
-      console.log("Welcome home.");
     },
     
     book: function(chapter) {
@@ -19,5 +18,5 @@ define([
     }
   });
   
-  return Workspace;
+  return Router;
 });

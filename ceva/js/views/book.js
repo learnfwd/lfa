@@ -1,15 +1,15 @@
 'use strict';
 
 define([
-  'jquery',
+  'jQuery',
   'underscore',
-  'backbone',
-  'templates'
-], function($, _, Backbone) {
+  'Backbone',
+  'Templates'
+], function($, _, Backbone, Templates) {
   var BookView = Backbone.View.extend({
     el: '#textbook',
     
-    template: templates,
+    template: Templates,
     
     render: function(chapter) {
       this.$el.html(this.template[chapter]());

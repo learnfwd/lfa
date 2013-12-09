@@ -1,68 +1,61 @@
 'use strict';
 
 require.config({
-  shim: {
-    underscore: {
-      exports: '_'
-    },
-    backbone: {
-      deps: ['underscore', 'jquery'],
-      exports: 'Backbone'
-    },
-    backboneLocalstorage: {
-      deps: ['backbone'],
-      exports: 'Store'
-    },
-    hammer: {
-      deps: ['jquery'],
-      exports: 'Hammer'
-    },
-    modernizr: {
-      exports: 'Modernizr'
-    },
-    backboneQueryEngine: {
-      deps: ['backbone'],
-      exports: 'queryEngine'
-    },
-    templates: {
-      exports: 'templates'
-    }
-  },
   paths: {
-    jquery: 'http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min',
-    templates: 'templates',
-    underscore: 'underscore.min',
-    backbone: 'backbone.min',
-    backboneLocalstorage: 'backbone.localStorage.min',
-    fastclick: '../lfa-components/lfa-js/lib/fastclick',
-    hammer: 'jquery.hammer.min',
-    modernizr: '../lfa-components/lfa-js/lib/modernizr.touch.min',
-    backboneQueryEngine: 'backbone.queryEngine',
-    searchjson: 'searchjson'
+    // General purpose 3rd party libs.
+    jQuery:       '../lfa-components/lfa-js/lib/jquery-2.0.3.min',
+    underscore:   'underscore.min',
+    Hammer:       'jquery.hammer.min',
+    Modernizr:    '../lfa-components/lfa-js/lib/modernizr.touch.min',
+    FastClick:    '../lfa-components/lfa-js/lib/fastclick',
+    
+    // LFA generated JSON objects.
+    Templates:    'templates',
+    SearchJSON:   'searchjson',
+    
+    // Backbone and accompanying libs.
+    Backbone:     'backbone.min',
+    Store:        'backbone.localStorage.min',
+    QueryEngine:  'backbone.queryEngine',
+    
+    // Backbone classes.
+    BookView:     'views/book',
+    Router:       'routers/router'
+  },
+  shim: {
+    jQuery:       { exports: '$' },
+    underscore:   { exports: '_' },
+    Hammer:       { exports: 'Hammer', deps: ['jQuery'] },
+    Modernizr:    { exports: 'Modernizr' },
+    FastClick:    { exports: 'FastClick' },
+    
+    Templates:    { exports: 'Templates' },
+    SearchJSON:   { exports: 'SearchJSON' },
+    
+    Backbone:     { exports: 'Backbone', deps: ['underscore', 'jQuery'] },
+    Store:        { exports: 'Store', deps: ['Backbone'] },
+    QueryEngine:  { exports: 'QueryEngine', deps: ['Backbone'] },
+    
+    BookView:     { exports: 'BookView' },
+    Router:       { exports: 'Router' }
   }
 });
 
 require([
-  'backbone',
-  'views/book',
-  'routers/router',
-  'fastclick',
-  'hammer',
-  'modernizr',
-  'backboneQueryEngine',
-  'templates',
-  'searchjson'
-], function(Backbone, BookView, Workspace, FastClick, Hammer, Modernizr, queryEngine, templates) {
-  console.log('JavaScript loaded.');
+  'Backbone',
+  'BookView',
+  'Router',
+  'FastClick',
+  'Templates',
+  'SearchJSON',
+  'QueryEngine',
+  'Modernizr',
+  'Hammer'
+], function(Backbone, BookView, Router, FastClick, Templates, SearchJSON, QueryEngine, Modernizr, Hammer) {
+  // Initialize FastClick. This removes the .3s delay in mobile webkit when clicking on anything.
   FastClick.attach(document.body);
   
-  window.App = {};
-  
-  App.BookView = new BookView();
-  
-  App.Router = new Workspace();
-  Backbone.history.start();
-  
+  // Add some custom Modernizr tests.
   Modernizr.addTest('ipad', function () {
     return navigator.userAgent.match(/iPad/i);
   });
@@ -79,22 +72,30 @@ require([
     return (Modernizr.ipad || Modernizr.ipod || Modernizr.iphone);
   });
   
+  window.App = {};
+  
+  App.BookView = new BookView();
+  
+  App.Router = new Router();
+  Backbone.history.start();
+  
   var $body = $('body'),
-      $leftbar = $body.find('> nav'),
-      $rightbar = $body.find('> aside'),
-      $textbook = $body.find('#textbook'),
-      $leftbarToggle = $body.find('#leftbar-toggle'),
-      $rightbarToggle = $body.find('#rightbar-toggle'),
-      $searchInput = $body.find('#search input.search'),
-      $searchErase = $body.find('#search-erase'),
-      $searchGo = $body.find('#search-go');
-
+      $leftbar = $('#leftbar'),
+      $rightbar = $('#rightbar'),
+      $textbook = $('#textbook'),
+      $leftbarToggle = $('#leftbar-toggle'),
+      $rightbarToggle = $('#rightbar-toggle'),
+      $searchInput = $('#search input.search'),
+      $searchErase = $('#search-erase'),
+      $searchGo = $('#search-go');
+  
+  // TODO: Turn this into an option at the bottom of the rightbar.
   $body.addClass('high-performance');
   
   if (!Modernizr.touch) {
     $body.addClass('no-touch');
-  
-    // Desktop classes to stop document scrolling while we're inside a sidebar.
+    
+    // no-touch means we have a mouse, so don't scroll the entire document while we're inside a sidebar.
     $('body > nav, body > aside')
       .on('mouseover', function() {
       $body.addClass('no-scroll');
@@ -106,7 +107,8 @@ require([
   if (Modernizr.appleios) {
     $body.addClass('appleios');
   } else {
-    // If we're not on an iPod or iPhone, add events to open the sidebars via swiping left/right. iOS doesn't get these because iOS 7 Safari uses them for back/forward.
+    // If we're not on iOS, add events to open the sidebars via swiping left/right.
+    // iOS doesn't get these because iOS 7 Safari uses them for back/forward.
     $textbook.hammer().on('dragleft', function() {
       $body.addClass('rightbar-active');
     });
@@ -151,7 +153,7 @@ require([
   // TODO: Refactor searching into Backbone.
   var projectCollection, projectSearchCollection;
   
-  projectCollection = queryEngine.createLiveCollection(SearchJSON);
+  projectCollection = QueryEngine.createLiveCollection(SearchJSON.pages);
   
   projectSearchCollection = projectCollection.createLiveChildCollection()
   .setFilter('search', function(model, searchString) {
@@ -174,7 +176,7 @@ require([
       
       var buf = '';
       for (var i = 0, len = results.length; i < len && i < maxResults; i++) {
-        buf += templates['search_result'](results[i].attributes);
+        buf += Templates['search_result'](results[i].attributes);
       }
       $('#search-results').html(buf);
     } else {
@@ -197,4 +199,7 @@ require([
     $searchErase.addClass('concealed');
     $searchGo.removeClass('concealed');
   });
+  
+  require(['init']);
 });
+
