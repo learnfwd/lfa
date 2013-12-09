@@ -1,13 +1,23 @@
+$border-radius-base = $border-radius-large = $border-radius-small = 0px
 // remove this mixin in order to disable LFA specific css
 lfa-framework()
+
+toggleHitbox ?= 55px
+halfGutter ?= ($grid-gutter-width / 2)
+sidebarWidth ?= 250px
+sidebarTextColor ?= flat_clouds
+sidebarTextSize ?= 20px
+sidebarBackground ?= flat_midnight_blue
+sidebarLiColor ?= flat_wet_asphalt
+
+sidebarSearchBg ?= flat_green_sea
+sidebarSearchResultBg ?= flat_turquoise
 
 html, body
   height: 100%
   width: 100%
 
 // "Holy Grail" layout, with left and right sidebar.
-sidebarWidth = 250px
-toggleHitbox = 55px
 body
   padding: 0 sidebarWidth
   
@@ -35,7 +45,7 @@ body
       top: 16px
       right: 10px
   
-  > .menu-wrapper
+  #menu-wrapper
     position: fixed
     top: 0
     left: 0
@@ -59,11 +69,11 @@ body
         span
           font-weight: 200
   
-  > section, #textbook
+  #content, #textbook
     height: 100%
   
-  > nav
-  > aside
+  #leftbar
+  #rightbar
     width: sidebarWidth
     position: fixed
     height: 100%
@@ -73,17 +83,17 @@ body
     .fa
       font-size: 50px
   
-  > nav
+  #leftbar
     left: 0px
     z-index: 1000
   
-  > aside
+  #rightbar
     right: 0px
     z-index: 1010
   
   @media (max-width: 600px)
     // Make the other sidebar-toggle dissapear when your screen width is tiny.
-    // 600px = sidebarWidth * 2 + 100px (breathing room for the buttons)
+    // 600px = sidebarWidth * 2 + 100px
     &.rightbar-active
       #leftbar-toggle
         transform: translate3d(- toggleHitbox, 0, 0)
@@ -95,56 +105,56 @@ body
   
   @media max-phone
     padding-left: 0
-    > .menu-wrapper
+    #menu-wrapper
       padding-left: 0
-    > nav
+    #leftbar
       left: - sidebarWidth
     #leftbar-toggle
       display: block
     
     &.leftbar-active
-      > section
+      #content
         opacity(0.2)
       #leftbar-toggle
         transform: translate3d(sidebarWidth, 0, 0)
         .fa.fa-bars
           transform: rotate(180deg)
-      > nav
+      #leftbar
         transform: translate3d(sidebarWidth, 0, 0)
   
   @media max-tablet
     padding-right: 0
-    > .menu-wrapper
+    #menu-wrapper
       padding-right: 0
-    > aside
+    #rightbar
       right: - sidebarWidth
     #rightbar-toggle
       display: block
     
     &.rightbar-active
-      > section
+      #content
         opacity(0.2)
       #rightbar-toggle
         transform: translate3d(- sidebarWidth, 0, 0)
         .fa.fa-chevron-left
           transform: rotate(180deg)
-      > aside
+      #rightbar
         transform: translate3d(- sidebarWidth, 0, 0)
 
 // Eye candy for devices that can handle it.
-body.high-performance
-  > section
+body.animated
+  #content
     transition: opacity tduration ease
   
-  > nav
-  > aside
+  #leftbar
+  #rightbar
     transition: transform tduration ease
   
-  > nav
+  #leftbar
     ul li a
       transition: background 0.1s linear
   
-  > .menu-wrapper > .menu
+  #menu-wrapper > .menu
     #leftbar-toggle, #rightbar-toggle
       transition: transform tduration ease\, opacity tduration ease
       > i
@@ -157,16 +167,19 @@ body.high-performance
     transition: background 0.1s ease
     .title, .body
       transition: color 0.1s ease
+  
+  #animations-toggle
+    transition: background 0.1s ease
 
 // Special rules for Apple iOS devices.
-body.appleios
+html.appleios body
   overflow: hidden
   
-  > nav
-  > aside
+  #leftbar
+  #rightbar
     -webkit-overflow-scrolling: touch
   
-  > section
+  #content
     overflow-y: auto
     -webkit-overflow-scrolling: touch
 
@@ -174,24 +187,19 @@ body.appleios
 body.leftbar-active, body.rightbar-active, body.no-scroll
   overflow: hidden
 
-halfGutter = ($grid-gutter-width / 2)
 #textbook > article
-body > nav
+body #leftbar
   @extend .container
   padding-top: halfGutter
 
-sidebarTextColor = flat_clouds
-sidebarTextSize = 20px
-sidebarBackground = flat_midnight_blue
-sidebarLiColor = flat_wet_asphalt
 
-body > nav
-body > aside
+body #leftbar
+body #rightbar
   background: sidebarBackground
   color: sidebarTextColor
 
 // The majestic table of contents itself
-body > nav
+body #leftbar
   ul
     list-style-type: none
     padding: 0
@@ -253,13 +261,13 @@ body > nav
                 background: darken(sidebarLiColor, 20%)
 
 // Rules for devices with no touch support. Hover states and the like.
-body.no-touch
-  > nav ul li a:hover
+html.no-touch body
+  #leftbar ul li a:hover
     background: sidebarTextColor
     color: sidebarBackground
     
-  > aside #search ul#search-results li a:hover
-    background: lighten(flat_turquoise, 10%)
+  #rightbar #search ul#search-results li a:hover
+    background: lighten(sidebarSearchResultBg, 10%)
     .title, .body
       color: lighten(sidebarTextColor, 10%)
 
@@ -268,10 +276,25 @@ body.no-touch
     margin-top: 45px
 
 // The right sidebar, with the search and the notes.
-body > aside
+body #rightbar
+  .settings
+    #animations-toggle
+      @extend .btn
+      @extend .btn-success
+      @extend .btn-lg
+      @extend .btn-block
+      
+      margin-top: 2px
+      
+      background: sidebarSearchBg
+      border: darken(sidebarSearchBg, 5%)
+      
+      &:hover, &:focus
+        background: sidebarSearchResultBg
+  
   #search
     padding-top: halfGutter
-    background: flat_green_sea
+    background: sidebarSearchBg
     position: relative
     // Fixes a really weird iOS bug.
     overflow-x: hidden
@@ -302,7 +325,7 @@ body > aside
       border: 0
       border-radius: 0
       width: 100%
-      background: flat_turquoise
+      background: sidebarSearchResultBg
       color: sidebarTextColor
       placeholder(sidebarTextColor)
       font-size: sidebarTextSize
@@ -324,7 +347,7 @@ body > aside
         font-weight: 200
         letter-spacing: 1px
         margin-bottom: 2px
-        background: flat_turquoise
+        background: sidebarSearchResultBg
       
         &:hover
           color: @color
@@ -340,4 +363,3 @@ body > aside
           overflow: hidden
           line-height: 1.5em
           height: 3em // 2 lines.
-      

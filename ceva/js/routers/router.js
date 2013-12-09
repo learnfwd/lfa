@@ -1,9 +1,10 @@
 'use strict';
 
 define([
-  'jQuery',
-  'Backbone'
-], function($, Backbone) {
+  'jquery',
+  'underscore',
+  'backbone'
+], function($, _, Backbone) {
   var Router = Backbone.Router.extend({
     routes: {
       '': 'home',
@@ -11,10 +12,11 @@ define([
     },
     
     home: function () {
+      App.book.showFirstChapter();
     },
     
     book: function(chapter) {
-      App.BookView.render(chapter);
+      App.book.show(chapter);
     }
   });
   

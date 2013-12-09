@@ -33,6 +33,12 @@ module.exports = ->
     output_path = path.join(process.cwd(), global.options.output_folder, '/js/templates.js')
     mkdirp.sync path.dirname(output_path)
     fs.writeFileSync output_path, buf
+    
+    search_content = global.options.search_content
+    
+    search_content = 'define({ pages: ' + JSON.stringify(search_content) + '});'
+    fs.writeFileSync '_build/js/searchjson.js', search_content
+    global.options.debug.log 'generated js/searchjson.js', 'yellow'
 
 
 class Precompiler

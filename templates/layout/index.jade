@@ -10,7 +10,7 @@ html
     link(type='text/css', rel='stylesheet', media='screen', href='lfa-components/font-awesome/css/font-awesome.min.css')
     link(type='text/css', rel='stylesheet', media='screen', href='css/master.css')
   body
-    .menu-wrapper
+    #menu-wrapper
       .menu
         #leftbar-toggle
           i.fa.fa-bars.fa-fw
@@ -19,7 +19,7 @@ html
           i.fa.fa-chevron-left.fa-fw
     nav#leftbar
       +toc(toc)
-    section
+    section#content
       #textbook
         article
           section
@@ -30,6 +30,8 @@ html
         #search-erase.concealed: i.fa.fa-times.fa-fw
         input.search(type="text", placeholder="Search")
         ul#search-results
+      .settings
+        button#animations-toggle Disable animations
 
     // script(type='text/javascript', data-main="lfa-components/lfa-js/main", src="js/require.js")
     script(type='text/javascript', data-main="js/main", src="js/require.min.js")
