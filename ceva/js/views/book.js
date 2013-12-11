@@ -12,7 +12,7 @@ define([
   'views/rightbar',
   'views/chapter',
   'views/menu'
-], function($, _, Backbone, Stosre, Modernizr, FastClick, LeftbarView, RightbarView, ChapterView, MenuView) {
+], function($, _, Backbone, Store, Modernizr, FastClick, LeftbarView, RightbarView, ChapterView, MenuView) {
   var Setting = Backbone.Model.extend({
     defaults: {
       title: '',
