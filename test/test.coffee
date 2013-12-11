@@ -29,7 +29,7 @@ describe 'command', ->
       shell.rm '-rf', path.join(basic_root, output_folder)
 
     it 'should compile files to ' + output_folder, ->
-      fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(5)
+      fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(4)
 
     it 'should minify all css and javascript', ->
       js_content = fs.readFileSync path.join(basic_root, output_folder + '/js/main.js'), 'utf8'
@@ -51,9 +51,8 @@ describe 'command', ->
         files_exist(test_path, [
           '/'
           '.gitignore'
-          'config.jade'
+          'config.yml'
           'text'
-          'text/index.jade'
           'text/ch01'
           'text/ch01/00.jade'
           'text/ch01/01.jade'
@@ -61,9 +60,6 @@ describe 'command', ->
           'text/ch02.jade'
           'css'
           'css/master.styl'
-          'js'
-          'js/main.coffee'
-          'js/require.js'
           'img'
           'img/kitten.jpg'
         ])
@@ -81,18 +77,18 @@ describe 'command', ->
     describe 'should allow compile to', ->
       it 'include component library', (done) ->
         run "cd \"#{basic_root}\"; ../../bin/lfa compile --no-compress --components=true", ->
-          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(5)
+          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(4)
           shell.rm '-rf', path.join(basic_root, output_folder)
           done()
       it 'not include component library', (done) ->
         run "cd \"#{basic_root}\"; ../../bin/lfa compile --no-compress --components=false", ->
-          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(4)
+          fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(3)
           shell.rm '-rf', path.join(basic_root, output_folder)
           done()
-      it 'still not include component library when config.jade says so', (done) ->
+      it 'still not include component library when config.yml says so', (done) ->
         path_no_comp = path.join(root, 'no-components');
         run "cd \"#{path_no_comp}\"; ../../bin/lfa compile --no-compress", ->
-          fs.readdirSync(path.join(path_no_comp, output_folder)).should.have.lengthOf(4)
+          fs.readdirSync(path.join(path_no_comp, output_folder)).should.have.lengthOf(3)
           shell.rm '-rf', path.join(path_no_comp, output_folder)
           done()
 
@@ -107,25 +103,19 @@ describe 'compiler', ->
     compiler.on 'finished', -> done()
     compiler.finish()
 
-describe 'jade', ->
-  test_path = path.join root, './jade'
-  test_path_2 = path.join root, './subfolders'
-
-  it 'should compile jade view templates', (done) ->
-    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
-      fs.existsSync(path.join(test_path, output_folder + '/index.html')).should.be.ok
-      shell.rm '-rf', path.join(test_path, output_folder)
-      done()
-
+describe 'subfolders', ->
+  test_path = path.join root, './subfolders'
+  
+  # TODO: refactor these to the new clientside javascript templates.
   it 'should compile templates with regard to subfolder structure in /text', (done) ->
-    run "cd #{test_path_2}; ../../bin/lfa compile --no-compress --components=false", ->
-      files_exist path.join(test_path_2, output_folder), [
-        '/00.html'
-        '/01/00.html'
-        '/02/00.html'
-        '/02/01/00.html'
-      ]
-      shell.rm '-rf', path.join(test_path_2, output_folder)
+    run "cd #{test_path}; ../../bin/lfa compile --no-compress --components=false", ->
+      # files_exist path.join(test_path, output_folder), [
+      #   '/00.html'
+      #   '/01/00.html'
+      #   '/02/00.html'
+      #   '/02/01/00.html'
+      # ]
+      shell.rm '-rf', path.join(test_path, output_folder)
       done()
 
 describe 'coffeescript', ->
@@ -141,7 +131,7 @@ describe 'coffeescript', ->
       shell.rm '-rf', path.join(test_path, output_folder)
       done()
 
-  it 'should compile without closures when specified in app.coffee', (done) ->
+  it 'should compile without closures when specified in config.yml', (done) ->
     run "cd \"#{test_path_2}\"; ../../bin/lfa compile --no-compress --components=false", ->
       fs.existsSync(path.join(test_path_2, output_folder + '/testz.js')).should.be.ok
       require_content = fs.readFileSync path.join(test_path_2, output_folder + '/testz.js'), 'utf8'
@@ -201,38 +191,6 @@ describe 'precompiled templates', ->
     require_content.should.match(/\<p\>hello world\<\/p\>/)
     shell.rm '-rf', path.join(test_path, output_folder)
 
-describe 'multipass compiles', ->
-  test_path = path.join root, './multipass'
-
-  before (done) ->
-    run "cd #{test_path}; ../../bin/lfa compile --no-compress --components=false", ->
-      done()
-  
-  after ->
-    shell.rm '-rf', path.join(test_path, output_folder)
-
-  it 'will compile a single file multiple times accurately', ->
-    fs.existsSync(path.join(test_path, output_folder + '/index.html')).should.be.ok
-    content = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
-    content.should.match(/blarg world/)
-
-describe 'frontmatter', ->
-  test_path = path.join root, './frontmatter'
-  output_path = path.join(test_path, output_folder)
-
-  before (done) ->
-    run "cd #{test_path}; ../../bin/lfa compile --no-compress --components=false", ->
-      done()
-  
-  after ->
-    shell.rm '-rf', output_path
-    
-  describe 'output folder should contain', ->
-    it 'file with frontmatter', ->
-      files_exist output_path, ['fm.html']
-    it 'file with frontmatter that specifies layout', ->
-      files_exist output_path, ['fm-layout.html']
-
 describe 'table of contents', ->
   test_path = path.join root, './toc'
 
@@ -244,39 +202,9 @@ describe 'table of contents', ->
     shell.rm '-rf', path.join(test_path, output_folder)
   
   describe 'can be generated with proper structure', ->
-    it 'all pages should have all the other pages and no hidden pages', ->
-      content1 = fs.readFileSync path.join(test_path, output_folder + '/02-uses-metals.html'), 'utf8'
-      content2 = fs.readFileSync path.join(test_path, output_folder + '/03-uses-non-metals.html'), 'utf8'
-      content1.should.match(/Uses of common metals/)
-      content2.should.match(/Uses of common metals/)
-      
-      content1.should.match(/Uses of common non-metals/)
-      content2.should.match(/Uses of common non-metals/)
-    
-      content1.should.not.match(/You have learned/)
-      content2.should.not.match(/You have learned/)
-    
-      content1.should.not.match(/Corrosion of metals/)
-      content2.should.not.match(/Corrosion of metals/)
-    
-
-describe 'mixins', ->
-  test_path = path.join root, './mixins'
-  output_path = path.join(test_path, output_folder)
-
-  before (done) ->
-    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
-      done()
-  
-  after ->
-    shell.rm '-rf', path.join(test_path, output_folder)
-  
-  describe 'are included into the build path', ->
-    
-    it '+img() works', ->
-      content1 = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
-      content1.should.match(/\<img src=\"img\/kitten\.jpg\"\/\>/)
-    
-    it 'relative paths in mixins resolve correctly', ->
-      content2 = fs.readFileSync path.join(test_path, output_folder + '/1/index.html'), 'utf8'
-      content2.should.match(/\<img src=\"\.\.\/img\/kitten\.jpg\"\/\>/)
+    it 'all pages should have all the other pages', ->
+      content = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
+      content.should.match(/Uses of common metals/)
+      content.should.match(/Uses of common non-metals/)
+      content.should.match(/You have learned/)
+      content.should.match(/Corrosion of metals/)
