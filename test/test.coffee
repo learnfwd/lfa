@@ -92,6 +92,19 @@ describe 'command', ->
           shell.rm '-rf', path.join(path_no_comp, output_folder)
           done()
 
+describe 'config file', ->
+  test_path = path.join root, './no-config'
+
+  before (done) ->
+    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
+      done()
+  
+  after ->
+    shell.rm '-rf', path.join test_path, output_folder
+  
+  it 'needs to exist for a project to compile', ->
+    fs.existsSync(path.join(test_path, output_folder + '/leavemealone')).should.not.be.ok
+
 describe 'compiler', ->
   compiler = null
 
@@ -102,21 +115,6 @@ describe 'compiler', ->
   it 'eventemitter should be hooked up properly', (done) ->
     compiler.on 'finished', -> done()
     compiler.finish()
-
-describe 'subfolders', ->
-  test_path = path.join root, './subfolders'
-  
-  # TODO: refactor these to the new clientside javascript templates.
-  it 'should compile templates with regard to subfolder structure in /text', (done) ->
-    run "cd #{test_path}; ../../bin/lfa compile --no-compress --components=false", ->
-      # files_exist path.join(test_path, output_folder), [
-      #   '/00.html'
-      #   '/01/00.html'
-      #   '/02/00.html'
-      #   '/02/01/00.html'
-      # ]
-      shell.rm '-rf', path.join(test_path, output_folder)
-      done()
 
 describe 'coffeescript', ->
   test_path = path.join root, './coffeescript'
