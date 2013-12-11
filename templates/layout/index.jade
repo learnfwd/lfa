@@ -7,7 +7,7 @@ html
 
     title= book_title
     
-    link(type='text/css', rel='stylesheet', media='screen', href='lfa-components/font-awesome/css/font-awesome.min.css')
+    link(type='text/css', rel='stylesheet', media='screen', href='lfa/components/font-awesome/css/font-awesome.min.css')
     link(type='text/css', rel='stylesheet', media='screen', href='css/master.css')
   body
     #menu-wrapper
@@ -17,13 +17,16 @@ html
         .header: span
         #rightbar-toggle
           i.fa.fa-chevron-left.fa-fw
+    
     nav#leftbar
       +toc(toc)
+    
     section#content
       #textbook
         article
           section
-            p Welcome!
+            p If you're seeing this, either you have to wait for things to finish loading, or something went wrong.
+    
     aside#rightbar
       #search
         #search-go: i.fa.fa-search.fa-fw
@@ -33,9 +36,7 @@ html
       .settings
         button#animations-toggle Disable animations
 
-    // script(type='text/javascript', data-main="lfa-components/lfa-js/main", src="js/require.js")
-    script(type='text/javascript', data-main="js/main", src="js/require.min.js")
-    
+    script(type='text/javascript', data-main="lfa/js/main", src="lfa/js/lib/require.min.js")
     
     //- this must be included for live reload to work in development
     //- it will be automatically ignored when deployed
