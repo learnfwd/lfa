@@ -1,3 +1,10 @@
+### 0.3.0
+(released 11/12/2013)
+
+- LFA now produces client-side JS templates, and ships with a complete Backbone frontend
+- Add search feature. Needs tests.
+- LFA shouldn't compile folders that do not contain config.yml anymore.
+
 ### 0.2.7
 (released 29/11/2013)
 
