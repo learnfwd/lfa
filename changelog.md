@@ -1,3 +1,8 @@
+### 0.3.1
+(released 12/12/2013)
+
+- version bump in the hope that npm will pick it up and distribute it
+
 ### 0.3.0
 (released 11/12/2013)
 
@@ -203,7 +208,7 @@
 ### 0.0.2
 (released 21/10/2013)
 
-- remove man pages, trying to get publish/install working properly
+- trying to get publish/install working properly
 
 ### 0.0.1
 (released 21/10/2013)
