@@ -1,0 +1,23 @@
+// generates the following:
+//   .left, .right, .justify, .center
+//   .text-left, .text-right, .text-justify, .text-center
+for align in "left" "right" "justify" "center"
+  .text-{align}
+    text-align: s(align)
+
+.text-uppercase
+  text-transform: uppercase
+.text-lowercase
+  text-transform: lowercase
+.text-underline
+  text-decoration: underline
+.text-bold
+  font-weight: bold
+.text-italic
+  font-style: italic
+
+.hidden
+  display: none
+
+.inline
+  display: inline

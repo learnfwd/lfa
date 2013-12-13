@@ -1,0 +1,57 @@
+// Great baseline colors from http://designmodo.github.io/Flat-UI/
+flat_turquoise ?= #1ABC9C
+flat_green_sea ?= #16A085
+
+flat_emerald ?= #2ECC71
+flat_nephritis ?= #27AE60
+
+flat_peter_river ?= #3498DB
+flat_belize_hole ?= #2980B9
+
+flat_amethyst ?= #9B59B6
+flat_wisteria ?= #8E44AD
+
+flat_wet_asphalt ?= #34495E
+flat_midnight_blue ?= #2C3E50
+
+flat_sun_flower ?= #F1C40F
+flat_orange ?= #F39C12
+
+flat_carrot ?= #E67E22
+flat_pumpkin ?= #D35400
+
+flat_alizarin ?= #E74C3C
+flat_pomegranate ?= #C0392B
+
+flat_clouds ?= #ECF0F1
+flat_silver ?= #BDC3C7
+
+flat_concrete ?= #95A5A6
+flat_asbestos ?= #7F8C8D
+
+black ?= #333
+white ?= #fff
+
+// Default transition duration.
+tduration ?= 0.3s
+
+// Media query helpers.
+max-phone ?= "(max-width: " + $screen-xs-max + ")"
+max-tablet ?= "(max-width: " + $screen-sm-max + ")"
+max-desktop ?= "(max-width: " + $screen-md-max + ")"
+
+// Layout-specific variables.
+toggleHitbox ?= 55px
+halfGutter ?= ($grid-gutter-width / 2)
+sidebarWidth ?= 250px
+sidebarTextColor ?= flat_clouds
+sidebarTextSize ?= 20px
+sidebarBackground ?= flat_midnight_blue
+sidebarLiColor ?= flat_wet_asphalt
+
+sidebarSearchBg ?= flat_green_sea
+sidebarSearchResultBg ?= flat_turquoise
+
+// Bootstrap overrides
+// We don't like rounded corners.
+$border-radius-base = $border-radius-large = $border-radius-small = 0px

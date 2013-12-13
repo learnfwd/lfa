@@ -1,0 +1,362 @@
+// Because reasons.
+html, body
+  height: 100%
+  width: 100%
+
+// "Holy Grail" layout, with left and right sidebar.
+body
+  // Add padding to the left and right of the body, where the sidebars will be sitting.
+  padding: 0 sidebarWidth
+  
+  // Position the sidebar buttons correctly and set their height, but hide them by default.
+  #leftbar-toggle, #rightbar-toggle
+    display: none
+    position: absolute
+    width: toggleHitbox
+    height: toggleHitbox
+    cursor: pointer
+    top: 0
+    > i
+      position: absolute
+      top: 15px
+      font-size: 25px
+      color: #333
+
+  #leftbar-toggle
+    left: 0
+    > i
+      left: 10px
+  
+  #rightbar-toggle
+    right: 0
+    > i
+      top: 16px
+      right: 10px
+  
+  // This is the slightly complicated fixed-top menu that contains the sidebar toggles
+  // and a little header with the name of the current chapter.
+  #menu-wrapper
+    position: fixed
+    top: 0
+    left: 0
+    height: 60px
+    width: 100%
+    z-index: 900
+    padding: 0 sidebarWidth
+    
+    > .menu
+      height: @height
+      width: 100%
+      position: relative
+      
+      .header
+        display: block
+        height: @height
+        width: 100%
+        background: linear-gradient(top, rgba(255,255,255,1.0) 30%, rgba(255,255,255,0.0) 100%)
+        text-align: center
+        padding-top: 5px
+        span
+          font-weight: 200
+  
+  // Actual content/chapter should take up all available height; so we can click anywhere
+  // to close the sidebars.
+  #content, #textbook
+    height: 100%
+  
+  // Position the sidebars correctly and configure overflows.
+  #leftbar
+  #rightbar
+    width: sidebarWidth
+    position: fixed
+    height: 100%
+    top: 0px
+    overflow-y: auto
+    overflow-x: hidden
+  
+  #leftbar
+    left: 0
+    z-index: 1000
+  
+  #rightbar
+    right: 0
+    z-index: 1010
+
+  // Make the other sidebar-toggle dissapear when your screen width is tiny.
+  // 600px = sidebarWidth * 2 + 100px
+  @media (max-width: 600px)
+    &.rightbar-active
+      #leftbar-toggle
+        transform: translate3d(- toggleHitbox, 0, 0)
+        opacity(0)
+    &.leftbar-active
+      #rightbar-toggle
+        transform: translate3d(toggleHitbox, 0, 0)
+        opacity(0)
+  
+  // When we size down to a tablet, remove the rightbar and show the toggle.
+  @media max-tablet
+    padding-right: 0
+    #menu-wrapper
+      padding-right: 0
+    #rightbar
+      right: - sidebarWidth
+    #rightbar-toggle
+      display: block
+    
+    // When the rightbar is active, make the content less attention grabbing.
+    &.rightbar-active
+      #content
+        opacity(0.2)
+      #rightbar-toggle
+        transform: translate3d(- sidebarWidth, 0, 0)
+        .fa.fa-chevron-left
+          transform: rotate(180deg)
+      #rightbar
+        transform: translate3d(- sidebarWidth, 0, 0)
+  
+  // When we size down again to a phone, do the same to the leftbar.
+  @media max-phone
+    padding-left: 0
+    #menu-wrapper
+      padding-left: 0
+    #leftbar
+      left: - sidebarWidth
+    #leftbar-toggle
+      display: block
+    
+    &.leftbar-active
+      #content
+        opacity(0.2)
+      #leftbar-toggle
+        transform: translate3d(sidebarWidth, 0, 0)
+        .fa.fa-bars
+          transform: rotate(180deg)
+      #leftbar
+        transform: translate3d(sidebarWidth, 0, 0)
+
+// Animation durations. Turning these off will usually improve performance, and always
+// improve productivity. (having something happen instantly is better than after 0.3s)
+body.animated
+  #content
+    transition: opacity tduration ease
+  
+  #leftbar
+  #rightbar
+    transition: transform tduration ease
+  
+  #leftbar
+    ul li a
+      transition: background 0.1s linear
+  
+  #menu-wrapper > .menu
+    #leftbar-toggle, #rightbar-toggle
+      transition: transform tduration ease\, opacity tduration ease
+      > i
+        transition: transform tduration ease
+  
+  #search-go, #search-erase
+    transition: transform tduration ease
+  
+  #search-results li a
+    transition: background 0.1s ease
+    .title, .body
+      transition: color 0.1s ease
+  
+  #animations-toggle
+    transition: background 0.1s ease
+
+// Special rules for Apple iOS devices.
+html.appleios body
+  overflow: hidden
+  
+  #leftbar
+  #rightbar
+    -webkit-overflow-scrolling: touch
+  
+  #content
+    overflow-y: auto
+    -webkit-overflow-scrolling: touch
+
+// This rule is used to stop the body element from scrolling when a sidebar is in focus.
+body.leftbar-active, body.rightbar-active, body.no-scroll
+  overflow: hidden
+
+#textbook > article
+body #leftbar
+  @extend .container
+  padding-top: halfGutter
+
+// Color the sidebars.
+body #leftbar
+body #rightbar
+  background: sidebarBackground
+  color: sidebarTextColor
+
+// The left sidebar, with the table of contents.
+body #leftbar
+  ul
+    list-style-type: none
+    padding: 0
+    
+    li
+      cursor: pointer
+    
+    a
+      color: sidebarTextColor
+      height: 100%
+      width: 100%
+      display: block
+      padding: halfGutter
+      font-size: sidebarTextSize
+      font-weight: 200
+      letter-spacing: 1px
+      margin-bottom: 2px
+      
+      &:hover
+        color: @color
+        text-decoration: none
+      
+      .title, .subtitle
+        display: block
+      
+      .subtitle
+        font-size: sidebarTextSize - 4px
+        color: darken(@color, 30%)
+        letter-spacing: 0px
+        text-overflow: ellipsis
+        white-space: nowrap
+        overflow: hidden
+    
+    li.active > a, li > a:focus
+      background: sidebarTextColor
+      color: sidebarBackground
+  
+  > ul
+    > li
+      margin: 0px (- halfGutter) 2px (- halfGutter)
+      // First level chapters.
+      > a
+        background: sidebarLiColor
+      
+      > ul
+        > li
+          // Second level chapters.
+          > a
+            padding-left: (halfGutter + 10px)
+            font-size: sidebarTextSize - 4px
+            background: darken(sidebarLiColor, 10%)
+          
+          > ul
+            > li
+              // Third level chapters and beyond.
+              a
+                padding-left: (halfGutter + 20px)
+                font-size: sidebarTextSize - 4px
+                background: darken(sidebarLiColor, 20%)
+
+// Rules for devices with no touch support. Hover states and the like.
+html.no-touch body
+  #leftbar ul li a:hover
+    background: sidebarTextColor
+    color: sidebarBackground
+    
+  #rightbar #search ul#search-results li a:hover
+    background: lighten(sidebarSearchResultBg, 10%)
+    .title, .body
+      color: lighten(sidebarTextColor, 10%)
+
+// Some extra padding for first (only?) article in a chapter, so that it doesn't interfere
+// with the menu.
+#textbook > article:first-child
+  padding-top: 45px
+
+// The right sidebar, with the search and the notes.
+body #rightbar
+  .settings
+    #animations-toggle
+      @extend .btn
+      @extend .btn-success
+      @extend .btn-lg
+      @extend .btn-block
+      
+      margin-top: 2px
+      
+      background: sidebarSearchBg
+      border: darken(sidebarSearchBg, 5%)
+      
+      &:hover, &:focus
+        background: sidebarSearchResultBg
+  
+  #search
+    padding-top: halfGutter
+    background: sidebarSearchBg
+    position: relative
+    
+    // Fixes a really weird iOS-only bug that makes the entire thing overflow off-canvas.
+    overflow-x: hidden
+    overflow-y: hidden
+    
+    #search-go, #search-erase
+      position: absolute
+      top: halfGutter
+      right: 0
+      cursor: pointer
+      height: toggleHitbox + 3px
+      width: toggleHitbox
+      > i
+        padding-top: 18px
+        padding-left: 20px
+        font-size: sidebarTextSize
+      
+      > i.fa-search
+        padding-left: 18px
+      
+      &.concealed
+        transform: translate3d(toggleHitbox, 0, 0)
+    
+    input
+      cursor: pointer
+      margin: 0
+      padding: halfGutter
+      border: 0
+      border-radius: 0
+      width: 100%
+      background: sidebarSearchResultBg
+      color: sidebarTextColor
+      placeholder(sidebarTextColor)
+      font-size: sidebarTextSize
+      margin-bottom: 2px
+    
+    #search-results
+      list-style-type: none
+      padding: 0
+      li
+        cursor: pointer
+    
+      a
+        color: sidebarTextColor
+        height: 100%
+        width: 100%
+        display: block
+        padding: halfGutter
+        font-size: sidebarTextSize
+        font-weight: 200
+        letter-spacing: 1px
+        margin-bottom: 2px
+        background: sidebarSearchResultBg
+      
+        &:hover
+          color: @color
+          text-decoration: none
+      
+        .title, .body
+          display: block
+      
+        .body
+          font-size: sidebarTextSize - 4px
+          color: darken(@color, 10%)
+          letter-spacing: 0px
+          overflow: hidden
+          line-height: 1.5em
+          height: 3em // 2 lines exactly.
