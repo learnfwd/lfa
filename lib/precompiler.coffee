@@ -36,7 +36,23 @@ module.exports = ->
     
     search_content = global.options.search_content
     
-    search_content = 'define({ pages: ' + JSON.stringify(search_content) + '});'
+    cleantoc = (chapters) ->
+      i = 0
+      len = chapters.length
+      while i < len
+        delete chapters[i].locals.html
+        delete chapters[i].locals.text
+        if chapters[i].children and chapters[i].children.length
+          chapters[i].children = cleantoc(chapters[i].children)
+        i++
+      
+      return chapters
+    
+    toc = cleantoc global.options.toc
+    
+    global.options.debug.log(require('util').inspect(toc, false, null), "yellow")
+    
+    search_content = 'define({ pages: ' + JSON.stringify(search_content) + ', toc: ' + JSON.stringify(toc) + '});'
     fs.writeFileSync '_build/js/searchjson.js', search_content
     global.options.debug.log 'generated js/searchjson.js', 'yellow'
 

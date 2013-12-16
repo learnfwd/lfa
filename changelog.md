@@ -1,3 +1,8 @@
+### 0.3.2
+(released 16/12/2013)
+
+- add more information to searchjson
+
 ### 0.3.1
 (released 12/12/2013)
 

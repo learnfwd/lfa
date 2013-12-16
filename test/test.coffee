@@ -20,7 +20,7 @@ files_dont_exist = (test_path, files) ->
 
 describe 'command', ->
 
-  describe.only 'compile', ->
+  describe 'compile', ->
 
     before (done) ->
       run "cd \"#{basic_root}\"; ../../bin/lfa compile", done
