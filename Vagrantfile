@@ -18,6 +18,6 @@ Vagrant.configure("2") do |config|
   
   
   config.vm.provision "shell" do |s|
-    s.inline = 'echo "cd /vagrant/" >> ~/.bashrc'
+    s.inline = 'echo "cd /vagrant" >> /home/vagrant/.bashrc; cd /vagrant/; npm install -g'
   end
 end
