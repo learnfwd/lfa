@@ -4,11 +4,12 @@ module.exports = function(grunt) {
       options: {},
       your_target: {
         options: {
-          screenshots: 'test/visual/screenshots/',
-          results: 'results/visual/'
+          screenshots: 'spec/visual/screenshots/',
+          results: 'spec/results/visual/',
+          viewportSize: [320, 480]
         },
         src: [
-          'test/visual/**/*.js'
+          'spec/visual/**/*.js'
         ]
       }
     }

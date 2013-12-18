@@ -5295,10 +5295,9 @@ body #menu-wrapper > .menu {
   position: relative;
 }
 body #menu-wrapper > .menu .header {
-  display: block;
+  display: none;
   height: 60px;
   width: 100%;
-  background: linear-gradient(top, #fff 30%, rgba(255,255,255,0) 100%);
   text-align: center;
   padding-top: 5px;
 }
@@ -5329,9 +5328,11 @@ body #rightbar {
 @media (max-width: 600px) {
   body.rightbar-active #leftbar-toggle {
     transform: translate3d(-55px, 0, 0);
+    opacity: 0;
   }
   body.leftbar-active #rightbar-toggle {
     transform: translate3d(55px, 0, 0);
+    opacity: 0;
   }
 }
 @media (max-width: 991px) {
@@ -5346,6 +5347,9 @@ body #rightbar {
   }
   body #rightbar-toggle {
     display: block;
+  }
+  body.rightbar-active #content {
+    opacity: 0.2;
   }
   body.rightbar-active #rightbar-toggle {
     transform: translate3d(-250px, 0, 0);
@@ -5369,6 +5373,9 @@ body #rightbar {
   }
   body #leftbar-toggle {
     display: block;
+  }
+  body.leftbar-active #content {
+    opacity: 0.2;
   }
   body.leftbar-active #leftbar-toggle {
     transform: translate3d(250px, 0, 0);
@@ -5506,7 +5513,7 @@ html.no-touch body #rightbar #search ul#search-results li a:hover .body {
   color: #eef2f2;
 }
 #textbook > article:first-child {
-  padding-top: 45px;
+  padding-top: 0;
 }
 body #rightbar .settings #animations-toggle {
   margin-top: 2px;
