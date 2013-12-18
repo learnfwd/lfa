@@ -1,3 +1,8 @@
+### 0.3.3
+(released 18/12/2013)
+
+- fold lfa-patterns into lfa. add vagrant and phantomcss for testing and developing
+
 ### 0.3.2
 (released 16/12/2013)
 
