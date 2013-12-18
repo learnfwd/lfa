@@ -8,14 +8,13 @@ define([
 ], function($, _, Backbone, Templates, QueryEngine, SearchJSON) {
   'use strict';
   
-  var Pages = QueryEngine.createLiveCollection(SearchJSON.pages)
-  var Search = Pages.createLiveChildCollection()
+  var Pages = QueryEngine.createLiveCollection(SearchJSON.pages),
+      Search = Pages.createLiveChildCollection()
     .setFilter('search', function(model, searchString) {
-      var pass = true, searchRegex;
+      var pass = true, searchRegex, searchTerms = searchString.split(/\s+/);
       if (searchString) {
-        var searchTerms = searchString.split(/\s+/);
         for (var i = 0, len = searchTerms.length; i < len && pass; i++) {
-          searchRegex = queryEngine.createSafeRegex(searchTerms[i]);
+          searchRegex = QueryEngine.createSafeRegex(searchTerms[i]);
           pass = pass && (searchRegex.test(model.get('body')) || searchRegex.test(model.get('title')));
         }
       }

@@ -50,10 +50,9 @@ body
       position: relative
       
       .header
-        display: block
+        display: none
         height: @height
         width: 100%
-        background: linear-gradient(top, rgba(255,255,255,1.0) 30%, rgba(255,255,255,0.0) 100%)
         text-align: center
         padding-top: 5px
         span
@@ -88,11 +87,11 @@ body
     &.rightbar-active
       #leftbar-toggle
         transform: translate3d(- toggleHitbox, 0, 0)
-        opacity(0)
+        opacity: 0
     &.leftbar-active
       #rightbar-toggle
         transform: translate3d(toggleHitbox, 0, 0)
-        opacity(0)
+        opacity: 0
   
   // When we size down to a tablet, remove the rightbar and show the toggle.
   @media max-tablet
@@ -107,7 +106,7 @@ body
     // When the rightbar is active, make the content less attention grabbing.
     &.rightbar-active
       #content
-        opacity(0.2)
+        opacity: 0.2
       #rightbar-toggle
         transform: translate3d(- sidebarWidth, 0, 0)
         .fa.fa-chevron-left
@@ -127,7 +126,7 @@ body
     
     &.leftbar-active
       #content
-        opacity(0.2)
+        opacity: 0.2
       #leftbar-toggle
         transform: translate3d(sidebarWidth, 0, 0)
         .fa.fa-bars
@@ -269,7 +268,7 @@ html.no-touch body
 // Some extra padding for first (only?) article in a chapter, so that it doesn't interfere
 // with the menu.
 #textbook > article:first-child
-  padding-top: 45px
+  padding-top: 0
 
 // The right sidebar, with the search and the notes.
 body #rightbar
