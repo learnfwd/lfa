@@ -3,5 +3,8 @@
     "grunt": "~0.4.2",
     "phantomjs": "~1.9.2-5",
     "grunt-phantomcss": "git+https://github.com/lazd/grunt-phantomcss.git"
+  },
+  "scripts": {
+    "test": "./test-css && ./test-js"
   }
 }

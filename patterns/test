@@ -1,6 +1,0 @@
-#!/bin/bash
-
-cd spec/testproject/
-lfa compile --no-compress
-
-grunt
