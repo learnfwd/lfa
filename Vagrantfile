@@ -19,6 +19,6 @@ Vagrant.configure("2") do |config|
   
   
   config.vm.provision "shell" do |s|
-    s.inline = 'cd /vagrant/; npm install -g'
+    s.inline = 'sudo apt-get install -y git-core libfontconfig1 && sudo npm install -g grunt-cli && cd /vagrant/ && sudo npm install -g'
   end
 end
