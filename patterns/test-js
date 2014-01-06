@@ -1,6 +1,0 @@
-#!/bin/bash
-
-echo "fix me!"
-# cd test/project/ && ../../../bin/lfa compile --no-compress
-# 
-# grunt

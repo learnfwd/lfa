@@ -3,41 +3,41 @@ module.exports = function(grunt) {
     phantomcss: {
       // large: {
       //   options: {
-      //     screenshots: 'test/css/screenshots/large/',
-      //     results: 'test/results/css/large',
+      //     screenshots: 'test/screenshots/large/',
+      //     results: 'test/results/large',
       //     viewportSize: [1200, 800]
       //   },
-      //   src: ['test/css/test.js']
+      //   src: ['test/test.js']
       // },
       // medium: {
       //   options: {
-      //     screenshots: 'test/css/screenshots/medium/',
-      //     results: 'test/results/css/medium',
+      //     screenshots: 'test/screenshots/medium/',
+      //     results: 'test/results/medium',
       //     viewportSize: [991, 800]
       //   },
-      //   src: ['test/css/test.js']
+      //   src: ['test/test.js']
       // },
       // small: {
       //   options: {
-      //     screenshots: 'test/css/screenshots/small/',
-      //     results: 'test/results/css/small',
+      //     screenshots: 'test/screenshots/small/',
+      //     results: 'test/results/small',
       //     viewportSize: [767, 480]
       //   },
-      //   src: ['test/css/test.js']
+      //   src: ['test/test.js']
       // },
       xsmall: {
         options: {
-          screenshots: 'test/css/screenshots/xsmall/',
-          results: 'test/results/css/xsmall',
+          screenshots: 'test/screenshots/xsmall/',
+          results: 'test/results/xsmall',
           viewportSize: [320, 480]
         },
-        src: ['test/css/test.js']
+        src: ['test/test.js']
       }
     }
   });
 
   grunt.loadNpmTasks('grunt-phantomcss');
 
-  grunt.registerTask('css', ['phantomcss']);
+  grunt.registerTask('default', ['phantomcss']);
 
 };
