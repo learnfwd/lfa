@@ -17,6 +17,6 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-phantomcss');
 
-  grunt.registerTask('default', ['phantomcss']);
+  grunt.registerTask('css', ['phantomcss']);
 
 };

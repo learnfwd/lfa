@@ -2,4 +2,4 @@
 
 cd test/project/ && ../../../bin/lfa compile --no-compress
 
-grunt
+grunt css
