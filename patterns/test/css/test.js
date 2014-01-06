@@ -1,4 +1,4 @@
-casper.start('spec/testproject/_build/index.html')
+casper.start('test/project/_build/index.html')
 .then(function() {
   phantomcss.screenshot('body', 'body');
 })
