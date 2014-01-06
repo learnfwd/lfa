@@ -5,6 +5,6 @@
     "grunt-phantomcss": "git+https://github.com/lazd/grunt-phantomcss.git"
   },
   "scripts": {
-    "test": "./test-css && ./test-js"
+    "test": "./test-css"
   }
 }
