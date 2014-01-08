@@ -9,6 +9,7 @@ run = require('child_process').exec
 root = __dirname
 basic_root = path.join root, 'basic'
 output_folder = '_build'
+reasonable_compile_time = 1.0
 
 files_exist = (test_path, files) ->
   for file in files
@@ -105,16 +106,23 @@ describe 'config file', ->
   it 'needs to exist for a project to compile', ->
     fs.existsSync(path.join(test_path, output_folder + '/leavemealone')).should.not.be.ok
 
-describe 'compiler', ->
-  compiler = null
+describe.only 'compiler', ->
 
-  before ->
-    Compiler = require path.join(root, '../lib/compiler')
-    compiler = new Compiler()
-
-  it 'eventemitter should be hooked up properly', (done) ->
-    compiler.on 'finished', -> done()
-    compiler.finish()
+  describe 'eventemitter', ->
+    it 'should be hooked up properly', (done) ->
+      compiler = null
+      Compiler = require path.join(root, '../lib/compiler')
+      compiler = new Compiler()
+      compiler.on 'finished', -> done()
+      compiler.finish()
+  
+  describe 'performance', ->
+    it 'should compile at a reasonable pace', (done) ->
+      run "cd \"#{basic_root}\"; time ../../bin/lfa compile --no-compress", (error, stdout, stderr) ->
+        wallTime = parseFloat(stderr.split('m').slice(0, 2)[1].split('s')[0])
+        wallTime.should.be.below(reasonable_compile_time)
+        done()
+      
 
 describe 'coffeescript', ->
   test_path = path.join root, './coffeescript'
@@ -206,3 +214,4 @@ describe 'table of contents', ->
       content.should.match(/Uses of common non-metals/)
       content.should.match(/You have learned/)
       content.should.match(/Corrosion of metals/)
+
