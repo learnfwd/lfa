@@ -6,26 +6,25 @@ var args = require('optimist')
 
 // check for a new version
 var notifier = require('update-notifier')({ packagePath: '../package.json' });
-notifier.update && notifier.notify();
+if (notifier.update) { notifier.notify(); }
 
-var argv = process.argv.slice(2),
-    commands = require('../lib/commands');
-    configure_options = require('../lib/config_parser');
+var commands = require('../lib/commands'),
+    configureOptions = require('../lib/config_parser');
 
 if (args._.length < 1 && !args.version) {
   commands.help.execute();
 } else {
-  var current_command = commands[args._[0]];
-  if (args.version) return commands.version.execute();
-  if (args.help) return commands.help.execute();
-  if (typeof current_command == "undefined") {
-    process.stdout.write(("\nUndefined command: " + args._[0]).red + "\n")
+  var currentCommand = commands[args._[0]];
+  if (args.version) { return commands.version.execute(); }
+  if (args.help) { return commands.help.execute(); }
+  if (typeof currentCommand === 'undefined') {
+    process.stdout.write(('\nUndefined command: ' + args._[0]).red + '\n');
     return commands.help.execute();
   }
   
-  if (current_command.needs_config) {
-    configure_options(args, function(){ current_command.execute(args); });
+  if (currentCommand.needs_config) {
+    configureOptions(args, function(){ currentCommand.execute(args); });
   } else {
-    current_command.execute(args);
+    currentCommand.execute(args);
   }
 }
