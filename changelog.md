@@ -1,3 +1,8 @@
+### 0.3.4
+(released 10/01/2014)
+
+- fix a bug where deleting jade files was causing the compiler to crash
+
 ### 0.3.3
 (released 18/12/2013)
 
