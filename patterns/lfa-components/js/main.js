@@ -20,7 +20,7 @@ require.config({
     router:       'routers/router',
     
     // LFA generated JSON objects.
-    templates:    '../../js/templates',
+    templates:    '../../js/templates/main',
     searchjson:   '../../js/searchjson'
   },
   shim: {

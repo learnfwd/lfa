@@ -25,7 +25,7 @@
     "monocle": "1.1.x",
     "async": "0.2.x",
     "stylus": "0.37.x",
-    "jade": "0.35.x",
+    "jade": "1.1.4",
     "marked": "0.2.x",
     "clean-css": "1.1.x",
     "uglify-js": "2.4.x",
