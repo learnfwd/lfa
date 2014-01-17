@@ -193,8 +193,8 @@ describe 'precompiled templates', ->
       done()
 
   it 'precompiles templates', ->
-    fs.existsSync(path.join(test_path, output_folder + '/js/templates.js')).should.be.ok
-    require_content = fs.readFileSync path.join(test_path, output_folder + '/js/templates.js'), 'utf8'
+    fs.existsSync(path.join(test_path, output_folder + '/js/templates/')).should.be.ok
+    require_content = fs.readFileSync path.join(test_path, output_folder + '/js/templates/sample.js'), 'utf8'
     require_content.should.match(/\<p\>hello world\<\/p\>/)
     shell.rm '-rf', path.join(test_path, output_folder)
 
