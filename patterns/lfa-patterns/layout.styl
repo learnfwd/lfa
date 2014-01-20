@@ -10,7 +10,6 @@ body
   
   // Position the sidebar buttons correctly and set their height, but hide them by default.
   #leftbar-toggle, #rightbar-toggle
-    display: none
     position: absolute
     width: toggleHitbox
     height: toggleHitbox
@@ -25,13 +24,17 @@ body
   #leftbar-toggle
     left: 0
     > i
-      left: 10px
+      left: - sidebarWidth + 10px
+      @media max-phone
+        left: 10px
   
   #rightbar-toggle
     right: 0
     > i
       top: 16px
-      right: 10px
+      right: - sidebarWidth + 10px
+      @media max-tablet
+        right: 10px
   
   // This is the slightly complicated fixed-top menu that contains the sidebar toggles
   // and a little header with the name of the current chapter.
@@ -93,46 +96,41 @@ body
         transform: translate3d(toggleHitbox, 0, 0)
         opacity: 0
   
-  // When we size down to a tablet, remove the rightbar and show the toggle.
+  // When we size down to a tablet, remove the rightbar.
   @media max-tablet
     padding-right: 0
     #menu-wrapper
       padding-right: 0
-    #rightbar
-      right: - sidebarWidth
-    #rightbar-toggle
-      display: block
     
     // When the rightbar is active, make the content less attention grabbing.
     &.rightbar-active
       #content
         opacity: 0.2
-      #rightbar-toggle
-        transform: translate3d(- sidebarWidth, 0, 0)
-        .fa.fa-chevron-left
-          transform: rotate(180deg)
-      #rightbar
-        transform: translate3d(- sidebarWidth, 0, 0)
+  
+  &.rightbar-active
+    #rightbar-toggle
+      transform: translate3d(- sidebarWidth, 0, 0)
+      i.fa.fa-fw
+        transform: rotate(90deg)
+    #rightbar
+      transform: translate3d(- sidebarWidth, 0, 0)
   
   // When we size down again to a phone, do the same to the leftbar.
   @media max-phone
     padding-left: 0
     #menu-wrapper
       padding-left: 0
-    #leftbar
-      left: - sidebarWidth
-    #leftbar-toggle
-      display: block
-    
     &.leftbar-active
       #content
         opacity: 0.2
-      #leftbar-toggle
-        transform: translate3d(sidebarWidth, 0, 0)
-        .fa.fa-bars
-          transform: rotate(180deg)
-      #leftbar
-        transform: translate3d(sidebarWidth, 0, 0)
+    
+  &.leftbar-active
+    #leftbar-toggle
+      transform: translate3d(sidebarWidth, 0, 0)
+      i.fa.fa-fw
+        transform: rotate(180deg)
+    #leftbar
+      transform: translate3d(sidebarWidth, 0, 0)
 
 // Animation durations. Turning these off will usually improve performance, and always
 // improve productivity. (having something happen instantly is better than after 0.3s)
