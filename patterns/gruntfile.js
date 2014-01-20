@@ -33,11 +33,20 @@ module.exports = function(grunt) {
         },
         src: ['test/test.js']
       }
+    },
+    shell: {
+      lfacompile: {
+        options: {
+          stdout: true
+        },
+        command: 'cd test/project/ && ../../../bin/lfa compile --no-compress'
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-phantomcss');
+  grunt.loadNpmTasks('grunt-shell');
 
   grunt.registerTask('default', ['phantomcss']);
-
+  grunt.registerTask('compile', ['shell']);
 };

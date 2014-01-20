@@ -6,5 +6,8 @@
   },
   "scripts": {
     "test": "./test-css"
+  },
+  "devDependencies": {
+    "grunt-shell": "~0.6.3"
   }
 }
