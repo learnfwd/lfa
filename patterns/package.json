@@ -8,6 +8,7 @@
     "test": "./test-css"
   },
   "devDependencies": {
-    "grunt-shell": "~0.6.3"
+    "grunt-shell": "~0.6.3",
+    "grunt-contrib-watch": "~0.5.3"
   }
 }

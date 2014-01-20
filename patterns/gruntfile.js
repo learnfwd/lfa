@@ -41,11 +41,25 @@ module.exports = function(grunt) {
         },
         command: 'cd test/project/ && ../../../bin/lfa compile --no-compress'
       }
+    },
+    watch: {
+      everything: {
+        files: [
+          'lfa-*/**/*.*',
+          'test/project/css/**/*.*',
+          'test/project/text/**/*.*'
+        ],
+        tasks: ['compile'],
+        options: {
+          spawn: true
+        },
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-phantomcss');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('default', ['phantomcss']);
   grunt.registerTask('compile', ['shell']);
