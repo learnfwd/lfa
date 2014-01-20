@@ -3,9 +3,6 @@ Vagrant.configure("2") do |config|
   
   config.vm.box_url = "http://files.vagrantup.com/precise32.box"
   
-  config.vm.network "forwarded_port", guest: 1111, host: 1111
-  config.vm.network "forwarded_port", guest: 3000, host: 3000
-  
   config.vm.provision :chef_solo do |chef|
     chef.add_recipe "nodejs"
     chef.json = {
