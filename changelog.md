@@ -1,8 +1,9 @@
-### 0.3.4
+### 0.4.0
 <!-- (released 10/01/2014) -->
 
 - fix a bug where deleting jade files was causing the compiler to crash
 - new precompiler that should make intermediate compile passes for individual jade files much faster
+- hide sidebars by default on desktop
 
 ### 0.3.3
 (released 18/12/2013)
