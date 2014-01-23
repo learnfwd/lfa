@@ -27,8 +27,12 @@ elements()
 layout()
   @import 'layout'
 
+
 lfa-framework()
   bootstrap()
   helpers()
   elements()
   layout()
+  
+  if debug
+    @import 'debug'

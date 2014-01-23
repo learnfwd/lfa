@@ -217,13 +217,10 @@ body #leftbar
     
     a
       color: sidebarTextColor
-      height: 100%
+      height: (sidebarTextSize * 3)
       width: 100%
       display: block
       padding: 0 halfGutter
-      font-size: sidebarTextSize
-      line-height: sidebarLineHeight
-      font-weight: 200
       letter-spacing: 1px
       
       &:hover
@@ -233,13 +230,25 @@ body #leftbar
       .title, .subtitle
         display: block
       
-      .subtitle
-        font-size: sidebarTextSize - 4px
-        color: darken(@color, 30%)
-        letter-spacing: 0px
-        text-overflow: ellipsis
-        white-space: nowrap
-        overflow: hidden
+      .title
+        font-size: sidebarTextSize
+        line-height: (sidebarTextSize * 3)
+      
+      &.subtitled
+        .title
+          padding-top: (sidebarTextSize * 0.5)
+          line-height: sidebarTextSize
+        
+        .subtitle
+          line-height: sidebarTextSize
+          font-size: (sidebarTextSize * 0.75)
+          padding-top: (sidebarTextSize * 0.25)
+          padding-bottom: (sidebarTextSize * 0.75)
+          color: darken(@color, 30%)
+          letter-spacing: 0px
+          text-overflow: ellipsis
+          white-space: nowrap
+          overflow: hidden
     
     li.active > a, li > a:focus
       background: sidebarTextColor
@@ -247,7 +256,7 @@ body #leftbar
   
   > ul
     > li
-      margin: 0px (- halfGutter)
+      margin: 0 (- halfGutter)
       // First level chapters.
       > a
         background: sidebarLiColor
@@ -257,7 +266,6 @@ body #leftbar
           // Second level chapters.
           > a
             padding-left: (halfGutter + 10px)
-            font-size: sidebarTextSize - 4px
             background: darken(sidebarLiColor, 10%)
           
           > ul
@@ -265,7 +273,6 @@ body #leftbar
               // Third level chapters and beyond.
               a
                 padding-left: (halfGutter + 20px)
-                font-size: sidebarTextSize - 4px
                 background: darken(sidebarLiColor, 20%)
 
 // Rules for devices with no touch support. Hover states and the like.
