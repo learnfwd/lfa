@@ -197,11 +197,12 @@ body.leftbar-active, body.rightbar-active, body.no-scroll
 #textbook > article
 body #leftbar
   @extend .container
-  padding-top: halfGutter
+  padding-top: 1.5em
 
 // Color the sidebars.
 body #leftbar
 body #rightbar
+  font-family: $font-family-sans-serif
   background: sidebarBackground
   color: sidebarTextColor
 
@@ -219,11 +220,11 @@ body #leftbar
       height: 100%
       width: 100%
       display: block
-      padding: halfGutter
+      padding: 0 halfGutter
       font-size: sidebarTextSize
+      line-height: sidebarLineHeight
       font-weight: 200
       letter-spacing: 1px
-      margin-bottom: 2px
       
       &:hover
         color: @color
@@ -246,7 +247,7 @@ body #leftbar
   
   > ul
     > li
-      margin: 0px (- halfGutter) 2px (- halfGutter)
+      margin: 0px (- halfGutter)
       // First level chapters.
       > a
         background: sidebarLiColor
@@ -292,8 +293,6 @@ body #rightbar
       @extend .btn-lg
       @extend .btn-block
       
-      margin-top: 2px
-      
       background: sidebarSearchBg
       border: darken(sidebarSearchBg, 5%)
       
@@ -338,7 +337,6 @@ body #rightbar
       color: sidebarTextColor
       placeholder(sidebarTextColor)
       font-size: sidebarTextSize
-      margin-bottom: 2px
     
     #search-results
       list-style-type: none
@@ -355,7 +353,6 @@ body #rightbar
         font-size: sidebarTextSize
         font-weight: 200
         letter-spacing: 1px
-        margin-bottom: 2px
         background: sidebarSearchResultBg
       
         &:hover
