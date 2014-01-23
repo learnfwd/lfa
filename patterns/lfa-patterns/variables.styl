@@ -1,4 +1,4 @@
-// Great baseline colors from http://designmodo.github.io/Flat-UI/
+// Great baseline colors from http://flatuicolors.com/
 flat_turquoise ?= #1ABC9C
 flat_green_sea ?= #16A085
 
@@ -42,12 +42,13 @@ max-desktop ?= "(max-width: " + $screen-md-max + ")"
 
 // Layout-specific variables.
 toggleHitbox ?= 55px
-halfGutter ?= ($grid-gutter-width / 2)
+halfGutter ?= 15px
 sidebarWidth ?= 250px
 sidebarTextColor ?= flat_clouds
 sidebarTextSize ?= 1em
-sidebarBackground ?= flat_midnight_blue
-sidebarLiColor ?= flat_wet_asphalt
+sidebarBackground ?= #222
+sidebarLiColor ?= rgba(0, 0, 0, 0)
+sidebarHoverBg ?= lighten(sidebarBackground, 20%)
 
 sidebarSearchBg ?= flat_green_sea
 sidebarSearchResultBg ?= flat_turquoise

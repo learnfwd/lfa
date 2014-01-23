@@ -6,7 +6,7 @@ html, body
 // "Holy Grail" layout, with left and right sidebar.
 body
   // Add padding to the left and right of the body, where the sidebars will be sitting.
-  padding: 0 sidebarWidth
+  // padding: 0 sidebarWidth
   
   // Position the sidebar buttons correctly and set their height, but hide them by default.
   #leftbar-toggle, #rightbar-toggle
@@ -104,6 +104,8 @@ body
         transform: rotate(180deg)
     #leftbar
       transform: translate3d(sidebarWidth, 0, 0)
+    #content
+      transform: translate3d(sidebarWidth, 0, 0)
   
   &.rightbar-active
     #rightbar-toggle
@@ -151,7 +153,7 @@ body.animated
   transition: tduration padding ease
   
   #content
-    transition: opacity tduration ease
+    transition: transform tduration ease\, opacity tduration ease
   
   #leftbar
   #rightbar
@@ -194,10 +196,23 @@ html.appleios body
 body.leftbar-active, body.rightbar-active, body.no-scroll
   overflow: hidden
 
-#textbook > article
-body #leftbar
+#content
   @extend .container
-  padding-top: 1.5em
+  
+  #textbook
+    @extend .row
+    
+    > article
+      @extend .col-lg-8
+      @extend .col-lg-offset-2
+      
+      @extend .col-md-10
+      @extend .col-md-offset-1
+      
+      @extend .col-sm-12
+      
+      @extend .col-xs-12
+  
 
 // Color the sidebars.
 body #leftbar
@@ -208,6 +223,8 @@ body #rightbar
 
 // The left sidebar, with the table of contents.
 body #leftbar
+  padding-top: 1.5em
+  
   ul
     list-style-type: none
     padding: 0
@@ -220,15 +237,14 @@ body #leftbar
       height: (sidebarTextSize * 3)
       width: 100%
       display: block
-      padding: 0 halfGutter
       letter-spacing: 1px
-      
-      &:hover
-        color: @color
-        text-decoration: none
+      padding: 0 halfGutter
       
       .title, .subtitle
         display: block
+        text-overflow: ellipsis
+        white-space: nowrap
+        overflow: hidden
       
       .title
         font-size: sidebarTextSize
@@ -244,42 +260,27 @@ body #leftbar
           font-size: (sidebarTextSize * 0.75)
           padding-top: (sidebarTextSize * 0.25)
           padding-bottom: (sidebarTextSize * 0.75)
-          color: darken(@color, 30%)
+          color: rgba(255, 255, 255, 0.5)
           letter-spacing: 0px
-          text-overflow: ellipsis
-          white-space: nowrap
-          overflow: hidden
     
     li.active > a, li > a:focus
-      background: sidebarTextColor
-      color: sidebarBackground
+      background: sidebarHoverBg
+      text-decoration: none
   
-  > ul
-    > li
-      margin: 0 (- halfGutter)
-      // First level chapters.
-      > a
-        background: sidebarLiColor
-      
-      > ul
-        > li
-          // Second level chapters.
-          > a
-            padding-left: (halfGutter + 10px)
-            background: darken(sidebarLiColor, 10%)
-          
-          > ul
-            > li
-              // Third level chapters and beyond.
-              a
-                padding-left: (halfGutter + 20px)
-                background: darken(sidebarLiColor, 20%)
+  > ul > li > ul > li
+    // Second level chapters.
+    > a
+      padding-left: halfGutter + 10px
+    
+    > ul > li a
+      // Third level chapters and beyond.
+      padding-left: halfGutter + 20px
 
 // Rules for devices with no touch support. Hover states and the like.
 html.no-touch body
   #leftbar ul li a:hover
-    background: sidebarTextColor
-    color: sidebarBackground
+    background: sidebarHoverBg
+    text-decoration: none
     
   #rightbar #search ul#search-results li a:hover
     background: lighten(sidebarSearchResultBg, 10%)
