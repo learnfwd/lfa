@@ -25,16 +25,14 @@ body
     left: 0
     > i
       left: - sidebarWidth + 10px
-      @media max-phone
-        left: 10px
   
   #rightbar-toggle
     right: 0
     > i
       top: 16px
       right: - sidebarWidth + 10px
-      @media max-tablet
-        right: 10px
+      @media max-phone
+        right: - sidebarWidth + 50px
   
   // This is the slightly complicated fixed-top menu that contains the sidebar toggles
   // and a little header with the name of the current chapter.
@@ -84,17 +82,15 @@ body
     right: - sidebarWidth
     z-index: 1010
   
-  // Make the other sidebar-toggle dissapear when your screen width is tiny.
-  // 600px = sidebarWidth * 2 + 100px
-  @media (max-width: 600px)
-    &.rightbar-active
-      #leftbar-toggle
-        transform: translate3d(- toggleHitbox, 0, 0)
-        opacity: 0
-    &.leftbar-active
-      #rightbar-toggle
-        transform: translate3d(toggleHitbox, 0, 0)
-        opacity: 0
+  // Make the other sidebar-toggle dissapear when you open a sidebar.
+  &.rightbar-active
+    #leftbar-toggle
+      transform: translate3d(- toggleHitbox, 0, 0)
+      opacity: 0
+  &.leftbar-active
+    #rightbar-toggle
+      transform: translate3d(toggleHitbox, 0, 0)
+      opacity: 0
   
   // Animate the sidebars into view when they get activated.
   &.leftbar-active
@@ -105,7 +101,7 @@ body
     #leftbar
       transform: translate3d(sidebarWidth, 0, 0)
     #content
-      transform: translate3d(sidebarWidth, 0, 0)
+      transform: translate3d((sidebarWidth * 0.5), 0, 0)
   
   &.rightbar-active
     #rightbar-toggle
@@ -114,36 +110,44 @@ body
         transform: rotate(90deg)
     #rightbar
       transform: translate3d(- sidebarWidth, 0, 0)
+    #content
+      transform: translate3d((sidebarWidth * -0.5), 0, 0)
   
-  // When we size down to a tablet, remove the rightbar.
   @media max-tablet
-    padding: 0
-    #menu-wrapper
-      padding-right: 0
-    
-    // When the rightbar is active, move everything to the left.
-    &.rightbar-active
-      padding-right: sidebarWidth
-    
-    // When the leftbar is active, move everything to the right.
-    &.leftbar-active
-      padding-left: sidebarWidth
-      
-      // If we open the rightbar as well, override the above rightbar behaviour.
-      &.rightbar-active
-        padding-right: 0
-        #content
-          opacity: 0.2
-  
-  // When we size down again to a phone, do the same to the leftbar.
-  @media max-phone
-    #menu-wrapper
-      padding-left: 0
     &.leftbar-active
     &.rightbar-active
-      padding: 0
       #content
         opacity: 0.2
+  
+  // // When we size down to a tablet, remove the rightbar.
+  // @media max-tablet
+  //   padding: 0
+  //   #menu-wrapper
+  //     padding-right: 0
+  //   
+  //   // When the rightbar is active, move everything to the left.
+  //   &.rightbar-active
+  //     padding-right: sidebarWidth
+  //   
+  //   // When the leftbar is active, move everything to the right.
+  //   &.leftbar-active
+  //     padding-left: sidebarWidth
+  //     
+  //     // If we open the rightbar as well, override the above rightbar behaviour.
+  //     &.rightbar-active
+  //       padding-right: 0
+  //       #content
+  //         opacity: 0.2
+  // 
+  // // When we size down again to a phone, do the same to the leftbar.
+  // @media max-phone
+  //   #menu-wrapper
+  //     padding-left: 0
+  //   &.leftbar-active
+  //   &.rightbar-active
+  //     padding: 0
+  //     #content
+  //       opacity: 0.2
 
 // Animation durations. Turning these off will usually improve performance, and always
 // improve productivity. (having something happen instantly is better than after 0.3s)
@@ -239,6 +243,7 @@ body #leftbar
       display: block
       letter-spacing: 1px
       padding: 0 halfGutter
+      text-decoration: none
       
       .title, .subtitle
         display: block
