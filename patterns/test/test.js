@@ -1,5 +1,11 @@
+var width = 0;
+
 casper.start('test/project/_build/index.html')
 .then(function() {
+  width = this.evaluate(function () {
+    return window.innerWidth;
+  });
+  
   // basic_body: Screenshot the body.
   phantomcss.screenshot('body', 'basic_body');
 })
@@ -13,7 +19,7 @@ casper.start('test/project/_build/index.html')
 
 .then(function() {
   // leftbar_navigate: Navigate somewhere else; check if text changed and if
-  // table of contents successfully hid away.
+  // table of contents successfully hid away on the appropriate devices.
   casper.click('#leftbar > ul > li:nth-child(2) > a');
   
   phantomcss.screenshot('#leftbar', 'leftbar_navigate');
@@ -21,8 +27,10 @@ casper.start('test/project/_build/index.html')
 })
 
 .then(function() {
-  // leftbar_active: Reopen the leftbar and check if the correct toc item is highlighted.
-  casper.click('#leftbar-toggle');
+  // leftbar_active: Reopen the leftbar (on mobile devices) and check if the correct toc item is highlighted.
+  if (width < 768) {
+    casper.click('#leftbar-toggle');
+  }
   
   phantomcss.screenshot('#leftbar > ul > li:nth-child(2) > a', 'leftbar_active');
 })

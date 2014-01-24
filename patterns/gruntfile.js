@@ -47,7 +47,8 @@ module.exports = function(grunt) {
         files: [
           'lfa-*/**/*.*',
           'test/project/css/**/*.*',
-          'test/project/text/**/*.*'
+          'test/project/text/**/*.*',
+          'test/project/js/**/*.*'
         ],
         tasks: ['compile'],
         options: {

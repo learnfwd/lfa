@@ -9,6 +9,7 @@ require.config({
     bootstrap:    'lib/bootstrap.min',
     nlform:       'lib/nl-form',
     stacktable:   'lib/stacktable',
+    headroom:     'lib/headroom.min',
     
     // Backbone and accompanying libs.
     backbone:     'lib/backbone.min',
@@ -32,6 +33,7 @@ require.config({
     bootstrap:    { exports: 'Bootstrap', deps: ['jquery'] },
     nlform:       { exports: 'NLForm' },
     stacktable:   { exports: 'Stacktable', deps: ['jquery'] },
+    headroom:     { exports: 'Headroom' },
     
     backbone:     { exports: 'Backbone', deps: ['underscore', 'jquery'] },
     store:        { exports: 'Store', deps: ['backbone'] },

@@ -51,6 +51,8 @@ define([
       
       if (Settings.findWhere({ title: 'Animations' }).get('value')) {
         this.$el.addClass('animated');
+      } else {
+        this.$('#animations-toggle').addClass('active');
       }
       
       this.leftbar = new LeftbarView({
@@ -84,10 +86,13 @@ define([
     },
     
     show: function(chapter) {
-      // When navigating somewhere else in the toc, close sidebars,
-      // remove the active class from the previous button,
+      // When navigating somewhere else in the toc,
+      // close the sidebars if we're on a phone,
+      // remove the active class from the previous button and
       // add the active class to the one that was pressed.
-      this.closeSidebars();
+      if ($(window).width() < 768) {
+        this.closeSidebars();
+      }
       this.leftbar.makeActive(chapter);
       this.chapter.render(chapter);
     },
@@ -108,6 +113,7 @@ define([
     events: {
       'click #animations-toggle': function() {
         this.$el.toggleClass('animated');
+        this.$('#animations-toggle').toggleClass('active');
         this.closeSidebars();
         Settings.findWhere({ title: 'Animations' }).set('value', this.$el.hasClass('animated')).save();
       }

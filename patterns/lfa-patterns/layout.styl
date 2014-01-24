@@ -16,6 +16,7 @@ body
     top: 0
     width: 100%
     z-index: 1000
+    color: white
     
   // Position the sidebar buttons correctly and style them.
   #leftbar-toggle, #rightbar-toggle
@@ -28,7 +29,6 @@ body
     > i
       position: absolute
       font-size: 1.5em
-      color: white
   
   #leftbar-toggle
     left: 1.5em
@@ -47,6 +47,13 @@ body
     .menu
       height: 3em
       background: #222
+      
+      // Hide the menu when we scroll down on mobile.
+      &.slide-down
+        transform: translate3d(0, 0, 0)
+      
+      &.slide-up
+        transform: translate3d(0, -3em, 0)
     
     #leftbar-toggle, #rightbar-toggle
       top: 0
@@ -63,7 +70,6 @@ body
     
     #content
       margin-top: 3em
-  
   
   // Position the sidebars correctly and configure overflows.
   #leftbar
@@ -117,6 +123,9 @@ body.animated
   
   transition: tduration padding ease
   
+  .menu
+    transition: transform tduration ease
+  
   #content
     transition: transform tduration ease\, opacity tduration ease
   
@@ -150,15 +159,16 @@ html.appleios body
   
   #leftbar
   #rightbar
+  #content
     -webkit-overflow-scrolling: touch
   
-  #content
+  &.leftbar-active
+  &.rightbar-active
     overflow-y: auto
-    -webkit-overflow-scrolling: touch
 
-// This rule is used to stop the body element from scrolling when a sidebar is in focus.
-body.leftbar-active, body.rightbar-active, body.no-scroll
-  overflow: hidden
+// // This rule is used to stop the body element from scrolling when a sidebar is in focus.
+// body.leftbar-active, body.rightbar-active, body.no-scroll
+//   overflow: hidden
 
 #content
   @extend .container
@@ -267,13 +277,22 @@ body #rightbar
       @extend .btn-block
       
       background: sidebarSearchBg
-      border: darken(sidebarSearchBg, 5%)
+      border: none
+      
+      font-size: 1.25em
+      line-height: 2.4em
+      padding: 0
       
       &:hover, &:focus
-        background: sidebarSearchResultBg
+        background: lighten(sidebarSearchBg, 10%)
+      
+      &.active
+        color: darken(#fff, 30%)
+        background: darken(sidebarSearchBg, 10%)
   
   #search
-    padding-top: halfGutter
+    margin-top: 1.5em
+    margin-bottom: 1.5em
     background: sidebarSearchBg
     position: relative
     
@@ -283,7 +302,7 @@ body #rightbar
     
     #search-go, #search-erase
       position: absolute
-      top: halfGutter
+      top: 0
       right: 0
       cursor: pointer
       height: toggleHitbox + 3px
@@ -302,7 +321,7 @@ body #rightbar
     input
       cursor: pointer
       margin: 0
-      padding: halfGutter
+      padding: 0.75em
       border: 0
       border-radius: 0
       width: 100%
@@ -314,6 +333,8 @@ body #rightbar
     #search-results
       list-style-type: none
       padding: 0
+      margin: 0
+      
       li
         cursor: pointer
     
@@ -322,7 +343,7 @@ body #rightbar
         height: 100%
         width: 100%
         display: block
-        padding: halfGutter
+        padding: 0.75em
         font-size: sidebarTextSize
         font-weight: 200
         letter-spacing: 1px
@@ -336,7 +357,7 @@ body #rightbar
           display: block
       
         .body
-          font-size: sidebarTextSize - 4px
+          font-size: 1em
           color: darken(@color, 10%)
           letter-spacing: 0px
           overflow: hidden
