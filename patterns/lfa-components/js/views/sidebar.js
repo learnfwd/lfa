@@ -36,6 +36,7 @@ define([
     },
     
     open: function() {
+      this.parent.closeSidebars();
       this.parent.$el.addClass(this.classActive);
     },
     

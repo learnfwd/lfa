@@ -10,13 +10,9 @@ html
     link(type='text/css', rel='stylesheet', media='screen', href='lfa/components/font-awesome/css/font-awesome.min.css')
     link(type='text/css', rel='stylesheet', media='screen', href='css/master.css')
   body
-    #menu-wrapper
-      .menu
-        #leftbar-toggle
-          i.fa.fa-bars.fa-fw
-        .header: span
-        #rightbar-toggle
-          i.fa.fa-search.fa-fw
+    .menu
+      #leftbar-toggle: i.fa.fa-bars.fa-fw
+      #rightbar-toggle: i.fa.fa-search.fa-fw
     
     nav#leftbar
       +toc(toc)

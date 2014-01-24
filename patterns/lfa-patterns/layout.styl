@@ -5,64 +5,65 @@ html, body
 
 // "Holy Grail" layout, with left and right sidebar.
 body
-  // Add padding to the left and right of the body, where the sidebars will be sitting.
-  // padding: 0 sidebarWidth
+  // Actual content/chapter should take up all available height; so we can click anywhere
+  // to close the sidebars.
+  #content, #textbook
+    height: 100%
   
-  // Position the sidebar buttons correctly and set their height, but hide them by default.
+  // The fixed top menu that contains the sidebar buttons.
+  .menu
+    position: fixed
+    top: 0
+    width: 100%
+    z-index: 1000
+    
+  // Position the sidebar buttons correctly and style them.
   #leftbar-toggle, #rightbar-toggle
     position: absolute
     width: toggleHitbox
     height: toggleHitbox
     cursor: pointer
-    top: 0
+    top: 1.5em
+    background: #222
     > i
       position: absolute
-      top: 15px
-      font-size: 25px
-      color: #333
-
+      font-size: 1.5em
+      color: white
+  
   #leftbar-toggle
-    left: 0
+    left: 1.5em
     > i
-      left: - sidebarWidth + 10px
+      top: 0.50em
+      left: 0.37em
   
   #rightbar-toggle
-    right: 0
+    right: 1.5em
     > i
-      top: 16px
-      right: - sidebarWidth + 10px
-      @media max-phone
-        right: - sidebarWidth + 50px
+      top: 0.45em
+      right: 0.40em
   
-  // This is the slightly complicated fixed-top menu that contains the sidebar toggles
-  // and a little header with the name of the current chapter.
-  #menu-wrapper
-    position: fixed
-    top: 0
-    left: 0
-    height: 60px
-    width: 100%
-    z-index: 900
-    padding: 0 sidebarWidth
+  // Change the top buttons to be part of a solid navbar on mobiles.
+  @media max-phone
+    .menu
+      height: 3em
+      background: #222
     
-    > .menu
-      height: @height
-      width: 100%
-      position: relative
-      
-      .header
-        display: none
-        height: @height
-        width: 100%
-        text-align: center
-        padding-top: 5px
-        span
-          font-weight: 200
+    #leftbar-toggle, #rightbar-toggle
+      top: 0
+    
+    #leftbar-toggle
+      left: 0
+      > i
+        left: 12px
+    
+    #rightbar-toggle
+      right: 0
+      > i
+        right: 12px
+    
+    #content
+      margin-top: 3em
   
-  // Actual content/chapter should take up all available height; so we can click anywhere
-  // to close the sidebars.
-  #content, #textbook
-    height: 100%
   
   // Position the sidebars correctly and configure overflows.
   #leftbar
@@ -73,81 +74,41 @@ body
     top: 0px
     overflow-y: auto
     overflow-x: hidden
-  
+
   #leftbar
     left: - sidebarWidth
     z-index: 1000
-  
+
   #rightbar
     right: - sidebarWidth
     z-index: 1010
   
-  // Make the other sidebar-toggle dissapear when you open a sidebar.
-  &.rightbar-active
-    #leftbar-toggle
-      transform: translate3d(- toggleHitbox, 0, 0)
-      opacity: 0
+  // Animate the sidebars into view when they get activated. Move the entire page.
   &.leftbar-active
+    #leftbar-toggle, #leftbar
+      transform: translate3d(sidebarWidth, 0, 0)
+    #content
+      transform: translate3d((sidebarWidth * 0.5), 0, 0)
+    // Make the other sidebar-toggle dissapear when you open a sidebar.
     #rightbar-toggle
       transform: translate3d(toggleHitbox, 0, 0)
       opacity: 0
   
-  // Animate the sidebars into view when they get activated.
-  &.leftbar-active
-    #leftbar-toggle
-      transform: translate3d(sidebarWidth, 0, 0)
-      i.fa.fa-fw
-        transform: rotate(180deg)
-    #leftbar
-      transform: translate3d(sidebarWidth, 0, 0)
-    #content
-      transform: translate3d((sidebarWidth * 0.5), 0, 0)
-  
   &.rightbar-active
-    #rightbar-toggle
-      transform: translate3d(- sidebarWidth, 0, 0)
-      i.fa.fa-fw
-        transform: rotate(90deg)
-    #rightbar
+    #rightbar-toggle, #rightbar
       transform: translate3d(- sidebarWidth, 0, 0)
     #content
       transform: translate3d((sidebarWidth * -0.5), 0, 0)
+    #leftbar-toggle
+      transform: translate3d(- toggleHitbox, 0, 0)
+      opacity: 0
   
+  // Fade out the content when we're on a tablet or smaller device.
   @media max-tablet
     &.leftbar-active
     &.rightbar-active
       #content
         opacity: 0.2
-  
-  // // When we size down to a tablet, remove the rightbar.
-  // @media max-tablet
-  //   padding: 0
-  //   #menu-wrapper
-  //     padding-right: 0
-  //   
-  //   // When the rightbar is active, move everything to the left.
-  //   &.rightbar-active
-  //     padding-right: sidebarWidth
-  //   
-  //   // When the leftbar is active, move everything to the right.
-  //   &.leftbar-active
-  //     padding-left: sidebarWidth
-  //     
-  //     // If we open the rightbar as well, override the above rightbar behaviour.
-  //     &.rightbar-active
-  //       padding-right: 0
-  //       #content
-  //         opacity: 0.2
-  // 
-  // // When we size down again to a phone, do the same to the leftbar.
-  // @media max-phone
-  //   #menu-wrapper
-  //     padding-left: 0
-  //   &.leftbar-active
-  //   &.rightbar-active
-  //     padding: 0
-  //     #content
-  //       opacity: 0.2
 
 // Animation durations. Turning these off will usually improve performance, and always
 // improve productivity. (having something happen instantly is better than after 0.3s)
@@ -167,11 +128,10 @@ body.animated
     ul li a
       transition: background hoverduration linear
   
-  #menu-wrapper > .menu
-    #leftbar-toggle, #rightbar-toggle
-      transition: transform tduration ease\, opacity tduration ease
-      > i
-        transition: transform tduration ease
+  #leftbar-toggle, #rightbar-toggle
+    transition: transform tduration ease\, opacity tduration ease
+    > i
+      transition: transform tduration ease
   
   #search-go, #search-erase
     transition: transform tduration ease

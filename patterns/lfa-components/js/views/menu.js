@@ -1,18 +1,13 @@
 define([
   'jquery',
   'underscore',
-  'backbone',
-  'hammer'
-], function($, _, Backbone, Hammer) {
+  'backbone'
+], function($, _, Backbone) {
   'use strict';
   
   var MenuView = Backbone.View.extend({
     initialize: function(options) {
       this.parent = options.parent;
-    },
-    
-    setTitle: function(title) {
-      this.$('.menu .header span').html(title);
     },
     
     events: {

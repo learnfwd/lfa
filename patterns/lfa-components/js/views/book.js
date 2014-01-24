@@ -73,24 +73,22 @@ define([
       });
       
       this.menu = new MenuView({
-        el: this.$('#menu-wrapper'),
+        el: this.$('.menu'),
         parent: this
       });
     },
     
     showFirstChapter: function() {
       var firstChapterUrl = this.leftbar.$('ul li a[href]')[0].attributes.href.value;
-      App.router.navigate(firstChapterUrl, true);
+      window.App.router.navigate(firstChapterUrl, true);
     },
     
     show: function(chapter) {
-      // When navigating somewhere else in the toc, close sidebars, remove the active class from the previous button, add the active class to the one that was pressed, and change the menu title.
+      // When navigating somewhere else in the toc, close sidebars,
+      // remove the active class from the previous button,
+      // add the active class to the one that was pressed.
       this.closeSidebars();
-      
-      // makeActive returns the title of the chapter.
-      var title = this.leftbar.makeActive(chapter);
-      this.menu.setTitle(title);
-      
+      this.leftbar.makeActive(chapter);
       this.chapter.render(chapter);
     },
     
