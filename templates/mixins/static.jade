@@ -30,10 +30,13 @@ mixin toc(chapters)
   ul
     each chapter in chapters
       li
-        a(href="#book/#{chapter.url}")
-          span.title= chapter.locals.title
-          - if (chapter.locals.subtitle)
+        - if (chapter.locals.subtitle)
+          a.subtitled(href="#book/#{chapter.url}")
+            span.title= chapter.locals.title
             span.subtitle= chapter.locals.subtitle
+        - else
+          a(href="#book/#{chapter.url}")
+            span.title= chapter.locals.title
         if chapter.children && chapter.children.length
           +toc(chapter.children)
 
