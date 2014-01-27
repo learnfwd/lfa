@@ -12,9 +12,9 @@ define([
       
       var headroom = new Headroom(document.querySelector(this.$el.selector), {
         'classes': {
-          'initial': 'headroom',
-          'pinned': 'slide-down',
-          'unpinned': 'slide-up'
+          'initial':  'headroom',
+          'pinned':   'pinned',
+          'unpinned': 'unpinned'
         }
       });
       headroom.init();

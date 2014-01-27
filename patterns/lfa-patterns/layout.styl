@@ -51,6 +51,19 @@ body
       top: 0.75em
       right: 0.75em
   
+  // Make the menu fade out when we scroll down.
+  .menu
+    &.pinned
+      opacity: 1
+    
+    &.unpinned
+      opacity: 0.1
+  
+  // But fade it back in if we actually activate one of the toggles.
+  &.leftbar-active .menu.unpinned
+  &.rightbar-active .menu.unpinned
+    opacity: 1
+  
   // Change the top buttons to be part of a solid navbar on mobiles.
   @media max-phone
     .menu
@@ -58,10 +71,10 @@ body
       background: #222
       
       // Hide the menu when we scroll down on mobile.
-      &.slide-down
+      &.pinned
         transform: translate3d(0, 0, 0)
       
-      &.slide-up
+      &.unpinned
         transform: translate3d(0, -3em, 0)
     
     #leftbar-toggle, #rightbar-toggle
@@ -133,7 +146,7 @@ body.animated
   transition: tduration padding ease
   
   .menu
-    transition: transform tduration ease
+    transition: transform tduration ease\, opacity tduration ease
   
   #content
     transition: transform tduration ease\, opacity tduration ease
