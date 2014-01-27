@@ -194,11 +194,12 @@ body #rightbar
   font-family: $font-family-sans-serif
   background: sidebarBackground
   color: sidebarTextColor
+  padding-top: 1.5em
+  @media max-phone
+    padding-top: 0
 
 // The left sidebar, with the table of contents.
 body #leftbar
-  padding-top: 1.5em
-  
   ul
     list-style-type: none
     padding: 0
@@ -291,7 +292,6 @@ body #rightbar
         background: darken(sidebarSearchBg, 10%)
   
   #search
-    margin-top: 1.5em
     margin-bottom: 1.5em
     background: sidebarSearchBg
     position: relative
