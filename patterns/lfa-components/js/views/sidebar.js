@@ -12,9 +12,13 @@ define([
       this.closeGesture = options.closeGesture;
       
       var self = this;
-      this.$el.hammer().on(this.closeGesture, function() {
-        self.close();
-      });
+      if (!this.parent.html.hasClass('appleios')) {
+        // If we're not on iOS, add events to close the sidebars via swiping left/right.
+        // iOS doesn't get these because iOS 7 Safari uses them for back/forward.
+        this.$el.hammer().on(this.closeGesture, function() {
+          self.close();
+        });
+      }
     },
     
     events: function() {

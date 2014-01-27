@@ -87,10 +87,10 @@ define([
     
     show: function(chapter) {
       // When navigating somewhere else in the toc,
-      // close the sidebars if we're on a phone,
+      // close the sidebars if we're on a phone/portrait tablet,
       // remove the active class from the previous button and
       // add the active class to the one that was pressed.
-      if ($(window).width() < 768) {
+      if ($(window).width() <= 768) {
         this.closeSidebars();
       }
       this.leftbar.makeActive(chapter);
