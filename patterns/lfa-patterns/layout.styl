@@ -188,29 +188,6 @@ html.appleios body
   &.rightbar-active
     overflow-y: auto
 
-// // This rule is used to stop the body element from scrolling when a sidebar is in focus.
-// body.leftbar-active, body.rightbar-active, body.no-scroll
-//   overflow: hidden
-
-#content
-  @extend .container
-  
-  #textbook
-    @extend .row
-    
-    > article
-      @extend .col-lg-8
-      @extend .col-lg-offset-2
-      
-      @extend .col-md-10
-      @extend .col-md-offset-1
-      
-      @extend .col-sm-10
-      @extend .col-sm-offset-1
-      
-      @extend .col-xs-12
-  
-
 // Color the sidebars.
 body #leftbar
 body #rightbar
@@ -295,11 +272,6 @@ html.no-touch body
 body #rightbar
   .settings
     #animations-toggle
-      @extend .btn
-      @extend .btn-success
-      @extend .btn-lg
-      @extend .btn-block
-      
       background: sidebarSearchBg
       border: none
       
