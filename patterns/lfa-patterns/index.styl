@@ -1,21 +1,14 @@
 @import '../lfa/components/font-awesome/css/font-awesome.min.css'
-
-// Bootstrap Variables and Mixins.
-@import 'bootstrap/variables'
-@import 'bootstrap/mixins'
+@import '../lfa/components/bootstrap/bootstrap.min.css'
 
 // LFA Variables.
 @import 'variables'
 
 // Our preferred font package.
 @import 'fonts'
-
-// Bootstrap needs no introduction.
-bootstrap()
-  @import 'bootstrap/bootstrap'
   
-  // Bootstrap overrides.
-  @import 'overrides'
+// Bootstrap overrides.
+@import 'overrides'
 
 // Helpers: utility classes.
 helpers()
@@ -31,7 +24,6 @@ layout()
 
 
 lfa-framework()
-  bootstrap()
   helpers()
   elements()
   layout()
