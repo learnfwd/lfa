@@ -32,14 +32,6 @@ module.exports = function(grunt) {
           viewportSize: [320, 480]
         },
         src: ['test/ux.js']
-      },
-      overrides: {
-        options: {
-          screenshots: 'test/screenshots/overrides/',
-          results: 'test/results/overrides/',
-          viewportSize: [320, 480]
-        },
-        src: ['test/overrides.js']
       }
     },
     watch: {
