@@ -1,4 +1,5 @@
 #!/bin/bash
 
-grunt compile
-grunt
+cd test/projects/ux/ && ../../../../bin/lfa compile --no-compress && cd -
+cd test/projects/overrides/ && ../../../../bin/lfa compile --no-compress && cd -
+grunt phantomcss
