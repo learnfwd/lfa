@@ -1,37 +1,45 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     phantomcss: {
-      large: {
+      largeUX: {
         options: {
-          screenshots: 'test/screenshots/large/',
-          results: 'test/results/large',
+          screenshots: 'test/screenshots/ux/large/',
+          results: 'test/results/ux/large',
           viewportSize: [1200, 800]
         },
-        src: ['test/test.js']
+        src: ['test/ux.js']
       },
-      medium: {
+      mediumUX: {
         options: {
-          screenshots: 'test/screenshots/medium/',
-          results: 'test/results/medium',
+          screenshots: 'test/screenshots/ux/medium/',
+          results: 'test/results/ux/medium',
           viewportSize: [991, 800]
         },
-        src: ['test/test.js']
+        src: ['test/ux.js']
       },
-      small: {
+      smallUX: {
         options: {
-          screenshots: 'test/screenshots/small/',
-          results: 'test/results/small',
+          screenshots: 'test/screenshots/ux/small/',
+          results: 'test/results/ux/small',
           viewportSize: [767, 480]
         },
-        src: ['test/test.js']
+        src: ['test/ux.js']
       },
-      xsmall: {
+      xsmallUX: {
         options: {
-          screenshots: 'test/screenshots/xsmall/',
-          results: 'test/results/xsmall',
+          screenshots: 'test/screenshots/ux/xsmall/',
+          results: 'test/results/ux/xsmall',
           viewportSize: [320, 480]
         },
-        src: ['test/test.js']
+        src: ['test/ux.js']
+      },
+      overrides: {
+        options: {
+          screenshots: 'test/screenshots/overrides/',
+          results: 'test/results/overrides',
+          viewportSize: [320, 480]
+        },
+        src: ['test/overrides.js']
       }
     },
     shell: {
@@ -39,7 +47,7 @@ module.exports = function(grunt) {
         options: {
           stdout: true
         },
-        command: 'cd test/project/ && ../../../bin/lfa compile --no-compress'
+        command: 'cd test/projects/ux/ && ../../../../bin/lfa compile --no-compress'
       }
     },
     watch: {

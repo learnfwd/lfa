@@ -2,7 +2,7 @@
 // we're doing certain interactions or not.
 var width = 0;
 
-casper.start('test/project/_build/index.html')
+casper.start('test/projects/ux/_build/index.html')
 .then(function() {
   width = this.evaluate(function () {
     return window.innerWidth;
