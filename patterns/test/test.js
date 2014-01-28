@@ -1,3 +1,5 @@
+// We need to know the width of the document to figure out if
+// we're doing certain interactions or not.
 var width = 0;
 
 casper.start('test/project/_build/index.html')
@@ -23,7 +25,7 @@ casper.start('test/project/_build/index.html')
   casper.click('#leftbar > ul > li:nth-child(2) > a');
   
   phantomcss.screenshot('#leftbar', 'leftbar_navigate');
-  phantomcss.screenshot('#content', 'leftbar_navigate');
+  phantomcss.screenshot('body', 'leftbar_navigate');
 })
 
 .then(function() {
@@ -66,10 +68,10 @@ casper.start('test/project/_build/index.html')
 
 .then(function() {
   // rightbar_search_navigate: Type something into the search input, click on the result.
-  casper.fillSelectors('#search', { 'input.search': 'working!', });
+  casper.fillSelectors('#search', { 'input.search': 'Lorem', });
   casper.click('#search-results > li:first-child > a');
   
-  phantomcss.screenshot('#content', 'rightbar_search_navigate');
+  phantomcss.screenshot('#textbook article', 'rightbar_search_navigate');
 })
 
 ;
