@@ -1,0 +1,30 @@
+// Position the sidebar buttons correctly and style them.
+#leftbar-toggle, #rightbar-toggle
+  position: absolute
+  width: toggle-hitbox
+  height: toggle-hitbox
+  cursor: pointer
+  top: 1.5em
+  background: #222
+  > i
+    position: absolute
+    font-size: 1.5em
+
+#leftbar-toggle
+  left: 1.5em
+  > i
+    top: 0.50em
+    left: 0.37em
+
+#rightbar-toggle
+  right: 1.5em
+  > i
+    top: 0.45em
+    right: 0.40em
+
+@media max-tablet
+  #leftbar-toggle
+    left: 1em
+  
+  #rightbar-toggle
+    right: 1em

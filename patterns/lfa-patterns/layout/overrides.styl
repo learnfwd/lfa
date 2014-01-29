@@ -1,0 +1,28 @@
+// Because reasons.
+html, body
+  height: 100%
+  width: 100%
+
+// Special rules for Apple iOS devices.
+html.appleios body
+  overflow: hidden
+
+  #leftbar
+  #rightbar
+  #content
+    -webkit-overflow-scrolling: touch
+
+  &.leftbar-active
+  &.rightbar-active
+    overflow-y: auto
+
+// Rules for devices with no touch support. Hover states and the like.
+html.no-touch body
+  #leftbar ul li a:hover
+    background: sidebar-hover-bg
+    text-decoration: none
+
+  #rightbar #search ul#search-results li a:hover
+    background: lighten(sidebar-search-result-bg, 10%)
+    .title, .body
+      color: lighten(sidebar-text-color, 10%)

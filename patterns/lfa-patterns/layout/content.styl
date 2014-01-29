@@ -1,0 +1,33 @@
+// "Holy Grail" layout, with left and right sidebar.
+body
+  // Actual content/chapter should take up all available height; so we can click anywhere
+  // to close the sidebars.
+  #content, #textbook, > .container
+    height: 100%
+  
+  // Animate the sidebars into view when they get activated. Move the entire page.
+  &.leftbar-active
+    #leftbar-toggle, #leftbar
+      transform: translate3d(sidebar-width, 0, 0)
+    #content
+      transform: translate3d((sidebar-width * 0.5), 0, 0)
+    // Make the other sidebar-toggle dissapear when you open a sidebar.
+    #rightbar-toggle
+      transform: translate3d(toggle-hitbox, 0, 0)
+      opacity: 0
+  
+  &.rightbar-active
+    #rightbar-toggle, #rightbar
+      transform: translate3d(- sidebar-width, 0, 0)
+    #content
+      transform: translate3d((sidebar-width * -0.5), 0, 0)
+    #leftbar-toggle
+      transform: translate3d(- toggle-hitbox, 0, 0)
+      opacity: 0
+  
+  // Fade out the content when we're on a tablet or smaller device.
+  @media max-tablet
+    &.leftbar-active
+    &.rightbar-active
+      #content
+        opacity: 0.2

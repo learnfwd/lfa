@@ -1,0 +1,53 @@
+// The left sidebar, with the table of contents.
+body #leftbar
+  ul
+    list-style-type: none
+    padding: 0
+    
+    li
+      cursor: pointer
+    
+    a
+      color: sidebar-text-color
+      height: (sidebar-text-size * 3)
+      width: 100%
+      display: block
+      letter-spacing: 1px
+      padding: 0 half-gutter
+      text-decoration: none
+      
+      .title, .subtitle
+        display: block
+        text-overflow: ellipsis
+        white-space: nowrap
+        overflow: hidden
+      
+      .title
+        font-size: sidebar-text-size
+        line-height: (sidebar-text-size * 3)
+      
+      &.subtitled
+        .title
+          padding-top: (sidebar-text-size * 0.5)
+          line-height: sidebar-text-size
+        
+        .subtitle
+          line-height: sidebar-text-size
+          font-size: (sidebar-text-size * 0.75)
+          padding-top: (sidebar-text-size * 0.25)
+          padding-bottom: (sidebar-text-size * 0.75)
+          color: rgba(255, 255, 255, 0.5)
+          letter-spacing: 0px
+    
+    li.active > a, li > a:focus
+      background: sidebar-hover-bg
+      text-decoration: none
+  
+  > ul > li > ul > li
+    // Second level chapters.
+    > a
+      padding-left: half-gutter + 10px
+    
+    > ul > li a
+      // Third level chapters and beyond.
+      padding-left: half-gutter + 20px

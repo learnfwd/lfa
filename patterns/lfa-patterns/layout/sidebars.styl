@@ -1,0 +1,23 @@
+// Style, position the sidebars correctly, and configure overflows.
+#leftbar
+#rightbar
+  font-family: font-family-sans-serif
+  background: sidebar-background
+  color: sidebar-text-color
+  padding-top: 1.5em
+  @media max-phone
+    padding-top: 0
+  
+  width: sidebar-width
+  position: fixed
+  height: 100%
+  top: 0px
+  overflow-y: auto
+  overflow-x: hidden
+  z-index: 1000
+
+#leftbar
+  left: - sidebar-width
+
+#rightbar
+  right: - sidebar-width
