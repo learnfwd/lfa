@@ -104,13 +104,18 @@ define([
     
     show: function(chapter) {
       // When navigating somewhere else in the toc,
+      // scroll the user to the top of the page,
+      window.scrollTo(0, 0);
+      
       // close the sidebars if we're on a phone/portrait tablet,
-      // remove the active class from the previous button and
-      // add the active class to the one that was pressed.
       if ($(window).width() <= 768) {
         this.closeSidebars();
       }
+      
+      // remove the active class from the previous button and
+      // add the active class to the one that was pressed.
       this.leftbar.makeActive(chapter);
+      
       this.chapter.render(chapter);
     },
     
