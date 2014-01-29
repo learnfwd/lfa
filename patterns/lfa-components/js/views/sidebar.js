@@ -24,18 +24,6 @@ define([
     events: function() {
       var events = {};
       
-      // // no-touch means we have a mouse, so don't scroll the entire document while we're inside a sidebar.
-      // if (this.parent.html.hasClass('no-touch')) {
-      //   events = {
-      //     'mouseover': function() {
-      //       this.parent.disableScrolling();
-      //     },
-      //     'mouseout': function() {
-      //       this.parent.allowScrolling();
-      //     }
-      //   };
-      // }
-      
       return events;
     },
     

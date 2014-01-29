@@ -14,12 +14,7 @@ define([
     initialize: function(options) {
       this.parent = options.parent;
       
-      // Close the sidebars when we click anywhere on the textbook content.
       var self = this;
-      this.$el.hammer().on('tap', function() {
-        self.parent.closeSidebars();
-        self.parent.allowScrolling();
-      });
       
       if (!this.parent.html.hasClass('appleios')) {
         // If we're not on iOS, add events to open the sidebars via swiping left/right.
@@ -57,14 +52,14 @@ define([
       
       // Enable real parallax, fading modals and fading tab-panes on desktops.
       if (this.parent.html.hasClass('no-touch')) {
-        this.$(".parallax").each(function() {
+        this.$('.parallax').each(function() {
           var $bgobj, $window;
           $bgobj = $(this);
           $window = $(window);
           return $window.scroll(function() {
             var coords, yPos;
             yPos = -($window.scrollTop() / 10);
-            coords = "100% " + yPos + "px";
+            coords = '100% ' + yPos + 'px';
             return $bgobj.css({
               backgroundPosition: coords
             });

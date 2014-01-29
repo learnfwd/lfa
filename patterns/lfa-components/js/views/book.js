@@ -102,20 +102,15 @@ define([
       this.rightbar.close();
     },
     
-    disableScrolling: function() {
-      this.$el.addClass('no-scroll');
-    },
-    
-    allowScrolling: function() {
-      this.$el.removeClass('no-scroll');
-    },
-    
     events: {
       'click #animations-toggle': function() {
         this.$el.toggleClass('animated');
         this.$('#animations-toggle').toggleClass('active');
         this.closeSidebars();
         Settings.findWhere({ title: 'Animations' }).set('value', this.$el.hasClass('animated')).save();
+      },
+      'click section.container': function() {
+        this.closeSidebars();
       }
     }
   });
