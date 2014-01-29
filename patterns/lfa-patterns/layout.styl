@@ -44,12 +44,10 @@ body
   
   @media max-tablet
     #leftbar-toggle
-      top: 0.75em
-      left: 0.75em
+      left: 1em
     
     #rightbar-toggle
-      top: 0.75em
-      right: 0.75em
+      right: 1em
   
   // Make the menu fade out when we scroll down.
   .menu
@@ -191,7 +189,7 @@ html.appleios body
 // Color the sidebars.
 body #leftbar
 body #rightbar
-  font-family: $font-family-sans-serif
+  font-family: font-family-sans-serif
   background: sidebarBackground
   color: sidebarTextColor
   padding-top: 1.5em
@@ -274,6 +272,9 @@ body #rightbar
     #animations-toggle
       background: sidebarSearchBg
       border: none
+      color: sidebarTextColor
+      border: none
+      border-radius: 0
       
       font-size: 1.25em
       line-height: 2.4em

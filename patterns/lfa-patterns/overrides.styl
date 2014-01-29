@@ -1,10 +1,15 @@
-// Bootstrap overrides to provide vertical-rhythm.
 body
-  font-weight: 400
+  font-family: font-family-base
+  font-weight: font-weight-base
+  line-height: line-height-base
+  
   -webkit-font-smoothing: antialiased
   
+  font-size: font-size-base
+  line-height: line-height-base
+  
   @media max-phone
-    font-size: 16px
+    font-size: font-size-phone
 
 p
   font-size: 1em
@@ -14,9 +19,14 @@ p
   margin-bottom: 1.5em
   
 h1, h2, h3, h4, h5, h6
+  font-family: font-family-headings
+  font-weight: font-weight-headings
+  line-height: line-height-headings
+  
   letter-spacing: -0.02em
   margin-bottom: 0
   
+  // Remove margin between a heading and the first paragraph that follows it.
   + p
     margin-top: 0
 
