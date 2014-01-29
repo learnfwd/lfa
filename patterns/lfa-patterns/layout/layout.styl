@@ -21,8 +21,8 @@ body
   // Position the sidebar buttons correctly and style them.
   #leftbar-toggle, #rightbar-toggle
     position: absolute
-    width: toggleHitbox
-    height: toggleHitbox
+    width: toggle-hitbox
+    height: toggle-hitbox
     cursor: pointer
     top: 1.5em
     background: #222
@@ -94,7 +94,7 @@ body
   // Position the sidebars correctly and configure overflows.
   #leftbar
   #rightbar
-    width: sidebarWidth
+    width: sidebar-width
     position: fixed
     height: 100%
     top: 0px
@@ -102,31 +102,31 @@ body
     overflow-x: hidden
 
   #leftbar
-    left: - sidebarWidth
+    left: - sidebar-width
     z-index: 1000
 
   #rightbar
-    right: - sidebarWidth
+    right: - sidebar-width
     z-index: 1010
   
   // Animate the sidebars into view when they get activated. Move the entire page.
   &.leftbar-active
     #leftbar-toggle, #leftbar
-      transform: translate3d(sidebarWidth, 0, 0)
+      transform: translate3d(sidebar-width, 0, 0)
     #content
-      transform: translate3d((sidebarWidth * 0.5), 0, 0)
+      transform: translate3d((sidebar-width * 0.5), 0, 0)
     // Make the other sidebar-toggle dissapear when you open a sidebar.
     #rightbar-toggle
-      transform: translate3d(toggleHitbox, 0, 0)
+      transform: translate3d(toggle-hitbox, 0, 0)
       opacity: 0
   
   &.rightbar-active
     #rightbar-toggle, #rightbar
-      transform: translate3d(- sidebarWidth, 0, 0)
+      transform: translate3d(- sidebar-width, 0, 0)
     #content
-      transform: translate3d((sidebarWidth * -0.5), 0, 0)
+      transform: translate3d((sidebar-width * -0.5), 0, 0)
     #leftbar-toggle
-      transform: translate3d(- toggleHitbox, 0, 0)
+      transform: translate3d(- toggle-hitbox, 0, 0)
       opacity: 0
   
   // Fade out the content when we're on a tablet or smaller device.
@@ -195,8 +195,8 @@ html.appleios body
 body #leftbar
 body #rightbar
   font-family: font-family-sans-serif
-  background: sidebarBackground
-  color: sidebarTextColor
+  background: sidebar-background
+  color: sidebar-text-color
   padding-top: 1.5em
   @media max-phone
     padding-top: 0
@@ -211,12 +211,12 @@ body #leftbar
       cursor: pointer
     
     a
-      color: sidebarTextColor
-      height: (sidebarTextSize * 3)
+      color: sidebar-text-color
+      height: (sidebar-text-size * 3)
       width: 100%
       display: block
       letter-spacing: 1px
-      padding: 0 halfGutter
+      padding: 0 half-gutter
       text-decoration: none
       
       .title, .subtitle
@@ -226,45 +226,45 @@ body #leftbar
         overflow: hidden
       
       .title
-        font-size: sidebarTextSize
-        line-height: (sidebarTextSize * 3)
+        font-size: sidebar-text-size
+        line-height: (sidebar-text-size * 3)
       
       &.subtitled
         .title
-          padding-top: (sidebarTextSize * 0.5)
-          line-height: sidebarTextSize
+          padding-top: (sidebar-text-size * 0.5)
+          line-height: sidebar-text-size
         
         .subtitle
-          line-height: sidebarTextSize
-          font-size: (sidebarTextSize * 0.75)
-          padding-top: (sidebarTextSize * 0.25)
-          padding-bottom: (sidebarTextSize * 0.75)
+          line-height: sidebar-text-size
+          font-size: (sidebar-text-size * 0.75)
+          padding-top: (sidebar-text-size * 0.25)
+          padding-bottom: (sidebar-text-size * 0.75)
           color: rgba(255, 255, 255, 0.5)
           letter-spacing: 0px
     
     li.active > a, li > a:focus
-      background: sidebarHoverBg
+      background: sidebar-hover-bg
       text-decoration: none
   
   > ul > li > ul > li
     // Second level chapters.
     > a
-      padding-left: halfGutter + 10px
+      padding-left: half-gutter + 10px
     
     > ul > li a
       // Third level chapters and beyond.
-      padding-left: halfGutter + 20px
+      padding-left: half-gutter + 20px
 
 // Rules for devices with no touch support. Hover states and the like.
 html.no-touch body
   #leftbar ul li a:hover
-    background: sidebarHoverBg
+    background: sidebar-hover-bg
     text-decoration: none
     
   #rightbar #search ul#search-results li a:hover
-    background: lighten(sidebarSearchResultBg, 10%)
+    background: lighten(sidebar-search-result-bg, 10%)
     .title, .body
-      color: lighten(sidebarTextColor, 10%)
+      color: lighten(sidebar-text-color, 10%)
 
 // Some extra padding for first (only?) article in a chapter, so that it doesn't interfere
 // with the menu.
@@ -275,9 +275,9 @@ html.no-touch body
 body #rightbar
   .settings
     #animations-toggle
-      background: sidebarSearchBg
+      background: sidebar-search-bg
       border: none
-      color: sidebarTextColor
+      color: sidebar-text-color
       border: none
       border-radius: 0
       
@@ -286,15 +286,15 @@ body #rightbar
       padding: 0
       
       &:hover, &:focus
-        background: lighten(sidebarSearchBg, 10%)
+        background: lighten(sidebar-search-bg, 10%)
       
       &.active
         color: darken(#fff, 30%)
-        background: darken(sidebarSearchBg, 10%)
+        background: darken(sidebar-search-bg, 10%)
   
   #search
     margin-bottom: 1.5em
-    background: sidebarSearchBg
+    background: sidebar-search-bg
     position: relative
     
     // Fixes a really weird iOS-only bug that makes the entire thing overflow off-canvas.
@@ -306,18 +306,18 @@ body #rightbar
       top: 0
       right: 0
       cursor: pointer
-      height: toggleHitbox + 3px
-      width: toggleHitbox
+      height: toggle-hitbox + 3px
+      width: toggle-hitbox
       > i
         padding-top: 18px
         padding-left: 20px
-        font-size: sidebarTextSize
+        font-size: sidebar-text-size
       
       > i.fa-search
         padding-left: 18px
       
       &.concealed
-        transform: translate3d(toggleHitbox, 0, 0)
+        transform: translate3d(toggle-hitbox, 0, 0)
     
     input
       cursor: pointer
@@ -327,10 +327,10 @@ body #rightbar
       border: 0
       border-radius: 0
       width: 100%
-      background: sidebarSearchResultBg
-      color: sidebarTextColor
-      placeholder(sidebarTextColor)
-      font-size: sidebarTextSize
+      background: sidebar-search-result-bg
+      color: sidebar-text-color
+      placeholder(sidebar-text-color)
+      font-size: sidebar-text-size
     
     #search-results
       list-style-type: none
@@ -341,15 +341,15 @@ body #rightbar
         cursor: pointer
     
       a
-        color: sidebarTextColor
+        color: sidebar-text-color
         height: 100%
         width: 100%
         display: block
         padding: 0.75em
-        font-size: sidebarTextSize
+        font-size: sidebar-text-size
         font-weight: 200
         letter-spacing: 1px
-        background: sidebarSearchResultBg
+        background: sidebar-search-result-bg
       
         &:hover
           color: @color
