@@ -1,34 +1,30 @@
-@import '../lfa/components/font-awesome/css/font-awesome.min.css'
-@import '../lfa/components/bootstrap/bootstrap.min.css'
-
-// LFA Variables.
-@import 'variables'
-
-// Our preferred font package.
-@import 'fonts'
-  
-// Bootstrap overrides.
-@import 'overrides'
-
-@import 'mixins'
-
-// Helpers: utility classes.
-helpers()
-  @import 'helpers'
-
-// Elements: custom rules for essential textbook functionality.
-elements()
-  @import 'elements'
-
-// The "Holy Grail" layout.
-layout()
-  @import 'layout'
-
-
 lfa-framework()
-  helpers()
-  elements()
-  layout()
+  // Font Awesome.
+  @import '../lfa/components/font-awesome/css/font-awesome.min.css'
+  
+  // Bootstrap.
+  @import '../lfa/components/bootstrap/bootstrap.min.css'
+  
+  // Our preferred font package.
+  @import 'fonts'
+  
+  // LFA Variables.
+  @import 'variables'
+  
+  // Utility stylus functions.
+  @import 'mixins'
+  
+  // Utility CSS classes.
+  @import 'helpers'
+  
+  // Bootstrap overrides.
+  @import 'overrides'
+  
+  // Custom rules for essential textbook elements.
+  @import 'elements'
+  
+  // The "Holy Grail" layout.
+  @import 'layout'
   
   if debug
     @import 'debug'

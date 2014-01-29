@@ -35,6 +35,7 @@ white ?= #fff
 // Default transition duration.
 tduration ?= 0.3s
 
+// Media query variables.
 // Extra small screen / phone
 screen-xs ?=                  480px;
 screen-phone ?=               screen-xs;
@@ -56,38 +57,20 @@ screen-xs-max ?=              (screen-sm - 1);
 screen-sm-max ?=              (screen-md - 1);
 screen-md-max ?=              (screen-lg - 1);
 
-// Media query helpers.
-max-phone ?= "(max-width: " + screen-xs-max + ")"
-max-tablet ?= "(max-width: " + screen-sm-max + ")"
-max-desktop ?= "(max-width: " + screen-md-max + ")"
-
-// Layout-specific variables.
-toggleHitbox ?= 3em
-halfGutter ?= 15px
-sidebarWidth ?= 250px
-sidebarTextColor ?= flat_clouds
-sidebarTextSize ?= 1em
-sidebarBackground ?= #222
-sidebarLiColor ?= rgba(0, 0, 0, 0)
-sidebarHoverBg ?= lighten(sidebarBackground, 20%)
-
-sidebarSearchBg ?= #444
-sidebarSearchResultBg ?= #444
-
 // Debug variables
 debug ?= 0
 
-font-family-sans-serif ?=  "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif
-font-family-serif ?=       "Merriweather", Georgia, "Times New Roman", Times, serif
-font-family-monospace ?=   Monaco, Menlo, Consolas, "Courier New", monospace
+font-family-sans-serif ?=     "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif
+font-family-serif ?=          "Merriweather", Georgia, "Times New Roman", Times, serif
+font-family-monospace ?=      Monaco, Menlo, Consolas, "Courier New", monospace
 
-font-size-base ?=          18px
-font-size-phone ?=         font-size-base - 2px
+font-size-base ?=             18px
+font-size-phone ?=            font-size-base - 2px
 
-font-family-base ?=        font-family-serif
-font-weight-base ?=        400
-line-height-base ?=        1.5
+font-family-base ?=           font-family-serif
+font-weight-base ?=           400
+line-height-base ?=           1.5
 
-font-family-headings ?=    font-family-sans-serif
-font-weight-headings ?=    500
-line-height-headings ?=    1.5
+font-family-headings ?=       font-family-sans-serif
+font-weight-headings ?=       500
+line-height-headings ?=       1.5
