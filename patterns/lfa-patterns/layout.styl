@@ -136,42 +136,47 @@ body
       #content
         opacity: 0.2
 
-// Animation durations. Turning these off will usually improve performance, and always
-// improve productivity. (having something happen instantly is better than after 0.3s)
-body.animated
-  hoverduration = tduration / 3
-  
-  transition: tduration padding ease
-  
+animated-transitions(duration)
+  hoverduration = duration / 3
+
   .menu
-    transition: transform tduration ease\, opacity tduration ease
-  
+    transition: transform duration ease, opacity duration ease
+
   #content
-    transition: transform tduration ease\, opacity tduration ease
-  
+    transition: transform duration ease, opacity duration ease
+
   #leftbar
   #rightbar
-    transition: transform tduration ease
-  
+    transition: transform duration ease
+
   #leftbar
     ul li a
       transition: background hoverduration linear
-  
+
   #leftbar-toggle, #rightbar-toggle
-    transition: transform tduration ease\, opacity tduration ease
+    transition: transform duration ease, opacity duration ease
     > i
-      transition: transform tduration ease
-  
+      transition: transform duration ease
+
   #search-go, #search-erase
-    transition: transform tduration ease
-  
+    transition: transform duration ease
+
   #search-results li a
     transition: background hoverduration ease
     .title, .body
       transition: color hoverduration ease
-  
+
   #animations-toggle
     transition: background hoverduration ease
+
+// 0 duration transitions by default.
+body
+  animated-transitions(0.001s)
+
+// Animation durations. Turning these off will usually improve performance, and always
+// improve productivity. (having something happen instantly is better than after 0.3s)
+body.animated
+  animated-transitions(tduration)
 
 // Special rules for Apple iOS devices.
 html.appleios body
