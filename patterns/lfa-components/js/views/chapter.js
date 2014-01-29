@@ -13,18 +13,6 @@ define([
   var ChapterView = Backbone.View.extend({
     initialize: function(options) {
       this.parent = options.parent;
-      
-      var self = this;
-      if (!this.parent.html.hasClass('appleios')) {
-        // If we're not on iOS, add events to open the sidebars via swiping left/right.
-        // iOS doesn't get these because iOS 7 Safari uses them for back/forward.
-        this.$el.hammer().on('dragright', function() {
-          self.parent.leftbar.open();
-        });
-        this.$el.hammer().on('dragleft', function() {
-          self.parent.rightbar.open();
-        });
-      }
     },
     
     render: function(chapter) {
@@ -37,7 +25,7 @@ define([
         myClass: 'stacktable small-only'
       });
       
-      // Enable fancy forms..
+      // Enable fancy forms.
       this.$('form.fancy').each(function() {
         // TODO: fix this hack.
         $(this).prepend('<div class="nl-overlay"></div>');
