@@ -55,6 +55,12 @@ define([
         this.$('#animations-toggle').addClass('active');
       }
       
+      var self = this;
+      // Close the sidebars when we tap anywhere on the textbook.
+      this.$('section.container').hammer().on('tap', function() {
+        self.closeSidebars();
+      });
+      
       this.leftbar = new LeftbarView({
         el: this.$('#leftbar'),
         parent: this,
@@ -108,9 +114,6 @@ define([
         this.$('#animations-toggle').toggleClass('active');
         this.closeSidebars();
         Settings.findWhere({ title: 'Animations' }).set('value', this.$el.hasClass('animated')).save();
-      },
-      'click section.container': function() {
-        this.closeSidebars();
       }
     }
   });
