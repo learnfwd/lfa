@@ -1,3 +1,8 @@
+### 0.4.1
+(released 30/01/2014)
+
+- replace default serif font with Georgia, because Merriweather was actually lacking a few diacritics
+
 ### 0.4.0
 (released 29/01/2014)
 
