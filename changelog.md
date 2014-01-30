@@ -1,3 +1,8 @@
+### 0.4.2
+(released 30/01/2014)
+
+- minor styling change for tablets; remove some debug messages that were showing up outside of debug mode in `watch`
+
 ### 0.4.1
 (released 30/01/2014)
 
