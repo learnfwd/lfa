@@ -1,9 +1,16 @@
+### 0.4.1
+(released 30/01/2014)
+
+- replace default serif font with Georgia, because Merriweather was actually lacking a few diacritics
+
 ### 0.4.0
-<!-- (released 10/01/2014) -->
+(released 29/01/2014)
 
 - fix a bug where deleting jade files was causing the compiler to crash
 - new precompiler that should make intermediate compile passes for individual jade files much faster
-- hide sidebars by default on desktop
+- new sidebar stylesheets that hide them by default on all resolutions
+- fix some compiler issues
+- vertical rhythm, new font, faster css compiles
 
 ### 0.3.3
 (released 18/12/2013)
