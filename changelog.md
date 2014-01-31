@@ -1,3 +1,8 @@
+### 0.4.3
+(released 31/01/2014)
+
+- minor styling update; better easings for the sidebars.
+
 ### 0.4.2
 (released 30/01/2014)
 
