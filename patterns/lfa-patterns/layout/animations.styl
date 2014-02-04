@@ -1,8 +1,8 @@
 animated-transitions(duration)
   ease-sidebar ?= cubic-bezier(.10, .70, .20, 1)
 
-  hoverduration ?= duration / 3
-  duration-sidebar ?= duration * 2
+  duration-hover ?= duration / 3
+  duration-sidebar ?= duration * 1.5
 
   .menu
     transition: transform duration ease, opacity duration ease
@@ -16,7 +16,7 @@ animated-transitions(duration)
 
   #leftbar
     ul li a
-      transition: background hoverduration linear
+      transition: background duration-hover linear
 
   #leftbar-toggle, #rightbar-toggle
     transition: transform duration-sidebar ease-sidebar, opacity duration-sidebar ease
@@ -27,12 +27,12 @@ animated-transitions(duration)
     transition: transform duration ease
 
   #search-results li a
-    transition: background hoverduration ease
+    transition: background duration-hover ease
     .title, .body
-      transition: color hoverduration ease
+      transition: color duration-hover ease
 
   #animations-toggle
-    transition: background hoverduration ease
+    transition: background duration-hover ease
 
 // 0 (almost) duration transitions by default.
 body
