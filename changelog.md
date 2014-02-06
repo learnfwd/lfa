@@ -1,4 +1,9 @@
 ### 0.4.3
+(released 06/02/2014)
+
+- remove gesture to open sidebars
+
+### 0.4.3
 (released 31/01/2014)
 
 - minor styling update; better easings for the sidebars.
