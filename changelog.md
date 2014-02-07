@@ -1,3 +1,8 @@
+### 0.4.5
+(released 07/02/2014)
+
+- inline bootstrap and font-awesome in master.css. Closes #49
+
 ### 0.4.4
 (released 06/02/2014)
 
