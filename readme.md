@@ -18,7 +18,7 @@ Contributing
 
 Install [vagrant](http://www.vagrantup.com/) (don't forget about [virtualbox](https://www.virtualbox.org/)), and run `vagrant up`. This will automatically provision a virtual machine with all the necessary dependencies necessary to properly test the tool.
 
-LFA has two separate test suites: one deals with the build tool, the other deals with the functionality of the generated textbooks.
+LFA has two separate test suites: one deals with the build tool, the other deals with the functionality and visuals of the generated textbooks.
 
 The build tool tests are located in `test/` and can be run either through `mocha` (you'll have to install it globally) or by running `npm test` in the project root folder. Reading through `test.coffee` is also a good way to get a feel for what we expect the tool to be able to do; like compiling, moving files from one folder to the other, generating a table of contents from a particular folder structure and so on.
 
