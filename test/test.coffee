@@ -9,7 +9,7 @@ run = require('child_process').exec
 root = __dirname
 basic_root = path.join root, 'basic'
 output_folder = '_build'
-reasonable_compile_time = 1.0
+reasonable_compile_time = 5.0
 
 files_exist = (test_path, files) ->
   for file in files
@@ -32,13 +32,9 @@ describe 'command', ->
     it 'should compile files to ' + output_folder, ->
       fs.readdirSync(path.join(basic_root, output_folder)).should.have.lengthOf(4)
 
-    # it 'should minify all css and javascript', ->
-    #   js_content = fs.readFileSync path.join(basic_root, output_folder + '/js/main.js'), 'utf8'
-    #   js_content.should.not.match /\n/
-    # 
-    # it 'should compile all files to ' + output_folder, ->
-    #   css_content = fs.readFileSync path.join(basic_root, output_folder + '/css/master.css'), 'utf8'
-    #   css_content.should.not.match /\n/
+    it 'should minify javascript', ->
+      js_content = fs.readFileSync path.join(basic_root, output_folder + '/js/templates/main.js'), 'utf8'
+      js_content.should.not.match /\n/
   
     it 'and clean should destroy the ' + output_folder + ' folder', ->
       run "cd \"#{basic_root}\"; ../../bin/lfa clean", ->
@@ -120,7 +116,7 @@ describe 'compiler', ->
     it 'should compile at a reasonable pace', (done) ->
       run "cd \"#{basic_root}\"; time ../../bin/lfa compile --no-compress", (error, stdout, stderr) ->
         wallTime = parseFloat(stderr.split('m').slice(0, 2)[1].split('s')[0])
-        # wallTime.should.be.below(reasonable_compile_time)
+        wallTime.should.be.below(reasonable_compile_time)
         console.log wallTime * 1000 + 'ms'
         done()
       
