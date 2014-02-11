@@ -3,6 +3,11 @@
 var width = 0;
 
 casper.start('test/projects/ux/_build/index.html')
+
+.waitForSelector('#content', function() {
+  this.echo('Content loaded.');
+})
+
 .then(function() {
   width = this.evaluate(function () {
     return window.innerWidth;
