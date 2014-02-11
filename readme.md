@@ -20,9 +20,9 @@ Install [vagrant](http://www.vagrantup.com/) (don't forget about [virtualbox](ht
 
 LFA has two separate test suites: one deals with the build tool, the other deals with the functionality and visuals of the generated textbooks.
 
-The build tool tests are located in `test/` and can be run either through `mocha` (you'll have to install it globally) or by running `npm test` in the project root folder. Reading through `test.coffee` is also a good way to get a feel for what we expect the tool to be able to do; like compiling, moving files from one folder to the other, generating a table of contents from a particular folder structure and so on.
+The build tool tests are located in `/vagrant/test/` and can be run either through `mocha` (you'll have to install it globally) or by running `npm test` in the project root folder. Reading through `test.coffee` is also a good way to get a feel for what we expect the tool to be able to do; like compiling, moving files from one folder to the other, generating a table of contents from a particular folder structure and so on.
 
-The textbook tests are located in `patterns/test/` and run through the same `npm test` command, but this time from the `patterns/` folder. It's a PhantomCSS test suite that runs a headless Chrome browser within the Ubuntu virtual machine in vagrant. It prods around the textbook, clicks various things and takes screenshots of the application in its varying states and screen sizes.
+The textbook tests are located in `/vagrant/patterns/test/` and run through the same `npm test` command, but this time from the `patterns/` folder. It's a PhantomCSS test suite that runs a headless Chrome browser within the Ubuntu virtual machine in vagrant. It prods around the textbook, clicks various things and takes screenshots of the application in its varying states and screen sizes.
 
 While it is possible to run the build tool tests from outside the vagrant virtual machine to get faster suite speeds, because the visual regression PhantomCSS tests take actual screenshots of the page they would be invalidated if you ran them from a different operating system with different font rendering.
 
