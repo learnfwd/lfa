@@ -2,6 +2,19 @@
 html, body
   height: 100%
   width: 100%
+  
+  // Kerning!
+  // Current compatibility.
+  text-rendering: optimizeLegibility
+  font-feature-settings: "kern"
+
+  // Backwards compatibility.
+  -webkit-font-feature-settings: "kern"
+  -moz-font-feature-settings: "kern"
+  -moz-font-feature-settings: "kern=1"
+
+  // Forwards compatibility.
+  font-kerning: normal
 
 // Special rules for Apple iOS devices.
 html.appleios body
