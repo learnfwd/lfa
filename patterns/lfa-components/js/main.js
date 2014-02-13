@@ -80,7 +80,16 @@ require([
   App.router = new Router();
   Backbone.history.start();
   
-  // Execute textbook-specific javascript, if it exists.
-  require(['../../js/main']);
+  var mainjs = null;
+  
+  require(['../../js/main'], function(foo) {
+    mainjs = foo;
+    if (typeof mainjs === 'function') { mainjs(); }
+  });
+  
+  App.book.on('render', function() {
+    // Execute textbook-specific javascript, if it exists, on every re-render.
+    if (typeof mainjs === 'function') { mainjs(); }
+  });
 });
 
