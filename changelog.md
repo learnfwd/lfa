@@ -1,3 +1,8 @@
+### 0.4.6
+(released 13/02/2014)
+
+- textbook `main.js` will now refresh when navigating. Closes #52
+
 ### 0.4.5
 (released 07/02/2014)
 
