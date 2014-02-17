@@ -1,5 +1,10 @@
+### 0.4.8
+(released 17/02/2014)
+
+- get some basic text selection working, since swipe gestures are disabled
+
 ### 0.4.7
-(released 13/02/2014)
+(released 17/02/2014)
 
 - `render` event was triggering before the actual html could load, closes #52 for real this time
 
