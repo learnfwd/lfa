@@ -1,3 +1,8 @@
+### 0.4.7
+(released 13/02/2014)
+
+- `render` event was triggering before the actual html could load, closes #52 for real this time
+
 ### 0.4.6
 (released 13/02/2014)
 
