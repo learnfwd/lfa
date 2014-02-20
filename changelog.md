@@ -1,3 +1,8 @@
+### 0.4.9
+(released 20/02/2014)
+
+- add option to include extra mixins on a per project basis
+
 ### 0.4.8
 (released 17/02/2014)
 
