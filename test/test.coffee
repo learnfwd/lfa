@@ -212,3 +212,18 @@ describe 'table of contents', ->
       content.should.match(/You have learned/)
       content.should.match(/Corrosion of metals/)
 
+describe 'mixins', ->
+  test_path = path.join root, './project-mixins'
+
+  before (done) ->
+    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
+      done()
+  
+  after ->
+    shell.rm '-rf', path.join(test_path, output_folder)
+  
+  describe 'projects can have their own special mixins', ->
+    it 'can call custom_mixin to output lorem ipsum', ->
+      content = fs.readFileSync path.join(test_path, output_folder + '/js/templates/mixins.js'), 'utf8'
+      content.should.match(/Customus mixinus dolor/)
+      
