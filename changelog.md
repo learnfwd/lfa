@@ -1,3 +1,8 @@
+### 0.4.10
+(released 21/02/2014)
+
+- fix compile with compression; it was breaking the main functionality
+
 ### 0.4.9
 (released 20/02/2014)
 
