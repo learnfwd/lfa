@@ -1,3 +1,8 @@
+### 0.4.11
+(released 28/02/2014)
+
+- hopefully fix some windows related issues. Closes #62
+
 ### 0.4.10
 (released 21/02/2014)
 
