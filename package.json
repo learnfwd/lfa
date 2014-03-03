@@ -48,7 +48,7 @@
     "mocha": "latest",
     "should": "latest",
     "express": "latest",
-    "jade": "latest",
+    "jade": "1.1.5",
     "open": "latest",
     "colors": "latest",
     "stylus": "latest"
