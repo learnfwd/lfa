@@ -1,3 +1,9 @@
+### 0.4.12
+(released 10/03/2014)
+
+- new `lfa update` command. Thanks, @paulbalogh!
+- added basic toc chapter folding; not that pretty, but at least it works
+
 ### 0.4.11
 (released 28/02/2014)
 
