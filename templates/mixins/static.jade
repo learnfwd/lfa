@@ -30,15 +30,22 @@ mixin toc(chapters)
   ul
     each chapter in chapters
       li
+        - var hasChildren = (chapter.children && chapter.children.length);
         if chapter.locals.subtitle
           a.subtitled(href="#book/#{chapter.url}")
             span.title= chapter.locals.title
             span.subtitle= chapter.locals.subtitle
+            
+            if hasChildren
+              .btn.fold-chapter: i.fa.fa-chevron-down.fa-fw
         else
           a(href="#book/#{chapter.url}")
             span.title= chapter.locals.title
+            
+            if hasChildren
+              .btn.fold-chapter: i.fa.fa-chevron-down.fa-fw
         
-        if chapter.children && chapter.children.length
+        if hasChildren
           +toc(chapter.children)
 
 mixin youtube(url)
