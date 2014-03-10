@@ -25,6 +25,13 @@ casper.start('test/projects/ux/_build/index.html')
 })
 
 .then(function() {
+  // leftbar_fold_chapter: Close a chapter and verify that it hides its children.
+  casper.click('#leftbar > ul > li:nth-child(1) > a > .btn');
+  
+  phantomcss.screenshot('#leftbar', 'leftbar_fold_chapter');
+})
+
+.then(function() {
   // leftbar_navigate: Navigate somewhere else; check if text changed and if
   // table of contents successfully hid away on the appropriate devices.
   casper.click('#leftbar > ul > li:nth-child(2) > a');
