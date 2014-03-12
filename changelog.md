@@ -1,3 +1,8 @@
+### 0.4.13
+(released 12/03/2014)
+
+- found out I accidentally wrecked performance for everyone when I included some extra debugging instrumentation in watch. Oops!
+
 ### 0.4.12
 (released 10/03/2014)
 
