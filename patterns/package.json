@@ -2,13 +2,9 @@
   "dependencies": {
     "grunt": "~0.4.2",
     "phantomjs": "~1.9.2-5",
-    "grunt-phantomcss": "git+https://github.com/lazd/grunt-phantomcss.git"
+    "grunt-phantomcss": "~0.2.3"
   },
   "scripts": {
     "test": "./test-css"
-  },
-  "devDependencies": {
-    "grunt-shell": "~0.6.3",
-    "grunt-contrib-watch": "~0.5.3"
   }
 }

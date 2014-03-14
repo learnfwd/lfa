@@ -33,25 +33,10 @@ module.exports = function(grunt) {
         },
         src: ['test/ux.js']
       }
-    },
-    watch: {
-      everything: {
-        files: [
-          'lfa-*/**/*.*',
-          'test/project/css/**/*.*',
-          'test/project/text/**/*.*',
-          'test/project/js/**/*.*'
-        ],
-        tasks: ['compile'],
-        options: {
-          spawn: true
-        },
-      }
     }
   });
 
   grunt.loadNpmTasks('grunt-phantomcss');
-  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('default', ['phantomcss']);
 };
