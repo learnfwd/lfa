@@ -16,6 +16,20 @@ Vagrant.configure("2") do |config|
   
   
   config.vm.provision "shell" do |s|
-    s.inline = 'sudo apt-get install -y git-core libfontconfig1 && sudo npm install -g grunt-cli && cd /vagrant/ && sudo -H -u vagrant bash -c "npm install" && cd patterns && sudo -H -u vagrant bash -c "npm install"'
+    cmds = []
+    
+    cmds.push 'sudo apt-get install -y git-core libfontconfig1'
+    
+    cmds.push 'sudo -H npm install -g grunt-cli'
+    
+    cmds.push 'cd /vagrant/'
+    cmds.push 'sudo -H -u vagrant bash -c "npm install"'
+    
+    cmds.push 'cd patterns'
+    cmds.push 'sudo -H -u vagrant bash -c "npm install"'
+    
+    cmds.push '( sudo -H -u vagrant bash -c "echo \"cd /vagrant/\" >> ~/.profile" )'
+    
+    s.inline = cmds.join(' && ')
   end
 end
