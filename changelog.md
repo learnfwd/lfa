@@ -1,3 +1,8 @@
+### 0.4.14
+(released 16/03/2014)
+
+- add [brand new](http://visuellegedanken.de/2014-03-13/viewport-meta-tag-minimal-ui/) `minimal-ui` viewport meta tag, because it seems like a no-brainer
+
 ### 0.4.13
 (released 12/03/2014)
 
