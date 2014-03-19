@@ -1,3 +1,8 @@
+### 0.4.15
+(released 19/03/2014)
+
+- bugfix; assets with `text` in their filenames were being renamed on the way out into the `_build` folder.
+
 ### 0.4.14
 (released 16/03/2014)
 
