@@ -1,3 +1,8 @@
+### 0.4.16
+(released 24/03/2014)
+
+- initial working highlight proof of concept. still needs notes, and some additional polish
+
 ### 0.4.15
 (released 19/03/2014)
 
