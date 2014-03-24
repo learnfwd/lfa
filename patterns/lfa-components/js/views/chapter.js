@@ -2,14 +2,37 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'store',
   'hammer',
   'bootstrap',
   'stacktable',
   'nlform',
   'templates',
   'rangytext'
-], function($, _, Backbone, Hammer, Bootstrap, Stacktable, NLForm, Templates, rangy) {
+], function($, _, Backbone, Store, Hammer, Bootstrap, Stacktable, NLForm, Templates, rangy) {
   'use strict';
+  
+  var Highlight = Backbone.Model.extend({
+    defaults: {
+      chapter: '',
+      value: ''
+    },
+    
+    toggle: function () {
+      this.save({
+        completed: !this.get('value')
+      });
+    }
+  });
+  
+  var HighlightsCollection = Backbone.Collection.extend({
+    model: Highlight,
+    localStorage: new Store('lfa-highlights')
+  });
+  
+  var Highlights = new HighlightsCollection();
+  // Fetch from localStorage.
+  Highlights.fetch();
   
   var ChapterView = Backbone.View.extend({
     initialize: function(options) {
@@ -60,9 +83,27 @@ define([
           }
         }
       }));
+      
+      var localHighlights = Highlights.findWhere({ chapter: chapter });
+      
+      if (!localHighlights) {
+        console.log('noep');
+        var chapterDefault = new Highlight({ chapter: chapter, value: '' });
+        Highlights.add(chapterDefault);
+        chapterDefault.save();
+      } else {
+        var value = localHighlights.get('value');
+        if (value !== '') {
+          highlighter.deserialize(value);
+        }
+      }
 
       function highlightSelectedText(e) {
         highlighter.highlightSelection('highlight');
+        
+        var serializedHighlights = highlighter.serialize();
+        
+        localHighlights.set('value', serializedHighlights).save();
       }
 
       function noteSelectedText(e) {
