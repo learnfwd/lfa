@@ -11,6 +11,14 @@ require.config({
     stacktable:   'lib/stacktable',
     headroom:     'lib/headroom.min',
     
+    // Rangy and its fat suite of deps.
+    rangycore:    'lib/rangy/rangy-core',
+    rangycss:     'lib/rangy/rangy-cssclassapplier',
+    rangyhilite:  'lib/rangy/rangy-highlighter',
+    rangyselect:  'lib/rangy/rangy-selectionsaverestore',
+    rangyserial:  'lib/rangy/rangy-serializer',
+    rangytext:    'lib/rangy/rangy-textrange',
+    
     // Backbone and accompanying libs.
     backbone:     'lib/backbone.min',
     store:        'lib/backbone.localStorage.min',
@@ -34,6 +42,13 @@ require.config({
     nlform:       { exports: 'NLForm' },
     stacktable:   { exports: 'Stacktable', deps: ['jquery'] },
     headroom:     { exports: 'Headroom' },
+    
+    rangycore:    { exports: 'rangycore' },
+    rangycss:     { exports: 'rangycss', deps: ['rangycore'] },
+    rangyhilite:  { exports: 'rangyhilite', deps: ['rangycss'] },
+    rangyselect:  { exports: 'rangyselect', deps: ['rangyhilite'] },
+    rangyserial:  { exports: 'rangyserial', deps: ['rangyselect'] },
+    rangytext:    { exports: 'rangy', deps: ['rangyserial'] },
     
     backbone:     { exports: 'Backbone', deps: ['underscore', 'jquery'] },
     store:        { exports: 'Store', deps: ['backbone'] },

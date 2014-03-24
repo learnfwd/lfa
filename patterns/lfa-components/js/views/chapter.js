@@ -6,8 +6,9 @@ define([
   'bootstrap',
   'stacktable',
   'nlform',
-  'templates'
-], function($, _, Backbone, Hammer, Bootstrap, Stacktable, NLForm, Templates) {
+  'templates',
+  'rangytext'
+], function($, _, Backbone, Hammer, Bootstrap, Stacktable, NLForm, Templates, rangy) {
   'use strict';
   
   var ChapterView = Backbone.View.extend({
@@ -21,6 +22,94 @@ define([
       window.App.book.trigger('render');
       
       // After the content loads, juice it up with some javascript.
+      
+      // TODO: refactor this into its own Backbone module.
+      
+      var highlighter;
+
+      rangy.init();
+
+      highlighter = rangy.createHighlighter();
+
+      highlighter.addClassApplier(rangy.createCssClassApplier('highlight', {
+        ignoreWhiteSpace: true,
+        elementTagName: 'a',
+        elementProperties: {
+          href: '#',
+          onclick: function() {
+            var highlight = highlighter.getHighlightForElement(this);
+            if (window.confirm('Delete this highlight?')) {
+              highlighter.removeHighlights([highlight]);
+            }
+            return false;
+          }
+        }
+      }));
+
+      highlighter.addClassApplier(rangy.createCssClassApplier('note', {
+        ignoreWhiteSpace: true,
+        elementTagName: 'a',
+        elementProperties: {
+          href: '#',
+          onclick: function() {
+            var highlight = highlighter.getHighlightForElement(this);
+            if (window.confirm('Delete this note?')) {
+              highlighter.removeHighlights([highlight]);
+            }
+            return false;
+          }
+        }
+      }));
+
+      function highlightSelectedText(e) {
+        highlighter.highlightSelection('highlight');
+      }
+
+      function noteSelectedText(e) {
+        $('#selectionbar').addClass('add-note');
+        highlighter.highlightSelection('note');
+  
+        $('#selectionbar .note-area').focus();
+      }
+
+      function removeHighlightFromSelectedText(e) {
+        highlighter.unhighlightSelection();
+      }
+
+      $('#selectionbar .highlight').on('mousedown touchstart', highlightSelectedText);
+      $('#selectionbar .add-note').click(noteSelectedText);
+      $('#selectionbar .remove-selection').click(removeHighlightFromSelectedText);
+
+      $('#selectionbar .cancel-note, #selectionbar .confirm-note').click(function(e) {
+        $('#selectionbar').removeClass('add-note');
+      });
+
+      $('#content').on('mouseup touchend', function() {
+        if (window.getSelection().isCollapsed) {
+          $('#selectionbar').removeClass('active add-note');
+        } else {
+          var coords = window.getSelection().getRangeAt(0).getClientRects()[0];
+    
+          var ohboy = window.getSelection().getRangeAt(0).getClientRects()[0].top + $(window).scrollTop();
+    
+          if (window.innerWidth > 1199) {
+      
+            $('#selectionbar').css('top', ohboy - 30 + 'px');
+          }
+    
+          $('#selectionbar').addClass('active');
+        }
+      });
+
+      document.onselectionchange = function() {
+        var selection = {};
+        selection.base = window.getSelection().baseOffset;
+        selection.extent = window.getSelection().extentOffset;
+  
+        if (selection.base === selection.extent && !$('#selectionbar').hasClass('add-note')) {
+          $('#selectionbar').removeClass('active');
+        }
+      };
       
       // Enable responsive tables.
       this.$('table.table-responsive').stacktable({
