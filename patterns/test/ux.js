@@ -4,7 +4,8 @@ var width = 0;
 
 casper.start('test/projects/ux/_build/index.html')
 
-.waitForSelector('#content', function() {
+.waitForUrl(/book/, function() {
+  // Give JavaScript enough time to run by waiting until the URL changes.
   this.echo('Content loaded.');
 })
 
@@ -84,6 +85,19 @@ casper.start('test/projects/ux/_build/index.html')
   casper.click('#search-results > li:first-child > a');
   
   phantomcss.screenshot('#textbook article', 'rightbar_search_navigate');
+})
+
+.then(function() {
+  // selectionbar_basic: Check if the selectionbar is hidden at first, and becomes
+  // visible once you select something.
+  phantomcss.screenshot('#selectionbar', 'selectionbar_basic');
+  
+  // Double click a random word to select it.
+  this.mouse.doubleclick('p.text-left');
+  // Trigger the mouseup event because casper is dum.
+  this.mouse.up('#content');
+
+  phantomcss.screenshot('#selectionbar', 'selectionbar_basic');
 })
 
 ;
