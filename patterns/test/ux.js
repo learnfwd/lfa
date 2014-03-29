@@ -13,9 +13,6 @@ casper.start('test/projects/ux/_build/index.html')
   width = this.evaluate(function () {
     return window.innerWidth;
   });
-  
-  // basic_body: Screenshot the body.
-  phantomcss.screenshot('body', 1, false, 'basic_body');
 })
 
 .then(function() {
@@ -84,7 +81,7 @@ casper.start('test/projects/ux/_build/index.html')
   casper.fillSelectors('#search', { 'input.search': 'Lorem', });
   casper.click('#search-results > li:first-child > a');
   
-  phantomcss.screenshot('#textbook p.text-left', 1, false, 'rightbar_search_navigate');
+  phantomcss.screenshot('#textbook p.text-center', 1, false, 'rightbar_search_navigate');
 })
 
 .then(function() {
@@ -111,6 +108,23 @@ casper.start('test/projects/ux/_build/index.html')
   });
   
   phantomcss.screenshot('#selectionbar .buttons', 1, false, 'selectionbar_shown');
+})
+
+.then(function() {
+  // selectionbar_highlight: Push the highlight button. Check if the paragraph becomes
+  // highlighted.
+  
+  casper.click('#selectionbar .btn.highlight');
+  
+  phantomcss.screenshot('p.text-left', 1, false, 'selectionbar_highlight');
+})
+
+.then(function() {
+  // selectionbar_remove: Remove the highlight.
+  
+  casper.click('#selectionbar .btn.remove-selection');
+  
+  phantomcss.screenshot('p.text-left', 1, false, 'selectionbar_remove');
 })
 
 ;
