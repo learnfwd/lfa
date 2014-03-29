@@ -84,7 +84,7 @@ casper.start('test/projects/ux/_build/index.html')
   casper.fillSelectors('#search', { 'input.search': 'Lorem', });
   casper.click('#search-results > li:first-child > a');
   
-  phantomcss.screenshot('#textbook article', 1, false, 'rightbar_search_navigate');
+  phantomcss.screenshot('#textbook p.text-left', 1, false, 'rightbar_search_navigate');
 })
 
 .then(function() {
