@@ -1,9 +1,8 @@
 animated-transitions(duration)
-  ease-sidebar ?= cubic-bezier(.10, .70, .20, 1)
-
   duration-hover ?= duration / 3
   duration-sidebar ?= duration * 1.5
-
+  duration-selectionbar ?= duration * 1.3
+  
   .menu
     transition: transform duration ease, opacity duration ease
 
@@ -33,6 +32,15 @@ animated-transitions(duration)
 
   #animations-toggle
     transition: background duration-hover ease
+  
+  #selectionbar
+    transition: transform duration-selectionbar stripe-bezier, opacity duration-selectionbar ease
+    
+    .buttons .btn-group
+      transition: transform duration-selectionbar stripe-bezier
+    
+    .note-area
+      transition: transform duration-selectionbar stripe-bezier
 
 // 0 (almost) duration transitions by default.
 body
