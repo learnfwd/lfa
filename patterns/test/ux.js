@@ -84,47 +84,4 @@ casper.start('test/projects/ux/_build/index.html')
   phantomcss.screenshot('#textbook p.text-center', 1, false, 'rightbar_search_navigate');
 })
 
-.then(function() {
-  // selectionbar_hidden: Check if the selectionbar is hidden at first.
-  phantomcss.screenshot('#selectionbar .buttons', 1, false, 'selectionbar_hidden');
-})
-
-.then(function() {
-  // selectionbar_shown: Check if the selectionbar becomes visible once
-  // you select something.
-  
-  // Really convoluted way to select something because I couldn't convince the
-  // casper.mouse APIs to cooperate.
-  this.evaluate(function() {
-    var text = document.querySelector('p.text-left');
-    
-    var selection = window.getSelection();
-    var range = document.createRange();
-    range.selectNodeContents(text);
-    selection.removeAllRanges();
-    selection.addRange(range);
-    
-    $('#content').mouseup();
-  });
-  
-  phantomcss.screenshot('#selectionbar .buttons', 1, false, 'selectionbar_shown');
-})
-
-.then(function() {
-  // selectionbar_highlight: Push the highlight button. Check if the paragraph becomes
-  // highlighted.
-  
-  casper.click('#selectionbar .btn.highlight');
-  
-  phantomcss.screenshot('p.text-left', 1, false, 'selectionbar_highlight');
-})
-
-.then(function() {
-  // selectionbar_remove: Remove the highlight.
-  
-  casper.click('#selectionbar .btn.remove-selection');
-  
-  phantomcss.screenshot('p.text-left', 1, false, 'selectionbar_remove');
-})
-
 ;

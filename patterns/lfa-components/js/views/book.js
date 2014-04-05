@@ -9,9 +9,8 @@ define([
   'views/leftbar',
   'views/rightbar',
   'views/chapter',
-  'views/menu',
-  'views/selectionbar'
-], function($, _, Backbone, Store, Modernizr, FastClick, LeftbarView, RightbarView, ChapterView, MenuView, SelectionbarView) {
+  'views/menu'
+], function($, _, Backbone, Store, Modernizr, FastClick, LeftbarView, RightbarView, ChapterView, MenuView) {
   'use strict';
   
   var Setting = Backbone.Model.extend({
@@ -83,11 +82,6 @@ define([
       
       this.menu = new MenuView({
         el: this.$('.menu'),
-        parent: this
-      });
-      
-      this.selectionbar = new SelectionbarView({
-        el: this.$('#selectionbar'),
         parent: this
       });
     },
