@@ -1,3 +1,8 @@
+### 0.4.17
+(released 05/04/2014)
+
+- remove selectionbar proof of concept; stash code away for a while to focus on more important features.
+
 ### 0.4.16
 (released 24/03/2014)
 
