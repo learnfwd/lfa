@@ -1,3 +1,13 @@
+### 0.4.19
+(released 06/04/2014)
+
+- rethink `js/main.js` include; no longer needs return function.
+
+### 0.4.18
+(released 05/04/2014)
+
+- interim build with some trial functions
+
 ### 0.4.17
 (released 05/04/2014)
 
