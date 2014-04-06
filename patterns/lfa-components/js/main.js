@@ -93,18 +93,11 @@ require([
   App.book = new BookView({ el: $('body') });
   
   App.router = new Router();
-  Backbone.history.start();
   
-  var mainjs = null;
-  
-  require(['../../js/main'], function(foo) {
-    mainjs = foo;
-    if (typeof mainjs === 'function') { mainjs(); }
-  });
-  
-  App.book.on('render', function() {
-    // Execute textbook-specific javascript, if it exists, on every re-render.
-    if (typeof mainjs === 'function') { mainjs(); }
+  // Execute textbook-specific javascript, if it exists.
+  require(['../../js/main'], function() {
+    // Then, start up the textbook.
+    Backbone.history.start();
   });
 });
 
