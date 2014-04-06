@@ -17,8 +17,6 @@ define([
     render: function(chapter) {
       this.$el.html(Templates[chapter]);
       
-      window.App.book.currentChapter = chapter;
-      
       window.App.book.trigger('render');
       
       // After the content loads, juice it up with some javascript.
