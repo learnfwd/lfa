@@ -1,3 +1,8 @@
+### 0.4.20
+(released 14/04/2014)
+
+- Add `include` functionality back to jade templates.
+
 ### 0.4.19
 (released 06/04/2014)
 
