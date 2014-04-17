@@ -1,3 +1,8 @@
+### 0.4.21
+(released 17/04/2014)
+
+- Add next/previous buttons to bottom of +article.
+
 ### 0.4.20
 (released 14/04/2014)
 
