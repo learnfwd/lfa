@@ -48,8 +48,8 @@ define([
       previous = $(previous).children('a').prop('href');
       
       // Set them in HTML.
-      $('#btn-previous').prop('href', previous).html(nextTitle);
-      $('#btn-next').prop('href', next).html(previousTitle);
+      $('#btn-previous').prop('href', previous).html(previousTitle);
+      $('#btn-next').prop('href', next).html(nextTitle);
       
       // After the content loads, juice it up with some javascript.
       

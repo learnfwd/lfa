@@ -1,3 +1,8 @@
+### 0.4.22
+(released 17/04/2014)
+
+- Silly error. Inverted button titles.
+
 ### 0.4.21
 (released 17/04/2014)
 
