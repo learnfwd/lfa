@@ -1,3 +1,8 @@
+### 0.4.24
+(released 04/05/2014)
+
+- Add sketchpad mixin.
+
 ### 0.4.23
 (released 04/05/2014)
 

@@ -11,6 +11,8 @@ require.config({
     stacktable:   'lib/stacktable',
     headroom:     'lib/headroom.min',
     fluidbox:     'lib/fluidbox.min',
+    raphael:      'lib/raphael.min',
+    sketchpad:    'lib/raphael.sketchpad',
     
     // Rangy and its fat suite of deps.
     rangycore:    'lib/rangy/rangy-core',
@@ -44,6 +46,7 @@ require.config({
     stacktable:   { exports: 'Stacktable', deps: ['jquery'] },
     headroom:     { exports: 'Headroom' },
     fluidbox:     { exports: 'Fluidbox', deps: ['jquery'] },
+    sketchpad:    { exports: 'Sketchpad', deps: ['raphael'] },
     
     rangycore:    { exports: 'rangycore' },
     rangycss:     { exports: 'rangycss', deps: ['rangycore'] },

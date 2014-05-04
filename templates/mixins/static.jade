@@ -88,3 +88,25 @@ mixin modal(id, title)
 mixin lightbox(path)
   a.lightbox(href='#')
     +img(path)
+
+mixin draw(options)
+  - options = options || {};
+  - options.width = options.width || '';
+  - options.height = options.height || '';
+  - options.primaryColor = options.primaryColor || '#333';
+  - options.secondaryColor = options.secondaryColor || '#3388CD';
+  - options.backgroundColor = options.backgroundColor || '#eee';
+  
+  .sketchpad(data-width="#{options.width}", data-height="#{options.height}", data-primary-color="#{options.primaryColor}", data-secondary-color="#{options.secondaryColor}", data-background-color="#{options.backgroundColor}")
+    .editor
+    .row
+      .col-xs-12.col-sm-6
+        .btn-group.btn-group-justified.btn-group-lg
+          .btn.btn-default.btn-color-switcher(style="color: #{options.secondaryColor};"): i.fa.fa-pencil.fa-fw
+          .btn.btn-default.btn-eraser: i.fa.fa-eraser.fa-fw
+          .btn.btn-default.btn-destroy: .text-danger: i.fa.fa-trash-o.fa-fw
+      .col-xs-12.col-sm-6
+        .btn-group.btn-group-justified.btn-group-lg
+          .btn.btn-default.btn-undo: i.fa.fa-rotate-left.fa-fw
+          .btn.btn-default.btn-redo: i.fa.fa-rotate-right.fa-fw
+          .btn.btn-default.btn-save: .text-success: i.fa.fa-cloud-download.fa-fw

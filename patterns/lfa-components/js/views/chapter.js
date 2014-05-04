@@ -6,8 +6,10 @@ define([
   'stacktable',
   'nlform',
   'templates',
-  'fluidbox'
-], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Templates, Fluidbox) {
+  'fluidbox',
+  'raphael',
+  'sketchpad'
+], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Templates, Fluidbox, Raphael, Sketchpad) {
   'use strict';
   
   var ChapterView = Backbone.View.extend({
@@ -97,7 +99,79 @@ define([
         });
       }
       
+      // Enable lightboxes.
       this.$('a.lightbox').fluidbox();
+      
+      // Enable sketchpads.
+      $('.sketchpad').each(function(index, sketch) {
+        var $sketch = $(sketch);
+        var $editor = $sketch.find('.editor');
+        
+        var width = $sketch.data('width') || $editor.parent().width();
+        var height = $sketch.data('height') || width;
+        var primaryColor = $sketch.data('primary-color');
+        var secondaryColor = $sketch.data('secondary-color');
+        var backgroundColor = $sketch.data('background-color');
+        
+        var paper = new Raphael($editor[0], width, height);
+        var sketchpad = Raphael.sketchpad(paper);
+        sketchpad.pen().color(primaryColor);
+        
+        $editor.children('svg').css('background-color', backgroundColor);
+        
+        var $colorSwitcher = $sketch.find('.btn-color-switcher');
+        var $eraser = $sketch.find('.btn-eraser');
+        var $undo = $sketch.find('.btn-undo');
+        var $redo = $sketch.find('.btn-redo');
+        var $destroy = $sketch.find('.btn-destroy');
+        var $save = $sketch.find('.btn-save');
+
+        $colorSwitcher.on('click', function() {
+          $eraser.removeClass('active');
+          sketchpad.pen().width(5);
+        
+          if ($(this).hasClass('active')) {
+            sketchpad.pen().color(primaryColor);
+            $(this).removeClass('active');
+          } else {
+            sketchpad.pen().color(secondaryColor);
+            $(this).addClass('active');
+          }
+        });
+        
+        $eraser.on('click', function() {
+          if ($(this).hasClass('active')) {
+            sketchpad.pen().width(5);
+            if ($colorSwitcher.hasClass('active')) {
+              sketchpad.pen().color(secondaryColor);
+            } else {
+              sketchpad.pen().color(primaryColor);
+            }
+            $(this).removeClass('active');
+          } else {
+            sketchpad.pen().color(backgroundColor);
+            sketchpad.pen().width(25);
+            $(this).addClass('active');
+          }
+        });
+        
+        $undo.on('click', function() {
+          sketchpad.undo();
+        });
+        
+        $redo.on('click', function() {
+          sketchpad.redo();
+        });
+        
+        $destroy.on('click', function() {
+          sketchpad.clear();
+        });
+        
+        $save.on('click', function() {
+          console.log(sketchpad.json());
+        });
+      });
+      
     }
   });
   
