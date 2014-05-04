@@ -85,3 +85,6 @@ mixin modal(id, title)
               +modal("my-modal", "A title")
                 p Content.
 
+mixin lightbox(path)
+  a.lightbox(href='#')
+    +img(path)

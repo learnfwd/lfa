@@ -10,6 +10,7 @@ require.config({
     nlform:       'lib/nl-form',
     stacktable:   'lib/stacktable',
     headroom:     'lib/headroom.min',
+    fluidbox:     'lib/fluidbox.min',
     
     // Rangy and its fat suite of deps.
     rangycore:    'lib/rangy/rangy-core',
@@ -42,6 +43,7 @@ require.config({
     nlform:       { exports: 'NLForm' },
     stacktable:   { exports: 'Stacktable', deps: ['jquery'] },
     headroom:     { exports: 'Headroom' },
+    fluidbox:     { exports: 'Fluidbox', deps: ['jquery'] },
     
     rangycore:    { exports: 'rangycore' },
     rangycss:     { exports: 'rangycss', deps: ['rangycore'] },

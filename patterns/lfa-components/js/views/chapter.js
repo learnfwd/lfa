@@ -6,7 +6,8 @@ define([
   'stacktable',
   'nlform',
   'templates',
-], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Templates) {
+  'fluidbox'
+], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Templates, Fluidbox) {
   'use strict';
   
   var ChapterView = Backbone.View.extend({
@@ -95,6 +96,8 @@ define([
           return $(this).addClass('fade');
         });
       }
+      
+      this.$('a.lightbox').fluidbox();
     }
   });
   

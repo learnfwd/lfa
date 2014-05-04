@@ -1,3 +1,8 @@
+### 0.4.23
+(released 04/05/2014)
+
+- Add lightbox mixin.
+
 ### 0.4.22
 (released 17/04/2014)
 
