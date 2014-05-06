@@ -1,3 +1,8 @@
+### 0.4.25
+(released 06/05/2014)
+
+- Update lightbox UX.
+
 ### 0.4.24
 (released 04/05/2014)
 
