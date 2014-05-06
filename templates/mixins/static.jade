@@ -85,9 +85,10 @@ mixin modal(id, title)
               +modal("my-modal", "A title")
                 p Content.
 
-mixin lightbox(path)
-  a.lightbox(href='#')
-    +img(path)
+mixin lightbox(path, largerPath)
+  - var largerPath = largerPath || '#';
+  a.lightbox(href='#{largerPath}')
+    img(src="#{path}", alt="")
 
 mixin draw(options)
   - options = options || {};
