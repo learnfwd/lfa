@@ -129,12 +129,14 @@ define([
         $colorSwitcher.on('click', function() {
           $eraser.removeClass('active');
           sketchpad.pen().width(5);
-        
+
           if ($(this).hasClass('active')) {
             sketchpad.pen().color(primaryColor);
+            $(this).css('color', primaryColor);
             $(this).removeClass('active');
           } else {
             sketchpad.pen().color(secondaryColor);
+            $(this).css('color', secondaryColor);
             $(this).addClass('active');
           }
         });
