@@ -1,3 +1,8 @@
+### 0.4.26
+(released 07/05/2014)
+
+- Add option to only target a specific folder for compiling.
+
 ### 0.4.25
 (released 06/05/2014)
 
