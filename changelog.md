@@ -1,3 +1,8 @@
+### 0.4.27
+(released 09/05/2014)
+
+- Add close button to lightbox. Somehow forgot about this code.
+
 ### 0.4.26
 (released 07/05/2014)
 
