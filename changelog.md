@@ -1,3 +1,8 @@
+### 0.4.28
+(released 14/05/2014)
+
+- Add +minitoc() mixin.
+
 ### 0.4.27
 (released 09/05/2014)
 
