@@ -38,18 +38,21 @@ mixin toc(chapters)
           a.subtitled(href="#book/#{chapter.url}")
             span.title= chapter.locals.title
             span.subtitle= chapter.locals.subtitle
-            
-            if hasChildren
-              .btn.fold-chapter: i.fa.fa-chevron-down.fa-fw
         else
           a(href="#book/#{chapter.url}")
             span.title= chapter.locals.title
-            
-            if hasChildren
-              .btn.fold-chapter: i.fa.fa-chevron-down.fa-fw
         
         if hasChildren
           +toc(chapter.children)
+
+//- +subtoc() generates a mini-toc from the current chapter that we're on,
+//- or a specified url.
+mixin subtoc(url)
+  //- Check if we're clientside.
+  if (window)
+    - var currentUrl = url || window.App.book.currentChapter;
+    - var chapter = window.App.tocFindByUrl[currentUrl];
+    +toc(chapter.children)
 
 mixin youtube(url)
   .video
