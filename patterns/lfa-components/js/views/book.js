@@ -5,12 +5,13 @@ define([
   'store',
   'modernizr',
   'fastclick',
+  'searchjson',
   
   'views/leftbar',
   'views/rightbar',
   'views/chapter',
   'views/menu'
-], function($, _, Backbone, Store, Modernizr, FastClick, LeftbarView, RightbarView, ChapterView, MenuView) {
+], function($, _, Backbone, Store, Modernizr, FastClick, SearchJSON, LeftbarView, RightbarView, ChapterView, MenuView) {
   'use strict';
   
   var Setting = Backbone.Model.extend({
@@ -46,6 +47,46 @@ define([
     html: $('html'),
     
     initialize: function() {
+      // Initialize/alias some helpful arrays and hashtables.
+      
+      // Alias the SearchJSON to our global namespace.
+      window.App.searchJSON = SearchJSON.pages;
+  
+      // Alias the TOC as well.
+      window.App.toc = SearchJSON.toc;
+
+      // App.tocUrlOrder is a sorted array that will tell you in what order the
+      // TOC chapters are supposed to be consumed.
+      window.App.tocUrlOrder = window.App.tocUrlOrder || [];
+
+      var getChildrenUrls = function(toc) {
+        var result = {};
+
+        for (var i = 0; i < toc.length; i++) {
+          if (toc[i].children.length) {
+            _.extend(
+              result,
+              getChildrenUrls(toc[i].children)
+            );
+          }
+          result[toc[i].url] = toc[i];
+          window.App.tocUrlOrder.push(toc[i].url);
+        }
+
+        return result;
+      };
+
+      // App.tocFindByUrl is a lookup table. It takes a url, and gives you the
+      // TOC object for that particular string. Example:
+      //   App.tocFindByUrl['ch01-01']
+      // This object will contain the following fields:
+      //   url (string)
+      //   children (array)
+      //   locals (object)
+      window.App.tocFindByUrl = window.App.tocFindByUrl || getChildrenUrls(App.toc);
+
+      window.App.tocUrlOrder.sort();
+      
       // Initialize FastClick. This removes the .3s delay in mobile webkit when clicking on anything.
       FastClick.attach(document.body);
       
