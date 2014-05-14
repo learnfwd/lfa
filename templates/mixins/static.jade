@@ -30,24 +30,24 @@ mixin widget(path)
   iframe(src="#{path}")
 
 mixin toc(chapters)
-  ul
+  ul.tableofcontents
     each chapter in chapters
       li
         - var hasChildren = (chapter.children && chapter.children.length);
         if chapter.locals.subtitle
-          a.subtitled(href="#book/#{chapter.url}")
+          a.subtitled(data-url="#{chapter.url}", href="#book/#{chapter.url}")
             span.title= chapter.locals.title
             span.subtitle= chapter.locals.subtitle
         else
-          a(href="#book/#{chapter.url}")
+          a(data-url="#{chapter.url}", href="#book/#{chapter.url}")
             span.title= chapter.locals.title
         
         if hasChildren
           +toc(chapter.children)
 
-//- +subtoc() generates a mini-toc from the current chapter that we're on,
+//- +minitoc() generates a mini-toc from the current chapter that we're on,
 //- or a specified url.
-mixin subtoc(url)
+mixin minitoc(url)
   //- Check if we're clientside.
   if (window)
     - var currentUrl = url || window.App.book.currentChapter;
