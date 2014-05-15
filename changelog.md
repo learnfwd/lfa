@@ -1,3 +1,8 @@
+### 0.4.29
+(released 15/05/2014)
+
+- Change TOC to have data-url attributes on <li>'s instead of <a>'s.
+
 ### 0.4.28
 (released 14/05/2014)
 
