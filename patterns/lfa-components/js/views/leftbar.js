@@ -13,10 +13,10 @@ define([
       // Execute the original SidebarView initializations.
       this.constructor.__super__.initialize.apply(this, [options]);
       
-      this.$('.fold-chapter').click(function(e) {
+      this.$('li').click(function(e) {
         e.preventDefault();
-        
-        $(this).parent().parent().toggleClass('fold');
+        console.log('click');
+        // $(this).toggleClass('fold');
       });
     },
     
