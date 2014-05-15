@@ -32,14 +32,14 @@ mixin widget(path)
 mixin toc(chapters)
   ul.tableofcontents
     each chapter in chapters
-      li
+      li(data-url="#{chapter.url}")
         - var hasChildren = (chapter.children && chapter.children.length);
         if chapter.locals.subtitle
-          a.subtitled(data-url="#{chapter.url}", href="#book/#{chapter.url}")
+          a.subtitled(href="#book/#{chapter.url}")
             span.title= chapter.locals.title
             span.subtitle= chapter.locals.subtitle
         else
-          a(data-url="#{chapter.url}", href="#book/#{chapter.url}")
+          a(href="#book/#{chapter.url}")
             span.title= chapter.locals.title
         
         if hasChildren
