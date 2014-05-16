@@ -1,18 +1,23 @@
 body
-  // The fixed top menu that contains the sidebar buttons.
-  .menu
+  // The fixed menus that contains the sidebar and navigation buttons.
+  .menu, .navigation-menu
     position: fixed
-    top: 0
     width: 100%
     z-index: 1000
     color: white
   
-    // Make the menu fade out when we scroll down.
+    // Make the menu fade out when we scroll down on desktops.
     &.pinned
       opacity: 1
 
     &.unpinned
       opacity: 0.1
+
+  .menu
+    top: 0
+  
+  .navigation-menu
+    bottom: 0
 
   // Fade the menu back in if we actually activate one of the toggles.
   &.leftbar-active .menu.unpinned
@@ -31,15 +36,25 @@ body
   
       &.unpinned
         transform: translate3d(0, -3em, 0)
+        
+    .navigation-menu
+      height: 3em
+      background: #222
+      
+      &.pinned
+        transform: translate3d(0, 0, 0)
+  
+      &.unpinned
+        transform: translate3d(0, 3em, 0)
   
     // Reposition the buttons so they're prettier.
-    #leftbar-toggle
+    #leftbar-toggle, #previous-chapter
       top: 0
       left: 0
       > i
         left: 12px
 
-    #rightbar-toggle
+    #rightbar-toggle, #next-chapter
       top: 0
       right: 0
       > i
@@ -48,3 +63,4 @@ body
     // Extra margin top to accomodate the menu.
     #content
       margin-top: 3em
+      margin-bottom: 3em

@@ -1,3 +1,8 @@
+### 0.4.33
+(released 16/05/2014)
+
+- Better UX for next/previous chapter buttons.
+
 ### 0.4.32
 (released 16/05/2014)
 

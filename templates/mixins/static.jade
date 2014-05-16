@@ -2,9 +2,6 @@ mixin article(title, subtitle)
   - if (!self) { locals.title = title; locals.subtitle = subtitle; }
   article
     block
-  .btn-group.btn-group-justified
-    a#btn-previous.btn.btn-default(href="#") Previous!
-    a#btn-next.btn.btn-default(href="#") Next!
 
 mixin section(title)
   - if (!self) { locals.sections = locals.sections || []; locals.sections.push(title); }

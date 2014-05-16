@@ -51,12 +51,10 @@ define([
 
       var nextUrl = window.App.tocUrlOrder[next],
         previousUrl = window.App.tocUrlOrder[previous];
-      var nextTitle = window.App.tocFindByUrl[nextUrl].locals.title,
-        previousTitle = window.App.tocFindByUrl[previousUrl].locals.title;
 
       // Set them in HTML.
-      $('#btn-next').prop('href', '#book/' + nextUrl).html(nextTitle);
-      $('#btn-previous').prop('href', '#book/' + previousUrl).html(previousTitle);
+      $('#next-chapter').prop('href', '#book/' + nextUrl);
+      $('#previous-chapter').prop('href', '#book/' + previousUrl);
 
       // After the content loads, juice it up with some javascript.
 

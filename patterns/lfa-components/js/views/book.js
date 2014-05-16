@@ -125,6 +125,11 @@ define([
         el: this.$('.menu'),
         parent: this
       });
+      
+      this.menu = new MenuView({
+        el: this.$('.navigation-menu'),
+        parent: this
+      });
     },
     
     showFirstChapter: function() {

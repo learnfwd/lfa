@@ -3,7 +3,7 @@ animated-transitions(duration)
   duration-sidebar ?= duration * 1.5
   duration-selectionbar ?= duration * 1.3
   
-  .menu
+  .menu, .navigation-menu
     transition: transform duration ease, opacity duration ease
 
   #content
@@ -17,7 +17,7 @@ animated-transitions(duration)
     ul.tableofcontents li a
       transition: background duration-hover linear
 
-  #leftbar-toggle, #rightbar-toggle
+  #leftbar-toggle, #rightbar-toggle, #previous-chapter, #next-chapter
     transition: transform duration-sidebar ease-sidebar, opacity duration-sidebar ease
     > i
       transition: transform duration-sidebar ease-sidebar
