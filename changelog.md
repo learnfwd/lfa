@@ -1,3 +1,8 @@
+### 0.4.30
+(released 16/05/2014)
+
+- Fix up TOC UX; folding chapters now works in a more intuitive way.
+
 ### 0.4.29
 (released 15/05/2014)
 
