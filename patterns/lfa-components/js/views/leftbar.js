@@ -12,21 +12,18 @@ define([
     initialize: function(options) {
       // Execute the original SidebarView initializations.
       this.constructor.__super__.initialize.apply(this, [options]);
-      
-      this.$('li').click(function(e) {
-        e.stopPropagation();
-        var $siblings = $(this).siblings();
-        $siblings.each(function(index, sibling) {
-          $(sibling).addClass('fold');
-        });
-        $(this).removeClass('fold');
-      });
     },
     
     makeActive: function(chapter) {
       this.$('ul li').removeClass('active');
       var $link = this.$('li a[href="#book/' + chapter + '"]');
       $link.parent().addClass('active');
+      
+      var $siblings = $link.parent().siblings();
+      $siblings.each(function(index, sibling) {
+        $(sibling).addClass('fold');
+      });
+      $link.parent().removeClass('fold');
       
       var title = $link.find('.title').text();
       return title;

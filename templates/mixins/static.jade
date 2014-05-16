@@ -32,7 +32,7 @@ mixin widget(path)
 mixin toc(chapters)
   ul.tableofcontents
     each chapter in chapters
-      li(data-url="#{chapter.url}")
+      li.fold(data-url="#{chapter.url}")
         - var hasChildren = (chapter.children && chapter.children.length);
         if chapter.locals.subtitle
           a.subtitled(href="#book/#{chapter.url}")
