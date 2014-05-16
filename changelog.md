@@ -1,3 +1,8 @@
+### 0.4.31
+(released 16/05/2014)
+
+- Fix joinClasses on the client.
+
 ### 0.4.30
 (released 16/05/2014)
 
