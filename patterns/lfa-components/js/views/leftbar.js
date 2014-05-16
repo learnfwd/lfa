@@ -14,9 +14,12 @@ define([
       this.constructor.__super__.initialize.apply(this, [options]);
       
       this.$('li').click(function(e) {
-        e.preventDefault();
-        console.log('click');
-        // $(this).toggleClass('fold');
+        e.stopPropagation();
+        var $siblings = $(this).siblings();
+        $siblings.each(function(index, sibling) {
+          $(sibling).addClass('fold');
+        });
+        $(this).removeClass('fold');
       });
     },
     

@@ -14,7 +14,7 @@ ul.tableofcontents
     width: 100%
     display: block
     letter-spacing: 1px
-    padding: 0 half-gutter
+    padding: 0 (2 * half-gutter) 0 half-gutter
     text-decoration: none
     position: relative
     
@@ -40,30 +40,14 @@ ul.tableofcontents
         padding-bottom: (sidebar-text-size * 0.75)
         color: rgba(255, 255, 255, 0.5)
         letter-spacing: 0px
-    
-    .btn
-      position: absolute
-      top: 0
-      right: 0
-      width: 4em
-      height: 100%
-      border-radius: 0
-      z-index: 100
-      background: lighten(#222, 30%)
 
-      &:hover
-        color: white
-
-      i.fa-fw
-        font-size: 2em
-        position: absolute
-        top: 50%
-        left: 50%
-        transform: translate3d(-50%, -50%, 0)
+  .fold-icon
+    position: absolute
+    right: 0.5em
+    top: 50%
+    transform: translate3d(0, -50%, 0)
   
   li.fold
-    > a > .btn > i.fa-fw
-      transform: translate3d(-50%, -50%, 0) rotate(90deg)
 
     > ul
       display: none

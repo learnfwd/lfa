@@ -36,11 +36,17 @@ mixin toc(chapters)
         - var hasChildren = (chapter.children && chapter.children.length);
         if chapter.locals.subtitle
           a.subtitled(href="#book/#{chapter.url}")
-            span.title= chapter.locals.title
+            span.title
+              if hasChildren
+                i.fold-icon.fa.fa-fw.fa-chevron-down
+              = chapter.locals.title
             span.subtitle= chapter.locals.subtitle
         else
           a(href="#book/#{chapter.url}")
-            span.title= chapter.locals.title
+            span.title
+              if hasChildren
+                i.fold-icon.fa.fa-fw.fa-chevron-down
+              = chapter.locals.title
         
         if hasChildren
           +toc(chapter.children)
