@@ -12,6 +12,11 @@ define([
     initialize: function(options) {
       // Execute the original SidebarView initializations.
       this.constructor.__super__.initialize.apply(this, [options]);
+      
+      this.$('li').on('click', function(e) {
+        e.stopPropagation();
+        $(this).toggleClass('fold');
+      });
     },
     
     makeActive: function(chapter) {
