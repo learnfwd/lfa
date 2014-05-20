@@ -11,7 +11,7 @@ html
   body
     .menu
       #leftbar-toggle: i.fa.fa-bars.fa-fw
-      #rightbar-toggle: i.fa.fa-search.fa-fw
+      #rightbar-toggle: i.fa.fa-question.fa-fw
     .navigation-menu
       a#previous-chapter: i.fa.fa-fw.fa-chevron-left
       a#next-chapter: i.fa.fa-fw.fa-chevron-right
@@ -24,16 +24,10 @@ html
         #textbook.col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
           article
             section
-              p If you're seeing this, either you have to wait for things to finish loading, or something went wrong.
+              +error-message()
     
     aside#rightbar
-      #search
-        #search-go: i.fa.fa-search.fa-fw
-        #search-erase.concealed: i.fa.fa-times.fa-fw
-        input.search(type="text", placeholder="Search")
-        ul#search-results
-      .settings
-        button#animations-toggle.btn.btn-lg.btn-block Disable animations
+      +rightbar()
 
     script(type='text/javascript', data-main="lfa/js/main", src="lfa/js/lib/require.min.js")
     

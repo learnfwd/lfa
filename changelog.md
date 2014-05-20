@@ -1,3 +1,8 @@
+### 0.4.35
+(released 20/05/2014)
+
+- Add `rightbar` and chapter-loading `error-message` mixins.
+
 ### 0.4.34
 (released 20/05/2014)
 
