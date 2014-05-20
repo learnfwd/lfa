@@ -1,3 +1,8 @@
+### 0.4.34
+(released 20/05/2014)
+
+- Minor TOC UX update to chevrons.
+
 ### 0.4.33
 (released 16/05/2014)
 
