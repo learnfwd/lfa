@@ -1,3 +1,8 @@
+### 0.4.36
+(released 23/05/2014)
+
+- Add `notify.js` to textbook deps.
+
 ### 0.4.35
 (released 20/05/2014)
 
