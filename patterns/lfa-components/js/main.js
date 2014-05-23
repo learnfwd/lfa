@@ -13,6 +13,7 @@ require.config({
     fluidbox:     'lib/fluidbox.min',
     raphael:      'lib/raphael.min',
     sketchpad:    'lib/raphael.sketchpad',
+    notify:       'lib/notify.min',
     
     // Rangy and its fat suite of deps.
     rangycore:    'lib/rangy/rangy-core',
@@ -47,6 +48,7 @@ require.config({
     headroom:     { exports: 'Headroom' },
     fluidbox:     { exports: 'Fluidbox', deps: ['jquery'] },
     sketchpad:    { exports: 'Sketchpad', deps: ['raphael'] },
+    notify:       { exports: 'Notify', deps: ['jquery'] },
     
     rangycore:    { exports: 'rangycore' },
     rangycss:     { exports: 'rangycss', deps: ['rangycore'] },
@@ -71,10 +73,11 @@ require([
   'jquery',
   'backbone',
   'modernizr',
+  'notify',
   
   'bookview',
   'router'
-], function($, Backbone, Modernizr, BookView, Router) {
+], function($, Backbone, Modernizr, Notify, BookView, Router) {
   'use strict';
   
   // Add some custom Modernizr tests.
