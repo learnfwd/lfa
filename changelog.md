@@ -1,3 +1,8 @@
+### 0.4.37
+(released 28/05/2014)
+
+- @cdinu: App is now Backbone Model and in a separate file. More modular.
+
 ### 0.4.36
 (released 23/05/2014)
 
