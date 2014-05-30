@@ -14,6 +14,7 @@ require.config({
     raphael:      'lib/raphael.min',
     sketchpad:    'lib/raphael.sketchpad',
     notify:       'lib/notify.min',
+    buzz:         'lib/buzz.min',
 
     // Rangy and its fat suite of deps.
     rangycore:    'lib/rangy/rangy-core',
@@ -52,6 +53,7 @@ require.config({
     fluidbox:     { exports: 'Fluidbox', deps: ['jquery'] },
     sketchpad:    { exports: 'Sketchpad', deps: ['raphael'] },
     notify:       { exports: 'Notify', deps: ['jquery'] },
+    buzz:         { exports: 'Buzz', },
 
     rangycore:    { exports: 'rangycore' },
     rangycss:     { exports: 'rangycss', deps: ['rangycore'] },
