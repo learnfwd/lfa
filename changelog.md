@@ -1,3 +1,8 @@
+### 0.4.39
+(released 16/06/2014)
+
+- @dapetcu21: Add vim swap files to the list of compiler and watcher ignores.
+
 ### 0.4.38
 (released 30/05/2014)
 
