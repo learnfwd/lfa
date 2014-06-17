@@ -1,3 +1,10 @@
+### not yet
+(released not yet)
+
+- Client-side TOC creation.
+- Move compile-time TOC logic in a separate file.
+- Fix compile order (misuse of promises).
+
 ### 0.4.40
 (released 17/06/2014)
 
