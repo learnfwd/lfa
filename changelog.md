@@ -1,5 +1,5 @@
-### not yet
-(released not yet)
+### 0.4.41
+(released 17/06/2014)
 
 - @dapetcu21: Client-side TOC creation.
 - @dapetcu21: Move compile-time TOC logic in a separate file.
