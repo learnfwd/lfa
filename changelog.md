@@ -1,3 +1,8 @@
+### 0.4.40
+(released 17/06/2014)
+
+- Fix development workflow by hardcoding stylus version in dev dependencies.
+
 ### 0.4.39
 (released 16/06/2014)
 
