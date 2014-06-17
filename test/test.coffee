@@ -186,7 +186,7 @@ describe 'table of contents', ->
   
   describe 'can be generated with proper structure', ->
     it 'all pages should have all the other pages', ->
-      content = fs.readFileSync path.join(test_path, output_folder + '/index.html'), 'utf8'
+      content = fs.readFileSync path.join(test_path, output_folder + '/js/searchjson.js'), 'utf8'
       content.should.match(/Uses of common metals/)
       content.should.match(/Uses of common non-metals/)
       content.should.match(/You have learned/)

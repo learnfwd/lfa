@@ -1,3 +1,9 @@
+if (!define)
+  var define = function(f) {
+    module.exports = {}
+    f(require, module.exports, module);
+  }
+
 define(function(require, exports, module) {
   /**
    * Merge two attribute objects giving precedence
