@@ -1,9 +1,11 @@
 ### not yet
 (released not yet)
 
-- Client-side TOC creation.
-- Move compile-time TOC logic in a separate file.
-- Fix compile order (misuse of promises).
+- @dapetcu21: Client-side TOC creation.
+- @dapetcu21: Move compile-time TOC logic in a separate file.
+- @dapetcu21: Fix compile order (misuse of promises).
+- @dapetcu21: Files are compiled only once for TOC generation
+- @dapetcu21: File names in Jade errors
 
 ### 0.4.40
 (released 17/06/2014)
