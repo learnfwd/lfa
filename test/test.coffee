@@ -235,8 +235,6 @@ describe 'epub import', ->
     test_path = path.join root, './epub-import'
     compiled_path = path.join test_path, 'out'
 
-    console.log test_path, compiled_path, file
-    
     before (done) ->
       run "cd \"#{test_path}\"; ../../bin/lfa import-epub #{file} out", ->
         done()
