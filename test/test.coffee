@@ -175,22 +175,45 @@ describe 'precompiled templates', ->
     shell.rm '-rf', path.join(test_path, output_folder)
 
 describe 'table of contents', ->
-  test_path = path.join root, './toc'
-
-  before (done) ->
-    run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
-      done()
-  
-  after ->
-    shell.rm '-rf', path.join(test_path, output_folder)
   
   describe 'can be generated with proper structure', ->
+    test_path = path.join root, './toc'
+
+    before (done) ->
+      run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
+        done()
+    
+    after ->
+      shell.rm '-rf', path.join(test_path, output_folder)
+
     it 'all pages should have all the other pages', ->
       content = fs.readFileSync path.join(test_path, output_folder + '/js/searchjson.js'), 'utf8'
       content.should.match(/Uses of common metals/)
       content.should.match(/Uses of common non-metals/)
       content.should.match(/You have learned/)
       content.should.match(/Corrosion of metals/)
+
+  describe 'can be defined manually', ->
+    test_path = path.join root, './manual-toc'
+
+    json_content = {}
+
+    before (done) ->
+      run "cd \"#{test_path}\"; ../../bin/lfa compile --no-compress --components=false", ->
+        content = fs.readFileSync path.join(test_path, output_folder + '/js/searchjson.js'), 'utf8'
+        json_content = JSON.parse(content.replace(/^define\(/, '').replace(/\)\;/, ''))
+        done()
+    
+    after ->
+      shell.rm '-rf', path.join(test_path, output_folder)
+
+    it 'manual toc should correspond with output toc', ->
+      toc = fs.readFileSync path.join(test_path, 'toc.js'), 'utf8'
+      JSON.stringify(JSON.parse toc).should.equal JSON.stringify json_content.toc
+
+    it 'manual spine should correspond with output spine', ->
+      spine = fs.readFileSync path.join(test_path, 'spine.js'), 'utf8'
+      JSON.stringify(JSON.parse spine).should.equal JSON.stringify json_content.spine
 
 describe 'mixins', ->
   test_path = path.join root, './project-mixins'
@@ -207,3 +230,36 @@ describe 'mixins', ->
       content = fs.readFileSync path.join(test_path, output_folder + '/js/templates/mixins.js'), 'utf8'
       content.should.match(/Customus mixinus dolor/)
       
+describe 'epub import', ->
+  describe_tests = (file) ->
+    test_path = path.join root, './epub-import'
+    compiled_path = path.join test_path, 'out'
+
+    console.log test_path, compiled_path, file
+    
+    before (done) ->
+      run "cd \"#{test_path}\"; ../../bin/lfa import-epub #{file} out", ->
+        done()
+
+    after ->
+      shell.rm '-rf', compiled_path
+
+    it "should create a project", ->
+      fs.existsSync(compiled_path).should.be.ok
+
+    describe "project", ->
+      before (done) ->
+        run "cd \"#{compiled_path}\"; ../../../bin/lfa compile --no-compress --components=false", ->
+          done()
+
+      after ->
+        shell.rm '-rf', path.join(compiled_path, output_folder)
+      
+      it 'compiles successfully', ->
+        fs.readdirSync(path.join(compiled_path, output_folder)).should.have.lengthOf(4)
+
+  describe 'from .epub file', ->
+    describe_tests 'zipped.epub'
+
+  describe 'from extracted directory', ->
+    describe_tests 'extracted_epub'

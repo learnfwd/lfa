@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="bookid" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <metadata>
+        <meta content="Adobe InDesign" name="generator"/>
+        <meta name="cover" content="dubliners800x600.png"/>
+        <dc:title>Dubliners</dc:title>
+        <dc:creator>James Joyce</dc:creator>
+        <dc:subject/>
+        <dc:description/>
+        <dc:publisher/>
+        <dc:date>2012-06-15</dc:date>
+        <dc:subject>ISBN: 978-606-93395-3-4</dc:subject>
+        <dc:source/>
+        <dc:relation/>
+        <dc:coverage/>
+        <dc:rights/>
+        <dc:language>en-US</dc:language>
+        <dc:identifier id="bookid"/>
+        <dc:identifier>urn:uuid:96881C63-FBD2-4647-9997-B9F6079042CE</dc:identifier>
+        <meta content="0.6.1" name="Sigil version"/>
+        <dc:date xmlns:opf="http://www.idpf.org/2007/opf" opf:event="modification">2013-01-25</dc:date>
+    </metadata>
+    <manifest>
+        <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>
+        <item href="Styles/template.css" id="css" media-type="text/css"/>
+        <item href="Text/Joyce-James-Dubliners.html" id="Joyce-James-Dubliners" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-1.html" id="Joyce-James-Dubliners-1" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-2.html" id="Joyce-James-Dubliners-2" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-3.html" id="Joyce-James-Dubliners-3" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-4.html" id="Joyce-James-Dubliners-4" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-5.html" id="Joyce-James-Dubliners-5" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-6.html" id="Joyce-James-Dubliners-6" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-7.html" id="Joyce-James-Dubliners-7" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-8.html" id="Joyce-James-Dubliners-8" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-9.html" id="Joyce-James-Dubliners-9" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-10.html" id="Joyce-James-Dubliners-10" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-11.html" id="Joyce-James-Dubliners-11" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-12.html" id="Joyce-James-Dubliners-12" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-13.html" id="Joyce-James-Dubliners-13" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-14.html" id="Joyce-James-Dubliners-14" media-type="application/xhtml+xml"/>
+        <item href="Text/Joyce-James-Dubliners-15.html" id="Joyce-James-Dubliners-15" media-type="application/xhtml+xml"/>
+        <item href="Images/dubliners800x600.png" id="dubliners800x600.png" media-type="image/png"/>
+        <item href="Fonts/ACaslonPro-Regular.otf" id="ACaslonPro-Regular.otf" media-type="application/x-font-otf"/>
+        <item href="Fonts/BrushScriptMT.otf" id="BrushScriptMT.otf" media-type="application/x-font-otf"/>
+        <item href="Fonts/BrushScriptStd.otf" id="BrushScriptStd.otf" media-type="application/x-font-otf"/>
+    </manifest>
+    <spine toc="ncx">
+        <itemref idref="Joyce-James-Dubliners"/>
+        <itemref idref="Joyce-James-Dubliners-1"/>
+        <itemref idref="Joyce-James-Dubliners-2"/>
+        <itemref idref="Joyce-James-Dubliners-3"/>
+        <itemref idref="Joyce-James-Dubliners-4"/>
+        <itemref idref="Joyce-James-Dubliners-5"/>
+        <itemref idref="Joyce-James-Dubliners-6"/>
+        <itemref idref="Joyce-James-Dubliners-7"/>
+        <itemref idref="Joyce-James-Dubliners-8"/>
+        <itemref idref="Joyce-James-Dubliners-9"/>
+        <itemref idref="Joyce-James-Dubliners-10"/>
+        <itemref idref="Joyce-James-Dubliners-11"/>
+        <itemref idref="Joyce-James-Dubliners-12"/>
+        <itemref idref="Joyce-James-Dubliners-13"/>
+        <itemref idref="Joyce-James-Dubliners-14"/>
+        <itemref idref="Joyce-James-Dubliners-15"/>
+    </spine>
+    <guide>
+    </guide>
+</package>
