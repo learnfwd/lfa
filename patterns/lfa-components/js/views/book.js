@@ -53,11 +53,11 @@ define([
       window.App.searchJSON = SearchJSON.pages;
   
       // Alias the TOC as well.
-      window.App.toc = SearchJSON.toc;
+      window.App.toc = SearchJSON.toc || [];
 
       // App.tocUrlOrder is a sorted array that will tell you in what order the
       // TOC chapters are supposed to be consumed.
-      window.App.tocUrlOrder = window.App.tocUrlOrder || [];
+      window.App.tocUrlOrder = window.App.tocUrlOrder || SearchJSON.spine || [];
 
       var getChildrenUrls = function(toc) {
         var result = {};
@@ -70,7 +70,6 @@ define([
             );
           }
           result[toc[i].url] = toc[i];
-          window.App.tocUrlOrder.push(toc[i].url);
         }
 
         return result;
@@ -85,8 +84,6 @@ define([
       //   locals (object)
       window.App.tocFindByUrl = window.App.tocFindByUrl || getChildrenUrls(App.toc);
 
-      window.App.tocUrlOrder.sort();
-      
       // Initialize FastClick. This removes the .3s delay in mobile webkit when clicking on anything.
       FastClick.attach(document.body);
       
@@ -137,7 +134,7 @@ define([
     },
     
     showFirstChapter: function() {
-      var firstChapterUrl = this.leftbar.$('ul li a[href]')[0].attributes.href.value;
+      var firstChapterUrl = 'book/' + window.App.tocUrlOrder[0];
       window.App.router.navigate(firstChapterUrl, true);
     },
     

@@ -1,3 +1,8 @@
+### not yet
+(released not yet)
+- @dapetcu21: EPUB to lfa project conversion.
+- @dapetcu21: Manual TOC and Spine (order of reading) support.
+
 ### 0.4.41
 (released 17/06/2014)
 
