@@ -138,10 +138,15 @@ define([
       window.App.router.navigate(firstChapterUrl, true);
     },
     
-    show: function(chapter) {
+    show: function(chapter, id) {
+      var changeChapter = window.App.book.currentChapter !== chapter;
+
       // When navigating somewhere else in the toc,
-      // scroll the user to the top of the page,
-      window.scrollTo(0, 0);
+      // scroll the user to the top of the page, or to the
+      // corresponding id
+      if (changeChapter || !id) {
+        window.scrollTo(0, 0);
+      }
       
       // close the sidebars if we're on a phone/portrait tablet,
       if ($(window).width() <= 768) {
@@ -150,9 +155,22 @@ define([
       
       // remove the active class from the previous button and
       // add the active class to the one that was pressed.
-      this.leftbar.makeActive(chapter);
+      this.leftbar.makeActive(chapter, id);
       
-      this.chapter.render(chapter);
+      if (changeChapter) {
+        this.chapter.render(chapter);
+      }
+
+      if (id) {
+        var anchor = this.chapter.$el.find('#' + id);
+        if (anchor && anchor.length) {
+          window.scrollTo(0, anchor.offset().top);
+        } else {
+          if (!changeChapter) {
+            window.scrollTo(0, 0);
+          }
+        }
+      }
     },
     
     closeSidebars: function() {
