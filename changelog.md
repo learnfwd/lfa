@@ -1,5 +1,10 @@
 ### not yet
 (released not yet)
+- @dapetcu21: import-epub supports encoded URIs.
+- @dapetcu21: --copy-undeclared for import-epub copies files that are not declared in the OPF manifest
+
+### 0.5.0
+(released 19/06/2014)
 - @dapetcu21: EPUB to lfa project conversion.
 - @dapetcu21: Manual TOC and Spine (order of reading) support.
 
