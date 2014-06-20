@@ -1,3 +1,10 @@
+### 0.5.1
+(released 20/06/2014)
+
+- @dapetcu21: import-epub supports encoded URIs.
+- @dapetcu21: --copy-undeclared for import-epub copies files that are not declared in the OPF manifest
+- @dapetcu21: Add id links (`#book/ch00/someid` jumps to element with `id="someid"`)
+
 ### 0.5.0
 (released 19/06/2014)
 

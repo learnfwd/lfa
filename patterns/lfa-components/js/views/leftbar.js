@@ -19,9 +19,15 @@ define([
       });
     },
     
-    makeActive: function(chapter) {
+    makeActive: function(chapter, id) {
       this.$('ul li').removeClass('active');
-      var $link = this.$('li a[href="#book/' + chapter + '"]');
+      var $link = null;
+      if (id) {
+        $link = this.$('li a[href="#book/' + chapter + '/' + id + '"]');
+      }
+      if (!$link || !$link.length) {
+        $link = this.$('li a[href="#book/' + chapter + '"]');
+      }
       $link.parent().addClass('active');
       
       var $siblings = $link.parent().siblings();

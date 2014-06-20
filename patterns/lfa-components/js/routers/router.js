@@ -8,15 +8,15 @@ define([
   var Router = Backbone.Router.extend({
     routes: {
       '': 'home',
-      'book/:chapter': 'book'
+      'book/:chapter(/:id)': 'book'
     },
     
     home: function () {
-      App.book.showFirstChapter();
+      window.App.book.showFirstChapter();
     },
     
-    book: function(chapter) {
-      App.book.show(chapter);
+    book: function(chapter, id) {
+      window.App.book.show(chapter, id);
     }
   });
   
