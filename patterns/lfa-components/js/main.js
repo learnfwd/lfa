@@ -1,4 +1,5 @@
 require.config({
+  waitSeconds: 0, // Indefinite timeout (good for low end devices)
   paths: {
     // General purpose 3rd party libs.
     jquery:       'lib/jquery-2.0.3.min',
