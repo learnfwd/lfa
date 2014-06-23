@@ -12,6 +12,7 @@ define([
 ], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Templates, Fluidbox, Raphael, Sketchpad) {
   'use strict';
 
+  window.Templates = Templates;
   var ChapterView = Backbone.View.extend({
     initialize: function(options) {
       this.parent = options.parent;
