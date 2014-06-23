@@ -1,7 +1,7 @@
 ### 0.5.4
-(released not yet)
+(released 23/06/2014)
 
-- @dapetcu21: Chapter prefetch
+- @dapetcu21: Chapter prefetching.
 
 ### 0.5.3
 (released 23/06/2014)
