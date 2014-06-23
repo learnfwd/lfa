@@ -1,3 +1,9 @@
+### 0.5.2
+(released 20/06/2014)
+
+- @dapetcu21: Abstractise away jade precompiler
+- @dapetcu21: Async chapter loading
+
 ### 0.5.1
 (released 20/06/2014)
 
