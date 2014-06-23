@@ -1,5 +1,10 @@
+### 0.5.3
+(released 23/06/2014)
+
+- @dapetcu21: Fix `watch` command.
+
 ### 0.5.2
-(released 20/06/2014)
+(released 23/06/2014)
 
 - @dapetcu21: Abstractise away jade precompiler
 - @dapetcu21: Async chapter loading
