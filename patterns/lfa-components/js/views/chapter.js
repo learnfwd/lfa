@@ -19,12 +19,7 @@ define([
 
     render: function(chapter) {
       window.App.book.currentChapter = chapter;
-      
-      this.$el.html(Templates[chapter]);
 
-      window.App.book.trigger('render', {
-        chapter: chapter
-      });
       
       // Determine the next and previous chapters.
       var next = null,
@@ -55,6 +50,21 @@ define([
       // Set them in HTML.
       $('#next-chapter').prop('href', '#book/' + nextUrl);
       $('#previous-chapter').prop('href', '#book/' + previousUrl);
+
+      // If not cached, put up a loading screen
+      if (typeof(Templates[chapter]) !== 'string') {
+        this.$el.html(window.getMixin('error-message')());
+      }
+      Templates.asyncLoad(chapter, this.chapterLoaded.bind(this, chapter));
+    },
+
+    chapterLoaded: function(chapter, error, htmlData) {
+
+      this.$el.html(htmlData);
+
+      window.App.book.trigger('render', {
+        chapter: chapter
+      });
 
       // After the content loads, juice it up with some javascript.
 
@@ -175,7 +185,6 @@ define([
           console.log(sketchpad.json());
         });
       });
-
     }
   });
 
