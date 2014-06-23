@@ -8,29 +8,37 @@ define([
   'templates',
   'fluidbox',
   'raphael',
-  'sketchpad'
-], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Templates, Fluidbox, Raphael, Sketchpad) {
+  'sketchpad',
+  'prefetcher',
+], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Templates, Fluidbox, Raphael, Sketchpad, Prefetcher) {
   'use strict';
 
-  window.Templates = Templates;
   var ChapterView = Backbone.View.extend({
     initialize: function(options) {
       this.parent = options.parent;
+      this.prefetcher = new Prefetcher();
     },
 
     render: function(chapter) {
-      window.App.book.currentChapter = chapter;
+      var tocUrlOrder = window.App.tocUrlOrder;
 
+      if (!Templates.templateExists(chapter)) { 
+        chapter = tocUrlOrder[0]; // In lack of a 404
+      }
+
+      window.App.book.currentChapter = chapter;
       
       // Determine the next and previous chapters.
       var next = null,
         previous = null;
 
+
       var firstIndex = 0,
-        currentIndex = window.App.tocUrlOrder.indexOf(chapter),
-        lastIndex = window.App.tocUrlOrder.length - 1;
+        currentIndex = tocUrlOrder.indexOf(chapter),
+        chapterCount = tocUrlOrder.length,
+        lastIndex = chapterCount - 1;
       
-      if (window.App.tocUrlOrder.length > 1) {
+      if (chapterCount > 1) {
         if (currentIndex === 0) {
           next = currentIndex + 1;
           previous = lastIndex;
@@ -56,6 +64,21 @@ define([
       if (typeof(Templates[chapter]) !== 'string') {
         this.$el.html(window.getMixin('error-message')());
       }
+
+      // 4 [0] 1 2 3 5 6 ... 
+      var priority = [chapter], i;
+      for (i = currentIndex+1; i < currentIndex+4 && i < chapterCount && i !== previous; i++) {
+        priority.push(tocUrlOrder[i]);
+      }
+      priority.push(tocUrlOrder[previous]);
+      for (i = currentIndex+4; i < chapterCount && i !== previous; i++) {
+        priority.push(tocUrlOrder[i]);
+      }
+      for (i = currentIndex-2; i >= 0; i--) {
+        priority.push(tocUrlOrder[i]);
+      }
+      this.prefetcher.setChapterPriority(priority);
+
       Templates.asyncLoad(chapter, this.chapterLoaded.bind(this, chapter));
     },
 
