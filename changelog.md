@@ -1,3 +1,8 @@
+### 0.5.5
+(release pending)
+
+- @tvararu: Remove legacy sketchpad code from `patterns/lfa-components/js/views/chapter.js`.
+
 ### 0.5.4
 (released 23/06/2014)
 
