@@ -26,7 +26,8 @@ mixin link_to(path)
 mixin widget(path)
   iframe(src="#{path}")
 
-mixin toc(chapters)
+//- don't use this manually
+mixin _toc(chapters)
   ul.tableofcontents
     each chapter in chapters
       li.fold(data-url="#{chapter.url}")
@@ -46,16 +47,18 @@ mixin toc(chapters)
               = chapter.locals.title
         
         if hasChildren
-          +toc(chapter.children)
+          +_toc(chapter.children)
 
 //- +minitoc() generates a mini-toc from the current chapter that we're on,
 //- or a specified url.
 mixin minitoc(url)
-  //- Check if we're clientside.
-  if (window)
-    - var currentUrl = url || window.App.book.currentChapter;
-    - var chapter = window.App.tocFindByUrl[currentUrl];
-    +toc(chapter.children)
+  - var id = (url + Math.random().toString()).hashCode();
+  .minitoc(id='minitoc_#{id}')
+  script.
+    $(document).ready(function() {
+      var url = '#{url}' || window.App.book.currentChapter;
+      new TocView({ el: $('#minitoc_#{id}'), url: url });
+    });
 
 mixin youtube(url)
   .video

@@ -99,12 +99,8 @@ define([
         self.closeSidebars();
       });
 
-      // Render the TOC
-      var leftbarElement = this.$('#leftbar');
-      leftbarElement.append(window.getMixin('toc')(window.App.toc));
-      
       this.leftbar = new LeftbarView({
-        el: leftbarElement,
+        el: this.$('#leftbar'),
         parent: this,
         classActive: 'leftbar-active',
         closeGesture: 'dragleft'

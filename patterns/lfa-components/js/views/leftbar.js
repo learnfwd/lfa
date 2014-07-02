@@ -4,14 +4,20 @@ define([
   'backbone',
   'hammer',
   
-  'views/sidebar'
-], function($, _, Backbone, Hammer, SidebarView) {
+  'views/sidebar',
+  'views/toc'
+], function($, _, Backbone, Hammer, SidebarView, TocView) {
   'use strict';
   
   var LeftbarView = SidebarView.extend({
     initialize: function(options) {
       // Execute the original SidebarView initializations.
       this.constructor.__super__.initialize.apply(this, [options]);
+
+      this.toc = new TocView({
+        el: this.$el,
+        parent: this
+      });
       
       this.$('li').on('click', function(e) {
         e.stopPropagation();
