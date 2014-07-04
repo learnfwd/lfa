@@ -1,7 +1,10 @@
 ### 0.5.5
-(release pending)
+(release 04/07/2014)
 
 - @tvararu: Remove legacy sketchpad code from `patterns/lfa-components/js/views/chapter.js`.
+- @dapetcu21: Add vim `.swp/.swo` files to main textbook `.gitignore`.
+- @dapetcu21: Fix `+minitoc`.
+- @tvararu: Add the `cssNamespace` field to the TOC JSON.
 
 ### 0.5.4
 (released 23/06/2014)
