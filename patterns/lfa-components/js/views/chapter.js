@@ -84,6 +84,20 @@ define([
 
       this.$el.html(htmlData);
 
+      // Remove previous cssNamespace classes, if they exist.
+      var classes = _.filter(
+        $('body')[0].className.split(' '),
+        function(cls) {
+          return cls.indexOf('lf-') === -1;
+        }
+      );
+      // `classes` should no longer contain strings that start with `lf-`.
+      $('body').removeClass();
+      $('body').addClass(classes.join(' '));
+
+      // Add the cssNamespace classes to the <body> element.
+      $('body').addClass(window.App.tocFindByUrl[chapter].locals.cssNamespace);
+
       window.App.book.trigger('render', {
         chapter: chapter
       });
