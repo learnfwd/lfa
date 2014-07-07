@@ -24,6 +24,7 @@ define([
         chapter = tocUrlOrder[0]; // In lack of a 404
       }
 
+      var lastChapter = window.App.book.currentChapter;
       window.App.book.currentChapter = chapter;
       
       // Determine the next and previous chapters.
@@ -62,6 +63,10 @@ define([
       if (typeof(Templates[chapter]) !== 'string') {
         this.$el.html(window.getMixin('error-message')());
       }
+
+      window.App.book.trigger('destroy-chapter', {
+        chapter: lastChapter
+      });
 
       // 4 [0] 1 2 3 5 6 ... 
       var priority = [chapter], i;
