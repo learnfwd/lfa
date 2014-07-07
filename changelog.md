@@ -1,5 +1,9 @@
+### not yet
+(released not yet)
+- @dapetcu21: Add `destroy-chapter` event on `App.book` fired when navigating away
+
 ### 0.5.5
-(release 04/07/2014)
+(released 04/07/2014)
 
 - @tvararu: Remove legacy sketchpad code from `patterns/lfa-components/js/views/chapter.js`.
 - @dapetcu21: Add vim `.swp/.swo` files to main textbook `.gitignore`.
