@@ -1,6 +1,7 @@
-### not yet
-(released not yet)
-- @dapetcu21: Add `destroy-chapter` event on `App.book` fired when navigating away
+### 0.5.6
+(released 07/07/2014)
+
+- @dapetcu21: Add `destroy-chapter` event on `App.book`. Fired when navigating away.
 
 ### 0.5.5
 (released 04/07/2014)
