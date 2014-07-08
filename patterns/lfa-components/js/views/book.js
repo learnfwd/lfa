@@ -137,13 +137,13 @@ define([
     show: function(chapter, id) {
       var changeChapter = window.App.book.currentChapter !== chapter;
 
-      var scrollView = $('#scrollview')[0];
+      var scrollView = $('#scrollview');
 
       // When navigating somewhere else in the toc,
       // scroll the user to the top of the page, or to the
       // corresponding id
       if (changeChapter || !id) {
-        scrollView.scrollTo(0, 0);
+        scrollView.scrollTop(0);
       }
       
       // close the sidebars if we're on a phone/portrait tablet,
@@ -162,10 +162,13 @@ define([
       if (id) {
         var anchor = this.chapter.$el.find('#' + id);
         if (anchor && anchor.length) {
-          scrollView.scrollTo(0, anchor.offset().top);
+          var scrollPos = anchor.offset().top - scrollView.offset().top;
+          scrollPos += scrollView.scrollTop();
+          scrollPos -= 50; // For good measure
+          scrollView.scrollTop(scrollPos);
         } else {
           if (!changeChapter) {
-            scrollView.scrollTo(0, 0);
+            scrollView.scrollTop(0);
           }
         }
       }
