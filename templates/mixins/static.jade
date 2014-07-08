@@ -33,21 +33,18 @@ mixin _toc(chapters)
       li.fold(data-url="#{chapter.url}")
         - var hasChildren = (chapter.children && chapter.children.length);
         if chapter.locals.subtitle
-          a.subtitled(href="#book/#{chapter.url}")
-            span.title
-              if hasChildren
-                i.fold-icon.fa.fa-fw.fa-chevron-down
-              = chapter.locals.title
+          a.subtitled(href="#book/#{chapter.url}", class = hasChildren ? 'foldable' : '')
+            span.title= chapter.locals.title
             span.subtitle= chapter.locals.subtitle
         else
-          a(href="#book/#{chapter.url}")
+          a(href="#book/#{chapter.url}", class = hasChildren ? 'foldable' : '')
             span.title
-              if hasChildren
-                i.fold-icon.fa.fa-fw.fa-chevron-down
               = chapter.locals.title
-        
         if hasChildren
-          +_toc(chapter.children)
+          .fold-button
+            i.fold-icon.fa.fa-fw.fa-chevron-down
+          .children-container
+            +_toc(chapter.children)
 
 //- +minitoc() generates a mini-toc from the current chapter that we're on,
 //- or a specified url.

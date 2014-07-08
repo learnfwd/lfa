@@ -1,13 +1,14 @@
 // The left sidebar, with the table of contents.
 ul.tableofcontents
-  background: sidebar-background
+  background: toc-lvl1-background
   
   list-style-type: none
   padding: 0
   
   li
     cursor: pointer
-  
+    position: relative
+
   a
     color: sidebar-text-color
     height: (sidebar-text-size * 3)
@@ -41,28 +42,73 @@ ul.tableofcontents
         color: rgba(255, 255, 255, 0.5)
         letter-spacing: 0px
 
-  .fold-icon
+  .fold-button
     position: absolute
-    right: 0.5em
-    top: 50%
-    transform: translate3d(0, -50%, 0)
+    width: (sidebar-text-size * 2)
+    height: (sidebar-text-size * 3)
+    right: 0
+    top: 0
+
+    .fold-icon
+      position: absolute
+      left: 50%
+      top: 50%
+      transform: translate3d(-50%, -50%, 0)
+  
+  .children-container
+    overflow: hidden
+    position: relative
+    width: 100%
+    height: 200px
+
+    > ul
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
   
   li.fold
     .fold-icon
-      transform: translate3d(0, -50%, 0) rotate(90deg)
+      transform: translate3d(-50%, -50%, 0) rotate(90deg)
     
-    > ul
-      display: none
+    > .children-container
+      height: 0 !important
   
-  li.active > a, li > a:focus
-    background: sidebar-hover-bg
+  > li.active > a,
+  > li > a:hover,
+  > li > a:focus,
+  > li > .fold-button:focus,
+  > li > .fold-button:hover
+    background: toc-lvl1-hover
     text-decoration: none
 
-  > li > ul > li
+  > li > .children-container > ul 
     // Second level chapters.
-    > a
-      padding-left: half-gutter + 10px
-  
-    > ul > li a
-      // Third level chapters and beyond.
-      padding-left: half-gutter + 20px
+    > li.active > a,
+    > li > a:hover,
+    > li > a:focus,
+    > li > .fold-button:focus,
+    > li > .fold-button:hover
+      background: toc-lvl2-hover
+      text-decoration: none
+
+    > li
+      background-color: toc-lvl2-background
+
+      > a
+        padding-left: half-gutter
+    
+      > .children-container > ul
+        // Third level chapters and beyond.
+        li.active > a,
+        li > a:hover,
+        li > a:focus,
+        li > .fold-button:focus,
+        li > .fold-button:hover
+          background: toc-lvl3-hover
+          text-decoration: none
+
+        li 
+          background-color: toc-lvl3-background
+          a
+            padding-left: half-gutter

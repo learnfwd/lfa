@@ -129,12 +129,12 @@ define([
       // Enable real parallax, fading modals and fading tab-panes on desktops.
       if (this.parent.html.hasClass('no-touch')) {
         this.$('.parallax').each(function() {
-          var $bgobj, $window;
+          var $bgobj, $scrollView;
           $bgobj = $(this);
-          $window = $(window);
-          return $window.scroll(function() {
+          $scrollView = $('#scrollview');
+          return $scrollView.scroll(function() {
             var coords, yPos;
-            yPos = -($window.scrollTop() / 10);
+            yPos = -($scrollView.scrollTop() / 10);
             coords = '100% ' + yPos + 'px';
             return $bgobj.css({
               backgroundPosition: coords

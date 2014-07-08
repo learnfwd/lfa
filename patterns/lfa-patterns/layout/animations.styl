@@ -14,8 +14,13 @@ animated-transitions(duration)
     transition: transform duration-sidebar ease-sidebar
 
   #leftbar
-    ul.tableofcontents li a
-      transition: background duration-hover linear
+    ul.tableofcontents 
+      li a, li .fold-button
+        transition: background duration-hover linear
+      .fold-icon
+        transition: transform duration stripe-bezier
+      .children-container
+        transition: height duration stripe-bezier
 
   #leftbar-toggle, #rightbar-toggle, #previous-chapter, #next-chapter
     transition: transform duration-sidebar ease-sidebar, opacity duration-sidebar ease
@@ -41,6 +46,7 @@ animated-transitions(duration)
     
     .note-area
       transition: transform duration-selectionbar stripe-bezier
+
 
 // 0 (almost) duration transitions by default.
 body

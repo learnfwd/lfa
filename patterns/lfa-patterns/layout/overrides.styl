@@ -16,25 +16,14 @@ html, body
   // Forwards compatibility.
   font-kerning: normal
 
-// Special rules for Apple iOS devices.
-html.appleios body
-  overflow: hidden
-
-  #leftbar
-  #rightbar
-  #content
-    -webkit-overflow-scrolling: touch
-
-  &.leftbar-active
-  &.rightbar-active
-    overflow-y: auto
-
 // Rules for devices with no touch support. Hover states and the like.
-html.no-touch body
-  #leftbar ul li a:hover
-    background: sidebar-hover-bg
-    text-decoration: none
 
+html.touch body
+  #leftbar 
+    ul li a:hover, ul li .fold-button:hover
+      background: inherit
+
+html.no-touch body
   #rightbar #search ul#search-results li a:hover
     background: lighten(sidebar-search-result-bg, 10%)
     .title, .body

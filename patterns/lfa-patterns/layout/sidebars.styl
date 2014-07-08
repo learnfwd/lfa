@@ -12,8 +12,6 @@
   position: fixed
   height: 100%
   top: 0px
-  overflow-y: auto
-  overflow-x: hidden
   z-index: 1000
 
 #leftbar
@@ -21,3 +19,16 @@
 
 #rightbar
   right: - sidebar-width
+
+html body
+  #leftbar,
+  #rightbar
+    -webkit-overflow-scrolling: touch
+    overflow-scrolling: touch
+    overflow-y: scroll
+    overflow-x: hidden
+
+  &.leftbar-active #scrollview,
+  &.rightbar-active #scrollview
+    overflow: hidden
+
