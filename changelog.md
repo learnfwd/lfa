@@ -1,5 +1,5 @@
-### not yet
-(released not yet)
+### 0.5.7
+(released 08/07/2014)
 
 - @dapetcu21: ToC animations.
 - @dapetcu21: Mobile-friendly menus and scrolling.
