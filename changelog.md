@@ -1,3 +1,9 @@
+### not yet
+(released not yet)
+
+- @dapetcu21: Stop interactions with content while sidebar is open.
+- @dapetcu21: Fix :hover supress on touch.
+
 ### 0.5.7
 (released 08/07/2014)
 
