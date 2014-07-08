@@ -18,14 +18,11 @@ define([
         el: this.$el,
         parent: this
       });
-      
-      this.$('li').on('click', function(e) {
-        e.stopPropagation();
-        $(this).toggleClass('fold');
-      });
     },
     
     makeActive: function(chapter, id) {
+      var self = this;
+
       this.$('ul li').removeClass('active');
       var $link = null;
       if (id) {
@@ -38,9 +35,9 @@ define([
       
       var $siblings = $link.parent().siblings();
       $siblings.each(function(index, sibling) {
-        $(sibling).addClass('fold');
+        self.toc.toggleFold($(sibling), true);
       });
-      $link.parent().removeClass('fold');
+      self.toc.toggleFold($link.parent(), false);
       
       var title = $link.find('.title').text();
       return title;

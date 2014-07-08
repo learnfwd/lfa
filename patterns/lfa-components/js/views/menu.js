@@ -11,6 +11,7 @@ define([
       this.parent = options.parent;
       
       var headroom = new Headroom(document.querySelector(this.$el.selector), {
+        scrollElement: $('#scrollview')[0],
         'classes': {
           'initial':  'headroom',
           'pinned':   'pinned',
@@ -18,6 +19,13 @@ define([
         }
       });
       headroom.init();
+
+      $(window).on('scroll', function(e) {
+        var $body = $('body');
+        if ($body.hasClass('leftbar-active') || $body.hasClass('rightbar-active')) {
+          e.stopPropagation();
+        }
+      });
     },
     
     events: {

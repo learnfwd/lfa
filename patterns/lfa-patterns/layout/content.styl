@@ -2,7 +2,11 @@
 body
   // Actual content/chapter should take up all available height; so we can click anywhere
   // to close the sidebars.
-  #content, #textbook, > .container
+
+  #scrollview
+    width: 100%
+
+  #content, #textbook, > .container, #scrollview
     height: 100%
   
   // Animate the sidebars into view when they get activated. Move the entire page.
@@ -31,3 +35,13 @@ body
     &.rightbar-active
       #content
         opacity: 0.2
+
+  #scrollview
+    overflow: auto
+    -webkit-overflow-scrolling: touch
+    overflow-scrolling: touch
+
+  overflow: hidden
+  position: fixed
+  width: 100%
+  height: 100%

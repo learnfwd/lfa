@@ -1,8 +1,9 @@
 define([
   'jquery',
   'underscore',
-  'backbone'
-], function($, _, Backbone) {
+  'backbone',
+  'hammer',
+], function($, _, Backbone, Hammer) {
   'use strict';
   
   var SidebarView = Backbone.View.extend({
@@ -10,34 +11,41 @@ define([
       this.parent = options.parent;
       this.classActive = options.classActive;
       this.closeGesture = options.closeGesture;
-      
+
       var self = this;
-      if (!this.parent.html.hasClass('appleios')) {
-        // If we're not on iOS, add events to close the sidebars via swiping left/right.
-        // iOS doesn't get these because iOS 7 Safari uses them for back/forward.
-        this.$el.hammer().on(this.closeGesture, function() {
+      
+      self.$el.hammer().on(self.closeGesture, function(evt) {
+        if (Math.abs(evt.gesture.deltaX) > 50) {
           self.close();
-        });
-      }
+        }
+        evt.preventDefault();
+      });
     },
     
     events: function() {
       var events = {};
-      
       return events;
     },
     
     open: function() {
+      if (this.isOpen) { return; }
       this.parent.closeSidebars();
       this.parent.$el.addClass(this.classActive);
+      this.isOpen = true;
     },
     
     close: function() {
+      if (!this.isOpen) { return; }
       this.parent.$el.removeClass(this.classActive);
+      this.isOpen = false;
     },
     
     toggle: function() {
-      this.parent.$el.toggleClass(this.classActive);
+      if (this.isOpen) {
+        this.close();
+      } else {
+        this.open();
+      }
     }
   });
   
