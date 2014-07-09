@@ -1,3 +1,9 @@
+### not yet
+(released not yet)
+
+- @dapetcu21: language: in config.yaml sets App.T.language
+- @dapetcu21: Temporarily removed huge search data from searchjson.js
+
 ### 0.5.9
 (released 09/07/2014)
 
