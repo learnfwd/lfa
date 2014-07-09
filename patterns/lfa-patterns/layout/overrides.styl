@@ -20,7 +20,7 @@ html, body
 
 html.touch body
   ul.tableofcontents
-    li a:hover, li .fold-button:hover
+    li:not(.active) > a:hover, li:not(.active) > .fold-button:hover
       background: inherit !important
 
 html.no-touch body
