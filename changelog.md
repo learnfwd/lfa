@@ -1,3 +1,9 @@
+### not yet
+(released not yet)
+
+- @cdinu, @dapetcu21: App.T for localization.
+- @dapetcu21: Fix :hover suppress on touch (again).
+
 ### 0.5.8
 (released 09/07/2014)
 
