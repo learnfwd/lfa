@@ -1,8 +1,9 @@
-### not yet
-(released not yet)
+### 0.5.8
+(released 09/07/2014)
 
 - @dapetcu21: Stop interactions with content while sidebar is open.
 - @dapetcu21: Fix :hover supress on touch.
+- @dapetcu21: Update Font-Awesome to 4.1.0.
 
 ### 0.5.7
 (released 08/07/2014)
