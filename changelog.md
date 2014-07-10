@@ -1,3 +1,8 @@
+### 0.5.13
+(released 10/07/2014)
+
+- @tvararu: Wrong plugin. ._.
+
 ### 0.5.12
 (released 10/07/2014)
 
