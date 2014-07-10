@@ -58,6 +58,12 @@ define(function (require, exports, module) {
       return '[' + language + ']: ' + text;
     };
 
+    T.translateElement = function (element) {
+      $(element).find('[data-translate]').each(function(idx, el) {
+        $(el).html(T.translate($(el).data('translate')));
+      });
+    };
+
     T.languageObject = function (lang) {
       if (!lang) {
         lang = T.language || T.defaultLanguage;

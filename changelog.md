@@ -1,3 +1,5 @@
+- @dapetcu21: DOM Translation
+
 ### 0.5.11
 (released 10/07/2014)
 
