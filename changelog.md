@@ -1,4 +1,8 @@
+### 0.5.12
+(released 10/07/2014)
+
 - @dapetcu21: DOM Translation
+- @tvararu: Update jQuery.hammer.
 
 ### 0.5.11
 (released 10/07/2014)
