@@ -1,8 +1,12 @@
+### not yet
+(released not yet)
+- @dapetcu21: Added `android`, `msie` to Modernizr.
+
 ### 0.5.10
 (released 09/07/2014)
 
-- @dapetcu21: `language` in config.yaml sets App.T.language
-- @dapetcu21: Temporarily removed huge search data from searchjson.js
+- @dapetcu21: `language` in config.yaml sets App.T.language.
+- @dapetcu21: Temporarily removed huge search data from searchjson.js.
 
 ### 0.5.9
 (released 09/07/2014)
