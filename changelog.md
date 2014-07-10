@@ -1,5 +1,6 @@
-### not yet
-(released not yet)
+### 0.5.11
+(released 10/07/2014)
+
 - @dapetcu21: Added `android`, `msie` to Modernizr.
 
 ### 0.5.10
