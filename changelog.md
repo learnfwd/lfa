@@ -1,3 +1,8 @@
+### 0.5.14
+(released 11/07/2014)
+
+- @tvararu: Fix meta charset to standards-complaint `utf-8` declaration.
+
 ### 0.5.13
 (released 10/07/2014)
 
