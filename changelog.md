@@ -1,3 +1,8 @@
+### 0.5.15
+(released 13/07/2014)
+
+- @tvararu: Fix mobile to not have any weird `overflow-y` jiggle.
+
 ### 0.5.14
 (released 11/07/2014)
 
