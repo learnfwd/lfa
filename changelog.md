@@ -1,3 +1,8 @@
+### 0.5.16
+(released 13/07/2014)
+
+- @tvararu: `window.IEProofLocalStorage`.
+
 ### 0.5.15
 (released 13/07/2014)
 
