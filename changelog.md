@@ -1,3 +1,8 @@
+### 0.5.17
+(released 13/07/2014)
+
+- @tvararu: Unopacitate sidebar toggles on mousehover.
+
 ### 0.5.16
 (released 13/07/2014)
 
