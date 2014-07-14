@@ -1,3 +1,8 @@
+### 0.5.18
+(released 14/07/2014)
+
+- @dapetcu21: Add unsupported browser warnings.
+
 ### 0.5.17
 (released 13/07/2014)
 
