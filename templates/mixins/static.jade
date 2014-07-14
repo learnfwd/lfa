@@ -123,3 +123,202 @@ mixin rightbar()
 
 mixin error-message()
   p If you're seeing this, either you have to wait for things to finish loading, or something went wrong.
+
+mixin browser-warning-head()
+  script.
+    var nVer = navigator.appVersion;
+    var nAgt = navigator.userAgent;
+    var browserName  = navigator.appName;
+    var fullVersion  = ''+parseFloat(navigator.appVersion); 
+    var majorVersion = parseInt(navigator.appVersion,10);
+    var osName = 'Unknown';
+    var nameOffset,verOffset,ix;
+    var browserOK = false;
+
+    if (nAgt.indexOf("Android")!=-1) {
+      osName = "Android";
+    } else if (nAgt.indexOf("iPhone")!=-1 || nAgt.indexOf("iPod")!=-1 || nAgt.indexOf("iPad")!=-1) {
+      osName = "iOS";
+    } else if (nAgt.indexOf("Linux")!=-1) {
+      osName = "Linux";
+    } else if (nAgt.indexOf("Mac OS X")!=-1) {
+      osName = "OS X";
+    } else if (nAgt.indexOf("Windows")!=-1) {
+      osName = "Windows";
+    }
+
+    // In Opera, the true version is after "Opera" or after "Version"
+    if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
+     browserName = "Opera";
+     fullVersion = nAgt.substring(verOffset+6);
+     if ((verOffset=nAgt.indexOf("Version"))!=-1) 
+       fullVersion = nAgt.substring(verOffset+8);
+    }
+    // In MSIE, the true version is after "MSIE" in userAgent
+    else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
+     browserName = "Microsoft Internet Explorer";
+     fullVersion = nAgt.substring(verOffset+5);
+    }
+    // In MSIE 11, the true version is after "ver:" in userAgent
+    else if ((verOffset=nAgt.indexOf("Trident"))!=-1) {
+     verOffset = nAgt.indexOf("rv:");
+     browserName = "Microsoft Internet Explorer";
+     fullVersion = nAgt.substring(verOffset+3);
+    }
+    // In Chrome, the true version is after "Chrome" 
+    else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
+     browserName = "Chrome";
+     fullVersion = nAgt.substring(verOffset+7);
+    }
+    // In Safari, the true version is after "Safari" or after "Version" 
+    else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
+     browserName = "Safari";
+     fullVersion = nAgt.substring(verOffset+7);
+     if ((verOffset=nAgt.indexOf("Version"))!=-1) 
+       fullVersion = nAgt.substring(verOffset+8);
+    }
+    // In Firefox, the true version is after "Firefox" 
+    else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
+     browserName = "Firefox";
+     fullVersion = nAgt.substring(verOffset+8);
+    }
+    // In most other browsers, "name/version" is at the end of userAgent 
+    else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < 
+              (verOffset=nAgt.lastIndexOf('/')) ) 
+    {
+     browserName = nAgt.substring(nameOffset,verOffset);
+     fullVersion = nAgt.substring(verOffset+1);
+     if (browserName.toLowerCase()==browserName.toUpperCase()) {
+      browserName = navigator.appName;
+     }
+    }
+    // trim the fullVersion string at semicolon/space/) if present
+    if ((ix=fullVersion.indexOf(";"))!=-1)
+       fullVersion=fullVersion.substring(0,ix);
+    if ((ix=fullVersion.indexOf(" "))!=-1)
+       fullVersion=fullVersion.substring(0,ix);
+    if ((ix=fullVersion.indexOf(")"))!=-1)
+       fullVersion=fullVersion.substring(0,ix);
+
+    majorVersion = parseInt(''+fullVersion,10);
+    if (isNaN(majorVersion)) {
+     fullVersion  = ''+parseFloat(navigator.appVersion); 
+     majorVersion = parseInt(navigator.appVersion,10);
+    }
+
+    if (browserName === undefined) {
+      browserName = 'Unknown Browser';
+    }
+
+    browserOK = ( (browserName === 'Chrome' && majorVersion >= 31) ||
+                  (browserName === 'Firefox' && majorVersion >= 25) ||
+                  (browserName === 'Safari' && majorVersion >= 6) ||
+                  (browserName === 'Microsoft Internet Explorer' && majorVersion >= 10) );
+
+    console.log('UserAgent: ', nAgt);
+    console.log('Browser detection: ' + browserName + ' ' + 
+      fullVersion + '(' + majorVersion + ') on ' +
+      osName + (browserOK ? ' OK' : ' FAIL'));
+
+    if (!browserOK) {
+      var browsers = {
+        chrome: {
+          href: 'https://www.google.com/chrome/browser/',
+          text: 'Google Chrome (&gt;= 31.0)'
+        },
+        safari: {
+          href: 'https://www.apple.com/safari/',
+          text: 'Apple Safari (&gt;= 6.0)'
+        },
+        firefox: {
+          href: 'http://www.mozilla.org/firefox/new/',
+          text: 'Mozilla Firefox (&gt;= 25.0)'
+        },
+        msie: {
+          href: 'http://windows.microsoft.com/en-us/internet-explorer/download-ie',
+          text: 'Internet Explorer (&gt;= 10.0)'
+        },
+        mobilesafari: {
+          href: 'https://www.apple.com/ios/',
+          text: 'Apple Mobile Safari (iOS &gt;= 6.0)'
+        },
+        androidchrome: {
+          href: 'market://details?id=com.android.chrome',
+          text: 'Google Chrome (&gt;= 31.0)'
+        },
+      };
+
+      var recommend = [];
+
+      if (osName === 'Android') {
+        recommend = ['androidchrome'];
+      } else if (osName === 'iOS') {
+        recommend = ['mobilesafari'];
+      } else {
+        recommend.push('chrome');
+        if (osName === 'OS X') {
+          recommend.push('safari');
+        }
+        recommend.push('firefox');
+        if (osName === 'Windows') {
+          recommend.push('msie');
+        }
+      }
+
+      var list = '';
+      for (var i = 0, n = recommend.length; i < n; i++) {
+        var brw = browsers[recommend[i]];
+        list = list + '<li><a href="' + brw.href + '">' + brw.text + '</a></li>';
+      }
+
+      window.browserRecomendationList = list;
+    }
+
+    window.browserFullName = browserName + ' ' + fullVersion;
+    window.browserOK = browserOK;
+
+mixin browser-warning-content()
+  #browser-warning
+    script.
+      if (window.browserOK) {
+        document.write('<style type="text/css">#browser-warning{ display: none; }</style>');
+        function removeClass(el, className) {
+          el.className = el.className.replace(className, '');
+        }
+        removeClass(document.querySelector('#scrollview'), 'locked');
+      }
+
+    - var default_browser_warning = {title: 'Outdated or unsupported browser', body: 'We\'ve noticed that you\'re using <strong>%1</strong>. This browser or platform is either old or unsupported. We\'re not stopping you from continuing, but we warn you that some content might not be displayed or function correctly. We recommend you updating/switching to one of these:'};
+    - var browser_warning = global.options.browser_warning;
+    - if (typeof(browser_warning) !== 'object') {
+    -   browser_warning = default_browser_warning;
+    - }
+    - browser_warning.title = browser_warning.title || default_browser_warning.title;
+    - browser_warning.body = browser_warning.body || default_browser_warning.body;
+
+    .bwarn-background
+
+    .bwarn-scroll
+      .bwarn-content.col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        script.
+          window.removeBrowserWarning = function() {
+            var el = document.querySelector('#browser-warning');
+            el.parentNode.removeChild(el);
+            function removeClass(el, className) {
+              el.className = el.className.replace(className, '');
+            }
+            removeClass(document.querySelector('#scrollview'), 'locked');
+          }
+        h1.pull-right
+          a(href="#", onclick="removeBrowserWarning()").btn.btn-outline-inverse.btn-lg OK
+        h1.bwarn-title!= browser_warning.title
+        p.bwarn-body!= browser_warning.body
+        script.
+          var el = document.querySelector('#browser-warning .bwarn-content .bwarn-body');
+          el.innerHTML = el.innerHTML.replace('%1', window.browserFullName);
+        ul
+          script.
+            if (!window.browserOK && window.browserRecomendationList) {
+              document.write(window.browserRecomendationList);
+            }
+

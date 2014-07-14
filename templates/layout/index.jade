@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang= global.options.language)
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge, chrome=1')
@@ -7,6 +7,8 @@ html
 
     title= book_title
     
+    if global.options.browser_warning
+      +browser-warning-head
     link(type='text/css', rel='stylesheet', media='screen', href='css/master.css')
   body
     .menu
@@ -20,7 +22,7 @@ html
       //- this will be done on runtime
       //+toc(toc)
     
-    #scrollview
+    #scrollview.locked
       section.container
         #content.row
           #textbook.col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
@@ -30,6 +32,9 @@ html
     
     aside#rightbar
       +rightbar()
+
+    if global.options.browser_warning
+      +browser-warning-content
 
     script(type='text/javascript', data-main="lfa/js/main", src="lfa/js/lib/require.min.js")
     

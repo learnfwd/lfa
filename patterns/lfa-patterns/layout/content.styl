@@ -6,6 +6,14 @@ body
   #scrollview
     width: 100%
 
+    &.locked
+      overflow: hidden
+      pointer-events: none
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
   #content, #textbook, > .container, #scrollview
     height: 100%
   
