@@ -296,29 +296,26 @@ mixin browser-warning-content()
     - browser_warning.title = browser_warning.title || default_browser_warning.title;
     - browser_warning.body = browser_warning.body || default_browser_warning.body;
 
-    .bwarn-background
-
-    .bwarn-scroll
-      .bwarn-content.col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        script.
-          window.removeBrowserWarning = function() {
-            var el = document.querySelector('#browser-warning');
-            el.parentNode.removeChild(el);
-            function removeClass(el, className) {
-              el.className = el.className.replace(className, '');
-            }
-            removeClass(document.querySelector('#scrollview'), 'locked');
+    .bwarn-content.col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+      script.
+        window.removeBrowserWarning = function() {
+          var el = document.querySelector('#browser-warning');
+          el.parentNode.removeChild(el);
+          function removeClass(el, className) {
+            el.className = el.className.replace(className, '');
           }
-        h1.pull-right
-          a(href="#", onclick="removeBrowserWarning()").btn.btn-outline-inverse.btn-lg OK
-        h1.bwarn-title!= browser_warning.title
-        p.bwarn-body!= browser_warning.body
+          removeClass(document.querySelector('#scrollview'), 'locked');
+        }
+      h1.pull-right
+        a(href="#", onclick="removeBrowserWarning()").btn.btn-outline-inverse.btn-lg OK
+      h1.bwarn-title!= browser_warning.title
+      p.bwarn-body!= browser_warning.body
+      script.
+        var el = document.querySelector('#browser-warning .bwarn-content .bwarn-body');
+        el.innerHTML = el.innerHTML.replace('%1', window.browserFullName);
+      ul
         script.
-          var el = document.querySelector('#browser-warning .bwarn-content .bwarn-body');
-          el.innerHTML = el.innerHTML.replace('%1', window.browserFullName);
-        ul
-          script.
-            if (!window.browserOK && window.browserRecomendationList) {
-              document.write(window.browserRecomendationList);
-            }
+          if (!window.browserOK && window.browserRecomendationList) {
+            document.write(window.browserRecomendationList);
+          }
 
