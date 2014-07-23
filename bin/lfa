@@ -8,8 +8,7 @@ var args = require('optimist')
 var notifier = require('update-notifier')({ packagePath: '../package.json' });
 if (notifier.update) { notifier.notify(); }
 
-var commands = require('../lib/commands'),
-    configureOptions = require('../lib/config_parser');
+var commands = require('../lib/commands');
 
 if (args._.length < 1 && !args.version) {
   commands.help.execute();
@@ -21,10 +20,6 @@ if (args._.length < 1 && !args.version) {
     process.stdout.write(('\nUndefined command: ' + args._[0]).red + '\n');
     return commands.help.execute();
   }
-  
-  if (currentCommand.needs_config) {
-    configureOptions(args, function(){ currentCommand.execute(args); });
-  } else {
-    currentCommand.execute(args);
-  }
+
+  currentCommand.execute(args);
 }
