@@ -1,5 +1,0 @@
---reporter spec
---compilers coffee:coffee-script
---require should
---timeout 20000
---slow 1000
