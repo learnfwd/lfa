@@ -20,24 +20,29 @@
     "url": "git://github.com/learnfwd/lfa.git"
   },
   "dependencies": {
-    "when": "~3.2.3",
+    "when": "~3.4.2",
     "rimraf": "~2.2.8",
     "xmldoc": "~0.1.2",
-    "underscore": "1.5.x",
-    "mkdirp": "0.3.x",
-    "js-yaml": "2.1.x",
-    "readdirp": "0.3.x",
-    "jsdom": "~0.11.0",
+    "underscore": "~1.6.0",
+    "mkdirp": "~0.5.0",
+    "js-yaml": "~3.1.0",
+    "readdirp": "~1.1.0",
+    "jsdom": "~0.11.1",
     "html2jade": "~0.7.7",
-    "unzip": "~0.1.9"
+    "unzip": "~0.1.9",
+    "accord": "~0.11.1",
+    "open": "0.0.5",
+    "colors": "~0.6.2",
+    "express": "~4.6.1",
+    "optimist": "~0.6.1",
+    "update-notifier": "~0.2.0",
+    "shelljs": "~0.3.0",
+    "minimatch": "~0.4.0",
+    "jade": "~1.5.0",
+    "stylus": "~0.47.3"
   },
   "devDependencies": {
-    "mocha": "latest",
-    "express": "latest",
-    "jade": "1.1.5",
-    "open": "latest",
-    "colors": "latest",
-    "stylus": "0.37.x"
+    "mocha": "latest"
   },
   "engines": {
     "node": ">=0.8.0"
