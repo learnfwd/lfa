@@ -44,9 +44,10 @@
     "coffee-script": "~1.7.1"
   },
   "devDependencies": {
-    "mocha": "latest"
+    "mocha": "latest",
+    "should": "~4.0.4"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
   }
 }
