@@ -39,7 +39,9 @@
     "shelljs": "~0.3.0",
     "minimatch": "~0.4.0",
     "jade": "~1.5.0",
-    "stylus": "~0.47.3"
+    "stylus": "~0.47.3",
+    "future-stream": "~0.2.1",
+    "coffee-script": "~1.7.1"
   },
   "devDependencies": {
     "mocha": "latest"
