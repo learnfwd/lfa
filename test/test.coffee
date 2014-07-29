@@ -23,21 +23,3 @@ describe 'LFA', ->
     describe 'loaded', ->
       it 'should compile', (done) ->
         project.compile().then(done.bind(null, null), done)
-
-#var _compile = function(){
-  #var proj = new lfa.Project(process.cwd());
-  #process.stdout.write('loading project... '.grey);
-  #proj.loaded.done(function () {
-    #process.stdout.write('done'.yellow + '\n');
-    #process.stdout.write('compiling... '.grey);
-    #proj.compile().done(function() {
-        #process.stdout.write('done'.yellow + '\n');
-      #}, function(ex) {
-        #process.stdout.write('error'.red + '\n');
-        #console.log(ex.stack);
-      #});
-  #}, function(ex) {
-    #process.stdout.write('error'.red + '\n');
-    #console.log(ex.stack);
-  #});
-#};
