@@ -50,7 +50,7 @@
     "should": "~4.0.4"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=0.10.29"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
