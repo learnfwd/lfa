@@ -2,6 +2,9 @@ var lfa = require('../');
 
 var proj = new lfa.Project(process.argv[2]);
 proj.loaded.done(function () {
+  /*process.send = function(msg) {
+    process.stderr.write(JSON.stringify(msg));
+  };*/
   process.send({msg: 'load-done'});
 
   proj.on('compile-start', function() {
@@ -36,6 +39,11 @@ proj.loaded.done(function () {
 
   proj.watch();
 
+  process.on('message', function(msg) {
+    if (msg === 'exit') {
+      process.exit(0);
+    }
+  });
 }, function(ex) {
   process.send({msg: 'load-error', err:ex});
 });

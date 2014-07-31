@@ -1,4 +1,3 @@
-lfa = require '../lib'
 path = require 'path'
 child_process = require 'child_process'
 _ = require 'underscore'
@@ -18,7 +17,17 @@ describe 'Watcher', ->
         if err
           done(err)
           return
-        child = child_process.fork(__dirname + '/watcher-fork.conf', [projPath])
+
+        moduleName = __dirname + '/watcher-fork.conf'
+        if process.env.running_under_istanbul
+          forkArgs = [__dirname + '/../node_modules/istanbul/lib/cli.js', 'cover', '--report', 'none', '--dir', path.resolve(__dirname + '/../coverage/watch'), moduleName + '.js', '--', projPath]
+        else
+          forkArgs = [moduleName, projPath]
+
+        child = child_process.spawn('node', forkArgs, {
+          stdio: [null, null, null, 'ipc']
+        })
+
         unbind = -> child.removeListener('message', handler)
         handler = (msg) ->
           switch msg.msg
@@ -31,7 +40,7 @@ describe 'Watcher', ->
         child.on 'message', handler
 
   after (done) ->
-    child.kill()
+    child.send('exit')
     child_process.exec('rm -r "' + projPath + '"', done.bind(null, null))
 
 
