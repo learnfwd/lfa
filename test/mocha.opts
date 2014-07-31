@@ -2,3 +2,4 @@
 --compilers coffee:coffee-script/register
 --require should
 --timeout 60000
+--invert --grep "/conf\.[^\/]*$/"
