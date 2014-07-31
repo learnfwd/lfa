@@ -46,13 +46,16 @@
     "gaze": "~0.6.4"
   },
   "devDependencies": {
+    "coveralls": "^2.11.1",
+    "istanbul": "^0.3.0",
     "mocha": "latest",
+    "mocha-istanbul": "^0.2.0",
     "should": "~4.0.4"
   },
   "engines": {
     "node": ">=0.10.29"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha"
   }
 }
