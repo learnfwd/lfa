@@ -15,16 +15,17 @@ describe 'LFA', ->
     lfa.Project.should.be.type 'function'
 
 describe 'Basic project', ->
-  lfaPath = path.join fixturePath, 'basic', '.lfa'
+  projPath = path.join fixturePath, 'basic'
+  lfaPath = path.join projPath, '.lfa'
   compiledPath = path.join lfaPath, 'build'
   project = null
-
-  after (done) ->
-    child_process.exec('rm -r "' + lfaPath + '"', done.bind(null, null))
 
   it 'should load', (done) ->
     project = new lfa.Project(path.join fixturePath, 'basic')
     project.loaded.then(done.bind(null, null), done)
+
+  it 'should compile', (done) ->
+    project.compile().then(done.bind(null, null), done)
 
   it 'should compile', (done) ->
     project.compile().then(done.bind(null, null), done)
@@ -58,7 +59,19 @@ describe 'Basic project', ->
     compiledFile = "(function() {\n  setTimeout(function() {\n    return console.log('doing something');\n  }, 1000);\n\n}).call(this);\n"
     fs.readFileSync(path.join compiledPath, 'js', 'main.js').toString('utf8').should.equal compiledFile
 
-  it 'should pass through files', ->
+  it 'should pass through regular files', ->
     compiledFile = fs.readFileSync(path.join fixturePath, 'basic', 'img', 'kitten.jpg').toString('utf8')
     fs.readFileSync(path.join compiledPath, 'img', 'kitten.jpg').toString('utf8').should.equal compiledFile
 
+  it 'should fail when file is malformed', (done) ->
+    fs.writeFile path.join(projPath, 'text', 'ch03.jade'), 'h1 Test\n  \t  : errorhere', (err) ->
+      if err
+        done(err)
+        return
+      project.compile()
+        .then (-> done('Should have errored out')), (-> done())
+
+  after (done) ->
+    child_process.exec 'rm -r "' + lfaPath + '"', ->
+      child_process.exec 'rm -r "' + path.join(projPath, 'text', 'ch03.jade') + '"', ->
+        done()
