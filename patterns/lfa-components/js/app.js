@@ -1,4 +1,4 @@
-define(['backbone', 'bookview', 'router', 'translate', 'searchjson'], function(Backbone, BookView, Router, T, SearchJSON) {
+define(['backbone', 'bookview', 'router', 'translate', 'searchjson', 'appStorage'], function(Backbone, BookView, Router, T, SearchJSON, Storage) {
 
   // Mixin wrapper
   window.getMixin = function (mix) {
@@ -18,5 +18,7 @@ define(['backbone', 'bookview', 'router', 'translate', 'searchjson'], function(B
   App.T = T(); // Create a new translator instance
   App.T.language = SearchJSON.language || App.T.defaultLanguage;
 
+  App.storage = Storage;
+  
   return App;
 });
