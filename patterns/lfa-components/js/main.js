@@ -2,8 +2,8 @@ require.config({
   waitSeconds: 0, // Indefinite timeout (good for low end devices)
   paths: {
     // General purpose 3rd party libs.
-    jquery:       'lib/jquery-2.0.3.min',
-    underscore:   'lib/underscore.min',
+    jquery:       'lib/jquery-2.1.1.min',
+    underscore:   'lib/underscore-min',
     hammer:       'lib/jquery.hammer.min',
     modernizr:    'lib/modernizr.touch.min',
     fastclick:    'lib/fastclick',
@@ -26,7 +26,7 @@ require.config({
     rangytext:    'lib/rangy/rangy-textrange',
 
     // Backbone and accompanying libs.
-    backbone:     'lib/backbone.min',
+    backbone:     'lib/backbone-min',
     store:        'lib/backbone.localStorage.min',
     queryengine:  'lib/backbone.queryEngine',
 
@@ -36,6 +36,7 @@ require.config({
 
     // Global App object
     app:          'app',
+    appStorage:   'storage',
 
     // LFA generated JSON objects.
     templates:    '../../js/templates/main',
