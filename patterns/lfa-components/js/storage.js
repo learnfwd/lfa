@@ -104,7 +104,6 @@ define(function (require, exports, module) {
       },
 
       getItem: function (key) {
-        key = 
         window.App.trigger('storage:getItem', key, s);
         return s.getItem(key);
       },
