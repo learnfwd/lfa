@@ -30,12 +30,14 @@ define([
     open: function() {
       if (this.isOpen) { return; }
       this.parent.closeSidebars();
+      this.parent.trigger('sidebar:open', this.classActive);
       this.parent.$el.addClass(this.classActive);
       this.isOpen = true;
     },
     
     close: function() {
       if (!this.isOpen) { return; }
+      this.parent.trigger('sidebar:close', this.classActive);
       this.parent.$el.removeClass(this.classActive);
       this.isOpen = false;
     },
