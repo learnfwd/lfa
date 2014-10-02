@@ -1,29 +1,32 @@
 // Position the sidebar buttons correctly and style them.
-#leftbar-toggle, #rightbar-toggle, #previous-chapter, #next-chapter
+.menu-item
   position: absolute
   width: toggle-hitbox
   height: toggle-hitbox
   cursor: pointer
   background: #222
   color: white
-  > i
+
+  &:hover
+  &:focus
+    color: white
+    text-decoration: none
+
+  .menu-item-contents
     position: absolute
+    top: 50%
+    left: 50%
+    transform: translate3d(-50%, -50%, 0)
     font-size: 1.5em
 
-#leftbar-toggle, #rightbar-toggle
+.menu .menu-item
   top: 1.5em
 
-#previous-chapter, #next-chapter
+.navigation-menu .menu-item
   bottom: 1.5em
 
 #leftbar-toggle, #previous-chapter
   left: 1em
-  > i
-    top: 0.50em
-    left: 0.37em
 
 #rightbar-toggle, #next-chapter
   right: 1em
-  > i
-    top: 0.45em
-    right: 0.40em

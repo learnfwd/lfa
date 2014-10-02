@@ -1,6 +1,8 @@
 body
   // The fixed menus that contains the sidebar and navigation buttons.
   .menu, .navigation-menu
+    font-family: font-family-sans-serif
+    user-select: none
     position: fixed
     width: 100%
     z-index: 1000
@@ -29,6 +31,10 @@ body
     .menu
       height: 3em
       background: #222
+
+      // Reposition the buttons so they're prettier.
+      .menu-item
+        top: 0
   
       // Hide the menu when we scroll down on mobile.
       &.pinned
@@ -40,6 +46,9 @@ body
     .navigation-menu
       height: 3em
       background: #222
+
+      .menu-item
+        bottom: 0
       
       &.pinned
         transform: translate3d(0, 0, 0)
@@ -47,18 +56,11 @@ body
       &.unpinned
         transform: translate3d(0, 3em, 0)
   
-    // Reposition the buttons so they're prettier.
     #leftbar-toggle, #previous-chapter
-      top: 0
       left: 0
-      > i
-        left: 12px
 
     #rightbar-toggle, #next-chapter
-      top: 0
       right: 0
-      > i
-        right: 12px
 
     // Extra margin top to accomodate the menu.
     #content
