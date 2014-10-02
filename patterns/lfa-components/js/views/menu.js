@@ -35,12 +35,9 @@ define([
       'click #rightbar-toggle': function() {
         this.parent.rightbar.toggle();
       },
-      'mouseenter #leftbar-toggle': function() {
+      'mouseenter .menu-item': function() {
         this.$el.removeClass('unpinned').addClass('pinned');
       },
-      'mouseenter #rightbar-toggle': function() {
-        this.$el.removeClass('unpinned').addClass('pinned');
-      }
     }
   });
   

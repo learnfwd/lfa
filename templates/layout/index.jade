@@ -12,11 +12,11 @@ html(lang= global.options.language)
     link(type='text/css', rel='stylesheet', media='screen', href='css/master.css')
   body
     .menu
-      #leftbar-toggle: i.fa.fa-bars.fa-fw
-      #rightbar-toggle: i.fa.fa-question.fa-fw
+      .menu-item.menu-item-left#leftbar-toggle: i.fa.fa-bars.fa-fw.menu-item-contents
+      .menu-item.menu-item-right#rightbar-toggle: i.fa.fa-question.fa-fw.menu-item-contents
     .navigation-menu
-      a#previous-chapter: i.fa.fa-fw.fa-chevron-left
-      a#next-chapter: i.fa.fa-fw.fa-chevron-right
+      a.menu-item.menu-item-left#previous-chapter: i.fa.fa-chevron-left.menu-item-contents
+      a.menu-item.menu-item-right#next-chapter: i.fa.fa-chevron-right.menu-item-contents
     
     nav#leftbar
       //- this will be done on runtime

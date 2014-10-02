@@ -19,21 +19,21 @@ body
   
   // Animate the sidebars into view when they get activated. Move the entire page.
   &.leftbar-active
-    #leftbar-toggle, #leftbar, #previous-chapter
+    #leftbar, .menu-item-left
       transform: translate3d(sidebar-width, 0, 0)
     #content
       transform: translate3d((sidebar-width * 0.5), 0, 0)
     // Make the other sidebar-toggle dissapear when you open a sidebar.
-    #rightbar-toggle, #next-chapter
+    .menu-item-right
       transform: translate3d(toggle-hitbox, 0, 0)
       opacity: 0
   
   &.rightbar-active
-    #rightbar-toggle, #rightbar, #next-chapter
+    #rightbar, .menu-item-right
       transform: translate3d(- sidebar-width, 0, 0)
     #content
       transform: translate3d((sidebar-width * -0.5), 0, 0)
-    #leftbar-toggle, #previous-chapter
+    .menu-item-left
       transform: translate3d(- toggle-hitbox, 0, 0)
       opacity: 0
   
