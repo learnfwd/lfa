@@ -138,6 +138,11 @@ require([
 
   // Execute textbook-specific javascript, if it exists.
   require(['../../js/main'], function() {
+    // After everything is rendered the first time, trigger "ready"
+    App.book.once('render', function() {
+      App.trigger('ready');
+    });
+
     // Then, start up the textbook.
     Backbone.history.start();
   });
