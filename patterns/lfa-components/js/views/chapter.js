@@ -55,6 +55,10 @@ define([
       var nextUrl = window.App.tocUrlOrder[next],
         previousUrl = window.App.tocUrlOrder[previous];
 
+      // Save them locally
+      this.nextChapter = nextUrl;
+      this.previousChapter = previousUrl;
+
       // Set them in HTML.
       $('#next-chapter').prop('href', '#book/' + nextUrl);
       $('#previous-chapter').prop('href', '#book/' + previousUrl);

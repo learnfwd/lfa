@@ -86,6 +86,10 @@ define([
 
       // Initialize FastClick. This removes the .3s delay in mobile webkit when clicking on anything.
       FastClick.attach(document.body);
+
+      // Bind keyboard events
+      $(window).on('keyup', this.onKeyUp.bind(this));
+      this.keyNavigationEnabled = true;
       
       if (Settings.findWhere({ title: 'Animations' }).get('value')) {
         this.$el.addClass('animated');
@@ -127,6 +131,16 @@ define([
         el: this.$('.navigation-menu'),
         parent: this
       });
+    },
+
+    showNextChapter: function () {
+      var nextChapterUrl =  'book/' + this.chapter.nextChapter;
+      window.App.router.navigate(nextChapterUrl, true);
+    },
+
+    showPreviousChapter: function () {
+      var previousChapterUrl =  'book/' + this.chapter.previousChapter;
+      window.App.router.navigate(previousChapterUrl, true);
     },
     
     showFirstChapter: function() {
@@ -171,6 +185,36 @@ define([
             scrollView.scrollTop(0);
           }
         }
+      }
+    },
+
+    getKeyNavigationEnabled: function () {
+      return this.keyNavigationEnabled;
+    },
+
+    setKeyNavigationEnabled: function (val) {
+      this.keyNavigationEnabled = val;
+    },
+
+    onKeyUp: function (evt) {
+      if (!this.keyNavigationEnabled) {
+        return;
+      }
+      var keyCode = evt.which;
+      if (keyCode !== 39 && keyCode !== 37) {
+        return;
+      }
+      if (evt.target.nodeName === 'INPUT') {
+        return;
+      }
+      var body = $('body');
+      if (body.hasClass('leftbar-active') || body.hasClass('rightbar-active')) {
+        return;
+      }
+      if (keyCode === 39) {
+        this.showNextChapter();
+      } else {
+        this.showPreviousChapter();
       }
     },
     
