@@ -135,17 +135,17 @@ define([
 
     showNextChapter: function () {
       var nextChapterUrl =  'book/' + this.chapter.nextChapter;
-      window.App.router.navigate(nextChapterUrl, true);
+      window.App.router.navigate(nextChapterUrl, { trigger: true });
     },
 
     showPreviousChapter: function () {
       var previousChapterUrl =  'book/' + this.chapter.previousChapter;
-      window.App.router.navigate(previousChapterUrl, true);
+      window.App.router.navigate(previousChapterUrl, { trigger: true });
     },
     
     showFirstChapter: function() {
       var firstChapterUrl = 'book/' + window.App.tocUrlOrder[0];
-      window.App.router.navigate(firstChapterUrl, true);
+      window.App.router.navigate(firstChapterUrl, { replace: true, trigger: true });
     },
     
     show: function(chapter, id) {
