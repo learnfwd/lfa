@@ -1,3 +1,17 @@
+### 0.5.19
+(released 16/10/2014)
+
+- @dapetcu21: Fixed hang on loading issues
+- @dapetcu21: Keyboard navigation
+- @dapetcu21: Added App.on("ready") event
+- @dapetcu21: Fixed scroll locking on textbooks with no browser detection
+- @dapetcu21: Unselectable menu buttons toggle
+- @dapetcu21: General purpose menu item styles
+- @dapetcu21: Chapter jades are now only run at compile time
+- @dapetcu21: Added sidebar open/close event
+- @cdinu: Refactor localStorage
+- @cdinu: Update JS libraries
+
 ### 0.5.18
 (released 14/07/2014)
 
