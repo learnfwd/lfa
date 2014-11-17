@@ -123,7 +123,7 @@ It's a [PhantomCSS](https://github.com/Huddle/PhantomCSS) (through [grunt-phanto
 
 While it is possible to run the **build tool tests** tests from outside the vagrant virtual machine to get faster suite speeds, that is not recommended for the **textbook tests**. This is because the visual regression PhantomCSS tests take actual screenshots of the page, and they would be invalidated if you ran them from a different operating system with different font rendering.
 
-License (MIT)
+License (Mozilla Public License 2.0)
 -------------
 
 See [license.txt](license.txt).
