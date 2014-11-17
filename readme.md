@@ -65,14 +65,14 @@ $ lfa watch
 
 By now, a browser tab should have popped up for you. You can now start editing files with your [favorite text editor](http://en.wikipedia.org/wiki/Editor_war) and, as soon as you save, the watcher will reload the page for you.
 
-We built in some useful mixins and libraries (like Bootstrap, FontAwesome, modernizr, etc.) for you. For example, let's put up 2 kittens side-by-side in jade:
+We built in some useful mixins and libraries (like [Bootstrap](http://getbootstrap.com/2.3.2/), [FontAwesome](http://fortawesome.github.io/Font-Awesome/), [modernizr](http://modernizr.com/), etc.) for you. For example, let's put up 2 kittens side-by-side in jade:
 
 ```jade
 .row
   .col-sm-6
-    +img('img/kitten.jpg');
+    +img('img/kitten.jpg')
   .col-sm-6
-    +img('img/kitten.jpg');
+    +img('img/kitten.jpg')
 ```
 
 The end result:
@@ -123,7 +123,7 @@ It's a [PhantomCSS](https://github.com/Huddle/PhantomCSS) (through [grunt-phanto
 
 While it is possible to run the **build tool tests** tests from outside the vagrant virtual machine to get faster suite speeds, that is not recommended for the **textbook tests**. This is because the visual regression PhantomCSS tests take actual screenshots of the page, and they would be invalidated if you ran them from a different operating system with different font rendering.
 
-License (MIT)
+License (Mozilla Public License 2.0)
 -------------
 
 See [license.txt](license.txt).
