@@ -23,6 +23,62 @@ LFA is a command line tool. For the basic help, run:
 $ lfa
 ```
 
+Quick start guide
+-----------------
+
+Let's create a new project:
+
+```bash
+$ lfa new my-first-book
+$ cd my-first-book
+```
+
+Your project structure should look something like this:
+
+```bash
+$ tree
+.
+|-- config.yml
+|-- css
+|   `-- master.styl
+|-- img
+|   `-- kitten.jpg
+`-- text
+    |-- ch01
+    |   |-- 00.jade
+    |   |-- 01.jade
+    |   `-- 02.jade
+    `-- ch02.jade
+```
+
+`config.yml` is the main configuration file. This is where you set up project settings like the title or language of the book
+
+The [Jade](http://jade-lang.com) files in `text/` make up for the book's chapters. The table of contents is generated automatically based on the folder hierarchy.
+For CSS, we use [Stylus](http://learnboost.github.io/stylus/). You should include whatever styles you have in `css/master.styl` or in `@import`-ed stylus or CSS files.
+Any other assets can be placed in any other subdirectory of the project
+
+Let's start editing our new project. Before we do that, we start the watcher:
+
+```bash
+$ lfa watch
+```
+
+By now, a browser tab should have popped up for you. You can now start editing files with your [favorite text editor](http://en.wikipedia.org/wiki/Editor_war) and, as soon as you save, the watcher will reload the page for you.
+
+We built in some useful mixins and libraries (like Bootstrap, FontAwesome, modernizr, etc.) for you. For example, let's put up 2 kittens side-by-side in jade:
+
+```jade
+.row
+  .col-sm-6
+    +img('img/kitten.jpg');
+  .col-sm-6
+    +img('img/kitten.jpg');
+```
+
+The end result:
+
+![Kittens](https://cloud.githubusercontent.com/assets/428060/5070005/b64fb396-6e6a-11e4-9064-77dc8f36f8fe.png)
+
 Contributing
 ------------
 
