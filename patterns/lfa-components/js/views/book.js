@@ -6,52 +6,52 @@ define([
   'modernizr',
   'fastclick',
   'searchjson',
-  
+
   'views/leftbar',
   'views/rightbar',
   'views/chapter',
   'views/menu'
 ], function($, _, Backbone, Store, Modernizr, FastClick, SearchJSON, LeftbarView, RightbarView, ChapterView, MenuView) {
   'use strict';
-  
+
   var Setting = Backbone.Model.extend({
     defaults: {
       title: '',
       value: false
     },
-    
+
     toggle: function () {
       this.save({
         completed: !this.get('value')
       });
     }
   });
-  
+
   var SettingsCollection = Backbone.Collection.extend({
     model: Setting,
     localStorage: new Store('lfa-settings')
   });
-  
+
   var Settings = new SettingsCollection();
   // Fetch from localStorage.
   Settings.fetch();
-  
+
   // Initialize settings if they don't exist.
   if (!Settings.findWhere({ title: 'Animations' })) {
     var animDefault = new Setting({ title: 'Animations', value: true });
     Settings.add(animDefault);
     animDefault.save();
   }
-  
+
   var BookView = Backbone.View.extend({
     html: $('html'),
-    
+
     initialize: function() {
       // Initialize/alias some helpful arrays and hashtables.
-      
+
       // Alias the SearchJSON to our global namespace.
       window.App.searchJSON = SearchJSON.pages;
-  
+
       // Alias the TOC as well.
       window.App.toc = SearchJSON.toc || [];
 
@@ -90,43 +90,65 @@ define([
       // Bind keyboard events
       $(window).on('keyup', this.onKeyUp.bind(this));
       this.keyNavigationEnabled = true;
-      
+
       if (Settings.findWhere({ title: 'Animations' }).get('value')) {
         this.$el.addClass('animated');
       } else {
         this.$('#animations-toggle').addClass('active');
       }
-      
+
       var self = this;
       // Close the sidebars when we tap anywhere on the textbook.
       this.$('section.container').on('click', function() {
         self.closeSidebars();
       });
+      if ( SearchJSON.textDirection === 'rtl') {
+        $(document).ready(function() {
+          $('aside#rightbar').attr('id','leftbar');
+          $('nav#leftbar').attr('id','rightbar');
+          $('#leftbar-toggle').removeClass('menu-item-left').addClass('menu-item-right');
+          $('#rightbar-toggle').removeClass('menu-item-right').addClass('menu-item-left');
+          $('#previous-chapter').removeClass('menu-item-left').addClass('menu-item-right').html('<i class="fa fa-chevron-right menu-item-contents"></i>');
+          $('#next-chapter').removeClass('menu-item-right').addClass('menu-item-left').html('<i class="fa fa-chevron-left menu-item-contents"></i>');
+        });
+        this.leftbar = new LeftbarView({
+          el: this.$('#rightbar'),
+          parent: this,
+          classActive: 'leftbar-active',
+          closeGesture: 'dragleft'
+        });
 
-      this.leftbar = new LeftbarView({
-        el: this.$('#leftbar'),
-        parent: this,
-        classActive: 'leftbar-active',
-        closeGesture: 'dragleft'
-      });
-      
-      this.rightbar = new RightbarView({
-        el: this.$('#rightbar'),
-        parent: this,
-        classActive: 'rightbar-active',
-        closeGesture: 'dragright'
-      });
-      
+        this.rightbar = new RightbarView({
+          el: this.$('#leftbar'),
+          parent: this,
+          classActive: 'rightbar-active',
+          closeGesture: 'dragright'
+        });
+      } else {
+        this.leftbar = new LeftbarView({
+          el: this.$('#leftbar'),
+          parent: this,
+          classActive: 'leftbar-active',
+          closeGesture: 'dragleft'
+        });
+
+        this.rightbar = new RightbarView({
+          el: this.$('#rightbar'),
+          parent: this,
+          classActive: 'rightbar-active',
+          closeGesture: 'dragright'
+        });
+      }
       this.chapter = new ChapterView({
         el: this.$('#textbook'),
         parent: this
       });
-      
+
       this.menu = new MenuView({
         el: this.$('.menu'),
         parent: this
       });
-      
+
       this.menu = new MenuView({
         el: this.$('.navigation-menu'),
         parent: this
@@ -142,12 +164,12 @@ define([
       var previousChapterUrl =  'book/' + this.chapter.previousChapter;
       window.App.router.navigate(previousChapterUrl, { trigger: true });
     },
-    
+
     showFirstChapter: function() {
       var firstChapterUrl = 'book/' + window.App.tocUrlOrder[0];
       window.App.router.navigate(firstChapterUrl, { replace: true, trigger: true });
     },
-    
+
     show: function(chapter, id) {
       var changeChapter = window.App.book.currentChapter !== chapter;
 
@@ -159,16 +181,16 @@ define([
       if (changeChapter || !id) {
         scrollView.scrollTop(0);
       }
-      
+
       // close the sidebars if we're on a phone/portrait tablet,
       if ($(window).width() <= 768) {
         this.closeSidebars();
       }
-      
+
       // remove the active class from the previous button and
       // add the active class to the one that was pressed.
       this.leftbar.makeActive(chapter, id);
-      
+
       if (changeChapter) {
         this.chapter.render(chapter);
       }
@@ -217,12 +239,12 @@ define([
         this.showPreviousChapter();
       }
     },
-    
+
     closeSidebars: function() {
       this.leftbar.close();
       this.rightbar.close();
     },
-    
+
     events: {
       'click #animations-toggle': function() {
         this.$el.toggleClass('animated');
@@ -232,6 +254,6 @@ define([
       }
     }
   });
-  
+
   return BookView;
 });

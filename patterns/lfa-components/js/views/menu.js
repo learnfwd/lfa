@@ -2,14 +2,15 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'headroom'
-], function($, _, Backbone, Headroom) {
+  'headroom',
+  'searchjson'
+], function($, _, Backbone, Headroom, SearchJSON) {
   'use strict';
-  
+
   var MenuView = Backbone.View.extend({
     initialize: function(options) {
       this.parent = options.parent;
-      
+
       var headroom = new Headroom(document.querySelector(this.$el.selector), {
         scrollElement: $('#scrollview')[0],
         'classes': {
@@ -27,19 +28,27 @@ define([
         }
       });
     },
-    
+
     events: {
       'click #leftbar-toggle': function() {
-        this.parent.leftbar.toggle();
+        if (SearchJSON.textDirection === 'rtl') {
+          this.parent.rightbar.toggle();
+        } else {
+          this.parent.leftbar.toggle();
+        }
       },
       'click #rightbar-toggle': function() {
-        this.parent.rightbar.toggle();
+        if (SearchJSON.textDirection === 'rtl') {
+          this.parent.leftbar.toggle();
+        } else {
+          this.parent.rightbar.toggle();
+        }
       },
       'mouseenter .menu-item': function() {
         this.$el.removeClass('unpinned').addClass('pinned');
       },
     }
   });
-  
+
   return MenuView;
 });

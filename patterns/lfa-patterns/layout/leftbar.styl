@@ -1,10 +1,10 @@
 // The left sidebar, with the table of contents.
 ul.tableofcontents
   background: toc-lvl1-background
-  
+
   list-style-type: none
   padding: 0
-  
+
   li
     cursor: pointer
     position: relative
@@ -18,22 +18,22 @@ ul.tableofcontents
     padding: 0 (2 * half-gutter) 0 half-gutter
     text-decoration: none
     position: relative
-    
+
     .title, .subtitle
       display: block
       text-overflow: ellipsis
       white-space: nowrap
       overflow: hidden
-    
+
     .title
       font-size: sidebar-text-size
       line-height: (sidebar-text-size * 3)
-    
+
     &.subtitled
       .title
         padding-top: (sidebar-text-size * 0.5)
         line-height: sidebar-text-size
-      
+
       .subtitle
         line-height: sidebar-text-size
         font-size: (sidebar-text-size * 0.75)
@@ -43,18 +43,12 @@ ul.tableofcontents
         letter-spacing: 0px
 
   .fold-button
-    position: absolute
-    width: (sidebar-text-size * 2)
-    height: (sidebar-text-size * 3)
-    right: 0
-    top: 0
-
     .fold-icon
       position: absolute
       left: 50%
       top: 50%
       transform: translate3d(-50%, -50%, 0)
-  
+
   .children-container
     overflow: hidden
     position: relative
@@ -66,14 +60,11 @@ ul.tableofcontents
       top: 0
       left: 0
       width: 100%
-  
+
   li.fold
-    .fold-icon
-      transform: translate3d(-50%, -50%, 0) rotate(90deg)
-    
     > .children-container
       height: 0 !important
-  
+
   > li.active > a,
   > li > a:hover,
   > li > a:focus,
@@ -82,7 +73,7 @@ ul.tableofcontents
     background: toc-lvl1-hover
     text-decoration: none
 
-  > li > .children-container > ul 
+  > li > .children-container > ul
     // Second level chapters.
     > li.active > a,
     > li > a:hover,
@@ -97,7 +88,7 @@ ul.tableofcontents
 
       > a
         padding-left: half-gutter
-    
+
       > .children-container > ul
         // Third level chapters and beyond.
         li.active > a,
@@ -108,7 +99,27 @@ ul.tableofcontents
           background: toc-lvl3-hover
           text-decoration: none
 
-        li 
+        li
           background-color: toc-lvl3-background
           a
             padding-left: half-gutter
+html[dir='rtl']
+  .fold-button
+    position: absolute
+    width: (sidebar-text-size * 2)
+    height: (sidebar-text-size * 3)
+    left: 0
+    top: 0
+  li.fold
+    .fold-icon
+      transform: translate3d(-50%, -50%, 0) rotate(-90deg)
+html[dir='ltr']
+  .fold-button
+    position: absolute
+    width: (sidebar-text-size * 2)
+    height: (sidebar-text-size * 3)
+    right: 0
+    top: 0
+  li.fold
+    .fold-icon
+      transform: translate3d(-50%, -50%, 0) rotate(90deg)
