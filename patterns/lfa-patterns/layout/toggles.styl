@@ -25,8 +25,16 @@
 .navigation-menu .menu-item
   bottom: 1.5em
 
-#leftbar-toggle, #previous-chapter
-  left: 1em
+html[dir='ltr']
+  #leftbar-toggle, #previous-chapter
+    left: 1em
 
-#rightbar-toggle, #next-chapter
-  right: 1em
+  #rightbar-toggle, #next-chapter
+    right: 1em
+
+html[dir='rtl']
+  #leftbar-toggle, #previous-chapter
+    right: 1em
+
+  #rightbar-toggle, #next-chapter
+    left: 1em
