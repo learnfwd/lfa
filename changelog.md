@@ -1,3 +1,7 @@
+### 0.5.20
+(released 02/12/2014)
+- @dapetcu21: Right-to-left support
+
 ### 0.5.19
 (released 16/10/2014)
 

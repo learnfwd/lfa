@@ -1,6 +1,6 @@
 {
   "name": "lfa",
-  "version": "0.5.19",
+  "version": "0.5.20",
   "description": "learnforward-author is a build tool for generating HTML5 textbooks",
   "keywords": [
     "textbook",
@@ -12,6 +12,7 @@
   "bugs": "https://github.com/learnfwd/lfa/issues",
   "author": "ReadForward LLC",
   "main": "lib",
+  "license": "MPL-2.0",
   "bin": {
     "lfa": "bin/lfa"
   },
