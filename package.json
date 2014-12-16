@@ -1,0 +1,46 @@
+{
+  "name": "lfanew",
+  "version": "0.0.0",
+  "description": "The best module ever.",
+  "author": {
+    "name": "",
+    "email": ""
+  },
+  "repository": "user/repo",
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "lfanew",
+    ""
+  ],
+  "dependencies": {
+    "event-stream": "^3.1.7",
+    "gulp-jade": "^0.10.0",
+    "gulp-replace": "^0.5.0",
+    "gulp-util": "^3.0.1",
+    "lodash": "^2.4.1",
+    "meow": "^2.0.0",
+    "minimatch": "^2.0.1",
+    "vinyl-fs": "^0.3.13"
+  },
+  "devDependencies": {
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-nodeunit": "^0.4.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "load-grunt-tasks": "^1.0.0",
+    "time-grunt": "^1.0.0",
+    "grunt-mocha-cli": "^1.11.0",
+    "jshint-stylish": "^1.0.0",
+    "browserify": "^7.0.0"
+  },
+  "scripts": {
+    "test": "grunt",
+    "browser": "browserify index.js > browser.js"
+  },
+  "bin": {
+    "lfanew": "cli.js"
+  }
+}
