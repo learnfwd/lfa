@@ -1,20 +1,33 @@
 {
-  "name": "lfanew",
-  "version": "0.0.0",
-  "description": "The best module ever.",
-  "author": {
-    "name": "",
-    "email": ""
-  },
-  "repository": "user/repo",
-  "license": "MIT",
-  "files": [
-    "index.js"
-  ],
+  "name": "lfa",
+  "version": "0.5.20",
+  "description": "LearnForward-Author is a build tool for generating HTML5 textbooks",
   "keywords": [
-    "lfanew",
-    ""
+    "textbook",
+    "development",
+    "build",
+    "tool",
+    "lfa",
+    "learnfwd",
+    "learnforward",
+    "readfwd",
+    "readforward"
   ],
+  "homepage": "http://learnfwd.com",
+  "bugs": "https://github.com/learnfwd/lfa/issues",
+  "main": "./index.js",
+  "license": "MPL-2.0",
+  "bin": {
+    "lfa": "./cli/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/learnfwd/lfa.git"
+  },
+  "author": {
+    "name": "ReadForward LLC",
+    "email": "hello@readfwd.com"
+  },
   "dependencies": {
     "event-stream": "^3.1.7",
     "gulp-jade": "^0.10.0",
@@ -23,7 +36,8 @@
     "lodash": "^2.4.1",
     "meow": "^2.0.0",
     "minimatch": "^2.0.1",
-    "vinyl-fs": "^0.3.13"
+    "vinyl-fs": "^0.3.13",
+    "when": "^3.6.4"
   },
   "devDependencies": {
     "grunt-cli": "^0.1.13",
@@ -33,14 +47,9 @@
     "load-grunt-tasks": "^1.0.0",
     "time-grunt": "^1.0.0",
     "grunt-mocha-cli": "^1.11.0",
-    "jshint-stylish": "^1.0.0",
-    "browserify": "^7.0.0"
+    "jshint-stylish": "^1.0.0"
   },
   "scripts": {
-    "test": "grunt",
-    "browser": "browserify index.js > browser.js"
-  },
-  "bin": {
-    "lfanew": "cli.js"
+    "test": "grunt"
   }
 }

@@ -1,11 +1,10 @@
 /*global describe, it */
 'use strict';
 var assert = require('assert');
-var lfanew = require('../');
+var LFA = require('../');
 
-describe('lfanew node module', function () {
-    it('must have at least one test', function () {
-        lfanew();
-        assert(false, 'I was too lazy to write any tests. Shame on me.');
+describe('lfa node module', function () {
+    it('must be a function', function () {
+        assert(typeof(LFA) === 'function', 'LFA does not export a function');
     });
 });
