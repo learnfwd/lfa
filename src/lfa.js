@@ -25,16 +25,21 @@ LFA.loadPaths = function (config) {
   var projPath;
   var packagePath;
   var packageJson;
-  var error;
+  var error; //Return the first error
 
   return when.try(function () {
     assert(typeof(config.path) === 'string', 'config.path must be a string');
     projPath = path.resolve(config.path);
   }).then(function tryPath() {
     packagePath = path.join(projPath, '.lfa', 'package.json');
-    return nodefn.call(fs.readFile, packagePath).catch(function () {
+    return when.try(function () {
+      return nodefn.call(fs.readFile, packagePath);
+    }).catch(function (err) {
+      if (!error) { error = err; }
       packagePath = path.join(projPath, 'package.json');
       return nodefn.call(fs.readFile, packagePath);
+    }).catch(function () {
+      throw error;
     }).then(function (contents) {
       packageJson = JSON.parse(contents);
       assert(_.contains(packageJson.keywords, 'lfa-book'), 'This is not the package.json of a LFA book');
@@ -48,9 +53,8 @@ LFA.loadPaths = function (config) {
         
       return _.extend(config, r);
     }).catch(function (err) {
-      if (!error) {
-        error = err;
-      }
+      if (!error) { error = err; }
+
       var up = path.join(projPath, '..');
       if (up !== projPath) {
         projPath = up;
