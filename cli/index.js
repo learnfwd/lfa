@@ -6,6 +6,8 @@ console.log('Welcome to LFA');
 
 var projPath = './';
 
-LFA.detectPaths(projPath).then(function (paths) {
-  console.log(paths);
+LFA.loadPaths(projPath).then(function (config) {
+  return LFA.loadProject(config);
+}).then(function (lfa) {
+  console.log(lfa.config.package.name);
 });
