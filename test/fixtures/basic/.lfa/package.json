@@ -5,5 +5,8 @@
   "keywords": [
     "lfa-book"
   ],
-  "author": ""
+  "author": "",
+  "dependencies": {
+    "lfa": "^0.6.0"
+  }
 }

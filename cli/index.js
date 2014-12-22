@@ -1,13 +1,29 @@
 #!/usr/bin/env node
 
-var LFA = require('../');
+var path = require('path');
+var meow = require('meow');
 
-console.log('Welcome to LFA');
-
-var projPath = './';
-
-LFA.loadPaths(projPath).then(function (config) {
-  return LFA.loadProject(config);
-}).then(function (lfa) {
-  console.log(lfa.config.package.name);
+var cli = meow({
+  help: require('./help'),
+  pkg: path.join('..', 'package.json'),
+  minimistOptions: {
+    strings: ['book'],
+  },
 });
+
+cli.flags.book = cli.flags.book || './';
+
+var command;
+var commandModule = './commands/' + cli.input[0];
+
+try {
+  command = require(commandModule);
+} catch (ex) {
+  if (ex.message === 'Cannot find module \'' + commandModule + '\'') {
+    cli.showHelp();
+  } else {
+    throw ex;
+  }
+}
+
+command(cli);

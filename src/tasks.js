@@ -47,14 +47,18 @@ var LFATasks = {
   _start: function (task, input) {
     var self = this;
 
-    var r = this._results[task];
+    var r = this._taskResults[task];
     if (r) {
       return r;
     }
 
-    gutil.log(task, 'Running dependencies...');
-
     var spec = this._tasks[task];
+
+    if (!spec) {
+      throw new Error('No such task: "' + task + '"');
+    }
+
+    gutil.log(task, 'Running dependencies...');
 
     var dependencies = _.map(spec.dependencies, function (glob) {
       var streams = _.map(self.solve(glob), function (dependency) {
