@@ -54,7 +54,7 @@
   },
   "scripts": {
     "test-watch": "./node_modules/mocha/bin/mocha --watch",
-    "test": "if [[ -z \"$CI\" ]]; then ./node_modules/mocha/bin/mocha; else npm run coveralls; fi",
+    "test": "if [ -z \"$CI\" ]; then ./node_modules/mocha/bin/mocha; else npm run coveralls; fi",
     "coverage": "./node_modules/istanbul/lib/cli.js cover --report lcov ./node_modules/mocha/bin/_mocha --",
     "coveralls": "./node_modules/istanbul/lib/cli.js cover --report lcovonly ./node_modules/mocha/bin/_mocha -- && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   }
