@@ -1,7 +1,11 @@
 var concat = require('gulp-concat');
+var stylusTasks = require('./stylus');
+var indexHtmlTasks = require('./index-html');
 
 module.exports = function coreTasks(lfa) {
-  require('./stylus')(lfa);
+  stylusTasks(lfa);
+  indexHtmlTasks(lfa);
+
   var config = lfa.config;
 
   lfa.task('default:css', ['css:compiler:*'], function (cssFiles) {
