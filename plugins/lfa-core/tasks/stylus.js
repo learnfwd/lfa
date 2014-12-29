@@ -8,8 +8,8 @@ var fs = require('fs');
 
 module.exports = function stylusTasks(lfa) {
   var config = lfa.config;
-  config.stylus = {};
-  config.stylus.libraries = [];
+  config.stylus = config.stylus || {};
+  config.stylus.use = config.stylus.use || [];
 
   lfa.task('css:stylus:files:main', function () {
     return lfa.src(path.resolve(__dirname, '..', 'css', 'index.styl'));
@@ -18,15 +18,12 @@ module.exports = function stylusTasks(lfa) {
   lfa.task('css:compiler:stylus', ['css:stylus:files:*'], function (stylusFiles) {
     var theme = (lfa.theme.files['theme-styles'] === 'dir') ? lfa.theme : lfa.defaultTheme;
 
-    var opts = {
-      define: {
-        user: false,
-        userOverrides: false,
-        theme: false,
-        themeOverrides: false,
-      },
-      paths: [config.projectPath, theme.path],
-    };
+    var opts = _.cloneDeep(config.stylus);
+    opts.define = opts.define || {};
+
+    opts.paths = opts.paths || [];
+    opts.paths.push(config.projectPath);
+    opts.paths.push(theme.path);
 
     function exists(key, userPath) {
       return nodefn.call(fs.stat, userPath).then(function (stat) {
