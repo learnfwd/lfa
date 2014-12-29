@@ -9,19 +9,35 @@ module.exports = function compile(cli) {
   LFA.loadPaths(projPath).then(function (config) {
     return switchControl(cli, config);
   }).then(function (config) {
-    return LFA.loadProject(config);
+    process.stdout.write(chalk.green('loading project... '));
+
+    return LFA.loadProject(config).then(function (lfa) {
+      console.log('done');
+      return lfa;
+    }).catch(function (err) {
+      console.log(chalk.red('error'));
+      throw err;
+    });
+
   }).then(function (lfa) {
     process.stdout.write(chalk.green('compiling... '));
 
     var task = cli.input.length >= 2 ? cli.input[1] : null;
     return lfa.compile({
       task: task,
+    }).then(function () {
+      console.log('done');
+    }).catch(function (err) {
+      console.log(chalk.red('error'));
+      throw err;
     });
 
-  }).then(function () {
-    console.log('done');
-  }, function (err) {
-    console.log(chalk.red('error'));
-    console.log(verbose ? err.stack : (chalk.red(err.name) + chalk.blue(': ')  + err.message));
+  }).catch(function (err) {
+    if (verbose) {
+      console.log(err.stack.replace(new RegExp('^' + err.name + ':'), chalk.red(err.name) + chalk.blue(': ')));
+    } else {
+      console.log(chalk.red(err.name) + chalk.blue(': ')  + err.message);
+    }
+    process.exit(-1);
   });
 };

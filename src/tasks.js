@@ -58,8 +58,6 @@ var LFATasks = {
       throw new Error('No such task: "' + task + '"');
     }
 
-    gutil.log(task, 'Running dependencies...');
-
     var dependencies = _.map(spec.dependencies, function (glob) {
       var streams = _.map(self.solve(glob), function (dependency) {
         return self._start(dependency);
@@ -78,9 +76,7 @@ var LFATasks = {
       dependencies.push(input);
     }
 
-    gutil.log(task, 'Running...');
-    spec.fn.apply(null, dependencies);
-    gutil.log(task, 'Finished');
+    r = spec.fn.apply(null, dependencies);
     this._taskResults[task] = r;
     return r;
   },

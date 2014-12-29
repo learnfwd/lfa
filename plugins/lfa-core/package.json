@@ -1,0 +1,9 @@
+{
+  "name": "lfa-core",
+  "main": "./tasks/index.js",
+  "themes": {
+    "default": "./themes/default",
+    "blank": "./themes/blank"
+  },
+  "keywords": ["lfa-plugin"]
+}

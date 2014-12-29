@@ -6,6 +6,7 @@ var when = require('when');
 var assert = require('assert');
 
 var configParser = require('./config-parser');
+var pluginLoader = require('./plugin-loader');
 
 var Loader = {};
 Loader.loadPaths = function (config) {
@@ -69,8 +70,6 @@ Loader.loadProject = function(config)  {
       typeof(config.projectPath) !== 'string' ||
       typeof(config.buildPath) !== 'string'
   ) {
-    console.log(config);
-
     prom = LFA.loadPaths(config).then(function (r) {
       config = r;
     });
@@ -78,10 +77,17 @@ Loader.loadProject = function(config)  {
     prom = when();
   }
 
+  var instance = null;
+
   return prom.then(function () {
     return configParser(config);
-  }).then(function (c) {
-    return new LFA(c);
+  }).then(function (conf) {
+    return new LFA(conf);
+  }).then(function (lfa) {
+    instance = lfa; 
+    return pluginLoader(lfa);
+  }).then(function () {
+    return instance;
   });
 };
 
