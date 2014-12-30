@@ -1,4 +1,4 @@
-[![npm version](https://badge.fury.io/js/lfa.svg)](http://badge.fury.io/js/lfa) [![Build Status](https://travis-ci.org/learnfwd/lfa.svg?branch=amadeus)](https://travis-ci.org/learnfwd/lfa)  [![Coverage Status](https://img.shields.io/coveralls/learnfwd/lfa/amadeus.svg)](https://coveralls.io/r/learnfwd/lfa?branch=amadeus)
+[![npm version](https://img.shields.io/npm/v/lfa.svg)](https://www.npmjs.com/package/lfa) [![Build Status](https://img.shields.io/travis/learnfwd/lfa/amadeus.svg)](https://travis-ci.org/learnfwd/lfa)  [![Coverage Status](https://img.shields.io/coveralls/learnfwd/lfa/amadeus.svg)](https://coveralls.io/r/learnfwd/lfa?branch=amadeus)
 
 > The best module ever.
 
