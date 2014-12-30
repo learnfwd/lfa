@@ -1,2 +1,2 @@
 --require should
-**/*.spec.js
+test/**/*.spec.js
