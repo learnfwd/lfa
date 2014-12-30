@@ -8,6 +8,7 @@ var _ = require('lodash');
 
 function loadPlugin(lfa, pluginPath, packageJson) {
   var promise;
+  /* istanbul ignore else */
   if (typeof(packageJson) !== 'string') {
     promise = nodefn.call(fs.readFile, path.join(pluginPath, 'package.json'))
       .then(function (data) {

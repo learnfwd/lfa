@@ -1,9 +1,9 @@
 /*global describe, it */
 'use strict';
-var LFA = require('../');
+var LFA = require('../../');
 var path = require('path');
 
-var fixtures = path.join(__dirname, 'fixtures');
+var fixtures = path.resolve(__dirname, '..', 'fixtures');
 var basicFixture = path.join(fixtures, 'basic');
 var noKeywordFixture = path.join(fixtures, 'no-keyword');
 

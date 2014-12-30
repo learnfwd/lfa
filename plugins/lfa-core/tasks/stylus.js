@@ -5,6 +5,7 @@ var gulpUtil = require('gulp-util');
 var when = require('when');
 var nodefn = require('when/node');
 var fs = require('fs');
+var _ = require('lodash');
 
 module.exports = function stylusTasks(lfa) {
   var config = lfa.config;

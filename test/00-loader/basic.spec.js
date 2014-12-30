@@ -1,7 +1,7 @@
 /*global describe, it*/
 'use strict';
 var assert = require('assert');
-var LFA = require('../');
+var LFA = require('../../');
 
 describe('lfa node module', function () {
     it('must be a function', function () {
