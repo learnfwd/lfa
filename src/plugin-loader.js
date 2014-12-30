@@ -57,15 +57,25 @@ function loadPlugin(lfa, pluginPath, packageJson) {
       }));
     });
 
-    var exportValue;
+    var returnValue;
 
     tasks.push(when.try(function () {
       //TO DO: Make this async
-      exportValue = require(pluginPath)(lfa);
-    }));
+      returnValue = require(pluginPath)(lfa);
+    }).catch(function (err) {
+      if (err.message !== 'Cannot find module \'' + pluginPath + '\'') {
+        throw err;
+      }
+    })
+    );
 
     return when.all(tasks).then(function () {
-      return exportValue;
+      return {
+        path: pluginPath,
+        name: packageJson.name,
+        package: packageJson,
+        returnValue: returnValue,
+      };
     });
   });
 }
@@ -110,7 +120,9 @@ module.exports = function pluginLoader(lfa) {
       return when.all(plugins);
     });
 
-  }).then(function (/*loadedPlugins*/) {
+  }).then(function (loadedPlugins) {
+    lfa.plugins = loadedPlugins;
+
     var config = lfa.config;
     var themeName = config.package.theme || 'default';
     assert(typeof(themeName) === 'string', 'packageJson.theme must be a string');

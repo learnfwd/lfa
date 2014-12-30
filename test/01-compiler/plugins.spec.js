@@ -7,6 +7,7 @@ var fixtures = path.resolve(__dirname, '..', 'fixtures');
 var customPluginFixture = path.join(fixtures, 'custom-plugin');
 var invalidPluginFixture = path.join(fixtures, 'invalid-plugin');
 var malformedPluginFixture = path.join(fixtures, 'malformed-plugin');
+var throwingPluginFixture = path.join(fixtures, 'erroring-plugin');
 
 describe('plugins', function () {
   it('should be loaded from the "plugins" local directory', function () {
@@ -25,6 +26,15 @@ describe('plugins', function () {
         throw new Error('Should have errored out');
       }, function (err) {
         err.message.should.equal('Plugins must have "lfa-plugin" as a keyword in their package.json');
+      });
+  });
+
+  it('should error out on plugins that throw', function () {
+    return LFA.loadProject(throwingPluginFixture)
+      .then(function () {
+        throw new Error('Should have errored out');
+      }, function (err) {
+        err.message.should.equal('Custom plugin error');
       });
   });
 });
