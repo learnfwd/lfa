@@ -57,12 +57,42 @@ function loadPlugin(lfa, pluginPath, packageJson) {
       }));
     });
 
+    var exportValue;
+
     tasks.push(when.try(function () {
       //TO DO: Make this async
-      require(pluginPath)(lfa);
+      exportValue = require(pluginPath)(lfa);
     }));
 
-    return when.all(tasks);
+    return when.all(tasks).then(function () {
+      return exportValue;
+    });
+  });
+}
+
+function loadLocalPlugins(lfa, plugins) {
+  var pluginsPath = path.resolve(lfa.config.projectPath, 'plugins');
+
+  return nodefn.call(fs.readdir, pluginsPath).catch(function () {
+    return []; //Not a big deal if there's no "plugins" folder
+  }).then(function (files) {
+    return when.all(_.map(files, function (file) {
+      var pluginPath = path.resolve(pluginsPath, file);
+      return nodefn.call(fs.readFile, path.resolve(pluginPath, 'package.json'))
+        .then(function (data) {
+          return JSON.parse(data);
+        })
+        .catch(function () {
+          // Ignoring non-plugin files and folders
+          return null;
+        })
+        .then(function (pluginPackageJson) {
+          if (pluginPackageJson !== null) {
+            plugins.push(loadPlugin(lfa, pluginPath, pluginPackageJson));
+          }
+        });
+    }));
+
   });
 }
 
@@ -70,8 +100,17 @@ module.exports = function pluginLoader(lfa) {
   return when.try(function () {
     lfa.themes = {};
   }).then(function () {
-    return loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-core'));
-  }).then(function () {
+    var plugins = [
+      loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-core'))
+    ];
+
+    return when.all([
+      loadLocalPlugins(lfa, plugins),
+    ]).then(function () {
+      return when.all(plugins);
+    });
+
+  }).then(function (/*loadedPlugins*/) {
     var config = lfa.config;
     var themeName = config.package.theme || 'default';
     assert(typeof(themeName) === 'string', 'packageJson.theme must be a string');

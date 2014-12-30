@@ -1,0 +1,12 @@
+{
+  "name": "basic-textbook",
+  "version": "1.0.0",
+  "description": "Basic LFA textbook",
+  "keywords": [
+    "lfa-book"
+  ],
+  "author": "",
+  "dependencies": {
+    "lfa": "^0.6.0"
+  }
+}
