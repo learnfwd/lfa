@@ -48,6 +48,8 @@ module.exports = function stylusTasks(lfa) {
     stylusFiles.pipe(through2.obj(function (file, enc, cb) {
       var thisStream = this;
       checks.then(function () {
+        // I can only set up the pipe chain here because "opts" is only ready
+        // after the checks are done
         thisStream
           .pipe(gulpStylus(opts))
           .pipe(returnStream);

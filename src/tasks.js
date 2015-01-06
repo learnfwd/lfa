@@ -3,9 +3,10 @@ var minimatch = require('minimatch');
 var _ = require('lodash');
 var gutil = require('gulp-util');
 var es = require('event-stream');
+var pipeErrors = require('./pipe-errors');
 
 var LFATasks = {
-  src: vfs.src,
+  src: pipeErrors.patchFunction(vfs.src),
   dst: vfs.dest,
 
   task: function (name, deps, cb) {
@@ -28,7 +29,7 @@ var LFATasks = {
   },
 
   hook: function(glob) {
-    var r = gutil.noop();
+    var r = pipeErrors(gutil.noop());
     var self = this;
     _.each(this.solve(glob), function (task) {
       var stream = self._start(task, r);
@@ -64,9 +65,9 @@ var LFATasks = {
       });
 
       if (streams.length === 0) {
-        return gutil.noop();
+        return pipeErrors(gutil.noop());
       } else if (streams.length === 1) {
-        return streams[0];
+        return pipeErrors(streams[0]);
       } else {
         return es.merge.apply(es, streams);
       }

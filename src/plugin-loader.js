@@ -1,3 +1,8 @@
+// Monkey patch pipe() to pass errors downstream
+var pipeErrors = require('./pipe-errors').monkeyPatch();
+var gutil = require('gulp-util');
+gutil.noop = pipeErrors.patchFunction(gutil.noop.bind(gutil));
+
 var assert = require('assert');
 var path = require('path');
 var when = require('when');
