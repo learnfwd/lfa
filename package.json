@@ -47,9 +47,7 @@
     "unzip": "~0.1.9",
     "when": "~3.2.3",
     "rimraf": "~2.2.8",
-    "xmldoc": "~0.1.2",
-    "jsdom": "~0.11.0",
-    "html2jade": "~0.7.7"
+    "xmldoc": "~0.1.2"
   },
   "devDependencies": {
     "mocha": "latest",

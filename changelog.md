@@ -1,3 +1,7 @@
+### 0.5.21
+(released TBD)
+- @cdinu: deleted epub-import feature (to be moved in an external standalone tool)
+
 ### 0.5.20
 (released 02/12/2014)
 - @dapetcu21: Right-to-left support
