@@ -229,35 +229,4 @@ describe 'mixins', ->
     it 'can call custom_mixin to output lorem ipsum', ->
       content = fs.readFileSync path.join(test_path, output_folder + '/js/templates/mixins.js'), 'utf8'
       content.should.match(/Customus mixinus dolor/)
-      
-describe 'epub import', ->
-  describe_tests = (file) ->
-    test_path = path.join root, './epub-import'
-    compiled_path = path.join test_path, 'out'
 
-    before (done) ->
-      run "cd \"#{test_path}\"; ../../bin/lfa import-epub #{file} out", ->
-        done()
-
-    after ->
-      shell.rm '-rf', compiled_path
-
-    it "should create a project", ->
-      fs.existsSync(compiled_path).should.be.ok
-
-    describe "project", ->
-      before (done) ->
-        run "cd \"#{compiled_path}\"; ../../../bin/lfa compile --no-compress --components=false", ->
-          done()
-
-      after ->
-        shell.rm '-rf', path.join(compiled_path, output_folder)
-      
-      it 'compiles successfully', ->
-        fs.readdirSync(path.join(compiled_path, output_folder)).should.have.lengthOf(4)
-
-  describe 'from .epub file', ->
-    describe_tests 'zipped.epub'
-
-  describe 'from extracted directory', ->
-    describe_tests 'extracted_epub'

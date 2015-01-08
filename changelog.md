@@ -1,3 +1,8 @@
+### 0.5.21
+(released 07/01/2015)
+- @cdinu: deleted epub-import feature (to be moved in an external standalone tool)
+- @cdinu: fix precompiler.js and symlink bug to make the tool work on windows
+
 ### 0.5.20
 (released 02/12/2014)
 - @dapetcu21: Right-to-left support
