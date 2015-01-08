@@ -11,7 +11,7 @@
   "homepage": "http://learnfwd.github.io/lfa/",
   "bugs": "https://github.com/learnfwd/lfa/issues",
   "author": "ReadForward LLC",
-  "main": "lib",
+  "main": "desktop/index.html",
   "license": "MPL-2.0",
   "bin": {
     "lfa": "bin/lfa"
@@ -60,5 +60,10 @@
   "preferGlobal": true,
   "scripts": {
     "test": "mocha"
+  },
+  "window": {
+    "toolbar": false,
+    "width": 960,
+    "height": 720
   }
 }
