@@ -1,13 +1,14 @@
 {
   "name": "basic-textbook",
   "version": "1.0.0",
-  "description": "Basic LFA textbook",
   "keywords": [
     "lfa-book"
   ],
+  "book": {
+    "title": "Basic LFA textbook"
+  },
   "theme": "custom-theme",
-  "author": "",
-  "dependencies": {
-    "lfa": "^0.6.0"
+  "engines": {
+    "lfa": "~0.7.0"
   }
 }
