@@ -4,6 +4,7 @@ var when = require('when');
 var path = require('path');
 var chalk = require('chalk');
 var inquirer = require('inquirer');
+var npm = require('npm');
 var fs = require('fs');
 var nodefn = require('when/node');
 
@@ -41,7 +42,16 @@ var foundLFA = [
 ].join('');
 
 function installLFA(projModulePath, requiredVersion) {
-  console.log('Installing lfa@' + requiredVersion + ' ' + projModulePath);
+  var conf = {
+    prefix: projModulePath
+  };
+
+  return nodefn.call(npm.load.bind(npm), conf).then(function () {
+    npm.on('log', function (msg) {
+      console.log(msg);
+    });
+    return nodefn.call(npm.install.bind(npm), 'lfa@' + requiredVersion);
+  });
 }
 
 module.exports = function switchControl(cli, config) {
