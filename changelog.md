@@ -1,3 +1,7 @@
+### 0.5.22
+(released 15/01/2015)
+- @dapetcu21: Updated require.js to fix double-require issue
+
 ### 0.5.21
 (released 08/01/2015)
 - @cdinu: deleted epub-import feature (to be moved in an external standalone tool)
