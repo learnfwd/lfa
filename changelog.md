@@ -1,3 +1,8 @@
+### 0.5.23
+(released 19/01/2015)
+- @dapetcu21: Fixed the copying of dotfiles over to the final build
+- @dapetcu21: Fixed EEXISTS errors on watch without clean
+
 ### 0.5.22
 (released 15/01/2015)
 - @dapetcu21: Updated require.js to fix double-require issue
