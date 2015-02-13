@@ -28,12 +28,14 @@
     "colors": "0.6.x",
     "connect": "2.9.x",
     "faye-websocket": "0.6.x",
+    "ga": "0.0.2",
     "jade": "1.1.5",
     "js-yaml": "2.1.x",
     "marked": "0.2.x",
     "minimatch": "0.2.x",
     "mkdirp": "0.3.x",
     "monocle": "1.1.x",
+    "node-uuid": "^1.4.2",
     "open": "0.0.x",
     "optimist": "0.6.x",
     "q": "0.9.x",
@@ -48,11 +50,7 @@
   "devDependencies": {
     "mocha": "latest",
     "should": "latest",
-    "express": "latest",
-    "jade": "1.1.5",
-    "open": "latest",
-    "colors": "latest",
-    "stylus": "0.37.x"
+    "express": "latest"
   },
   "engines": {
     "node": ">=0.8.0"
