@@ -1,3 +1,7 @@
+### 0.5.24
+(released 19/01/2015)
+- @dapetcu21: Added anonymous usage statistics
+
 ### 0.5.23
 (released 19/01/2015)
 - @dapetcu21: Fixed the copying of dotfiles over to the final build
