@@ -16,6 +16,11 @@ require.config({
     sketchpad:    'lib/raphael.sketchpad',
     notify:       'lib/notify.min',
     buzz:         'lib/buzz.min',
+    'ua-parser':  'lib/ua-parser',
+
+    // Analytics tools.
+    keen:         'lib/keen',
+    'socket.io':  'lib/socket.io',
 
     // Rangy and its fat suite of deps.
     rangycore:    'lib/rangy/rangy-core',
@@ -56,6 +61,8 @@ require.config({
     sketchpad:    { exports: 'Sketchpad', deps: ['raphael'] },
     notify:       { exports: 'Notify', deps: ['jquery'] },
     buzz:         { exports: 'Buzz', },
+
+    keen:         { exports: 'Keen', },
 
     rangycore:    { exports: 'rangycore' },
     rangycss:     { exports: 'rangycss', deps: ['rangycore'] },
@@ -135,8 +142,8 @@ require([
     return isIE && verIE >= 11;
   });
 
-  // Load main app
-  require(['app'], function (App) {
+  // Load main app and analytics backends
+  require(['app', './analytics/index'], function (App) {
     // Execute textbook-specific javascript, if it exists.
     require(['../../js/main'], function() {
       // After everything is rendered the first time, trigger "ready"
