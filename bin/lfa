@@ -45,7 +45,13 @@ if (typeof currentCommand === 'undefined') {
 analytics.trackCommand(commandName);
 
 if (currentCommand.needs_config) {
-  configureOptions(args, function(){ currentCommand.execute(args); });
+  configureOptions(args, function(err){ 
+    if (err) {
+      return 1;
+    } else {
+      currentCommand.execute(args);
+    }
+  });
 } else {
   return currentCommand.execute(args);
 }
