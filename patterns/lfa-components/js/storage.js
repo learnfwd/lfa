@@ -1,4 +1,7 @@
 define(function (require, exports, module) {
+  var SearchJSON = require('searchjson');
+  var _ = require('underscore');
+
   var CookieStorage = function (type) {
     function createCookie(name, value, days) {
       var date, expires;
@@ -93,6 +96,13 @@ define(function (require, exports, module) {
     };
   };
 
+  function _fixKey(key, opts) {
+    if (opts && opts.global) {
+      return 'lfa:' + key;
+    }
+    return 'lfa:' + SearchJSON.bookId + ':' + key;
+  }
+
   var Storage = function() {
     var s  = localStorage || new CookieStorage('localStorage');
 
@@ -100,23 +110,25 @@ define(function (require, exports, module) {
       length: 0,
       clear: function () {
         window.App.trigger('storage:clear');
+        // This is super dangerous, as it kills the whole localStorage
         return s.clear();
       },
 
-      getItem: function (key) {
+      getItem: function (key, opts) {
         window.App.trigger('storage:getItem', key, s);
-        return s.getItem(key);
+        return s.getItem(_fixKey(key, opts));
       },
 
-      removeItem: function (key) {
+      removeItem: function (key, opts) {
         window.App.trigger('storage:removeItem', key, s);
-        return s.removeItem(key);
+        return s.removeItem(_fixKey(key, opts));
       },
 
-      setItem: function (key, value) {
-        window.App.trigger('storage:setItem', {key: key, value:value}, s);
-        return s.setItem(key, value);
-      }
+      setItem: function (key, value, opts) {
+        var args = _.extend({}, opts || {}, {key: key, value:value});
+        window.App.trigger('storage:setItem', args, s);
+        return s.setItem(_fixKey(key, opts), value);
+      },
     };
   };
 

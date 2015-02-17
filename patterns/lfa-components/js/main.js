@@ -82,8 +82,7 @@ require([
   'backbone',
   'modernizr',
   'notify',
-  'app'
-], function($, Backbone, Modernizr, Notify, App) {
+], function($, Backbone, Modernizr, Notify) {
   'use strict';
 
   // Add some custom Modernizr tests.
@@ -136,15 +135,18 @@ require([
     return isIE && verIE >= 11;
   });
 
-  // Execute textbook-specific javascript, if it exists.
-  require(['../../js/main'], function() {
-    // After everything is rendered the first time, trigger "ready"
-    App.book.once('render', function() {
-      App.trigger('ready');
-    });
+  // Load main app
+  require(['app'], function (App) {
+    // Execute textbook-specific javascript, if it exists.
+    require(['../../js/main'], function() {
+      // After everything is rendered the first time, trigger "ready"
+      App.book.once('render', function() {
+        App.trigger('ready');
+      });
 
-    // Then, start up the textbook.
-    Backbone.history.start();
+      // Then, start up the textbook.
+      Backbone.history.start();
+    });
   });
   
 });
