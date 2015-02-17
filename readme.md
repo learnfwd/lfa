@@ -107,3 +107,10 @@ License (Mozilla Public License 2.0)
 See [license.txt](license.txt).
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/learnfwd/lfa/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
+Anonymous Statistics
+--------------------
+
+In order to continuously improve our product, this tool is collecting anonymous usage data. In order to opt-out, alias `lfa` to run as `lfa --no-analytics`.
+
+If you want to remove anonymous statistics from the textbooks this tool generates, remove the lines that start with `this._registerAnalyticsBackend` from `patterns/lfa-components/js/analytics/index.js`

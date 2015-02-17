@@ -1,5 +1,11 @@
+### 0.5.25
+(released 13/02/2015)
+- @dapetcu21: Added client-side statistic reporting
+- @dapetcu21: Added anonymous stats warning to readme
+- @dapetcu21: Namespaced localStorage
+
 ### 0.5.24
-(released 19/01/2015)
+(released 13/02/2015)
 - @dapetcu21: Added anonymous usage statistics
 
 ### 0.5.23
