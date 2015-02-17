@@ -1,3 +1,7 @@
+### 0.5.26
+(released 13/02/2015)
+- @dapetcu21: Sets debug=true in SearchJSON on lfa watch
+
 ### 0.5.25
 (released 13/02/2015)
 - @dapetcu21: Added client-side statistic reporting
