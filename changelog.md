@@ -1,9 +1,13 @@
+### 0.5.27
+(released 18/02/2015)
+- @dapetcu21: Added more detailed analytics tools to the CLI tool
+
 ### 0.5.26
-(released 13/02/2015)
+(released 17/02/2015)
 - @dapetcu21: Sets debug=true in SearchJSON on lfa watch
 
 ### 0.5.25
-(released 13/02/2015)
+(released 17/02/2015)
 - @dapetcu21: Added client-side statistic reporting
 - @dapetcu21: Added anonymous stats warning to readme
 - @dapetcu21: Namespaced localStorage
