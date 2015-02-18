@@ -1,4 +1,4 @@
-define(['app', 'searchjson', 'ua-parser', 'underscore', './keen', './mixpanel', './static', './ga'], function(App, SearchJSON, UAParser, _, KeenAnalytics, MixpanelAnalytics, StaticAnalytics, GoogleAnalytics) {
+define(['app', 'searchjson', 'ua-parser', 'underscore', './keen', './mixpanel', './ga'], function(App, SearchJSON, UAParser, _, KeenAnalytics, MixpanelAnalytics, GoogleAnalytics) {
 
   function AnalyticsManager() {
     this.sessionId = _getSessionId();
@@ -13,7 +13,6 @@ define(['app', 'searchjson', 'ua-parser', 'underscore', './keen', './mixpanel', 
 
     this._registerAnalyticsBackend(new KeenAnalytics(this));
     this._registerAnalyticsBackend(new MixpanelAnalytics(this));
-    this._registerAnalyticsBackend(new StaticAnalytics(this));
     this._registerAnalyticsBackend(new GoogleAnalytics(this));
   }
 
