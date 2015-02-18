@@ -20,6 +20,7 @@ define(['keen'], function (Keen) {
         data: data,
         debug: manager.debug,
         sessionId: manager.sessionId,
+        creatorId: manager.creatorId,
         keen: {
           timestamp: (new Date()).toISOString()
         }

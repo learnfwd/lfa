@@ -7,6 +7,7 @@ define(['app', 'searchjson', 'ua-parser', 'underscore', './keen', './mixpanel', 
     this.userAgent = window.navigator.userAgent;
     this.userAgentParsed = new UAParser().getResult();
     this.debug = !!SearchJSON.debug;
+    this.creatorId = SearchJSON.creatorTrackingId;
 
     this._backends = [];
 

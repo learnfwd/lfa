@@ -73,6 +73,7 @@ define([], function () {
       userAgentParsed: manager.userAgentParsed,
       title: manager.title,
       sessionId: manager.sessionId, 
+      creatorId: manager.creatorId,
       clientTime: new Date(),
       key: key,
       debug: manager.debug,

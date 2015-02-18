@@ -38,6 +38,7 @@ define([], function () {
         title: manager.title,
         data: data,
         debug: manager.debug,
+        creatorId: manager.creatorId,
         distinct_id: manager.sessionId,
       });
       window.mixpanel.track(key, mixpanelEvent);
