@@ -1,3 +1,7 @@
+### 0.5.28
+(released 18/02/2015)
+- @dapetcu21: Fixed .lfarc spillage into search.json
+
 ### 0.5.27
 (released 18/02/2015)
 - @dapetcu21: Added more detailed analytics tools to the CLI tool
