@@ -7,16 +7,16 @@ var args = require('optimist')
             .default('analytics', true)
             .argv;
 
-var analytics = require('../lib/analytics');
-if (args.analytics) {
-  analytics.init();
-} // else analytics acts like a mock
-
 // check for a new version
 var notifier = require('update-notifier')({ packagePath: '../package.json' });
 if (notifier.update) { notifier.notify(); }
 
-analytics.trackVersion(notifier.packageVersion);
+var analytics = require('../lib/analytics');
+if (args.analytics) {
+  analytics.init({
+    version: notifier.packageVersion,
+  });
+} // else analytics acts like a mock
 
 var commands = require('../lib/commands'),
     configureOptions = require('../lib/config_parser');
