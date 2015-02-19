@@ -5,6 +5,7 @@ var args = require('optimist')
             .alias('?', 'help')
             .alias('h', 'help')
             .default('analytics', true)
+            .string('support-email')
             .argv;
 
 // check for a new version

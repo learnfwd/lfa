@@ -2,6 +2,9 @@ animated-transitions(duration)
   duration-hover ?= duration / 3
   duration-sidebar ?= duration * 1.5
   duration-selectionbar ?= duration * 1.3
+
+  .intercom-launcher
+    transition: transform duration-sidebar ease-sidebar
   
   .menu, .navigation-menu
     transition: transform duration ease, opacity duration ease

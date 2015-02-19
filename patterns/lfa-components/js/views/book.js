@@ -50,7 +50,7 @@ define([
       // Initialize/alias some helpful arrays and hashtables.
 
       // Alias the SearchJSON to our global namespace.
-      window.App.searchJSON = SearchJSON.pages;
+      window.App.searchJSON = SearchJSON;
 
       // Alias the TOC as well.
       window.App.toc = SearchJSON.toc || [];
