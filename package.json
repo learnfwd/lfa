@@ -30,22 +30,26 @@
     "email": "hello@readfwd.com"
   },
   "dependencies": {
+    "accord": "^0.15.2",
     "chalk": "^0.5.1",
     "event-stream": "^3.1.7",
     "filewalker": "^0.1.2",
     "gulp-concat": "^2.4.2",
     "gulp-jade": "^0.10.0",
     "gulp-replace": "^0.5.0",
-    "gulp-stylus": "^1.3.4",
-    "gulp-util": "^3.0.1",
+    "gulp-util": "^3.0.3",
     "inquirer": "^0.8.0",
     "lodash": "^2.4.1",
     "meow": "^2.0.0",
     "minimatch": "^2.0.1",
     "npm": "^2.1.18",
+    "path": "^0.11.14",
+    "replace-ext": "0.0.1",
     "semver": "^4.1.1",
+    "stylus": "^0.50.0",
     "through2": "^0.6.3",
     "vinyl-fs": "^0.3.13",
+    "vinyl-sourcemaps-apply": "^0.1.4",
     "when": "^3.6.4"
   },
   "devDependencies": {

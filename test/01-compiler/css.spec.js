@@ -10,6 +10,7 @@ var userFixture = path.join(fixtures, 'css-user');
 var themeFixture = path.join(fixtures, 'css-theme');
 var nothemeFixture = path.join(fixtures, 'css-theme-nostyles');
 var noneFixture = path.join(fixtures, 'css-none');
+var pluginFixture = path.join(fixtures, 'css-plugin');
 
 
 describe('css compilation', function () {
@@ -62,4 +63,15 @@ describe('css compilation', function () {
     });
   });
 
+  it('should load stylus from plugin', function () {
+    var lfa;
+    return compileProject(pluginFixture).then(function (_lfa) {
+      lfa = _lfa;
+      var cssFilePath = path.join(lfa.config.buildPath, 'main.css');
+      return nodefn.call(fs.readFile, cssFilePath);
+    }).then(function(data) {
+      var regexp = /\.plugin-colors[^]*\.plugin-main/;
+      regexp.test(data.toString()).should.equal(true);
+    });
+  });
 });
