@@ -1,3 +1,7 @@
+### 0.5.29
+(released 19/02/2015)
+- @dapetcu21: Added customer support with Intercom
+
 ### 0.5.28
 (released 18/02/2015)
 - @dapetcu21: Fixed .lfarc spillage into search.json
