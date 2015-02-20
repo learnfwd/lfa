@@ -1,9 +1,8 @@
 var gulpJade = require('gulp-jade');
-var through2 = require('through2');
 var path = require('path');
 
 module.exports = function indexHtmlTasks(lfa) {
-  lfa.task('html:compiler:index.html', function () {
+  lfa.task('html:files:index.html', function () {
     var template = path.join(__dirname, 'templates', 'index.jade');
     var opts = {
       locals: {

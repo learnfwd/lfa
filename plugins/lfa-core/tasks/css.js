@@ -4,7 +4,7 @@ var stylusTasks = require('./css-stylus');
 module.exports = function cssTasks(lfa) {
   stylusTasks(lfa);
 
-  lfa.task('default:css', ['css:compiler:*'], function (cssFiles) {
+  lfa.task('default:css', ['css:files:*'], function (cssFiles) {
     return cssFiles 
       .pipe(lfa.hook('css:filter:*'))
       .pipe(concat({ 

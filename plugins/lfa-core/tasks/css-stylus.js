@@ -86,7 +86,7 @@ module.exports = function stylusTasks(lfa) {
       }));
   });
 
-  lfa.task('css:compiler:stylus', ['css:stylus:files:*'], function (stylusFiles) {
+  lfa.task('css:files:stylus', ['css:stylus:files:*'], function (stylusFiles) {
     return stylusFiles
       .pipe(sourcemaps.init())
       .pipe(gulpStylus(config.stylus))
