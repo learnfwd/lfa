@@ -4,6 +4,7 @@ var when = require('when');
 var nodefn = require('when/node');
 var fs = require('fs');
 var _ = require('lodash');
+var sourcemaps = require('gulp-sourcemaps');
 
 // Slightly patched version of gulp-stylus that takes per-file options
 var gulpStylus = require('./gulp-stylus2');
@@ -87,6 +88,8 @@ module.exports = function stylusTasks(lfa) {
 
   lfa.task('css:compiler:stylus', ['css:stylus:files:*'], function (stylusFiles) {
     return stylusFiles
+      .pipe(sourcemaps.init())
       .pipe(gulpStylus(config.stylus))
+      .pipe(sourcemaps.write());
   });
 };
