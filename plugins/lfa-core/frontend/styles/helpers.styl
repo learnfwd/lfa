@@ -1,0 +1,37 @@
+// generates the following:
+//   .text-left, .text-right, .text-justify, .text-center
+for align in "left" "right" "justify" "center"
+  .text-{align}
+    text-align: s(align)
+
+.text-uppercase
+  text-transform: uppercase
+.text-lowercase
+  text-transform: lowercase
+.text-underline
+  text-decoration: underline
+strong, .text-bold
+  font-weight: bold
+em, .text-italic
+  font-style: italic
+  -webkit-font-smoothing: antialiased
+
+.hidden
+  display: none
+
+.inline
+  display: inline
+
+/* Inverted outline button (white on dark) */
+.btn-outline-inverse
+  color: #fff
+  background-color: transparent
+  border-color: #cdbfe3
+
+.btn-outline-inverse:hover,
+.btn-outline-inverse:focus,
+.btn-outline-inverse:active
+  color: #000
+  text-shadow: none;
+  background-color: #fff;
+  border-color: #fff;

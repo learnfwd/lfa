@@ -1,0 +1,60 @@
+animated-transitions(duration)
+  duration-hover ?= duration / 3
+  duration-sidebar ?= duration * 1.5
+  duration-selectionbar ?= duration * 1.3
+
+  .intercom-launcher
+    transition: transform duration-sidebar ease-sidebar
+  
+  .menu, .navigation-menu
+    transition: transform duration ease, opacity duration ease
+
+  #content
+    transition: transform duration-sidebar ease-sidebar, opacity duration-sidebar ease
+
+  #leftbar
+  #rightbar
+    transition: transform duration-sidebar ease-sidebar
+
+  ul.tableofcontents 
+    li a, li .fold-button
+      transition: background duration-hover linear
+    .fold-icon
+      transition: transform duration stripe-bezier
+    .children-container
+      transition: height duration stripe-bezier
+
+  .menu-item
+    transition: transform duration-sidebar ease-sidebar, opacity duration-sidebar ease
+    > i
+      transition: transform duration-sidebar ease-sidebar
+
+  #search-go, #search-erase
+    transition: transform duration ease
+
+  #search-results li a
+    transition: background duration-hover ease
+    .title, .body
+      transition: color duration-hover ease
+
+  #animations-toggle
+    transition: background duration-hover ease
+  
+  #selectionbar
+    transition: transform duration-selectionbar stripe-bezier, opacity duration-selectionbar ease
+    
+    .buttons .btn-group
+      transition: transform duration-selectionbar stripe-bezier
+    
+    .note-area
+      transition: transform duration-selectionbar stripe-bezier
+
+
+// 0 (almost) duration transitions by default.
+body
+  animated-transitions(0.001s)
+
+// Animation durations. Turning these off will usually improve performance, and always
+// improve productivity. (having something happen instantly is better than after 0.3s)
+body.animated
+  animated-transitions(tduration)
