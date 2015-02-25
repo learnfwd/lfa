@@ -5,6 +5,7 @@ var File = require('vinyl');
 var templatizer = require('templatizer');
 var when = require('when');
 var fs = require('fs');
+var nodefn = require('when/node');
 
 module.exports = function templatesJS(lfa) {
   var config = lfa.config;
@@ -19,11 +20,13 @@ module.exports = function templatesJS(lfa) {
 
     process.nextTick(function () {
       when.all(_.map(templatePaths, function (tp) {
-        return when.promise(function (resolve) {
-          fs.exists(tp, function (res) {
-            resolve(res ? tp : null);
+        return nodefn.call(fs.stat, tp)
+          .then(function (stat) {
+            return stat.isDirectory() ? tp : null;
+          })
+          .catch(function () {
+            return null;
           });
-        });
       }))
         .then(function (paths) {
           paths = _.filter(paths, function (o) { return o !== null; });
