@@ -64,7 +64,7 @@ define([
       $('#previous-chapter').prop('href', '#book/' + previousUrl);
 
       // If not cached, put up a loading screen
-      if (typeof(Templates[chapter]) !== 'string') {
+      if (Chapters.chapterLoaded(chapter)) {
         this.$el.html(window.getMixin('error-message')());
       }
 
@@ -86,7 +86,7 @@ define([
       }
       this.prefetcher.setChapterPriority(priority);
 
-      Templates.asyncLoad(chapter, this.chapterLoaded.bind(this, chapter));
+      Chapters.asyncLoad(chapter, this.chapterLoaded.bind(this, chapter));
     },
 
     chapterLoaded: function(chapter, error, htmlData) {

@@ -4,9 +4,11 @@ var through = require('through2');
 var File = require('vinyl');
 
 var buildInfoJS = require('./js-build-info');
+var templatesJS = require('./js-templates');
 
 module.exports = function requireJSTasks(lfa) {
   buildInfoJS(lfa);
+  templatesJS(lfa);
 
   var config = lfa.config;
 

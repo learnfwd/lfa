@@ -1,8 +1,9 @@
-define(['backbone', 'bookview', 'router', 'translate', 'searchjson', 'appStorage'], function(Backbone, BookView, Router, T, SearchJSON, Storage) {
+define(['backbone', 'bookview', 'router', 'translate', 'searchjson', 'appStorage', 'templates'], function(Backbone, BookView, Router, T, SearchJSON, Storage, templates) {
 
   // Mixin wrapper
   window.getMixin = function (mix) {
-    throw new Error('getMixin() is deprecated');
+    console.log('getMixin() is deprecated, please use require(\'templates\')');
+    return templates.mixins[mix];
   };
 
   var App = window.App = new Backbone.Model();

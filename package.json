@@ -50,6 +50,7 @@
     "replace-ext": "0.0.1",
     "semver": "^4.1.1",
     "stylus": "^0.50.0",
+    "templatizer": "^1.2.1",
     "through2": "^0.6.3",
     "vinyl": "^0.4.6",
     "vinyl-fs": "^0.3.13",

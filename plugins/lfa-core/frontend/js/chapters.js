@@ -11,9 +11,9 @@ define(['searchjson', 'underscore'], function (buildInfo, _) {
 
     window.registerChapter = function (json) {
       var chapter = json.chapter;
-      var opts = this.loadedChapters[chapter];
+      var opts = self.loadedChapters[chapter];
       if (!opts) {
-        this.loadedChapters[chapter] = opts = { callbacks: [] };
+        self.loadedChapters[chapter] = opts = { callbacks: [] };
       }
 
       opts.loaded = true;
@@ -66,6 +66,11 @@ define(['searchjson', 'underscore'], function (buildInfo, _) {
       window.document.head.removeChild(opts.element);
     }
     delete this.loadedChapters[chapter];
+  };
+
+  Chapters.prototype.chapterLoaded = function (chapter) {
+    var opts = this.loadedChapters[chapter];
+    return opts && opts.loaded;
   };
 
   return new Chapters();

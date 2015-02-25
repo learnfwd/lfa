@@ -45,6 +45,7 @@ require.config({
 
     // LFA generated JSON objects.
     searchjson:   '../../js/build-info',
+    templates:    '../../js/templates',
   },
   shim: {
     jquery:       { exports: '$' },
