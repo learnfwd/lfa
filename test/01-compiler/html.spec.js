@@ -17,7 +17,7 @@ describe('index.html compilation', function () {
       var indexPath = path.join(lfa.config.buildPath, 'index.html');
       return nodefn.call(fs.readFile, indexPath);
     }).then(function(data) {
-      var regexp = /<html>.*<\/html>/;
+      var regexp = /<html[^<>]*>.*<\/html>/;
       regexp.test(data.toString()).should.equal(true);
     });
   });
