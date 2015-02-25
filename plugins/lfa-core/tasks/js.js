@@ -1,7 +1,6 @@
-var concat = require('gulp-concat');
 var requirejsTasks = require('./js-require');
 
-module.exports = function cssTasks(lfa) {
+module.exports = function jsTasks(lfa) {
   requirejsTasks(lfa);
 
   lfa.task('default:js', ['js:files:*'], function (jsFiles) {

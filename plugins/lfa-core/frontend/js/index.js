@@ -1,5 +1,5 @@
 require.config({
-  waitSeconds: 0, // Indefinite timeout (good for low end devices)
+  //waitSeconds: 0, // Indefinite timeout (good for low end devices)
   paths: {
     // General purpose 3rd party libs.
     jquery:       'lib/jquery-2.1.1.min',
@@ -44,8 +44,7 @@ require.config({
     appStorage:   'storage',
 
     // LFA generated JSON objects.
-    templates:    '../../js/templates/main',
-    searchjson:   '../../js/searchjson'
+    searchjson:   '../../js/build-info',
   },
   shim: {
     jquery:       { exports: '$' },
@@ -76,8 +75,6 @@ require.config({
     queryengine:  { exports: 'QueryEngine', deps: ['backbone'] },
 
     app:          { exports: 'App'},
-    templates:    { exports: 'Templates' },
-    searchjson:   { exports: 'SearchJSON' },
 
     bookview:     { exports: 'BookView' },
     router:       { exports: 'Router' }

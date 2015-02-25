@@ -23,13 +23,13 @@
 
 //- Old template:
 doctype html
-html(lang='en', dir='ltr')
+html(lang=book.language, dir=book.textDirection)
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge, chrome=1')
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui")
 
-    title= title
+    title= book.title
     
     link(type='text/css', rel='stylesheet', media='screen', href='main.css')
   body

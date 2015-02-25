@@ -3,7 +3,11 @@ var path = require('path');
 var through = require('through2');
 var File = require('vinyl');
 
+var buildInfoJS = require('./js-build-info');
+
 module.exports = function requireJSTasks(lfa) {
+  buildInfoJS(lfa);
+
   var config = lfa.config;
 
   lfa.task('js:files:requirejs', ['requirejs:files:*'], function (jsFiles) {
@@ -20,9 +24,9 @@ module.exports = function requireJSTasks(lfa) {
       }));
   });
 
-  // If the project doesn't have a main.js, we'll create one
+  // If the project doesn't have a main.js, we'll create an empty one
   lfa.task('requirejs:files:main-shim', ['requirejs:files:main'], function (mainJs) {
-    var stream = through.obj();
+    var stream = lfa.pipeErrors(through.obj());
     var hasMain = false;
     var mainPath = path.resolve(config.projectPath, 'js', 'main.js');
 
@@ -32,6 +36,10 @@ module.exports = function requireJSTasks(lfa) {
       }
       cb();
     }));
+
+    mainJs.on('error', function (err) {
+      stream.emit('error', err);
+    });
 
     mainJs.on('end', function () {
       if (!hasMain) {

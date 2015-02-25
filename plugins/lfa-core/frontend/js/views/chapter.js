@@ -5,10 +5,10 @@ define([
   'bootstrap',
   'stacktable',
   'nlform',
-  'templates',
+  'chapters',
   'fluidbox',
   'prefetcher',
-], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Templates, Fluidbox, Prefetcher) {
+], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Chapters, Fluidbox, Prefetcher) {
   'use strict';
 
   var ChapterView = Backbone.View.extend({
@@ -20,7 +20,7 @@ define([
     render: function(chapter) {
       var tocUrlOrder = window.App.tocUrlOrder;
 
-      if (!Templates.templateExists(chapter)) {
+      if (!Chapters.chapterExists(chapter)) {
         chapter = tocUrlOrder[0]; // In lack of a 404
       }
 

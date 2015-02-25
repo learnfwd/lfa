@@ -8,6 +8,15 @@ var pipeErrors = require('./pipe-errors');
 var LFATasks = {
   src: pipeErrors.patchFunction(vfs.src),
   dst: vfs.dest,
+  pipeErrors: pipeErrors,
+
+  emptyStream: function () {
+    var s = pipeErrors(gutil.noop());
+    process.nextTick(function () {
+      s.end();
+    });
+    return s;
+  },
 
   task: function (name, deps, cb) {
     if (typeof(deps) === 'function') {
@@ -65,7 +74,7 @@ var LFATasks = {
       });
 
       if (streams.length === 0) {
-        return pipeErrors(gutil.noop());
+        return self.emptyStream();
       } else if (streams.length === 1) {
         return pipeErrors(streams[0]);
       } else {

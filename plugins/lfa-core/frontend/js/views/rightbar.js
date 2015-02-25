@@ -4,8 +4,7 @@ define([
   'backbone',
   
   'views/sidebar',
-  'views/search'
-], function($, _, Backbone, SidebarView, SearchView) {
+], function($, _, Backbone, SidebarView) {
   'use strict';
   
   var RightbarView = SidebarView.extend({

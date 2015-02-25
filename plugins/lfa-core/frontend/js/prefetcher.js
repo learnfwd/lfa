@@ -1,4 +1,4 @@
-define(['templates', 'underscore'], function(Templates, _) {
+define(['chapters', 'underscore'], function(Chapters, _) {
   function Prefetcher() {
     this.cache = {};
     this.maxCacheLength = 64 * 1024; //128 kB
@@ -33,7 +33,7 @@ define(['templates', 'underscore'], function(Templates, _) {
       });
       if (maxPri <= tillPriority || !maxCache) { break; }
       this.cacheLength -= this.cacheSize[maxCache];
-      Templates.removeLoaded(maxCache);
+      Chapters.removeLoaded(maxCache);
       delete this.cache[maxCache];
       delete this.cacheSize[maxCache];
     }
@@ -49,7 +49,7 @@ define(['templates', 'underscore'], function(Templates, _) {
         this.reclaimCache(priority);
         if (this.cacheLength <= this.maxCacheLength) {
           this.cache[ch] = 2;
-          Templates.asyncLoad(ch, this.chapterFinishedCaching.bind(this, ch));
+          Chapters.asyncLoad(ch, this.chapterFinishedCaching.bind(this, ch));
         }
         return;
       }

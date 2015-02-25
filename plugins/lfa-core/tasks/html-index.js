@@ -6,9 +6,7 @@ module.exports = function indexHtmlTasks(lfa) {
     var template = path.join(__dirname, 'templates', 'index.jade');
     var opts = {
       locals: {
-        title: 'A Title',
-        description: 'A description',
-        keywords: ['some', 'keywords'],
+        book: lfa.config.book,
       },
     };
 

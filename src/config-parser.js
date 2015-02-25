@@ -27,6 +27,11 @@ module.exports = function parseConfig(config) {
   assert(typeof(config.book) === 'object', 'packageJson.book must be an object');
 
   config.book.title = config.book.title || idToTitle(config.bookId);
+  config.book.language = config.book.language || 'en';
+  config.book.textDirection = config.book.textDirection || 'ltr';
+  assert(typeof(config.book.title) === 'string', 'book.title must be a string');
+  assert(typeof(config.book.language) === 'string', 'book.language must be a string');
+  assert(typeof(config.book.textDirection) === 'string', 'book.textDirection must be a string');
 
   config.defaultTask = packageJson.defaultTask || 'default';
 
