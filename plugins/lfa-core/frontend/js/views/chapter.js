@@ -8,7 +8,8 @@ define([
   'chapters',
   'fluidbox',
   'prefetcher',
-], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Chapters, Fluidbox, Prefetcher) {
+  'templates',
+], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Chapters, Fluidbox, Prefetcher, templates) {
   'use strict';
 
   var ChapterView = Backbone.View.extend({
@@ -65,7 +66,7 @@ define([
 
       // If not cached, put up a loading screen
       if (Chapters.chapterLoaded(chapter)) {
-        this.$el.html(window.getMixin('error-message')());
+        this.$el.html(templates['error-message']());
       }
 
       window.App.book.trigger('destroy-chapter', {

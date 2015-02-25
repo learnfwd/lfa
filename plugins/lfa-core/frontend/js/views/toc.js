@@ -2,7 +2,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-], function($, _, Backbone) {
+  'templates',
+], function($, _, Backbone, templates) {
   'use strict';
 
   var TocView = Backbone.View.extend({
@@ -78,7 +79,7 @@ define([
     render: function() {
       var self = this;
 
-      this.$el.html(window.getMixin('_toc')(this.chapters));
+      this.$el.html(templates.toc.toc(this.chapters));
       this.calculateHeights();
 
       this.$('li').on('click', function(e) {
