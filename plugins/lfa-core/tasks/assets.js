@@ -8,7 +8,7 @@ module.exports = function assetsTasks(lfa) {
     return jsFiles 
       .pipe(lfa.hook('assets:filter:*'))
       .pipe(lfa.hook('assets:pre-write:*'))
-      .pipe(lfa.dst(lfa.config.buildPath))
+      .pipe(lfa.dst(lfa.currentCompile.buildPath))
       .pipe(lfa.hook('assets:post-write:*'));
   });
 };

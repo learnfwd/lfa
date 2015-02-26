@@ -7,6 +7,12 @@ Compiler.compile = function (opts) {
 
   return when.try(function () {
     opts = opts || {};
+    opts.debug = opts.debug || false;
+
+    self.currentCompile = {
+      debug: opts.debug,
+      buildPath: opts.debug ? self.config.debugBuildPath : self.config.releaseBuildPath,
+    };
 
     var taskName = opts.task || self.config.defaultTask;
     var stream = self.start(taskName);

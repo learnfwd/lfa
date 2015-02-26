@@ -12,7 +12,7 @@ module.exports = function cssTasks(lfa) {
         path: 'main.css',
       }))
       .pipe(lfa.hook('css:pre-write:*'))
-      .pipe(lfa.dst(lfa.config.buildPath))
+      .pipe(lfa.dst(lfa.currentCompile.buildPath))
       .pipe(lfa.hook('css:post-write:*'));
   });
 };

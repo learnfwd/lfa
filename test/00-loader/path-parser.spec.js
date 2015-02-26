@@ -12,7 +12,8 @@ describe('path parser', function () {
       return LFA.loadPaths(basicFixture).then(function(config) {
         config.projectPath.should.equal(basicFixture);
         config.packagePath.should.equal(path.join(basicFixture, '.lfa', 'package.json'));
-        config.buildPath.should.equal(path.join(basicFixture, '.lfa', 'build', 'debug'));
+        config.debugBuildPath.should.equal(path.join(basicFixture, '.lfa', 'build', 'debug'));
+        config.releaseBuildPath.should.equal(path.join(basicFixture, '.lfa', 'build', 'release'));
       });
     });
 
@@ -20,7 +21,8 @@ describe('path parser', function () {
       return LFA.loadPaths(path.join(basicFixture, 'text')).then(function(config) {
         config.projectPath.should.equal(basicFixture);
         config.packagePath.should.equal(path.join(basicFixture, '.lfa', 'package.json'));
-        config.buildPath.should.equal(path.join(basicFixture, '.lfa', 'build', 'debug'));
+        config.debugBuildPath.should.equal(path.join(basicFixture, '.lfa', 'build', 'debug'));
+        config.releaseBuildPath.should.equal(path.join(basicFixture, '.lfa', 'build', 'release'));
       });
     });
 

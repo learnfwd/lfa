@@ -7,7 +7,7 @@ module.exports = function jsTasks(lfa) {
     return jsFiles 
       .pipe(lfa.hook('js:filter:*'))
       .pipe(lfa.hook('js:pre-write:*'))
-      .pipe(lfa.dst(lfa.config.buildPath))
+      .pipe(lfa.dst(lfa.currentCompile.buildPath))
       .pipe(lfa.hook('js:post-write:*'));
   });
 };

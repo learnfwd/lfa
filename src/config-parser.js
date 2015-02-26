@@ -13,7 +13,8 @@ function idToTitle(bookId) {
 module.exports = function parseConfig(config) {
   assert(typeof(config.packagePath) === 'string', 'config.packagePath must be a string');
   assert(typeof(config.projectPath) === 'string', 'config.projectPath must be a string');
-  assert(typeof(config.buildPath) === 'string', 'config.buildPath must be a string');
+  assert(typeof(config.releaseBuildPath) === 'string', 'config.releaseBuildPath must be a string');
+  assert(typeof(config.debugBuildPath) === 'string', 'config.debugBuildPath must be a string');
   assert(typeof(config.package) === 'object', 'config.package must be an object');
   assert(_.contains(config.package.keywords, 'lfa-book'), 'This is not the package.json of a LFA book');
 

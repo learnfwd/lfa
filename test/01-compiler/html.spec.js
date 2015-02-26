@@ -14,7 +14,7 @@ describe('index.html compilation', function () {
     var lfa;
     return compileProject(basicFixture).then(function (_lfa) {
       lfa = _lfa;
-      var indexPath = path.join(lfa.config.buildPath, 'index.html');
+      var indexPath = path.join(lfa.config.releaseBuildPath, 'index.html');
       return nodefn.call(fs.readFile, indexPath);
     }).then(function(data) {
       var regexp = /<html[^<>]*>.*<\/html>/;

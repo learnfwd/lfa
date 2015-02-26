@@ -42,7 +42,8 @@ Loader.loadPaths = function (config) {
         packagePath: packagePath,
         package: packageJson,
         projectPath: path.resolve(path.dirname(packagePath), packageJson.projectPath || '..'),
-        buildPath: path.join(path.dirname(packagePath), 'build', 'debug')
+        releaseBuildPath: path.join(path.dirname(packagePath), 'build', 'release'),
+        debugBuildPath: path.join(path.dirname(packagePath), 'build', 'debug')
       };
         
       return _.extend(config, r);
@@ -68,7 +69,8 @@ Loader.loadProject = function(config)  {
       typeof(config.packagePath) !== 'string' ||
       typeof(config.package) !== 'object' ||
       typeof(config.projectPath) !== 'string' ||
-      typeof(config.buildPath) !== 'string'
+      typeof(config.releaseBuildPath) !== 'string' ||
+      typeof(config.debugBuildPath) !== 'string'
   ) {
     prom = LFA.loadPaths(config).then(function (r) {
       config = r;

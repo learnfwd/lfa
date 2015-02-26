@@ -10,6 +10,8 @@ function LFA(config) {
 
 _.extend(LFA.prototype, require('./tasks'));
 _.extend(LFA.prototype, require('./compiler'));
+_.extend(LFA.prototype, require('./watcher'));
+_.extend(LFA, require('./cleaner'));
 _.extend(LFA, require('./loader'));
 
 module.exports = LFA;

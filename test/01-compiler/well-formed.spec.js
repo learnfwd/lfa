@@ -14,7 +14,7 @@ describe('compiler', function () {
     var lfa;
     return compileProject(basicFixture).then(function (_lfa) {
       lfa = _lfa;
-      return nodefn.call(fs.stat, lfa.config.buildPath);
+      return nodefn.call(fs.stat, lfa.config.releaseBuildPath);
     }).then(function (stat) {
       stat.isDirectory().should.equal(true);
     });

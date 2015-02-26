@@ -19,7 +19,7 @@ describe('css compilation', function () {
     var lfa;
     return compileProject(userFixture).then(function (_lfa) {
       lfa = _lfa;
-      var cssFilePath = path.join(lfa.config.buildPath, 'main.css');
+      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'main.css');
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
       var regexp = /\.user-colors[^]*\.user-main/;
@@ -31,7 +31,7 @@ describe('css compilation', function () {
     var lfa;
     return compileProject(themeFixture).then(function (_lfa) {
       lfa = _lfa;
-      var cssFilePath = path.join(lfa.config.buildPath, 'main.css');
+      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'main.css');
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
       var regexp = /\.user-colors[^]*\.theme-colors[^]*\.theme-main[^]*\.user-main/;
@@ -43,7 +43,7 @@ describe('css compilation', function () {
     var lfa;
     return compileProject(nothemeFixture).then(function (_lfa) {
       lfa = _lfa;
-      var cssFilePath = path.join(lfa.config.buildPath, 'main.css');
+      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'main.css');
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
       var regexp = /\.user-colors[^]*\.user-main/;
@@ -55,7 +55,7 @@ describe('css compilation', function () {
     var lfa;
     return compileProject(noneFixture).then(function (_lfa) {
       lfa = _lfa;
-      var cssFilePath = path.join(lfa.config.buildPath, 'main.css');
+      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'main.css');
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
       var regexp = /\.user-colors[^]*\.user-main/;
@@ -67,7 +67,7 @@ describe('css compilation', function () {
     var lfa;
     return compileProject(pluginFixture).then(function (_lfa) {
       lfa = _lfa;
-      var cssFilePath = path.join(lfa.config.buildPath, 'main.css');
+      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'main.css');
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
       var regexp = /\.plugin-colors[^]*\.plugin-main/;
