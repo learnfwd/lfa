@@ -5,19 +5,19 @@ function FileMonitor() {}
 
 var _eventHandlers = {
   add: function (path) {
-    console.log('add', path);
-  },
-  addDir: function (path) {
-    console.log('addDir', path);
+    this.callback({ created: [path] });
   },
   change: function (path) {
-    console.log('change', path);
+    this.callback({ changed: [path] });
   },
   unlink: function (path) {
-    console.log('unlink', path);
+    this.callback({ removed: [path] });
+  },
+  addDir: function (path) {
+    // TODO
   },
   unlinkDir: function (path) {
-    console.log('unlinkDir', path);
+    // TODO
   },
 };
 
@@ -28,6 +28,7 @@ function _processQueue() {
   if (q.length === 0) { return; }
   var evt = q.splice(0, 1)[0];
   return when.try(function () {
+    //console.log(evt.type, evt.path);
     return _eventHandlers[evt.type].call(self, evt.path);
   }).then(_processQueue.bind(self));
 }

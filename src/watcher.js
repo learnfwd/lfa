@@ -88,7 +88,9 @@ function _resolveChangeEvent() {
 
 function _filesChanged(ops) {
   this.fileOps.push(ops);
-  this.waitForCompile.then(_resolveChangeEvent.bind(this));
+  this.waitForCompile
+    .delay(100)
+    .then(_resolveChangeEvent.bind(this));
 }
 
 Watcher.prototype.start = function start() {
