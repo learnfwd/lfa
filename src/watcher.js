@@ -2,6 +2,7 @@ var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var when = require('when');
 var _ = require('lodash');
+var fileMonitor = require('./file-monitor');
 
 function Watcher(lfa, opts) {
   this.lfa = lfa;
@@ -13,7 +14,7 @@ util.inherits(Watcher, EventEmitter);
 function _compile(ops) {
   var self = this;
   ops = ops || {};
-  ops.added = ops.added || [];
+  ops.created = ops.created || [];
   ops.removed = ops.removed || [];
   ops.changed = ops.changed || [];
 
@@ -35,8 +36,10 @@ function _compile(ops) {
       self.emit('compile-error', err);
     })
     .finally(function () {
-      self.waitForCompile = when.promise();
+      self.waitForCompile = when();
     });
+
+  return self.waitForCompile;
 }
 
 function _mergeFileOperations(ops) {
@@ -54,14 +57,14 @@ function _mergeFileOperations(ops) {
   }
 
   _.each(ops, function (op) {
-    traverse(op.added, 0, 1);
+    traverse(op.created, 0, 1);
     traverse(op.removed, 1, 0);
     traverse(op.changed, 1, 1);
   });
 
-  var stateMachine = [[null, 'added'], ['removed', 'changed']];
+  var stateMachine = [[null, 'created'], ['removed', 'changed']];
   var op = {
-    added: [],
+    created: [],
     removed: [],
     changed: [],
   };
@@ -89,14 +92,19 @@ function _filesChanged(ops) {
 }
 
 Watcher.prototype.start = function start() {
-  if (this.started) { return; }
+  var self = this;
+  if (self.started) { return; }
 
-  this.fileOps = [];
-  this.incrementalCache = null;
+  self.fileOps = [];
+  self.incrementalCache = null;
 
-  _compile.call(this);
+  self.waitForCompile = fileMonitor(self.lfa.config.projectPath, _filesChanged.bind(self))
+    .then(function (monitor) {
+      self.monitor = monitor;
+      return _compile.call(self);
+    });
 
-  this.emit('started');
+  self.emit('started');
 };
 
 Watcher.prototype.stop = function stop() {
@@ -106,9 +114,17 @@ Watcher.prototype.stop = function stop() {
 
   self.emit('stopping');
 
+  if (self.monitor) {
+    self.monitor.close();
+    self.monitor = null;
+  }
+
   self.waitForCompile.then(function () {
     self.stopping = false;
     self.started = false;
+    if (self.monitor) {
+      self.monitor.close();
+    }
     self.emit('stopped');
   });
 };

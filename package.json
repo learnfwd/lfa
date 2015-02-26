@@ -32,6 +32,7 @@
   "dependencies": {
     "accord": "^0.15.2",
     "chalk": "^0.5.1",
+    "chokidar": "^1.0.0-rc3",
     "event-stream": "^3.1.7",
     "filewalker": "^0.1.2",
     "fs-extra": "^0.16.3",
