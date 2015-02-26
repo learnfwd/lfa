@@ -3,6 +3,10 @@ var through = require('through2');
 var gutil = require('gulp-util');
 var path = require('path');
 var File = require('vinyl');
+var _ = require('lodash');
+var when = require('when');
+var nodefn = require('when/node');
+var fs = require('fs');
 
 var PLUGIN_NAME = 'text-jade';
 var boilerplate = [
@@ -16,6 +20,41 @@ var boilerplate = [
 module.exports = function textJadeTasks(lfa) {
   var config = lfa.config;
 
+  var cachedFrontMatter = null;
+
+  function getFrontMatter() {
+    // Collect mixins from all over the place
+    if (cachedFrontMatter) { return cachedFrontMatter; }
+    
+    return cachedFrontMatter = when.try(function () {
+      var mixinPaths = _.map(lfa.plugins, function (plugin) {
+        return path.join(plugin.path, 'frontend', 'mixins', 'index.jade');
+      });
+      mixinPaths.push(path.join(config.projectPath, 'mixins', 'index.jade'));
+      return mixinPaths;
+
+    }).then(function (mixinPaths) {
+      return when.all(_.map(mixinPaths, function (tp) {
+        return nodefn.call(fs.stat, tp)
+          .then(function (stat) {
+            return stat.isFile() ? tp : null;
+          })
+          .catch(function () {
+            return null;
+          });
+      }));
+
+    }).then(function (paths) {
+      return _.filter(paths, function (o) { return o !== null; });
+
+    }).then(function (paths) {
+      return _.map(paths, function (o) { 
+        return 'include ' + o + '\n';
+      }).join('');
+
+    });
+  }
+
   lfa.task('text:files:jade', function () {
     var glob = path.join(config.projectPath, 'text', '**', '*.jade');
 
@@ -25,12 +64,17 @@ module.exports = function textJadeTasks(lfa) {
           return cb(new gutil.PluginError(PLUGIN_NAME, 'Streaming not supported'));
         }
 
-        var opts = {};
-        opts.filename = file.path;
+        var opts = {
+          filename: file.path,
+          basedir: '/', //This won't work on Windows. Sorry
+        };
 
         var url = file.relative.replace(path.sep, '-').replace(/\.jade$/, '');
 
-        jade.compile(file.contents.toString('utf8'), opts)
+        getFrontMatter()
+          .then(function (front) {
+            return jade.compile(front + file.contents.toString('utf8'), opts);
+          })
           .then(function (res) {
             var locals = { meta: {} };
             locals.meta.url = url;

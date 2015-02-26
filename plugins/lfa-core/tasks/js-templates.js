@@ -13,10 +13,10 @@ module.exports = function templatesJS(lfa) {
   lfa.task('requirejs:files:templates', function () {
     var stream = lfa.pipeErrors(through.obj());
 
-    var templatePaths = [ path.join(config.projectPath, 'js', 'templates') ];
-    _.each(lfa.plugins, function (plugin) {
-      templatePaths.push(path.join(plugin.path, 'frontend', 'js', 'templates'));
+    var templatePaths = _.map(lfa.plugins, function (plugin) {
+      return path.join(plugin.path, 'frontend', 'js', 'templates');
     });
+    templatePaths.push(path.join(config.projectPath, 'js', 'templates'));
 
     process.nextTick(function () {
       when.all(_.map(templatePaths, function (tp) {
