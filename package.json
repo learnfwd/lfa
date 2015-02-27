@@ -30,6 +30,7 @@
     "email": "hello@readfwd.com"
   },
   "dependencies": {
+    "JSONStream": "^0.10.0",
     "accord": "^0.15.2",
     "chalk": "^0.5.1",
     "chokidar": "^1.0.0-rc3",
