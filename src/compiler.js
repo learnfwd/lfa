@@ -11,8 +11,11 @@ Compiler.compile = function (opts) {
 
     self.currentCompile = {
       debug: opts.debug,
+      watcher: opts.watcher,
+      saveForIncremental: !!opts.saveCurrentCompile,
       buildPath: opts.debug ? self.config.debugBuildPath : self.config.releaseBuildPath,
     };
+    self.previousCompile = opts.previousCompile;
 
     var taskName = opts.task || self.config.defaultTask;
     var stream = self.start(taskName);
@@ -20,6 +23,8 @@ Compiler.compile = function (opts) {
     return when.promise(function (resolve, reject) {
       stream.on('error', reject);
       stream.on('end', resolve);
+    }).then(function () {
+      return self.currentCompile;
     });
   });
 };

@@ -19,9 +19,10 @@ function _compile(ops) {
   ops.changed = ops.changed || [];
 
   var opts = _.extend({
-    incrementalCache: self.incrementalCache,
+    previousCompile: self.incrementalCache,
     fileOperations: ops,
-    returnIncremental: true,
+    watcher: self,
+    saveCurrentCompile: true,
   }, self.opts);
 
   self.emit('compiling');

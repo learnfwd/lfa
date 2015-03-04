@@ -43,7 +43,8 @@ Loader.loadPaths = function (config) {
         package: packageJson,
         projectPath: path.resolve(path.dirname(packagePath), packageJson.projectPath || '..'),
         releaseBuildPath: path.join(path.dirname(packagePath), 'build', 'release'),
-        debugBuildPath: path.join(path.dirname(packagePath), 'build', 'debug')
+        debugBuildPath: path.join(path.dirname(packagePath), 'build', 'debug'),
+        tmpPath: path.resolve(path.dirname(packagePath), 'tmp'),
       };
         
       return _.extend(config, r);
@@ -69,6 +70,7 @@ Loader.loadProject = function(config)  {
       typeof(config.packagePath) !== 'string' ||
       typeof(config.package) !== 'object' ||
       typeof(config.projectPath) !== 'string' ||
+      typeof(config.tmpPath) !== 'string' ||
       typeof(config.releaseBuildPath) !== 'string' ||
       typeof(config.debugBuildPath) !== 'string'
   ) {

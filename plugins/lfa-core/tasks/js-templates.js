@@ -10,7 +10,7 @@ var nodefn = require('when/node');
 module.exports = function templatesJS(lfa) {
   var config = lfa.config;
 
-  lfa.task('requirejs:files:templates', function () {
+  lfa.task('webpack:gen:templates', function () {
     var stream = lfa.pipeErrors(through.obj());
 
     var templatePaths = _.map(lfa.plugins, function (plugin) {
@@ -36,7 +36,7 @@ module.exports = function templatesJS(lfa) {
 
           stream.write(new File({
             base: '',
-            path: 'js/templates.js',
+            path: 'gen/modules/templates.js',
             contents: new Buffer(content)
           }));
           stream.end();

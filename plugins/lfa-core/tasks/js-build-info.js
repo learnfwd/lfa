@@ -64,7 +64,7 @@ module.exports = function buildInfoJS(lfa) {
     return _.map(files, function(o) { return map[o].url; });
   }
 
-  lfa.task('requirejs:files:buildinfo', ['text:files:*'], function (textFiles) {
+  lfa.task('webpack:gen:buildinfo', ['text:files:*'], function (textFiles) {
 
     var chapters = {};
 
@@ -103,7 +103,7 @@ module.exports = function buildInfoJS(lfa) {
 
       stream.write(new File({
         base: '',
-        path: 'js/build-info.js',
+        path: 'gen/modules/searchjson.js',
         contents: new Buffer(contents),
       }));
       stream.end();
