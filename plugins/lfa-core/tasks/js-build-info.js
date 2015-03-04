@@ -101,11 +101,13 @@ module.exports = function buildInfoJS(lfa) {
       //AMD bullshit
       contents = 'define(' + contents + ');';
 
-      stream.write(new File({
+      var file = new File({
         base: '',
-        path: 'gen/modules/searchjson.js',
+        path: 'gen/modules/buildinfo.js',
         contents: new Buffer(contents),
-      }));
+      });
+      file.webpackAlias = ['buildinfo', 'searchjson'];
+      stream.write(file);
       stream.end();
     });
 

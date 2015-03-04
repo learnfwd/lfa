@@ -21,13 +21,28 @@ module.exports = function webpackTasks(lfa) {
   lfa.task('default:webpack', ['webpack:deps:*'], function (deps) {
     var stream = lfa.pipeErrors(through.obj());
 
+    var aliases = {};
+
+    deps.on('data', function (file) {
+      var al = file.webpackAlias;
+      if (al) {
+        if (typeof(al) === 'string') {
+          al = [ al ];
+        }
+        var path = file.join(lfa.config.tmpPath, file.relative);
+        _.each(al, function (alias) {
+          aliases[alias] = path;
+        });
+      }
+    });
+
     deps.on('end', function () {
       var compiler = (lfa.previousCompile && lfa.previousCompile.webpackCompiler) ||
                      (lfa.currentCompile.watcher && lfa.currentCompile.watcher.webpackCompiler);
 
       if (!compiler) {
 
-        var aliases = { 'userland': path.join(lfa.config.projectPath, 'js') };
+        aliases.userland = path.join(lfa.config.projectPath, 'js');
         _.each(lfa.plugins, function (plugin) {
           aliases[plugin.name] = path.join(plugin.path, 'frontend', 'js');
         });
@@ -75,7 +90,6 @@ module.exports = function webpackTasks(lfa) {
       });
     });
 
-    deps.resume();
     return stream;
   });
 };

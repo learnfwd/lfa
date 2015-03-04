@@ -42,10 +42,6 @@ require.config({
     // Global App object
     app:          'app',
     appStorage:   'storage',
-
-    // LFA generated JSON objects.
-    searchjson:   '../../js/build-info',
-    templates:    '../../js/templates',
   },
   shim: {
     jquery:       { exports: '$' },

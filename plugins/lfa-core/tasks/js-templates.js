@@ -34,11 +34,14 @@ module.exports = function templatesJS(lfa) {
             templatizer(paths, null) :
             'define({});';
 
-          stream.write(new File({
+
+          var file = new File({
             base: '',
             path: 'gen/modules/templates.js',
             contents: new Buffer(content)
-          }));
+          });
+          file.webpackAlias = ['templates'];
+          stream.write(file);
           stream.end();
         })
         .catch(function (err) {
