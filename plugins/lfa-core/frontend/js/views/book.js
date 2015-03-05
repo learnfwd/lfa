@@ -2,46 +2,15 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'store',
-  'modernizr',
-  'fastclick',
   'searchjson',
+  '../app',
 
-  'views/leftbar',
-  'views/rightbar',
-  'views/chapter',
-  'views/menu'
-], function($, _, Backbone, Store, Modernizr, FastClick, SearchJSON, LeftbarView, RightbarView, ChapterView, MenuView) {
+  './leftbar',
+  './rightbar',
+  './chapter',
+  './menu'
+], function($, _, Backbone, SearchJSON, App, LeftbarView, RightbarView, ChapterView, MenuView) {
   'use strict';
-
-  var Setting = Backbone.Model.extend({
-    defaults: {
-      title: '',
-      value: false
-    },
-
-    toggle: function () {
-      this.save({
-        completed: !this.get('value')
-      });
-    }
-  });
-
-  var SettingsCollection = Backbone.Collection.extend({
-    model: Setting,
-    localStorage: new Store('lfa-settings')
-  });
-
-  var Settings = new SettingsCollection();
-  // Fetch from localStorage.
-  Settings.fetch();
-
-  // Initialize settings if they don't exist.
-  if (!Settings.findWhere({ title: 'Animations' })) {
-    var animDefault = new Setting({ title: 'Animations', value: true });
-    Settings.add(animDefault);
-    animDefault.save();
-  }
 
   var BookView = Backbone.View.extend({
     html: $('html'),
@@ -50,14 +19,14 @@ define([
       // Initialize/alias some helpful arrays and hashtables.
 
       // Alias the SearchJSON to our global namespace.
-      window.App.searchJSON = SearchJSON;
+      App.searchJSON = SearchJSON;
 
       // Alias the TOC as well.
-      window.App.toc = SearchJSON.toc || [];
+      App.toc = SearchJSON.toc || [];
 
       // App.tocUrlOrder is a sorted array that will tell you in what order the
       // TOC chapters are supposed to be consumed.
-      window.App.tocUrlOrder = window.App.tocUrlOrder || SearchJSON.spine || [];
+      App.tocUrlOrder = App.tocUrlOrder || SearchJSON.spine || [];
 
       var getChildrenUrls = function(toc) {
         var result = {};
@@ -82,20 +51,13 @@ define([
       //   url (string)
       //   children (array)
       //   locals (object)
-      window.App.tocFindByUrl = window.App.tocFindByUrl || getChildrenUrls(App.toc);
-
-      // Initialize FastClick. This removes the .3s delay in mobile webkit when clicking on anything.
-      FastClick.attach(document.body);
+      App.tocFindByUrl = App.tocFindByUrl || getChildrenUrls(App.toc);
 
       // Bind keyboard events
       $(window).on('keyup', this.onKeyUp.bind(this));
       this.keyNavigationEnabled = true;
 
-      if (Settings.findWhere({ title: 'Animations' }).get('value')) {
-        this.$el.addClass('animated');
-      } else {
-        this.$('#animations-toggle').addClass('active');
-      }
+      this.$el.addClass('animated');
 
       var self = this;
       // Close the sidebars when we tap anywhere on the textbook.
@@ -157,21 +119,21 @@ define([
 
     showNextChapter: function () {
       var nextChapterUrl =  'book/' + this.chapter.nextChapter;
-      window.App.router.navigate(nextChapterUrl, { trigger: true });
+      App.router.navigate(nextChapterUrl, { trigger: true });
     },
 
     showPreviousChapter: function () {
       var previousChapterUrl =  'book/' + this.chapter.previousChapter;
-      window.App.router.navigate(previousChapterUrl, { trigger: true });
+      App.router.navigate(previousChapterUrl, { trigger: true });
     },
 
     showFirstChapter: function() {
-      var firstChapterUrl = 'book/' + window.App.tocUrlOrder[0];
-      window.App.router.navigate(firstChapterUrl, { replace: true, trigger: true });
+      var firstChapterUrl = 'book/' + App.tocUrlOrder[0];
+      App.router.navigate(firstChapterUrl, { replace: true, trigger: true });
     },
 
     show: function(chapter, id) {
-      var changeChapter = window.App.book.currentChapter !== chapter;
+      var changeChapter = App.book.currentChapter !== chapter;
 
       var scrollView = $('#scrollview');
 
@@ -246,12 +208,6 @@ define([
     },
 
     events: {
-      'click #animations-toggle': function() {
-        this.$el.toggleClass('animated');
-        this.$('#animations-toggle').toggleClass('active');
-        this.closeSidebars();
-        Settings.findWhere({ title: 'Animations' }).set('value', this.$el.hasClass('animated')).save();
-      }
     }
   });
 

@@ -5,5 +5,10 @@
     "default": "./themes/default",
     "blank": "./themes/blank"
   },
-  "keywords": ["lfa-plugin"]
+  "keywords": [
+    "lfa-plugin"
+  ],
+  "dependencies": {
+    "hammerjs": "^2.0.4"
+  }
 }

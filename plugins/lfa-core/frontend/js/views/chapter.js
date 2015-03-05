@@ -1,166 +1,155 @@
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'bootstrap',
-  'stacktable',
-  'nlform',
-  'chapters',
-  'fluidbox',
-  'prefetcher',
-  'templates',
-], function($, _, Backbone, Bootstrap, Stacktable, NLForm, Chapters, Fluidbox, Prefetcher, templates) {
-  'use strict';
+var $ = require('jquery');
+var _ = require('lodash');
+var Backbone = require('backbone');
+require('stacktable');
+require('fluidbox');
 
-  var ChapterView = Backbone.View.extend({
-    initialize: function(options) {
-      this.parent = options.parent;
-      this.prefetcher = new Prefetcher();
-    },
+var templates = require('templates');
+var Chapters = require('../chapters');
+var Prefetcher = require('../prefetcher');
+var App = require('../app');
 
-    render: function(chapter) {
-      var tocUrlOrder = window.App.tocUrlOrder;
+var ChapterView = Backbone.View.extend({
+  initialize: function(options) {
+    this.parent = options.parent;
+    this.prefetcher = new Prefetcher();
+  },
 
-      if (!Chapters.chapterExists(chapter)) {
-        chapter = tocUrlOrder[0]; // In lack of a 404
-      }
+  render: function(chapter) {
+    var tocUrlOrder = App.tocUrlOrder;
 
-      var lastChapter = window.App.book.currentChapter;
-      window.App.book.currentChapter = chapter;
-      
-      // Determine the next and previous chapters.
-      var next = null,
-        previous = null;
+    if (!Chapters.chapterExists(chapter)) {
+      chapter = tocUrlOrder[0]; // In lack of a 404
+    }
+
+    var lastChapter = App.book.currentChapter;
+    App.book.currentChapter = chapter;
+    
+    // Determine the next and previous chapters.
+    var next = null,
+      previous = null;
 
 
-      var firstIndex = 0,
-        currentIndex = tocUrlOrder.indexOf(chapter),
-        chapterCount = tocUrlOrder.length,
-        lastIndex = chapterCount - 1;
-      
-      if (chapterCount > 1) {
-        if (currentIndex === 0) {
-          next = currentIndex + 1;
-          previous = lastIndex;
-        } else if (currentIndex === lastIndex) {
-          next = firstIndex;
-          previous = currentIndex - 1;
-        } else {
-          next = currentIndex + 1;
-          previous = currentIndex - 1;
-        }
+    var firstIndex = 0,
+      currentIndex = tocUrlOrder.indexOf(chapter),
+      chapterCount = tocUrlOrder.length,
+      lastIndex = chapterCount - 1;
+    
+    if (chapterCount > 1) {
+      if (currentIndex === 0) {
+        next = currentIndex + 1;
+        previous = lastIndex;
+      } else if (currentIndex === lastIndex) {
+        next = firstIndex;
+        previous = currentIndex - 1;
       } else {
-        next = previous = firstIndex;
+        next = currentIndex + 1;
+        previous = currentIndex - 1;
       }
+    } else {
+      next = previous = firstIndex;
+    }
 
-      var nextUrl = window.App.tocUrlOrder[next],
-        previousUrl = window.App.tocUrlOrder[previous];
+    var nextUrl = App.tocUrlOrder[next],
+      previousUrl = App.tocUrlOrder[previous];
 
-      // Save them locally
-      this.nextChapter = nextUrl;
-      this.previousChapter = previousUrl;
+    // Save them locally
+    this.nextChapter = nextUrl;
+    this.previousChapter = previousUrl;
 
-      // Set them in HTML.
-      $('#next-chapter').prop('href', '#book/' + nextUrl);
-      $('#previous-chapter').prop('href', '#book/' + previousUrl);
+    // Set them in HTML.
+    $('#next-chapter').prop('href', '#book/' + nextUrl);
+    $('#previous-chapter').prop('href', '#book/' + previousUrl);
 
-      // If not cached, put up a loading screen
-      if (Chapters.chapterLoaded(chapter)) {
-        this.$el.html(templates['error-message']());
+    // If not cached, put up a loading screen
+    if (Chapters.chapterLoaded(chapter)) {
+      this.$el.html(templates['error-message']());
+    }
+
+    App.book.trigger('destroy-chapter', {
+      chapter: lastChapter
+    });
+
+    // 4 [0] 1 2 3 5 6 ... 
+    var priority = [chapter], i;
+    for (i = currentIndex+1; i < currentIndex+4 && i < chapterCount && i !== previous; i++) {
+      priority.push(tocUrlOrder[i]);
+    }
+    priority.push(tocUrlOrder[previous]);
+    for (i = currentIndex+4; i < chapterCount && i !== previous; i++) {
+      priority.push(tocUrlOrder[i]);
+    }
+    for (i = currentIndex-2; i >= 0; i--) {
+      priority.push(tocUrlOrder[i]);
+    }
+    this.prefetcher.setChapterPriority(priority);
+
+    Chapters.asyncLoad(chapter, this.chapterLoaded.bind(this, chapter));
+  },
+
+  chapterLoaded: function(chapter, error, htmlData) {
+
+    this.$el.html(htmlData);
+
+    // Remove previous cssNamespace classes, if they exist.
+    var classes = _.filter(
+      $('body')[0].className.split(' '),
+      function(cls) {
+        return cls.indexOf('lf-') === -1;
       }
+    );
+    // `classes` should no longer contain strings that start with `lf-`.
+    $('body').removeClass();
+    $('body').addClass(classes.join(' '));
 
-      window.App.book.trigger('destroy-chapter', {
-        chapter: lastChapter
-      });
+    // Add the cssNamespace classes to the <body> element.
+    $('body').addClass(App.tocFindByUrl[chapter].locals.cssNamespace);
 
-      // 4 [0] 1 2 3 5 6 ... 
-      var priority = [chapter], i;
-      for (i = currentIndex+1; i < currentIndex+4 && i < chapterCount && i !== previous; i++) {
-        priority.push(tocUrlOrder[i]);
-      }
-      priority.push(tocUrlOrder[previous]);
-      for (i = currentIndex+4; i < chapterCount && i !== previous; i++) {
-        priority.push(tocUrlOrder[i]);
-      }
-      for (i = currentIndex-2; i >= 0; i--) {
-        priority.push(tocUrlOrder[i]);
-      }
-      this.prefetcher.setChapterPriority(priority);
+    App.book.trigger('render', {
+      chapter: chapter
+    });
 
-      Chapters.asyncLoad(chapter, this.chapterLoaded.bind(this, chapter));
-    },
+    // After the content loads, juice it up with some javascript.
 
-    chapterLoaded: function(chapter, error, htmlData) {
+    // Enable responsive tables.
+    this.$('table.table-responsive').stacktable({
+      myClass: 'stacktable small-only'
+    });
 
-      this.$el.html(htmlData);
+    // Enable Bootstrap popovers.
+    this.$el.popover({
+      selector: '[rel=popover]'
+    });
 
-      // Remove previous cssNamespace classes, if they exist.
-      var classes = _.filter(
-        $('body')[0].className.split(' '),
-        function(cls) {
-          return cls.indexOf('lf-') === -1;
-        }
-      );
-      // `classes` should no longer contain strings that start with `lf-`.
-      $('body').removeClass();
-      $('body').addClass(classes.join(' '));
-
-      // Add the cssNamespace classes to the <body> element.
-      $('body').addClass(window.App.tocFindByUrl[chapter].locals.cssNamespace);
-
-      window.App.book.trigger('render', {
-        chapter: chapter
-      });
-
-      // After the content loads, juice it up with some javascript.
-
-      // Enable responsive tables.
-      this.$('table.table-responsive').stacktable({
-        myClass: 'stacktable small-only'
-      });
-
-      // Enable fancy forms.
-      this.$('form.fancy').each(function() {
-        // TODO: fix this hack.
-        $(this).prepend('<div class="nl-overlay"></div>');
-        return new NLForm($(this)[0]);
-      });
-
-      // Enable Bootstrap popovers.
-      this.$el.popover({
-        selector: '[rel=popover]'
-      });
-
-      // Enable real parallax, fading modals and fading tab-panes on desktops.
-      if (this.parent.html.hasClass('no-touch')) {
-        this.$('.parallax').each(function() {
-          var $bgobj, $scrollView;
-          $bgobj = $(this);
-          $scrollView = $('#scrollview');
-          return $scrollView.scroll(function() {
-            var coords, yPos;
-            yPos = -($scrollView.scrollTop() / 10);
-            coords = '100% ' + yPos + 'px';
-            return $bgobj.css({
-              backgroundPosition: coords
-            });
+    // Enable real parallax, fading modals and fading tab-panes on desktops.
+    if (this.parent.html.hasClass('no-touch')) {
+      this.$('.parallax').each(function() {
+        var $bgobj, $scrollView;
+        $bgobj = $(this);
+        $scrollView = $('#scrollview');
+        return $scrollView.scroll(function() {
+          var coords, yPos;
+          yPos = -($scrollView.scrollTop() / 10);
+          coords = '100% ' + yPos + 'px';
+          return $bgobj.css({
+            backgroundPosition: coords
           });
         });
+      });
 
-        // TODO: fold these over to CSS under the body.animation class.
-        this.$('.modal').each(function() {
-          return $(this).addClass('fade');
-        });
+      // TODO: fold these over to CSS under the body.animation class.
+      this.$('.modal').each(function() {
+        return $(this).addClass('fade');
+      });
 
-        this.$('.tab-pane').each(function() {
-          return $(this).addClass('fade');
-        });
-      }
-
-      // Enable lightboxes.
-      this.$('a.lightbox').fluidbox();
+      this.$('.tab-pane').each(function() {
+        return $(this).addClass('fade');
+      });
     }
-  });
 
-  return ChapterView;
+    // Enable lightboxes.
+    this.$('a.lightbox').fluidbox();
+  }
 });
+
+module.exports = ChapterView;

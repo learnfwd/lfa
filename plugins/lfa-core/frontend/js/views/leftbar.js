@@ -1,11 +1,11 @@
 define([
   'jquery',
-  'underscore',
+  'lodash',
   'backbone',
-  'hammer',
+  'hammerjs',
   
-  'views/sidebar',
-  'views/toc'
+  './sidebar',
+  './toc'
 ], function($, _, Backbone, Hammer, SidebarView, TocView) {
   'use strict';
   

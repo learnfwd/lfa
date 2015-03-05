@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'hammer',
+  'hammerjs',
 ], function($, _, Backbone, Hammer) {
   'use strict';
   
@@ -14,7 +14,8 @@ define([
 
       var self = this;
       
-      self.$el.hammer().on(self.closeGesture, function(evt) {
+      var hammer = new Hammer(self.el);
+      hammer.on(self.closeGesture, function(evt) {
         if (Math.abs(evt.gesture.deltaX) > 50) {
           self.close();
         }

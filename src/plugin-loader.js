@@ -116,7 +116,8 @@ module.exports = function pluginLoader(lfa) {
     lfa.themes = {};
   }).then(function () {
     var plugins = [
-      loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-core'))
+      loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-core')),
+      loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-analytics')),
     ];
 
     return when.all([

@@ -1,96 +1,95 @@
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'templates',
-], function($, _, Backbone, templates) {
-  'use strict';
+var $ = require('jquery');
+var _ = require('lodash');
+var Backbone = require('backbone');
 
-  var TocView = Backbone.View.extend({
-    initialize: function(options) {
-      this.constructor.__super__.initialize.apply(this, [options]);
+var templates = require('templates');
+var App = require('../app');
 
-      if (options.url) {
-        this.chapters = window.App.tocFindByUrl[options.url].children;
-      } else {
-        this.chapters = window.App.toc;
-      }
+var TocView = Backbone.View.extend({
+  initialize: function(options) {
+    this.constructor.__super__.initialize.apply(this, [options]);
 
-      this.render();
+    if (options.url) {
+      this.chapters = App.tocFindByUrl[options.url].children;
+    } else {
+      this.chapters = App.toc;
+    }
 
-    },
+    this.render();
 
-    calculateHeights: function() {
-      var self = this;
+  },
 
-      self.tocTree = {};
+  calculateHeights: function() {
+    var self = this;
 
-      function addToTree(el, parent) {
-        var url = el.data('url');
-        var children = el.children('.children-container');
-        if (!children.length) { return; }
-        var inner = children.children('ul');
+    self.tocTree = {};
 
-        var h = inner.outerHeight();
-        var obj = {
-          url: url,
-          initialHeight: h,
-          height: h,
-          folded: true,
-          parent: parent,
-          childrenElement: children
-        };
-
-        self.tocTree[url] = obj;
-
-        children.css('height', h);
-
-        inner.children('li').each(function(idx, el) {
-          addToTree($(el), obj);
-        });
-      }
-
-      self.$el.children('ul').children('li').each(function (idx, el) {
-        addToTree($(el), null);
-      });
-    },
-
-    toggleFold: function(el, val) {
+    function addToTree(el, parent) {
       var url = el.data('url');
-      var obj = this.tocTree[url];
-      if (!obj) { return; }
-      if (val === undefined) {
-        val = !obj.folded;
-      }
-      if (val === obj.folded) { return; }
-      obj.folded = val;
+      var children = el.children('.children-container');
+      if (!children.length) { return; }
+      var inner = children.children('ul');
 
-      el.toggleClass('fold', val);
+      var h = inner.outerHeight();
+      var obj = {
+        url: url,
+        initialHeight: h,
+        height: h,
+        folded: true,
+        parent: parent,
+        childrenElement: children
+      };
 
-      var h = val ? -obj.height : obj.height;
-      obj = obj.parent;
-      while (obj) {
-        obj.height += h;
-        obj.childrenElement.css('height', obj.height);
-        obj = obj.folded ? null : obj.parent;
-      }
-    },
+      self.tocTree[url] = obj;
 
-    render: function() {
-      var self = this;
+      children.css('height', h);
 
-      this.$el.html(templates.toc.toc(this.chapters));
-      this.calculateHeights();
-
-      this.$('li').on('click', function(e) {
-        e.stopPropagation();
-        self.toggleFold($(this));
+      inner.children('li').each(function(idx, el) {
+        addToTree($(el), obj);
       });
-    },
+    }
 
-  });
+    self.$el.children('ul').children('li').each(function (idx, el) {
+      addToTree($(el), null);
+    });
+  },
 
-  window.TocView = TocView;
+  toggleFold: function(el, val) {
+    var url = el.data('url');
+    var obj = this.tocTree[url];
+    if (!obj) { return; }
+    if (val === undefined) {
+      val = !obj.folded;
+    }
+    if (val === obj.folded) { return; }
+    obj.folded = val;
 
-  return TocView;
+    el.toggleClass('fold', val);
+
+    var h = val ? -obj.height : obj.height;
+    obj = obj.parent;
+    while (obj) {
+      obj.height += h;
+      obj.childrenElement.css('height', obj.height);
+      obj = obj.folded ? null : obj.parent;
+    }
+  },
+
+  render: function() {
+    var self = this;
+
+    this.$el.html(templates.toc.toc(this.chapters));
+    this.calculateHeights();
+
+    this.$('li').on('click', function(e) {
+      e.stopPropagation();
+      self.toggleFold($(this));
+    });
+  },
+
 });
+
+// For Exercises. Awful
+window.TocView = TocView;
+
+module.exports = TocView;

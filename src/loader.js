@@ -44,7 +44,7 @@ Loader.loadPaths = function (config) {
         projectPath: path.resolve(path.dirname(packagePath), packageJson.projectPath || '..'),
         releaseBuildPath: path.join(path.dirname(packagePath), 'build', 'release'),
         debugBuildPath: path.join(path.dirname(packagePath), 'build', 'debug'),
-        tmpPath: path.resolve(path.dirname(packagePath), 'tmp'),
+        tmpPath: path.resolve(path.dirname(packagePath), 'build', 'tmp'),
       };
         
       return _.extend(config, r);

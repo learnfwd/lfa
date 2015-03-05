@@ -29,9 +29,9 @@ module.exports = function webpackTasks(lfa) {
         if (typeof(al) === 'string') {
           al = [ al ];
         }
-        var path = file.join(lfa.config.tmpPath, file.relative);
+        var filePath = path.join(lfa.config.tmpPath, file.relative);
         _.each(al, function (alias) {
-          aliases[alias] = path;
+          aliases[alias] = filePath;
         });
       }
     });
@@ -43,6 +43,7 @@ module.exports = function webpackTasks(lfa) {
       if (!compiler) {
 
         aliases.userland = path.join(lfa.config.projectPath, 'js');
+        aliases.underscore = 'lodash';
         _.each(lfa.plugins, function (plugin) {
           aliases[plugin.name] = path.join(plugin.path, 'frontend', 'js');
         });
@@ -53,20 +54,20 @@ module.exports = function webpackTasks(lfa) {
           },
           output: {
             path: lfa.currentCompile.buildPath,
-            filename: 'index.js',
+            filename: 'main.js',
           },
-          devtool: lfa.currentCompile.debug ? '#source-map' : null,
+          debug: !!lfa.currentCompile.debug,
+          devtool: lfa.currentCompile.debug ? 'eval-source-map' : undefined,
           module: {
             loaders: [
               { test: /\.jsx$/, loader: 'jsx' },
               { test: /\.json$/, loader: 'json' },
-              { test: /\.styl$/, loader: 'style!css!stylus' },
               { test: /\.css$/, loader: 'style!css' },
             ]
           },
           resolve: {
             alias: aliases,
-            extensions: ['', '.js', '.jsx', '.json'],
+            extensions: ['', '.js', '.jsx'],
           },
         };
 
@@ -77,11 +78,16 @@ module.exports = function webpackTasks(lfa) {
         }
       }
 
-      compiler.compile(function (err, stats) {
+      compiler.run(function (err, st) {
         try {
           if (err) { throw err; }
+          var stats = st.toJson({ errors: true, warnings: true });
           if (stats.errors.length) {
             throw stats.errors[0];
+          }
+          // Treat warnings as errors
+          if (stats.warnings.length) {
+            throw stats.warnings[0];
           }
           stream.end();
         } catch (err) {

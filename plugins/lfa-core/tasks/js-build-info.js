@@ -103,10 +103,10 @@ module.exports = function buildInfoJS(lfa) {
 
       var file = new File({
         base: '',
-        path: 'gen/modules/buildinfo.js',
+        path: 'gen/modules/build-info.js',
         contents: new Buffer(contents),
       });
-      file.webpackAlias = ['buildinfo', 'searchjson'];
+      file.webpackAlias = ['build-info', 'searchjson'];
       stream.write(file);
       stream.end();
     });

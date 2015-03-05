@@ -1,19 +1,23 @@
-define(['backbone', 'bookview', 'router', 'translate', 'searchjson', 'appStorage', 'templates'], function(Backbone, BookView, Router, T, SearchJSON, Storage, templates) {
+var flux = require('flux');
 
-  // Mixin wrapper
-  window.getMixin = function (mix) {
-    console.log('getMixin() is deprecated, please use require(\'templates\')');
-    return templates.mixins[mix];
+var AppDispatcher = new flux.Dispatcher();
+module.exports = AppDispatcher;
+
+// These should go away
+AppDispatcher.T = require('./translate');
+AppDispatcher.storage = require('./storage');
+
+// Deprecated old evented model
+var Backbone = require('backbone');
+_.extend(AppDispatcher, Backbone.Events);
+
+function deprecated(original) {
+  return function () {
+    console.log('The evented App is being deprecated. Please switch to using flux Stores');
+    original.apply(this, arguments);
   };
+}
 
-  var App = window.App = new Backbone.Model();
+AppDispatcher.on = deprecated(AppDispatcher.on);
+AppDispatcher.trigger = deprecated(AppDispatcher.trigger);
 
-  App.book = new BookView({ el: $('body') });
-  App.router = new Router();
-  App.T = T(); // Create a new translator instance
-  App.T.language = SearchJSON.language || App.T.defaultLanguage;
-
-  App.storage = Storage;
-  
-  return App;
-});

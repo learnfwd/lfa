@@ -23,6 +23,7 @@ Cleaner.cleanProject = function (config) {
     return when.all([
       nodefn.call(fs.remove, config.debugBuildPath),
       nodefn.call(fs.remove, config.releaseBuildPath),
+      nodefn.call(fs.remove, config.tmpPath),
     ]);
   });
 };

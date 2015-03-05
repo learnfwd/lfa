@@ -31,7 +31,7 @@ module.exports = function templatesJS(lfa) {
         .then(function (paths) {
           paths = _.filter(paths, function (o) { return o !== null; });
           var content = paths.length ? 
-            templatizer(paths, null) :
+            templatizer(paths, null).replace('require("fs")', '(function () { throw new Error("No such module"); })()') :
             'define({});';
 
 
@@ -40,7 +40,7 @@ module.exports = function templatesJS(lfa) {
             path: 'gen/modules/templates.js',
             contents: new Buffer(content)
           });
-          file.webpackAlias = ['templates'];
+          file.webpackAlias = 'templates';
           stream.write(file);
           stream.end();
         })
