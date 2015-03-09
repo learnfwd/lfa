@@ -12,6 +12,7 @@ Compiler.compile = function (opts) {
     self.currentCompile = {
       debug: opts.debug,
       watcher: opts.watcher,
+      serve: opts.serve,
       saveForIncremental: !!opts.saveCurrentCompile,
       buildPath: opts.debug ? self.config.debugBuildPath : self.config.releaseBuildPath,
     };

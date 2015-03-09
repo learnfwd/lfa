@@ -56,4 +56,6 @@ html(lang=book.language, dir=book.textDirection)
     aside#rightbar
       p.text-center Nothing here yet.
 
-    script(src="main.js")
+    if serve
+      script(src='http://localhost:' + watcher.opts.port + '/webpack-dev-server.js')
+    script(src='main.js')

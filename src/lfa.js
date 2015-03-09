@@ -1,9 +1,11 @@
 var _ = require('lodash');
+var path = require('path');
 
 function LFA(config) {
   if (typeof(config) !== 'object') {
     throw new Error('Private constructor. Use LFA.loadProject()');
   }
+  this.path = path.resolve(__dirname, '..');
   this.config = config;
   this._initTasks();
 }

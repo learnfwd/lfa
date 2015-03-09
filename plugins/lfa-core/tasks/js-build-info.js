@@ -3,11 +3,8 @@ var path = require('path');
 var _ = require('lodash');
 var File = require('vinyl');
 
-var textFiles = require('./text');
-
 module.exports = function buildInfoJS(lfa) {
   var config = lfa.config;
-  textFiles(lfa);
 
   function buildToC(map) {
     var root = {
@@ -65,16 +62,14 @@ module.exports = function buildInfoJS(lfa) {
   }
 
   lfa.task('webpack:gen:buildinfo', ['text:files:*'], function (textFiles) {
-
     var chapters = {};
-
     var stream = lfa.pipeErrors(through.obj());
-    textFiles.pipe(through.obj(function (file, enc, cb) {
+    
+    textFiles.on('data', function (file) {
       if (file.textMeta) {
         chapters[path.relative(file.base, file.path)] = file.textMeta;
       }
-      cb(null);
-    }));
+    });
 
     textFiles.on('error', function (err) {
       stream.emit('error', err);

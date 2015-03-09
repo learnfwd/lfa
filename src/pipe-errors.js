@@ -35,8 +35,9 @@ function patchPipe(stream) {
   stream._peOriginalPipe = stream._peOriginalPipe || stream.pipe;
   stream.pipe = pipe;
 
+  // This causes issues with multiple piping
   // Re-patch on 'readable'
-  stream.once('readable', patchPipe.bind(null, stream));
+  //stream.once('readable', patchPipe.bind(null, stream));
 }
 
 function patch(stream) {

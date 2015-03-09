@@ -3,10 +3,13 @@ var chalk = require('chalk');
 var switchControl = require('../switch');
 var prettyErrors = require('../pretty-errors');
 var when = require('when');
+var openUrl = require('open');
 
 module.exports = function compile(cli) {
   var projPath = cli.flags.book;
   var verbose = cli.flags.v || cli.flags.verbose;
+  var open = cli.flags.open;
+  if (open === undefined) { open = true; }
 
   return LFA.loadPaths(projPath).then(function (config) {
     return switchControl(cli, config);
@@ -25,6 +28,14 @@ module.exports = function compile(cli) {
     var task = cli.input.length >= 2 ? cli.input[1] : null;
     var watcher = lfa.watch({
       task: task,
+      serve: true,
+    });
+
+    watcher.on('listening', function (port) {
+      console.log(chalk.green('listening on port ') + chalk.yellow(port));
+      if (open) {
+        openUrl('http://localhost:' + port);
+      }
     });
 
     watcher.on('compiling', function () {

@@ -34,7 +34,22 @@ var LFATasks = {
   },
 
   solve: function (glob) {
-    return this._taskArray.filter(minimatch.filter(glob));
+    var filter;
+
+    if ((typeof glob === 'object') && (glob instanceof Array)) {
+      filter = function (task) {
+        for (var i = 0, n = glob.length; i < n; i++) {
+          if (minimatch(task, glob[i])) {
+            return true;
+          }
+        }
+        return false;
+      };
+    } else {
+      filter = minimatch.filter(glob);
+    }
+
+    return this._taskArray.filter(filter);
   },
 
   hook: function(glob) {

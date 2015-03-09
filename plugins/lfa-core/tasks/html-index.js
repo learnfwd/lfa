@@ -7,6 +7,8 @@ module.exports = function indexHtmlTasks(lfa) {
     var opts = {
       locals: {
         book: lfa.config.book,
+        serve: !!lfa.currentCompile.serve,
+        watcher: lfa.currentCompile.watcher,
       },
     };
 

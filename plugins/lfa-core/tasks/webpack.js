@@ -1,21 +1,26 @@
 var through = require('through2');
 var path = require('path');
 var webpack = require('webpack');
+var _ = require('lodash');
+
 var templatesJS = require('./js-templates');
 var entrypointsJS = require('./js-entrypoints');
 var buildInfoJS = require('./js-build-info');
-var _ = require('lodash');
+var liveReloadJS = require('./js-live-reload');
 
 module.exports = function webpackTasks(lfa) {
   templatesJS(lfa);
   entrypointsJS(lfa);
   buildInfoJS(lfa);
+  liveReloadJS(lfa);
 
   lfa.task('webpack:deps:gen', ['webpack:gen:*'], function (generatedFiles) {
     return generatedFiles
-      .pipe(lfa.hook('webpack:gen-pre-write:*'))
+      .pipe(lfa.hook('tmp-pre-write:*'))
+      .pipe(lfa.hook('webpack:tmp-pre-write:*'))
       .pipe(lfa.dst(lfa.config.tmpPath))
-      .pipe(lfa.hook('webpack:gen-post-write:*'));
+      .pipe(lfa.hook('webpack:tmp-post-write:*'))
+      .pipe(lfa.hook('tmp-post-write:*'));
   });
 
   lfa.task('default:webpack', ['webpack:deps:*'], function (deps) {
@@ -41,16 +46,31 @@ module.exports = function webpackTasks(lfa) {
                      (lfa.currentCompile.watcher && lfa.currentCompile.watcher.webpackCompiler);
 
       if (!compiler) {
+        var resolveFallback = [];
 
         aliases.userland = path.join(lfa.config.projectPath, 'js');
         aliases.underscore = 'lodash';
         _.each(lfa.plugins, function (plugin) {
           aliases[plugin.name] = path.join(plugin.path, 'frontend', 'js');
+          resolveFallback.push(path.join(plugin.path, 'web_modules'));
+          resolveFallback.push(path.join(plugin.path, 'node_modules'));
         });
+
+        resolveFallback.push(path.join(lfa.path, 'web_modules'));
+        resolveFallback.push(path.join(lfa.path, 'node_modules'));
+
+        var wpPlugins = [];
+        var mainEntrypoints = [];
+        if (lfa.currentCompile.serve && lfa.currentCompile.watcher.opts.hot) {
+          wpPlugins.push(new webpack.HotModuleReplacementPlugin());
+          mainEntrypoints.push('webpack/hot/dev-server');
+        }
+
+        mainEntrypoints.push(path.join(lfa.config.tmpPath, 'gen', 'index.js'));
 
         var webpackConfig = {
           entry: {
-            main: path.join(lfa.config.tmpPath, 'gen', 'index.js'),
+            main: mainEntrypoints,
           },
           output: {
             path: lfa.currentCompile.buildPath,
@@ -68,7 +88,9 @@ module.exports = function webpackTasks(lfa) {
           resolve: {
             alias: aliases,
             extensions: ['', '.js', '.jsx'],
+            fallback: resolveFallback,
           },
+          plugins: wpPlugins,
         };
 
         compiler = webpack(webpackConfig);
@@ -76,6 +98,13 @@ module.exports = function webpackTasks(lfa) {
         if (lfa.currentCompile.watcher) { 
           lfa.currentCompile.watcher.webpackCompiler = compiler;
         }
+      }
+
+      // If serving, webpack-dev-server will run .watch() so we don't need
+      // to recompile
+      if (lfa.currentCompile.serve) {
+        stream.end();
+        return;
       }
 
       compiler.run(function (err, st) {

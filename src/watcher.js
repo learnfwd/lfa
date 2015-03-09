@@ -3,13 +3,35 @@ var EventEmitter = require('events').EventEmitter;
 var when = require('when');
 var _ = require('lodash');
 var fileMonitor = require('./file-monitor');
+var Server = require('webpack-dev-server');
 
 function Watcher(lfa, opts) {
+  opts = opts || {};
+  opts.port = opts.port || 8080;
+  opts.hot = (opts.hot === undefined) ? true : opts.hot;
+
   this.lfa = lfa;
   this.opts = opts;
 }
 
 util.inherits(Watcher, EventEmitter);
+
+function _startServer(cache) {
+  var self = this;
+  var opts = {
+    contentBase: cache.buildPath, 
+    publicPath: '/',
+    hot: self.opts.hot,
+    noInfo: true,
+    quiet: true,
+  };
+
+  self.devServer = new Server(cache.webpackCompiler, opts);
+  self.devServer.listen(self.opts.port, 'localhost', function (err) {
+    if (err) { throw err; }
+    self.emit('listening', self.opts.port);
+  });
+}
 
 function _compile(ops) {
   var self = this;
@@ -22,6 +44,7 @@ function _compile(ops) {
     previousCompile: self.incrementalCache,
     fileOperations: ops,
     watcher: self,
+    serve: !!self.opts.serve,
     saveCurrentCompile: true,
   }, self.opts);
 
@@ -31,6 +54,9 @@ function _compile(ops) {
     .then(function (cache) {
       self.incrementalCache = cache;
       self.emit('compile-done');
+      if (self.opts.serve && !self.devServer) {
+        _startServer.call(self, cache);
+      }
     })
     .catch(function (err) {
       self.incrementalCache = null;
@@ -85,6 +111,7 @@ function _resolveChangeEvent() {
   if (self.fileOps.length === 0) { return; }
   var ops = _mergeFileOperations(self.fileOps);
   _compile.call(this, ops);
+  self.fileOps = [];
 }
 
 function _filesChanged(ops) {

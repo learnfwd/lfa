@@ -42,6 +42,13 @@ module.exports = function entrypointsJS(lfa) {
         });
 
     })).then(function (ep) {
+      ep.push({
+        name: './live-reload-dummy.js',
+        exists: true,
+      });
+      return ep;
+
+    }).then(function (ep) {
       var content = _.map(ep, function (o) {
         if (!o.exists) { return ''; }
         return 'require("' + o.name + '");\n';
