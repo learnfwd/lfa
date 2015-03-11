@@ -117,7 +117,6 @@ function _resolveChangeEvent() {
 function _filesChanged(ops) {
   this.fileOps.push(ops);
   this.waitForCompile
-    .delay(100)
     .then(_resolveChangeEvent.bind(this));
 }
 
