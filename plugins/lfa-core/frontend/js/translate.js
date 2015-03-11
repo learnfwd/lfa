@@ -1,4 +1,5 @@
 var BuildInfo = require('build-info');
+var $ = require('jquery');
 
 var T = function (/*arguments*/) {
   var args = Array.prototype.slice.call(arguments);

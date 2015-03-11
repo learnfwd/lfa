@@ -30,8 +30,11 @@ module.exports = function templatesJS(lfa) {
       }))
         .then(function (paths) {
           paths = _.filter(paths, function (o) { return o !== null; });
+          var opts = {
+            dontRemoveMixins: true,
+          };
           var content = paths.length ? 
-            templatizer(paths, null).replace('require("fs")', '(function () { throw new Error("No such module"); })()') :
+            templatizer(paths, null, opts).replace('require("fs")', '(function () { throw new Error("No such module"); })()') :
             'define({});';
 
 
