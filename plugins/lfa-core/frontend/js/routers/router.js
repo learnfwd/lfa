@@ -18,8 +18,4 @@ var Router = Backbone.Router.extend({
   }
 });
 
-setTimeout(function () {
-  App.book.showFirstChapter();
-}, 3000);
-
 module.exports = Router;

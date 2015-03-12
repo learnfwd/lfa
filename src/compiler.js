@@ -8,11 +8,13 @@ Compiler.compile = function (opts) {
   return when.try(function () {
     opts = opts || {};
     opts.debug = opts.debug || false;
+    opts.warningsAsErrors = opts.warningsAsErrors || false;
 
     self.currentCompile = {
       debug: opts.debug,
       watcher: opts.watcher,
       serve: opts.serve,
+      warningsAsErrors: opts.warningsAsErrors,
       saveForIncremental: !!opts.saveCurrentCompile,
       buildPath: opts.debug ? self.config.debugBuildPath : self.config.releaseBuildPath,
     };

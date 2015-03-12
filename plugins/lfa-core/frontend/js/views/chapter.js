@@ -88,8 +88,17 @@ var ChapterView = Backbone.View.extend({
   },
 
   chapterLoaded: function(chapter, error, htmlData) {
+    var front, back;
+    var data = htmlData();
+    if (data && data.indexOf("<section>") !== -1) {
+      front = "<article>";
+      back = "</article>";
+    } else {
+      front = "<article><section>";
+      back = "</section></article>";
+    }
 
-    this.$el.html(htmlData);
+    this.$el.html([front, data, back].join(''));
 
     // Remove previous cssNamespace classes, if they exist.
     var classes = _.filter(

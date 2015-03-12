@@ -115,7 +115,7 @@ module.exports = function webpackTasks(lfa) {
             throw stats.errors[0];
           }
           // Treat warnings as errors
-          if (stats.warnings.length) {
+          if (lfa.currentCompile.warningsAsErrors && stats.warnings.length) {
             throw stats.warnings[0];
           }
           stream.end();
