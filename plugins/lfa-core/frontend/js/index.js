@@ -1,14 +1,10 @@
 // Export require globally with limited access
-var resolveMap = {
-  'jquery': require.resolve('jquery'),
-  'lodash': require.resolve('lodash'),
-  'lfa-core/app': require.resolve('lfa-core/app'),
-  'app': require.resolve('lfa-core/app'),
-};
-
-window.require = function (mod) {
-  return __webpack_require__(resolveMap[mod]);
-};
+var dynRequire = require('./dynamic-require');
+dynRequire.register('jquery', require.resolve('jquery'));
+dynRequire.register('lodash', require.resolve('lodash'));
+dynRequire.register('underscore', require.resolve('lodash'));
+dynRequire.register('lfa-core/app', require.resolve('lfa-core/app'));
+dynRequire.register('app', require.resolve('lfa-core/app'));
 
 // Bootstrap our app
 var MainView = require('./views/main-view');

@@ -69,7 +69,9 @@ module.exports = function textJadeTasks(lfa) {
           basedir: '/', //This won't work on Windows. Sorry
         };
 
-        var url = file.relative.replace(path.sep, '-').replace(/\.jade$/, '');
+        var sepRegExp = new RegExp(path.sep.replace('\\', '/'), 'g');
+        var tocpath = file.relative.replace(/\.jade$/, '');
+        var url = tocpath.replace(sepRegExp, '-');
 
         getFrontMatter()
           .then(function (front) {
@@ -78,6 +80,7 @@ module.exports = function textJadeTasks(lfa) {
           .then(function (res) {
             var locals = { meta: {} };
             locals.meta.url = url;
+            locals.meta.path = tocpath;
             var text = res.result(locals);
 
             boilerplate[1] = url;

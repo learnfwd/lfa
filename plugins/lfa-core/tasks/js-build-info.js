@@ -67,7 +67,7 @@ module.exports = function buildInfoJS(lfa) {
     
     textFiles.on('data', function (file) {
       if (file.textMeta) {
-        chapters[path.relative(file.base, file.path)] = file.textMeta;
+        chapters[file.textMeta.path] = file.textMeta;
       }
     });
 
