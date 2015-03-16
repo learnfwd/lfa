@@ -11,9 +11,14 @@ AppDispatcher.storage = require('./storage');
 var Backbone = require('backbone');
 _.extend(AppDispatcher, Backbone.Events);
 
+
+var warned = false;
 function deprecated(original) {
   return function () {
-    console.log('The evented App is being deprecated. Please switch to using flux Stores');
+    if (!warned) {
+      console.log('The evented App is being deprecated. Please switch to using flux Stores');
+      warned = true;
+    }
     original.apply(this, arguments);
   };
 }

@@ -88,6 +88,9 @@ var ChapterView = Backbone.View.extend({
   },
 
   chapterLoaded: function(chapter, error, htmlData) {
+    // For when the chapters come in the wrong order
+    if (App.book.currentChapter !== chapter) { return; }
+
     var front, back;
     var data = htmlData();
     if (data && data.indexOf("<section>") !== -1) {
