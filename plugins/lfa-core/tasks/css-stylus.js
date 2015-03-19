@@ -62,8 +62,7 @@ module.exports = function stylusTasks(lfa) {
 
     // The main user style entrypoint
     entrypoints.push(checkEntrypoint(
-        path.join(config.projectPath, 'styles', 'colors.styl'),
-        path.join(config.projectPath, 'styles', 'main.styl')));
+        path.join(config.projectPath, 'styles')));
 
     this.addFileDependencies(_.map(watchedDirs, function (p) { return path.join(p, '**', '*.styl'); }));
 

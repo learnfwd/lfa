@@ -5,6 +5,7 @@ module.exports = function cssTasks(lfa) {
   stylusTasks(lfa);
 
   lfa.task('default:css', ['css:files:*'], function (cssFiles) {
+    // TODO: This doesn't go well with concat, but since we only have one CSS source, it's fine
     this.setDependencyMode(cssFiles, 'modify');
     return cssFiles 
       .pipe(lfa.hook('css:filter:*'))
