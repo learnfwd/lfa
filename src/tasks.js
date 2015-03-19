@@ -128,6 +128,7 @@ var LFATasks = {
 
   emptyStream: function () {
     var s = pipeErrors(gutil.noop());
+    s.resume();
     process.nextTick(function () {
       s.end();
     });
@@ -311,6 +312,10 @@ var LFATasks = {
 
     r = task.run(dependencies);
     this._taskResults[taskName] = r;
+
+    // DON'T REMOVE!!!
+    // For some reason, binding an error handler to every task makes the errors propagate correctly
+    r.on('error', function () {});
     return r;
   },
 

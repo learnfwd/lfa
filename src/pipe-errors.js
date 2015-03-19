@@ -5,48 +5,13 @@
 
 var EE = require('events').EventEmitter;
 
-function removeDefaultHandler(stream, event) {
-  var found = false;
-  stream.listeners(event).forEach(function (item) {
-    if (item.name === 'on' + event) {
-      found = item;
-      this.removeListener(event, item);
-    }
-  }, stream);
-  return found;
-}
-
-function wrapPanicOnErrorHandler(stream) {
-  var oldHandler = removeDefaultHandler(stream, 'error');
-  if (oldHandler) {
-    stream.on('error', function onerror2(er) {
-      if (EE.listenerCount(stream, 'error') === 1) {
-        this.removeListener('error', onerror2);
-        oldHandler.call(stream, er);
-      }
-    });
-  }
-}
-
-function patchPipe(stream) {
-  // Prevent unpipe on error
-  wrapPanicOnErrorHandler(stream, 'error');
-
-  stream._peOriginalPipe = stream._peOriginalPipe || stream.pipe;
-  stream.pipe = pipe;
-
-  // This causes issues with multiple piping
-  // Re-patch on 'readable'
-  //stream.once('readable', patchPipe.bind(null, stream));
-}
-
 function patch(stream) {
   if (stream._pePatched) {
     return stream;
   }
 
-  patchPipe(stream);
-
+  stream._peOriginalPipe = stream._peOriginalPipe || stream.pipe;
+  stream.pipe = pipe;
   stream._pePatched = true;
 
   return stream;
@@ -57,17 +22,13 @@ function pipe(dest) {
     throw new Error('Can\'t pipe to undefined');
   }
 
-  this._peOriginalPipe.apply(this, arguments);
-
-  removeDefaultHandler(this, 'error');
-
   patch(dest);
 
   this.on('error', function (err) {
     dest.emit('error', err);
   });
 
-  return dest;
+  return this._peOriginalPipe.apply(this, arguments);
 }
 
 // Monkey-patch default ReadableStream object

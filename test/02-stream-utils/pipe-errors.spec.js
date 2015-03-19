@@ -5,6 +5,7 @@ var pipeErrors = require('../../src/pipe-errors');
 var gulpUtil = require('gulp-util');
 var util = require('util');
 var through2 = require('through2');
+var es = require('event-stream');
 
 var Readable = require('stream').Readable;
 
@@ -23,11 +24,12 @@ ErroringStream.prototype._read = function() {
   if (!this._firstTime) {
     this._firstTime = true;
     process.nextTick(function () {
-      self.emit('error', new Error('Intended error'));
+      // First some data
+      self.push('test_begin');
 
-      // Then emit some data to check if everything is ok
       process.nextTick(function () {
-        self.push('test');
+        // Then an error
+        self.emit('error', new Error('Intended error'));
       });
     });
   }
@@ -38,36 +40,46 @@ describe('piped errors', function () {
     var state = 0;
     stream.on('data', function (data) {
       switch (state) {
-        case 1:
-          if (data.toString() === 'test') {
-            state = 2;
-            done();
+        case 0:
+          if (data.toString() === 'test_begin') {
+            state = 1;
           } else {
+            state = 3;
             done(new Error('Incorrect data'));
           }
           break;
-        case 2:
+        case 3:
           break;
         default:
-          state = 2;
+          state = 3;
           done(new Error('Got the data before the error'));
       }
     });
     stream.on('error', function (err) {
       switch (state) {
         case 0:
+          state = 3;
+          done(new Error('Should have recieived data first'));
+          break;
+        case 1:
           if (err.message === 'Intended error') {
-            state = 1;
+            state = 3;
+            done();
           } else {
+            state = 3;
             done(err);
           }
           break;
-        case 2:
+        case 3:
           break;
         default:
-          state = 2;
+          state = 3;
           done(err);
       }
+    });
+
+    stream.on('end', function() {
+
     });
   }
 
@@ -75,6 +87,18 @@ describe('piped errors', function () {
     return through2.obj(function(obj, enc, cb) {
       cb(null, obj);
     });
+  }
+
+  function emptyStream() {
+    var stream = pipeErrors(through2.obj(function(obj, enc, cb) {
+      cb(null, obj);
+    }));
+
+    process.nextTick(function () {
+      stream.end();
+    });
+
+    return stream;
   }
 
   it('should propagate', function (done) {
@@ -91,6 +115,40 @@ describe('piped errors', function () {
         .pipe(pipeErrors(realNoop())),
       done
     );
+  });
+
+  it('should propagate to multiple pipes', function (done) {
+    var source = pipeErrors(new ErroringStream());
+    var count = 0;
+    function done2(err) {
+      if (err) { done(err); count = -1000; }
+      if (++count === 2) { done(); }
+    }
+
+    behavesOk(source.pipe(pipeErrors(realNoop())), done2);
+    behavesOk(source.pipe(pipeErrors(realNoop())), done2);
+  });
+
+  it('should propagate to multiple patched pipes', function (done) {
+    var source = pipeErrors(new ErroringStream());
+    var count = 0;
+    function done2(err) {
+      if (err) { done(err); count = -1000; }
+      if (++count === 2) { done(); }
+    }
+
+    behavesOk(source.pipe(realNoop()), done2);
+    behavesOk(source.pipe(realNoop()), done2);
+  });
+
+  it('should propagate to merged stream', function (done) {
+    var sources = [
+      emptyStream(),
+      pipeErrors(new ErroringStream()),
+      emptyStream(),
+    ];
+
+    behavesOk(es.merge.apply(es, sources), done);
   });
 
   it('should propagate when used via stream.Readable monkey patch', function (done) {

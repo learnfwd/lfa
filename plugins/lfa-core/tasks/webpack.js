@@ -29,6 +29,10 @@ module.exports = function webpackTasks(lfa) {
 
     var aliases = {};
 
+    deps.on('error', function (err) {
+      stream.emit('error', err);
+    });
+
     deps.on('data', function (file) {
       var al = file.webpackAlias;
       if (al) {
