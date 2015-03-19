@@ -7,8 +7,6 @@ var pipeErrors = require('./pipe-errors');
 var glob = require('glob');
 var glob2base = require('glob2base');
 var through = require('through2');
-var path = require('path');
-var assert = require('assert');
 
 function Task(opts) {
   var self = this;
@@ -107,9 +105,12 @@ var LFATasks = {
 
   // This is needed because base paths get messed up if you change the globs
   src: function (globs, opts) {
+    opts = opts || {};
+
     if (!this._oldCache || !opts.filterModified) {
       return pipeErrors(vfs.src(globs, opts));
     }
+
     var filteredGlobs = opts.filterModified.filterModifiedFiles(globs);
     if (typeof(globs) === 'string') { globs = [globs]; }
     var basePaths = _.map(globs, function (g) {
@@ -121,7 +122,6 @@ var LFATasks = {
         for (var i = 0, n = globs.length; i < n; i++) {
           if (minimatch(file.path, globs[i])) {
             file.base = basePaths[i];
-            assert(file.relative == path.relative(file.base, file.path));
           }
         }
         cb(null, file);
