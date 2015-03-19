@@ -1,2 +1,3 @@
 --require should
+--timeout 5000
 test/**/*.spec.js
