@@ -4,6 +4,7 @@ var uuid = require('uuid');
 
 module.exports = function liveReloadDummy(lfa) {
   lfa.task('live-reload:collect', [['default:assets', 'default:html', 'default:css']], function (stream) {
+    this.setDependencyMode(stream, 'modify');
     return stream;
   });
 

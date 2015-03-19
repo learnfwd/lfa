@@ -64,6 +64,9 @@ module.exports = function buildInfoJS(lfa) {
   lfa.task('webpack:gen:buildinfo', ['text:files:*'], function (textFiles) {
     var chapters = {};
     var stream = lfa.pipeErrors(through.obj());
+
+    // TODO: When caching gets finished, we won't need this anymore
+    if (lfa.previousCompile) { return lfa.emptyStream(); }
     
     textFiles.on('data', function (file) {
       if (file.textMeta) {

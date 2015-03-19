@@ -4,6 +4,7 @@ module.exports = function assetsTasks(lfa) {
   defaultAssetsTasks(lfa);
 
   lfa.task('default:assets', ['assets:files:*'], function (files) {
+    this.setDependencyMode(files, 'modify');
     return files 
       .pipe(lfa.hook('assets:filter:*'))
       .pipe(lfa.hook('pre-write:*'))

@@ -14,6 +14,7 @@ module.exports = function defaultAssetsTasks(lfa) {
       return path.join(o, '**');
     });
 
-    return lfa.src(globs, { buffer: false });
+    this.addFileDependencies(globs);
+    return lfa.src(globs, { buffer: false, filterModified: this });
   });
 };

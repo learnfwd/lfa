@@ -4,6 +4,7 @@ module.exports = function textTasks(lfa) {
   textJadeTasks(lfa);
 
   lfa.task('default:text', ['text:files:*'], function (textFiles) {
+    this.setDependencyMode(textFiles, 'modify');
     return textFiles
       .pipe(lfa.hook('text:filter:*'))
       .pipe(lfa.hook('pre-write:*'))

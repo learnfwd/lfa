@@ -17,6 +17,7 @@ module.exports = function templatesJS(lfa) {
       return path.join(plugin.path, 'frontend', 'js', 'templates');
     });
     templatePaths.push(path.join(config.projectPath, 'js', 'templates'));
+    this.addFileDependencies(_.map(templatePaths, function(p) { path.join(p, '**', '*'); }));
 
     process.nextTick(function () {
       when.all(_.map(templatePaths, function (tp) {

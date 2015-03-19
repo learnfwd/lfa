@@ -22,7 +22,10 @@ module.exports = function stylusTasks(lfa) {
       });
     }
 
-    function checkEntrypoint(override, style) {
+    function checkEntrypoint(stylePath) {
+      var override = path.join(stylePath, 'colors.styl');
+      var style = path.join(stylePath, 'main.styl');
+      watchedDirs.push(stylePath);
       return when.all([
         fileExists(override),
         fileExists(style),
@@ -35,12 +38,12 @@ module.exports = function stylusTasks(lfa) {
     }
 
     var entrypoints = [];
+    var watchedDirs = [];
 
     // Collect entrypoints from plugins
     _.each(lfa.plugins, function (plugin) {
       entrypoints.push(checkEntrypoint(
-          path.join(plugin.path, 'frontend', 'styles', 'colors.styl'),
-          path.join(plugin.path, 'frontend', 'styles', 'main.styl')));
+          path.join(plugin.path, 'frontend', 'styles')));
     });
 
     // Theme entrypoint
@@ -55,11 +58,14 @@ module.exports = function stylusTasks(lfa) {
       themeEntrypoint.override = path.join(theme.path, themeOverrides);
     }
     entrypoints.push(themeEntrypoint);
+    watchedDirs.push(path.join(theme.path, 'styles'));
 
     // The main user style entrypoint
     entrypoints.push(checkEntrypoint(
         path.join(config.projectPath, 'styles', 'colors.styl'),
         path.join(config.projectPath, 'styles', 'main.styl')));
+
+    this.addFileDependencies(_.map(watchedDirs, function (p) { return path.join(p, '**', '*.styl'); }));
 
     // Collect all entrypoints and turn them into a Stylus configuration object
     var optionsPromise = when.all(entrypoints).then(function (epts) {

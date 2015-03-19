@@ -12,6 +12,7 @@ module.exports = function coreTasks(lfa) {
   textTasks(lfa);
 
   lfa.task('default', ['default:*'], function (deps) {
+    this.setDependencyMode(deps, 'modify');
     return deps;
   });
 };

@@ -14,6 +14,7 @@ Compiler.compile = function (opts) {
       debug: opts.debug,
       watcher: opts.watcher,
       serve: opts.serve,
+      fileOperations: opts.fileOperations,
       warningsAsErrors: opts.warningsAsErrors,
       saveForIncremental: !!opts.saveCurrentCompile,
       buildPath: opts.debug ? self.config.debugBuildPath : self.config.releaseBuildPath,
@@ -21,7 +22,14 @@ Compiler.compile = function (opts) {
     self.previousCompile = opts.previousCompile;
 
     var taskName = opts.task || self.config.defaultTask;
-    var stream = self.start(taskName);
+    var r = self.startIncremental(taskName, {
+      saveCache: self.currentCompile.saveForIncremental,
+      cache: self.previousCompile ? self.previousCompile.taskCache : null,
+      fileOps: self.currentCompile.fileOperations,
+    });
+
+    var stream = r.stream;
+    self.currentCompile.taskCache = r.cache;
 
     return when.promise(function (resolve, reject) {
       stream.on('error', reject);

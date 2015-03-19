@@ -15,6 +15,7 @@ module.exports = function webpackTasks(lfa) {
   liveReloadJS(lfa);
 
   lfa.task('webpack:deps:gen', ['webpack:gen:*'], function (generatedFiles) {
+    this.setDependencyMode(generatedFiles, 'modify');
     return generatedFiles
       .pipe(lfa.hook('tmp-pre-write:*'))
       .pipe(lfa.hook('webpack:tmp-pre-write:*'))

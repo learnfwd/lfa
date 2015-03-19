@@ -23,6 +23,10 @@ module.exports = function entrypointsJS(lfa) {
       dir: path.join(lfa.config.projectPath, 'js'),
     });
 
+    this.addFileDependencies(_.map(entrypoints, function (ep) {
+      return path.join(ep.dir, '**', '*');
+    }));
+
     when.all(_.map(entrypoints, function (ep) {
       return nodefn.call(resolve.resolve.bind(resolve), ep.dir, __dirname)
         .then(function (file) {
@@ -34,7 +38,7 @@ module.exports = function entrypointsJS(lfa) {
           }
           ep.exists = true;
         })
-        .catch(function (err) {
+        .catch(function () {
           ep.exists = false;
         })
         .then(function () {
@@ -49,6 +53,11 @@ module.exports = function entrypointsJS(lfa) {
       return ep;
 
     }).then(function (ep) {
+      lfa.currentCompile.javascriptEntrypoints = ep;
+      if (lfa.previousCompile && _.isEqual(ep, lfa.previousCompile.javascriptEntrypoints)) {
+        return stream.end();
+      }
+
       var content = _.map(ep, function (o) {
         if (!o.exists) { return ''; }
         return 'require("' + o.name + '");\n';
