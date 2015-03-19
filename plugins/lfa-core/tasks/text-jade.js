@@ -87,8 +87,6 @@ module.exports = function textJadeTasks(lfa) {
           basedir: '/', //This won't work on Windows. Sorry
         };
 
-        console.log('compiling text', file.path);
-
         var sepRegExp = new RegExp(path.sep.replace('\\', '/'), 'g');
         var tocpath = file.relative.replace(/\.jade$/, '');
         var url = tocpath.replace(sepRegExp, '-');

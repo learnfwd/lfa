@@ -73,8 +73,6 @@ Task.prototype.matchesFileOps = function matchesFileOps(ops) {
   var fileDeps = this.lfa._oldCache[this.name].fileDeps;
   if (!fileDeps) { return false; }
 
-  console.log('matchesFileOps:', this.name, fileDeps, ops);
-
   var actions = ['changed', 'created', 'removed'];
   for (var i = 0; i < actions.length; i++) {
     var action = actions[i];
@@ -242,8 +240,6 @@ var LFATasks = {
           .map(function (dep) { return self._needsRerun(dep); })
           .reduce(function (acc, val) { return acc || !!val; }, false);
       }
-
-      console.log('needsRerun', name, cacheEntry.needsRerun);
     }
 
     return cacheEntry.needsRerun;
@@ -251,7 +247,6 @@ var LFATasks = {
 
   _start: function (taskName, input, incremental) {
     var self = this;
-    console.log('taskName:', taskName);
 
     var r = this._taskResults[taskName];
     if (r) {
@@ -275,7 +270,6 @@ var LFATasks = {
       }
 
       var streams = _.map(self.solve(glob), function (dependency) {
-        console.log('solving glob', glob, 'with mode', mode);
         if (incremental && (mode === 'cache' || mode === 'modify')) {
           var rerun = self._needsRerun(dependency);
           switch (rerun) {
