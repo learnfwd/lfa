@@ -81,14 +81,15 @@ module.exports = function webpackTasks(lfa) {
           devtool: lfa.currentCompile.debug ? 'eval-source-map' : undefined,
           module: {
             loaders: [
-              { test: /\.jsx$/, loader: 'jsx' },
-              { test: /\.json$/, loader: 'json' },
-              { test: /\.css$/, loader: 'style!css' },
+              { test: /\.jsx$/, loaders: ['react-hot', 'jsx?harmony'] },
+              { test: /\.json$/, loaders: ['json'] },
+              { test: /\.css$/, loaders: ['style', 'css'] },
+              { test: /\.styl$/, loaders: ['style', 'css', 'stylus'] },
             ]
           },
           resolve: {
             alias: aliases,
-            extensions: ['', '.js', '.jsx'],
+            extensions: ['', '.js', '.jsx', 'json'],
             fallback: resolveFallback,
           },
           plugins: wpPlugins,
