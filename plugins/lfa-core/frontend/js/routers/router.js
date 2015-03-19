@@ -9,7 +9,6 @@ var Router = Backbone.Router.extend({
   },
   
   home: function () {
-    console.log('home');
     App.book.showFirstChapter();
   },
   
