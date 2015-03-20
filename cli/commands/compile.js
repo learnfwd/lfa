@@ -9,7 +9,7 @@ module.exports = function compile(cli) {
   var debug = !!cli.flags.debug;
   var werror = cli.flags['warnings-as-errors'] || cli.flags.werror || cli.flags['Werror'];
 
-  LFA.loadPaths(projPath).then(function (config) {
+  return LFA.loadPaths(projPath).then(function (config) {
     return switchControl(cli, config);
   }).then(function (config) {
     process.stdout.write(chalk.green('loading project... '));

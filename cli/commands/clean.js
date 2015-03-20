@@ -7,7 +7,7 @@ module.exports = function compile(cli) {
   var verbose = cli.flags.v || cli.flags.verbose;
 
   process.stdout.write(chalk.green('cleaning up... '));
-  LFA.cleanProject(projPath).then(function () {
+  return LFA.cleanProject(projPath).then(function () {
     console.log('done');
   }).catch(function (err) {
     console.log(chalk.red('error'));

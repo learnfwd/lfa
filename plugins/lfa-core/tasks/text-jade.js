@@ -1,4 +1,4 @@
-var jade = require('accord').load('jade');
+var fastJade = require('./jade-fast-compiler');
 var through = require('through2');
 var gutil = require('gulp-util');
 var path = require('path');
@@ -49,10 +49,9 @@ module.exports = function textJadeTasks(lfa) {
       return _.filter(paths, function (o) { return o !== null; });
 
     }).then(function (paths) {
-      return _.map(paths, function (o) { 
-        return 'include ' + o + '\n';
-      }).join('');
-
+      return when.all(_.map(paths, function (filePath) { 
+        return fastJade.compileFrontMatter(filePath);
+      }));
     });
   }
 
@@ -73,6 +72,9 @@ module.exports = function textJadeTasks(lfa) {
       if (!self.filterModifiedFiles(mixinGlobs).length) {
         // Just recompile that one specific file
         filterModified = this;
+      } else {
+        // Mark mixins for recompilation
+        lfa.currentCompile.textJadeMixinPathCache = null;
       }
     }
 
@@ -82,24 +84,22 @@ module.exports = function textJadeTasks(lfa) {
           return cb(new gutil.PluginError(PLUGIN_NAME, 'Streaming not supported'));
         }
 
-        var opts = {
-          filename: file.path,
-          basedir: '/', //This won't work on Windows. Sorry
-        };
-
         var sepRegExp = new RegExp(path.sep.replace('\\', '/'), 'g');
         var tocpath = file.relative.replace(/\.jade$/, '');
         var url = tocpath.replace(sepRegExp, '-');
 
         getFrontMatter(mixinPaths)
           .then(function (front) {
-            return jade.compile(front + file.contents.toString('utf8'), opts);
+            return fastJade.compile(
+              file.contents.toString('utf8'),
+              front,
+              { filename: file.path });
           })
-          .then(function (res) {
+          .then(function (template) {
             var locals = { meta: {} };
             locals.meta.url = url;
             locals.meta.path = tocpath;
-            var text = res.result(locals);
+            var text = template(locals);
 
             boilerplate[1] = url;
             boilerplate[3] = JSON.stringify(text);

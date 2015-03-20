@@ -1,12 +1,12 @@
 mixin title(title, subtitle)
-  - meta.title = title;
-  - if (subtitle) { meta.subtitle = subtitle; }
+  - self.meta.title = title;
+  - if (subtitle) { self.meta.subtitle = subtitle; }
 
 mixin subtitle(subtitle)
-  - meta.subtitle = subtitle;
+  - self.meta.subtitle = subtitle;
 
 mixin meta(key, value)
-  - meta[key] = value;
+  - self.meta[key] = value;
 
 mixin img(path)
   img(src="#{path}")
