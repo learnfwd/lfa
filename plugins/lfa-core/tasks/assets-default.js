@@ -10,6 +10,12 @@ module.exports = function defaultAssetsTasks(lfa) {
       assetPaths.push(path.join(plugin.path, 'frontend', 'assets'));
     });
 
+    lfa.currentCompile.assetPaths = assetPaths;
+
+    if (lfa.currentCompile.serve) {
+      return lfa.emptyStream();
+    }
+
     var globs = _.map(assetPaths, function (o) {
       return path.join(o, '**');
     });

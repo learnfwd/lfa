@@ -38,6 +38,7 @@
     "chokidar": "^1.0.0-rc3",
     "css-loader": "^0.9.1",
     "event-stream": "^3.1.7",
+    "express": "^4.12.3",
     "fastclick": "^1.0.6",
     "filewalker": "^0.1.2",
     "flux": "^2.0.1",
