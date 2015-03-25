@@ -84,9 +84,8 @@ module.exports = function textJadeTasks(lfa) {
           return cb(new gutil.PluginError(PLUGIN_NAME, 'Streaming not supported'));
         }
 
-        var sepRegExp = new RegExp(path.sep.replace('\\', '/'), 'g');
         var tocpath = file.relative.replace(/\.jade$/, '');
-        var url = tocpath.replace(sepRegExp, '-');
+        var url = tocpath.replace(path.sep, '-');
 
         getFrontMatter(mixinPaths)
           .then(function (front) {
