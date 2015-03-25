@@ -11,7 +11,7 @@ var cli = meow({
   },
 });
 
-cli.flags.book = cli.flags.book || './';
+cli.flags.book = cli.flags.book || process.cwd();
 
 var command;
 var commandModule = './commands/' + cli.input[0];
