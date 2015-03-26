@@ -220,10 +220,10 @@ mixin browser-warning-head()
                       (browserName === 'Safari' && majorVersion >= 6) ||
                       (browserName === 'Microsoft Internet Explorer' && majorVersion >= 10) );
 
-        console.log('UserAgent: ', nAgt);
-        console.log('Browser detection: ' + browserName + ' ' + 
-          fullVersion + '(' + majorVersion + ') on ' +
-          osName + (browserOK ? ' OK' : ' FAIL'));
+        //console.log('UserAgent: ', nAgt);
+        //console.log('Browser detection: ' + browserName + ' ' + 
+        //  fullVersion + '(' + majorVersion + ') on ' +
+        //  osName + (browserOK ? ' OK' : ' FAIL'));
 
         if (!browserOK) {
           var browsers = {
