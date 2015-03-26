@@ -91,6 +91,10 @@ define([
 
     chapterLoaded: function(chapter, error, htmlData) {
 
+      window.App.book.trigger('pre-render', {
+        chapter: chapter
+      });
+
       this.$el.html(htmlData);
 
       // Remove previous cssNamespace classes, if they exist.
