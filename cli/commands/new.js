@@ -22,9 +22,9 @@ module.exports = function newProject(cli) {
     var schema = [{
       name: 'bookId',
       description: 'Book ID',
-      message: 'The book id can only contain lowercase characters, numbers and dashes',
+      message: 'The book ID can only contain lowercase characters, numbers and dashes',
       pattern: /^[a-z0-9-]+$/,
-      default: 'my-book-' + getRandomInt(1000, 9999),
+      default: cli.input[1],
     },{
       name: 'title',
       description: 'Book Title',
@@ -41,7 +41,12 @@ module.exports = function newProject(cli) {
       pr.description = chalk.yellow(pr.description + ':');
     });
 
-    var projPath = path.resolve(cli.flags.book);
+    if (cli.input.length < 2) {
+      throw new Error('The second parameter to lfa new should be the name of the newly created directory');
+    }
+
+    var projPath = path.resolve(cli.input[1]);
+
     console.log('Creating new project in ' + chalk.yellow(projPath));
 
     prompt.message = '';
