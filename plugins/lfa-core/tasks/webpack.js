@@ -96,6 +96,9 @@ module.exports = function webpackTasks(lfa) {
             extensions: ['', '.js', '.jsx', 'json'],
             fallback: resolveFallback,
           },
+          resolveLoader: {
+            fallback: resolveFallback,
+          },
           plugins: wpPlugins,
         };
 
