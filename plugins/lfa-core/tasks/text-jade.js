@@ -17,6 +17,10 @@ var boilerplate = [
   '; }});'
 ];
 
+function escapeRegExp(string) {
+    return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
 module.exports = function textJadeTasks(lfa) {
   var config = lfa.config;
 
@@ -85,7 +89,7 @@ module.exports = function textJadeTasks(lfa) {
         }
 
         var tocpath = file.relative.replace(/\.jade$/, '');
-        var url = tocpath.replace(path.sep, '-');
+        var url = tocpath.replace(new RegExp(escapeRegExp(path.sep), 'g'), '-');
 
         getFrontMatter(mixinPaths)
           .then(function (front) {
