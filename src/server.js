@@ -8,7 +8,7 @@ function Server(opts) {
   var tmpPort = opts.port + 1000;
 
   var wpOpts = {
-    contentBase: { target: 'http://localhost:' + tmpPort },
+    proxy: { '*': 'http://localhost:' + tmpPort },
     publicPath: '/',
     hot: opts.watcher.opts.hot,
     noInfo: true,
