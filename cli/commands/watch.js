@@ -8,6 +8,7 @@ var openUrl = require('open');
 module.exports = function compile(cli) {
   var projPath = cli.flags.book;
   var verbose = cli.flags.v || cli.flags.verbose;
+  var port = cli.flags.p || cli.flags.port;
   var open = cli.flags.open;
   if (open === undefined) { open = true; }
 
@@ -29,6 +30,7 @@ module.exports = function compile(cli) {
     var watcher = lfa.watch({
       task: task,
       serve: true,
+      port: port,
     });
 
     watcher.on('listening', function (port) {
