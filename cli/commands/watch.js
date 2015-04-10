@@ -8,7 +8,7 @@ var openUrl = require('open');
 module.exports = function compile(cli) {
   var projPath = cli.flags.book;
   var verbose = cli.flags.v || cli.flags.verbose;
-  var port = cli.flags.p || cli.flags.port;
+  var port = cli.flags.p || cli.flags.port || process.env.PORT;
   var open = cli.flags.open;
   if (open === undefined) { open = true; }
 
