@@ -24,7 +24,7 @@ function Server(opts) {
   self.listening = false;
   self.scheduledForClosing = false;
 
-  self.app.listen(tmpPort, function (err) {
+  self.app.listen(tmpPort, '127.0.0.1', function (err) {
     if (err) { throw err; }
     self.tmpListening = true;
     if (self.scheduledForClosing) {
@@ -36,7 +36,7 @@ function Server(opts) {
       this.app.close();
       this.io.close();
     };
-    self.devServer.listen(opts.port, 'localhost', function (err) {
+    self.devServer.listen(opts.port, function (err) {
       if (err) { throw err; }
       self.listening = true;
       if (self.scheduledForClosing) {
