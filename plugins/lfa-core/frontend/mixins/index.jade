@@ -88,8 +88,7 @@ mixin modal(id, title)
                 p Content.
 
 mixin lightbox(path, largerPath)
-  - var largerPath = largerPath || '#';
-  a.lightbox(href='#{largerPath}')
+  a.lightbox(href='#{path}')
     img(src="#{path}", alt="")
 
 mixin draw(options)
