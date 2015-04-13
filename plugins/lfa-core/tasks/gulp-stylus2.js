@@ -40,6 +40,7 @@ module.exports = function (options) {
           file.path = rext(file.path, '.css');
           file.contents = new Buffer(res.result);
           if (res.sourcemap) {
+            res.sourcemap.file = res.sourcemap.file || path.basename(file.path);
             makePathsRelative(file, res.sourcemap);
             applySourceMap(file, res.sourcemap);
             file.sourceMap.file = file.relative;

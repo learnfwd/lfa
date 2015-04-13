@@ -5,6 +5,7 @@ var nodefn = require('when/node');
 var fs = require('fs');
 var _ = require('lodash');
 var sourcemaps = require('gulp-sourcemaps');
+var autoprefixer = require('autoprefixer-stylus');
 
 // Slightly patched version of gulp-stylus that takes per-file options
 var gulpStylus = require('./gulp-stylus2');
@@ -77,6 +78,8 @@ module.exports = function stylusTasks(lfa) {
 
       var opts = _.cloneDeep(config.stylus);
       opts.define = opts.define || {};
+      opts.use = opts.use || [];
+      opts.use.push(autoprefixer());
       opts.define.entrypoints = _(overrides).reverse().concat(styles).value();
       return opts;
     });
