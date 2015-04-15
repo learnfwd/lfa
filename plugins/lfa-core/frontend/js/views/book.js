@@ -61,7 +61,7 @@ define([
 
       var self = this;
       // Close the sidebars when we tap anywhere on the textbook.
-      this.$('section.container').on('click', function() {
+      this.$('#content').on('click', function() {
         self.closeSidebars();
       });
       if ( SearchJSON.textDirection === 'rtl') {
