@@ -91,6 +91,11 @@ var CookieStorage = function (type) {
       data[key] = value + ''; // forces the value to a string
       this.length++;
       setData(data);
+    },
+    forEachItem: function (cb) {
+      for (var key in data) {
+        cb(key);
+      }
     }
   };
 };
@@ -103,14 +108,26 @@ function _fixKey(key, opts) {
 }
 
 var Storage = function() {
-  var s  = localStorage || new CookieStorage('localStorage');
+
+  // Testing for Safari Incognito
+  var s;
+  try {
+    s = window.localStorage;
+    s.setItem('localStorageTest');
+    s.removeItem('localStorageTest');
+  } catch (ex) {
+    s = null;
+  }
+  s = s || new CookieStorage('localStorage');
 
   return {
     length: 0,
     clear: function () {
       //window.App.trigger('storage:clear');
-      // This is super dangerous, as it kills the whole localStorage
-      return s.clear();
+      var self = this;
+      self.forEachItem(function (key) {
+        self.removeItem(key);
+      });
     },
 
     getItem: function (key, opts) {
@@ -127,6 +144,55 @@ var Storage = function() {
       var args = _.extend({}, opts || {}, {key: key, value:value});
       //window.App.trigger('storage:setItem', args, s);
       return s.setItem(_fixKey(key, opts), value);
+    },
+
+    forEachItem: function (cb) {
+      var front = 'lfa:' + BuildInfo.bookId + ':';
+      function iterator(key) {
+        if (key.indexOf(front) === 0) {
+          cb(key.substr(front.length));
+        }
+      }
+
+      if (typeof(s.forEachItem) === 'function') {
+        s.forEachItem(iterator);
+      } else {
+        for (var key in s) {
+          iterator(key);
+        }
+      }
+    },
+
+    toJSON: function () {
+      var self = this;
+      var bkup = {
+        bookId: BuildInfo.bookId,
+        data: {}
+      };
+
+      self.forEachItem(function (key) {
+        bkup.data[key] = self.getItem(key);
+      });
+
+      return bkup;
+    },
+
+    restoreBackup: function (bkup) {
+      var self = this;
+      if (typeof(bkup) !== 'object' ||
+          typeof(bkup.bookId) !== 'string' ||
+          typeof(bkup.data) !== 'object') {
+        throw new Error('Invalid backup format');
+      }
+
+      if (bkup.bookId !== BuildInfo.bookId) {
+        throw new Error('This backup is for another book (' + bkup.bookId + ')');
+      }
+
+      self.clear();
+      _.each(bkup.data, function (value, key) {
+        self.setItem(key, value);
+      });
     },
   };
 };
