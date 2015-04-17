@@ -10,6 +10,7 @@ var _ = require('lodash');
 var es = require('event-stream');
 var through = require('through2');
 var File = require('vinyl');
+var fs = require('fs');
 
 function capitalizeFirstLetters(s) {
   s = s.replace(/-/g, ' ');
@@ -72,6 +73,7 @@ module.exports = function newProject(cli) {
         var skelPath = path.resolve(__dirname, '..', '..', 'skel');
         var sourceStream = pipeErrors(vfs.src(path.join(skelPath, '**', '*')));
         var packageStream = pipeErrors(through.obj());
+        var gitignoreStream = pipeErrors(vfs.src(path.join(skelPath, '.gitignore')));
         var destinationStream = vfs.dest(projPath);
 
         process.nextTick(function () {
@@ -98,7 +100,7 @@ module.exports = function newProject(cli) {
           packageStream.end();
         });
 
-        es.merge(sourceStream, packageStream)
+        es.merge(sourceStream, gitignoreStream, packageStream)
           .pipe(destinationStream);
 
         return when.promise(function (resolve, reject) {
