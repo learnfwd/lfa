@@ -1,27 +1,3 @@
-//-Initial plan:
-
-//-doctype html
-//-html
-  //-head
-    //-//- Classic
-    //-meta(charset="utf-8")
-    //-title= title
-    //-meta(http-equiv="X-UA-Compatible", content="IE=edge")
-    //-meta(name="description", content= description)
-    //-meta(name="keywords", content= keywords.join(', '))
-    //-//- Hide Safari's bars
-    //-meta(name="apple-mobile-web-app-capable", content="yes")
-    //-meta(name="apple-mobile-web-app-status-bar-style", content="black")
-    //-meta(name="viewport", content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no, minimal-ui")
-    //-//- Google
-    //-meta(name="google", content="notranslate")
-    //-//- Our CSS
-    //-link(rel="stylesheet", href="main.css")
-  //-body
-    //-//- Our JS
-    //-script(src="main.js")
-
-//- Old template:
 doctype html
 html(lang=book.language, dir=book.textDirection)
   head
@@ -49,12 +25,11 @@ html(lang=book.language, dir=book.textDirection)
         #textbook
           article
             section
-              p If you're seeing this, either you have to wait for things to finish loading, or something went wrong.
-
+              include ../../frontend/js/templates/error-message.jade
     
     aside#rightbar
       p.text-center Nothing here yet.
 
     if serve
-      script(src='http://localhost:' + watcher.opts.port + '/webpack-dev-server.js')
+      script(src='/webpack-dev-server.js')
     script(src='main.js')
