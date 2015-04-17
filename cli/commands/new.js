@@ -11,6 +11,7 @@ var es = require('event-stream');
 var through = require('through2');
 var File = require('vinyl');
 var fs = require('fs');
+var Repository = require('git-cli').Repository;
 
 function capitalizeFirstLetters(s) {
   s = s.replace(/-/g, ' ');
@@ -106,6 +107,17 @@ module.exports = function newProject(cli) {
         return when.promise(function (resolve, reject) {
           destinationStream.on('error', reject);
           destinationStream.on('end', resolve);
+        }).then(function () {
+          console.log('done');
+          process.stdout.write(chalk.green('creating git repository... '));
+
+        }).then(function () {
+          return nodefn.call(Repository.init.bind(Repository), projPath);
+        }).then(function (repo) {
+          return nodefn.call(repo.add.bind(repo))
+            .then(function () { return repo; });
+        }).then(function (repo) {
+          return nodefn.call(repo.commit.bind(repo), 'Initial commit');
         }).then(function () {
           console.log('done');
         }).catch(function (err) {
