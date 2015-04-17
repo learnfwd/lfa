@@ -11,8 +11,21 @@ var es = require('event-stream');
 var through = require('through2');
 var File = require('vinyl');
 
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+function capitalizeFirstLetters(s) {
+  s = s.replace(/-/g, ' ');
+  s = s.replace(/^\s+/, '');
+  s = s.replace(/\s+$/, '');
+
+  var match;
+  while ((match = s.match(/(^| )[a-z]/)) !== null) {
+    var idx = match.index;
+    if (idx !== 0) {
+      idx++;
+    }
+    s = s.substr(0, idx) + s.substr(idx, 1).toLocaleUpperCase() + s.substr(idx+1);
+  }
+
+  return s;
 }
 
 module.exports = function newProject(cli) {
@@ -28,7 +41,7 @@ module.exports = function newProject(cli) {
     },{
       name: 'title',
       description: 'Book Title',
-      default: 'My awesome book title',
+      default: capitalizeFirstLetters(cli.input[1]),
     },{
       name: 'language',
       description: 'Book Language',
