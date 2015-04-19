@@ -1,7 +1,0 @@
-.DS_Store
-.*.sw*
-ceva
-node_modules
-npm-debug.log
-.vagrant
-_build
