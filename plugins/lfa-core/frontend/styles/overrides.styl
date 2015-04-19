@@ -1,0 +1,114 @@
+// Textbook margin overrides
+#textbook > article > section
+  > address
+  > article
+  > aside
+  > audio
+  > blockquote
+  > canvas
+  > dd
+  > div
+  > dl
+  > fieldset
+  > figcaption
+  > figure
+  > footer
+  > form
+  > h1
+  > h2
+  > h3
+  > h4
+  > h5
+  > h6
+  > header
+  > hgroup
+  > hr
+  > img
+  > main
+  > nav
+  > noscript
+  > ol
+  > output
+  > p
+  > pre
+  > section
+  > table
+  > tfoot
+  > ul
+  > video
+    margin-left: 2rem
+    margin-right: 2rem
+    &.full
+      margin-left: 0
+      margin-right: 0
+
+  > table
+    width: calc(100% - 4rem)
+    &.full
+      width: 100%
+
+  > div.row
+    margin-left: calc(2rem - 15px)
+    margin-right: calc(2rem - 15px)
+    &.full
+      margin-left: 0
+      margin-right: 0
+
+// Bootstrap font and vertical rhythm overrides.
+body
+  font-family: font-family-base
+  font-weight: font-weight-base
+  line-height: line-height-base
+  
+  -webkit-font-smoothing: antialiased
+  
+  font-size: font-size-base
+  line-height: line-height-base
+  
+  @media max-phone
+    font-size: font-size-phone
+
+p
+  font-size: 1em
+  letter-spacing: .01rem
+  
+  margin-top: 1.5em
+  margin-bottom: 1.5em
+  
+h1, h2, h3, h4, h5, h6
+  font-family: font-family-headings
+  font-weight: font-weight-headings
+  line-height: line-height-headings
+  
+  letter-spacing: -0.02em
+  margin-bottom: 0
+  
+  // Remove margin between a heading and the first paragraph that follows it.
+  + p
+    margin-top: 0
+
+h1
+  font-size: 2em
+  line-height: 1.5em
+  
+  margin-top: 0.75em
+  
+
+h2
+  font-size: 1.6em
+  line-height: 1.875em
+  
+  margin-top: 0.9375em
+  
+
+h3
+  font-size: 1.25em
+  line-height: 2.4em
+  
+  margin-top: 1.20em
+
+h4, h5, h6
+  font-size: 1em
+  line-height: 1.5em
+  
+  margin-top: 1.5em

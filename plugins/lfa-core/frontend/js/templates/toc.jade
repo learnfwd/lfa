@@ -1,0 +1,18 @@
+mixin toc(chapters)
+  ul.tableofcontents
+    each chapter in chapters
+      li.fold(data-url="#{chapter.url}")
+        - var hasChildren = (chapter.children && chapter.children.length);
+        if chapter.locals.subtitle
+          a.subtitled(href="#book/#{chapter.url}", class = hasChildren ? 'foldable' : '')
+            span.title= chapter.locals.title
+            span.subtitle= chapter.locals.subtitle
+        else
+          a(href="#book/#{chapter.url}", class = hasChildren ? 'foldable' : '')
+            span.title
+              = chapter.locals.title
+        if hasChildren
+          .fold-button
+            i.fold-icon.fa.fa-fw.fa-chevron-down
+          .children-container
+            +toc(chapter.children)

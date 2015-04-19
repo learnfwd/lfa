@@ -1,0 +1,115 @@
+mixin title(title, subtitle)
+  - self.meta.title = title;
+  - if (subtitle) { self.meta.subtitle = subtitle; }
+
+mixin subtitle(subtitle)
+  - self.meta.subtitle = subtitle;
+
+mixin meta(key, value)
+  - self.meta[key] = value;
+
+mixin img(path)
+  img(src="#{path}")
+
+mixin parallax(path)
+  .parallax(style="background-image: url('#{path}')")
+    if block
+      block
+
+mixin link_to(path)
+  a(href="#{path}")
+    if block
+      block
+    else
+      = path
+
+mixin widget(path)
+  iframe(src="#{path}")
+
+//- +minitoc() generates a mini-toc from the current chapter that we're on,
+//- or a specified url.
+
+- function hashCode(s) {
+-  var hash = 0, i, chr, len;
+-  if (s.length == 0) return hash;
+-  for (i = 0, len = s.length; i < len; i++) {
+-    chr   = s.charCodeAt(i);
+-    hash  = ((hash << 5) - hash) + chr;
+-    hash |= 0; // Convert to 32bit integer
+-  }
+-  return hash;
+- }
+
+mixin minitoc(url)
+  - var id = hashCode(url + Math.random().toString());
+  .minitoc(id='minitoc_#{id}')
+  script.
+    (function () {
+      var $ = require('jquery');
+      var App = require('lfa-core/app');
+      $(document).ready(function() {
+        var url = '#{url}' || App.book.currentChapter;
+        new TocView({ el: $('#minitoc_#{id}'), url: url });
+      });
+    })();
+
+mixin youtube(url)
+  .video
+    iframe(src="https://www.youtube.com/embed/#{url}?rel=0", frameborder="0", allowfullscreen)
+
+mixin vimeo(url)
+  .video
+    iframe(src="//player.vimeo.com/video/#{url}?rel=0", frameborder="0", webkitallowfullscreen, mozallowfullscreen, allowfullscreen)
+
+mixin cloudfront(server, name)
+  .video
+    video(controls, preload="auto", poster="http://#{server}.cloudfront.net/#{name}.png")
+      source(src="http://#{server}.cloudfront.net/#{name}.mp4")
+
+//- Bootstrap modal mixin.
+mixin modal(id, title)
+  div.modal(id="#{id}", tabindex='-1', role='dialog', aria-labelledby='#{id}-label', aria-hidden='true')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h4.modal-title= title
+        .modal-body
+          if block
+            block
+          else
+            p.text-danger You forgot to add content to the modal. Like this:
+            pre.
+              //- the button to open the modal
+              .btn(href="#my-modal", data-toggle="modal")
+              
+              //- the actual modal
+              +modal("my-modal", "A title")
+                p Content.
+
+mixin lightbox(path, largerPath)
+  a.lightbox(href='#{path}')
+    img(src="#{path}", alt="")
+
+mixin draw(options)
+  - options = options || {};
+  - options.width = options.width || '';
+  - options.height = options.height || '';
+  - options.primaryColor = options.primaryColor || '#333';
+  - options.secondaryColor = options.secondaryColor || '#3388CD';
+  - options.backgroundColor = options.backgroundColor || '#eee';
+  
+  .sketchpad(data-width="#{options.width}", data-height="#{options.height}", data-primary-color="#{options.primaryColor}", data-secondary-color="#{options.secondaryColor}", data-background-color="#{options.backgroundColor}")
+    .editor
+    .row
+      .col-xs-12.col-sm-6
+        .btn-group.btn-group-justified.btn-group-lg
+          .btn.btn-default.btn-color-switcher(style="color: #{options.primaryColor};"): i.fa.fa-pencil.fa-fw
+          .btn.btn-default.btn-eraser: i.fa.fa-eraser.fa-fw
+          .btn.btn-default.btn-destroy: .text-danger: i.fa.fa-trash-o.fa-fw
+      .col-xs-12.col-sm-6
+        .btn-group.btn-group-justified.btn-group-lg
+          .btn.btn-default.btn-undo: i.fa.fa-rotate-left.fa-fw
+          .btn.btn-default.btn-redo: i.fa.fa-rotate-right.fa-fw
+          .btn.btn-default.btn-save: .text-success: i.fa.fa-cloud-download.fa-fw
+

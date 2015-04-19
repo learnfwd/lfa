@@ -1,0 +1,7 @@
+{
+  "name": "custom-theme",
+  "themes": {
+    "custom-theme": "./theme"
+  },
+  "keywords": [ "lfa-plugin" ]
+}

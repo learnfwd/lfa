@@ -1,0 +1,35 @@
+doctype html
+html(lang=book.language, dir=book.textDirection)
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge, chrome=1')
+    meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui")
+
+    title= book.title
+    
+    link(type='text/css', rel='stylesheet', media='screen', href='main.css')
+  body
+    .menu
+      .menu-item.menu-item-left#leftbar-toggle: i.fa.fa-bars.fa-fw.menu-item-contents
+      .menu-item.menu-item-right#rightbar-toggle: i.fa.fa-question.fa-fw.menu-item-contents
+    .navigation-menu
+      a.menu-item.menu-item-left#previous-chapter: i.fa.fa-chevron-left.menu-item-contents
+      a.menu-item.menu-item-right#next-chapter: i.fa.fa-chevron-right.menu-item-contents
+    
+    nav#leftbar
+      //- this will be done on runtime
+      //- +toc(toc)
+    
+    #content
+      #scrollview
+        #textbook
+          article
+            section
+              include ../../frontend/js/templates/error-message.jade
+    
+    aside#rightbar
+      p.text-center Nothing here yet.
+
+    if serve
+      script(src='/webpack-dev-server.js')
+    script(src='main.js')

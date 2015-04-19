@@ -1,0 +1,29 @@
+# System artefacts
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Build directory
+/.lfa/build
+
+# Node modules
+node_modules
+npm-debug.log
+
+## Editor junk
+
+# Vim
+.*.sw*
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# Textmate
+*.tmproj
+tmtags
+
+# Emacs
+*~
+\#*
+.\#*

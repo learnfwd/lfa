@@ -1,0 +1,40 @@
+// Style, position the sidebars correctly, and configure overflows.
+#leftbar
+#rightbar
+  font-family: font-family-sans-serif
+  background: sidebar-background
+  color: sidebar-text-color
+  padding-top: 1.5em
+  @media max-phone
+    padding-top: 0
+  
+  width: sidebar-width
+  position: fixed
+  height: 100%
+  top: 0px
+  z-index: 1000
+
+#leftbar
+  left: - sidebar-width
+
+#rightbar
+  right: - sidebar-width
+
+html body
+  #leftbar,
+  #rightbar
+    -webkit-overflow-scrolling: touch
+    overflow-scrolling: touch
+    overflow-y: scroll
+    overflow-x: hidden
+
+  &.leftbar-active #scrollview,
+  &.rightbar-active #scrollview
+    overflow: hidden
+    #textbook
+      pointer-events: none
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+

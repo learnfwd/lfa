@@ -1,0 +1,10 @@
+{
+  "name": "basic-textbook",
+  "version": "1.0.0",
+  "book": {
+    "title": "Basic LFA textbook"
+  },
+  "engines": {
+    "lfa": "~0.7.0"
+  }
+}

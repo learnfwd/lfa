@@ -1,0 +1,14 @@
+{
+  "name": "basic-textbook",
+  "version": "1.0.0",
+  "keywords": [
+    "lfa-book"
+  ],
+  "book": {
+    "title": "Basic LFA textbook"
+  },
+  "theme": "custom-theme",
+  "engines": {
+    "lfa": "~0.7.0"
+  }
+}

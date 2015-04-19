@@ -1,0 +1,119 @@
+// Selectionbar and highlight/note styling.
+
+#textbook
+  // Highlight and note background and text colors.
+  a.highlight, a.note
+    background: highlight-background
+
+  a.highlight
+    color: inherit
+
+#selectionbar
+  bg = sidebar-background
+  
+  // The little caret at the bottom.
+  .triangle > i
+    position: absolute
+    top: -3px
+    left: 50%
+    transform: translateX(-50%) rotateZ(90deg)
+    color: bg
+  
+  perspective: 20em
+  
+  height: 0
+  width: sidebar-width
+  
+  position: fixed
+  top: 8rem
+  left: 50%
+  transform: translateX(-50%) translate3d(0,2em,0)
+  
+  @media min-desktop
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translateX(-50%) translate3d(0,-2em,0)
+  
+  opacity: 0
+  z-index: -100
+  
+  &.active
+    z-index: 100
+    opacity: 1
+    transform: translateX(-50%) translate3d(0,0,0)
+  
+  &.add-note
+    transform: translateX(-50%) translate3d(0,-1em,0)
+    
+    @media min-desktop
+      transform: translateX(-50%) translate3d(0,1em,0)
+    
+    .buttons
+      .regular-buttons
+        transform: translate3d(0,-3em,0)
+      .note-buttons
+        transform: translate3d(0,-3em,0)
+    
+    .note-area
+      transform: rotateX(0deg)
+      opacity: 1
+    
+  
+  .buttons
+    background: bg
+    height: 3em
+    overflow: hidden
+    width: 100%
+    
+    position: absolute
+    top: 0
+    
+    @media min-desktop
+      top: auto
+      bottom: 0
+    
+    .btn-group
+      height: 1.5em
+  
+  .btn
+    font-size: 1.5em
+    border: none
+    border-radius: 0
+    background: sidebar-background
+    color: white
+    
+    border-left: 1px solid darken(bg, 50%)
+    border-right: 1px solid darken(bg, 50%)
+    
+    &[disabled="true"]
+      opacity: 1
+      background: lighten(bg, 50%)
+      color: lighten(bg, 300%)
+  
+  .note-area
+    -webkit-appearance: none
+    
+    border-radius: 5px 5px 0 0
+    width: 100%
+    resize: none
+    padding: 0.5em
+    background: white
+    border: none
+    height: 9em
+    font-family: font-family-sans-serif
+  
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3)
+  
+    transform-origin: 0 0
+    transform: rotateX(-90deg)
+    opacity: 0
+    
+    position: absolute
+    top: 3em
+    
+    @media min-desktop
+      top: -12em
+      transform-origin: 100% 100%
+      transform: rotateX(90deg)
+  
