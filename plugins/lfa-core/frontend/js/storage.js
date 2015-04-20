@@ -1,5 +1,6 @@
 var BuildInfo = require('build-info');
 var _ = require('lodash');
+var assert = require('assert');
 
 var CookieStorage = function (type) {
   function createCookie(name, value, days) {
@@ -113,7 +114,8 @@ var Storage = function() {
   var s;
   try {
     s = window.localStorage;
-    s.setItem('localStorageTest');
+    s.setItem('localStorageTest', 'test');
+    assert(s.getItem('localStorageTest') === 'test');
     s.removeItem('localStorageTest');
   } catch (ex) {
     s = null;
