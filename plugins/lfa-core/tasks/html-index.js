@@ -1,5 +1,6 @@
 var gulpJade = require('gulp-jade');
 var path = require('path');
+var uuid = require('uuid');
 
 module.exports = function indexHtmlTasks(lfa) {
   lfa.task('html:files:index.html', function () {
@@ -8,6 +9,7 @@ module.exports = function indexHtmlTasks(lfa) {
     var opts = {
       locals: {
         book: lfa.config.book,
+        cacheBlob: uuid.v4(),
         serve: !!lfa.currentCompile.serve,
         watcher: lfa.currentCompile.watcher,
       },
