@@ -11,12 +11,12 @@ define([
     initialize: function(options) {
       this.parent = options.parent;
 
-      var headroom = new Headroom(document.querySelector(this.$el.selector), {
-        scrollElement: $('#scrollview')[0],
-        'classes': {
-          'initial':  'headroom',
-          'pinned':   'pinned',
-          'unpinned': 'unpinned'
+      var headroom = new Headroom(this.el, {
+        scroller: $('#scrollview')[0],
+        classes: {
+          initial:  'headroom',
+          pinned:   'pinned',
+          unpinned: 'unpinned'
         }
       });
       headroom.init();
