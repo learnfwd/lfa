@@ -58,11 +58,14 @@ module.exports = function webpackTasks(lfa) {
         _.each(lfa.plugins, function (plugin) {
           aliases[plugin.name] = path.join(plugin.path, 'frontend', 'js');
           resolveFallback.push(path.join(plugin.path, 'web_modules'));
-          resolveFallback.push(path.join(plugin.path, 'node_modules'));
         });
 
         resolveFallback.push(path.join(lfa.path, 'web_modules'));
         resolveFallback.push(path.join(lfa.path, 'node_modules'));
+
+        _.each(lfa.plugins, function (plugin) {
+          resolveFallback.push(path.join(plugin.path, 'node_modules'));
+        });
 
         var wpPlugins = [];
         var mainEntrypoints = [];
