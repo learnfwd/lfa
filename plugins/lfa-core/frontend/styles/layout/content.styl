@@ -23,11 +23,15 @@ body
       //padding-top: 1.5em
       padding-bottom: 1.5em
 
+  // Prevent margin collapse
+  #textbook:before, #textbook:after
+    content: ' '
+    display: table
+
   #textbook
     width: 100%
     min-height: 100%
     margin: 0 auto
-    padding-top: 1px // Prevent margin collapse
 
     @media (min-width: screen-sm)
       width: content-width-sm
