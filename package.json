@@ -41,7 +41,6 @@
     "event-stream": "^3.1.7",
     "express": "^4.12.3",
     "fastclick": "^1.0.6",
-    "filewalker": "^0.1.2",
     "flux": "^2.0.1",
     "fs-extra": "^0.16.3",
     "git-cli": "^0.8.2",

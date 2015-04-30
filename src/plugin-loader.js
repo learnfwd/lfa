@@ -7,7 +7,6 @@ var assert = require('assert');
 var path = require('path');
 var when = require('when');
 var nodefn = require('when/node');
-var filewalker = require('filewalker');
 var fs = require('fs');
 var _ = require('lodash');
 
@@ -33,33 +32,11 @@ function loadPlugin(lfa, pluginPath, packageJson) {
     var tasks = [];
     
     _.each(themes, function (themePath, name) {
-      tasks.push(when.try(function () {
-        themePath = path.resolve(pluginPath, path.normalize(themePath));
-        var walker = filewalker(themePath, { maxAttempts: 0, });
-        var themeFiles = {};
-
-        return when.promise(function (resolve, reject) {
-
-          walker.on('dir', function (p) {
-            themeFiles[p] = 'dir';
-          });
-
-          walker.on('file', function (p) {
-            themeFiles[p] = 'file';
-          });
-
-          walker.on('done', resolve);
-          walker.on('error', reject);
-          walker.walk();
-
-        }).then(function () {
-          lfa.themes[name] = {
-            name: name,
-            files: themeFiles,
-            path: themePath,
-          };
-        });
-      }));
+      themePath = path.resolve(pluginPath, path.normalize(themePath));
+      lfa.themes[name] = {
+        name: name,
+        path: themePath,
+      };
     });
 
     var returnValue;

@@ -48,18 +48,9 @@ module.exports = function stylusTasks(lfa) {
     });
 
     // Theme entrypoint
-    var theme = (lfa.theme.files['styles'] === 'dir') ? lfa.theme : lfa.defaultTheme;
-    var themeStyles = path.join('styles', 'main.styl');
-    var themeOverrides = path.join('styles', 'colors.styl');
-    var themeEntrypoint = {};
-    if (theme.files[themeStyles] === 'file') {
-      themeEntrypoint.style = path.join(theme.path, themeStyles);
-    }
-    if (theme.files[themeOverrides] === 'file') {
-      themeEntrypoint.override = path.join(theme.path, themeOverrides);
-    }
-    entrypoints.push(themeEntrypoint);
-    watchedDirs.push(path.join(theme.path, 'styles'));
+    entrypoints.push(checkEntrypoint(
+          path.join(lfa.theme.path, 'styles')));
+    watchedDirs.push(path.join(lfa.theme.path, 'styles'));
 
     // The main user style entrypoint
     entrypoints.push(checkEntrypoint(
