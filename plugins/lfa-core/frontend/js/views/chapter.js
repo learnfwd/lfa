@@ -165,6 +165,10 @@ var ChapterView = Backbone.View.extend({
 
     // Enable lightboxes.
     this.$('a.lightbox').fluidbox();
+    var scrollPreventedEvents = 'wheel touchmove MSPointerMove pointermove';
+    this.$el.on(scrollPreventedEvents, '.fluidbox.fluidbox-opened', function (e) {
+      e.preventDefault();
+    });
   }
 });
 
