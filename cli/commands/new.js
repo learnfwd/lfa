@@ -11,6 +11,7 @@ var es = require('event-stream');
 var through = require('through2');
 var File = require('vinyl');
 var fs = require('fs');
+var rename = require('gulp-rename');
 var Repository = require('git-cli').Repository;
 
 function capitalizeFirstLetters(s) {
@@ -72,10 +73,12 @@ module.exports = function newProject(cli) {
         process.stdout.write(chalk.green('scaffolding project... '));
         
         var skelPath = path.resolve(__dirname, '..', '..', 'skel');
-        var sourceStream = pipeErrors(vfs.src(path.join(skelPath, '**', '*')));
         var packageStream = pipeErrors(through.obj());
-        var gitignoreStream = pipeErrors(vfs.src(path.join(skelPath, '.gitignore')));
         var destinationStream = vfs.dest(projPath);
+        var sourceStream = pipeErrors(vfs.src(path.join(skelPath, '**', '*')))
+          .pipe(rename(function (path) {
+            path.basename = path.basename.replace(/^___/, '.');
+          }));
 
         process.nextTick(function () {
           var packageJson = {
@@ -101,7 +104,7 @@ module.exports = function newProject(cli) {
           packageStream.end();
         });
 
-        es.merge(sourceStream, gitignoreStream, packageStream)
+        es.merge(sourceStream, packageStream)
           .pipe(destinationStream);
 
         return when.promise(function (resolve, reject) {
