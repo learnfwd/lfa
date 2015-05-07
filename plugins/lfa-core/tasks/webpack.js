@@ -99,6 +99,8 @@ module.exports = function webpackTasks(lfa) {
               wpEntries.allcss = path.resolve(__dirname, 'templates', 'allcss.js');
           }
 
+          var cssLoaderString = 'simple-css-loader!' + (debug ? '' : 'css-minify!') + 'stylus-loader!stylus-entrypoints';
+
           var webpackConfig = {
             entry: wpEntries,
             output: {
@@ -113,9 +115,9 @@ module.exports = function webpackTasks(lfa) {
                 { test: /\.json$/, loaders: ['json-loader'] },
                 { test: /\.css$/, loaders: ['style-loader', 'css-loader'] },
                 { test: /vendorcss.dummy$/, 
-                  loader: ExtractTextPlugin.extract('style-loader!url-fixer', 'simple-css-loader!stylus-loader!stylus-entrypoints?key=vendor') },
+                  loader: ExtractTextPlugin.extract('style-loader!url-fixer', cssLoaderString + '?key=vendor') },
                 { test: /usercss.dummy$/, 
-                  loader: ExtractTextPlugin.extract('style-loader!url-fixer', 'simple-css-loader!stylus-loader!stylus-entrypoints?key=user') },
+                  loader: ExtractTextPlugin.extract('style-loader!url-fixer', cssLoaderString + '?key=user') },
                 { test: /\.styl$/, loaders: ['style-loader', 'css-loader', 'stylus-loader'] },
               ]
             },
