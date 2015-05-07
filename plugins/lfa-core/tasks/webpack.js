@@ -10,7 +10,8 @@ var buildInfoJS = require('./js-build-info');
 var liveReloadJS = require('./js-live-reload');
 var stylusSettings = require('./stylus-settings');
 
-var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = function webpackTasks(lfa) {
   templatesJS(lfa);
@@ -30,8 +31,6 @@ module.exports = function webpackTasks(lfa) {
 
   lfa.task('default:webpack', ['webpack:deps:*'], function (deps) {
     var stream = lfa.pipeErrors(through.obj());
-    var stylusSettingsPromise = stylusSettings(lfa);
-
     var aliases = {};
 
     deps.on('error', function (err) {
@@ -59,6 +58,7 @@ module.exports = function webpackTasks(lfa) {
 
         return stylusSettings(lfa).then(function (stylusConfig) {
           var resolveFallback = [];
+          var debug = !!lfa.currentCompile.debug;
 
           aliases.userland = path.join(lfa.config.projectPath, 'js');
           aliases.underscore = 'lodash';
@@ -81,27 +81,41 @@ module.exports = function webpackTasks(lfa) {
             mainEntrypoints.push('webpack/hot/dev-server');
           }
 
-          wpPlugins.push(new CommonsChunkPlugin('commons.js', ['main', 'usercss', 'vendorcss']));
+          if (debug) {
+            wpPlugins.push(new CommonsChunkPlugin('commons.js', ['main', 'usercss', 'vendorcss']));
+          }
+          wpPlugins.push(new ExtractTextPlugin('main.css', { disable: debug }));
 
           mainEntrypoints.push(path.join(lfa.config.tmpPath, 'gen', 'index.js'));
 
-          var webpackConfig = {
-            entry: {
+          var wpEntries = {
               main: mainEntrypoints,
-              usercss: path.resolve(__dirname, 'templates', 'usercss.js'),
-              vendorcss: path.resolve(__dirname, 'templates', 'vendorcss.js'),
-            },
+          };
+
+          if (debug) {
+              wpEntries.usercss = path.resolve(__dirname, 'templates', 'usercss.js');
+              wpEntries.vendorcss = path.resolve(__dirname, 'templates', 'vendorcss.js');
+          } else {
+              wpEntries.allcss = path.resolve(__dirname, 'templates', 'allcss.js');
+          }
+
+          var webpackConfig = {
+            entry: wpEntries,
             output: {
               path: lfa.currentCompile.buildPath,
               filename: '[name].js',
             },
-            debug: !!lfa.currentCompile.debug,
-            devtool: lfa.currentCompile.debug ? 'eval-source-map' : undefined,
+            debug: debug,
+            devtool: debug ? 'eval-source-map' : undefined,
             module: {
               loaders: [
                 { test: /\.jsx$/, loaders: ['react-hot', 'jsx?harmony'] },
                 { test: /\.json$/, loaders: ['json-loader'] },
                 { test: /\.css$/, loaders: ['style-loader', 'css-loader'] },
+                { test: /vendorcss.dummy$/, 
+                  loader: ExtractTextPlugin.extract('style-loader!url-fixer', 'simple-css-loader!stylus-loader!stylus-entrypoints?key=vendor') },
+                { test: /usercss.dummy$/, 
+                  loader: ExtractTextPlugin.extract('style-loader!url-fixer', 'simple-css-loader!stylus-loader!stylus-entrypoints?key=user') },
                 { test: /\.styl$/, loaders: ['style-loader', 'css-loader', 'stylus-loader'] },
               ]
             },

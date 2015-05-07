@@ -34,7 +34,8 @@ html(lang=book.language, dir=book.textDirection)
 
     if serve
       script(src='/webpack-dev-server.js')
-    script(src='commons.js?cache=' + cacheBlob)
-    script(src='vendorcss.js?cache=' + cacheBlob)
-    script(src='usercss.js?cache=' + cacheBlob)
+    if debug
+      script(src='commons.js?cache=' + cacheBlob)
+      script(src='vendorcss.js?cache=' + cacheBlob)
+      script(src='usercss.js?cache=' + cacheBlob)
     script(src='main.js?cache=' + cacheBlob)
