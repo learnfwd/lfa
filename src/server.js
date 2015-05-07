@@ -11,8 +11,8 @@ function Server(opts) {
     proxy: { '*': 'http://localhost:' + tmpPort },
     publicPath: '/',
     hot: opts.watcher.opts.hot,
-    noInfo: true,
-    quiet: true,
+    noInfo: !opts.watcher.opts.verbose,
+    quiet: !opts.watcher.opts.verbose,
   };
 
   self.app = express();

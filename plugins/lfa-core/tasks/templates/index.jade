@@ -7,7 +7,9 @@ html(lang=book.language, dir=book.textDirection)
 
     title= book.title
     
-    link(type='text/css', rel='stylesheet', media='screen', href='main.css?cache=' + cacheBlob)
+    if !debug
+      link(type='text/css', rel='stylesheet', media='screen', href='main.css?cache=' + cacheBlob)
+
   body
     .menu
       .menu-item.menu-item-left#leftbar-toggle: i.fa.fa-bars.fa-fw.menu-item-contents

@@ -31,6 +31,7 @@ module.exports = function compile(cli) {
       task: task,
       serve: true,
       port: port,
+      verbose: !!verbose,
     });
 
     watcher.on('listening', function (port) {

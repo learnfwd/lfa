@@ -9,6 +9,7 @@ module.exports = function indexHtmlTasks(lfa) {
     var opts = {
       locals: {
         book: lfa.config.book,
+        debug: lfa.currentCompile.debug,
         cacheBlob: uuid.v4(),
         serve: !!lfa.currentCompile.serve,
         watcher: lfa.currentCompile.watcher,
