@@ -10,6 +10,8 @@ var buildInfoJS = require('./js-build-info');
 var liveReloadJS = require('./js-live-reload');
 var stylusSettings = require('./stylus-settings');
 
+var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+
 module.exports = function webpackTasks(lfa) {
   templatesJS(lfa);
   entrypointsJS(lfa);
@@ -79,15 +81,19 @@ module.exports = function webpackTasks(lfa) {
             mainEntrypoints.push('webpack/hot/dev-server');
           }
 
+          wpPlugins.push(new CommonsChunkPlugin('commons.js', ['main', 'usercss', 'vendorcss']));
+
           mainEntrypoints.push(path.join(lfa.config.tmpPath, 'gen', 'index.js'));
 
           var webpackConfig = {
             entry: {
               main: mainEntrypoints,
+              usercss: path.resolve(__dirname, 'templates', 'usercss.js'),
+              vendorcss: path.resolve(__dirname, 'templates', 'vendorcss.js'),
             },
             output: {
               path: lfa.currentCompile.buildPath,
-              filename: 'main.js',
+              filename: '[name].js',
             },
             debug: !!lfa.currentCompile.debug,
             devtool: lfa.currentCompile.debug ? 'eval-source-map' : undefined,

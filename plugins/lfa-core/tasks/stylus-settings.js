@@ -14,7 +14,7 @@ function fileExists(file) {
 }
 
 function checkEntrypoint(stylePath) {
-  var override = path.join(stylePath, 'colors.styl');
+  var override = path.join(stylePath, 'config.styl');
   var style = path.join(stylePath, 'main.styl');
   var vendor = path.join(stylePath, 'vendor.styl');
   return when.all([
@@ -65,8 +65,8 @@ module.exports = function stylusConfig(lfa) {
     opts.entrypoints = opts.entrypoints || {};
     opts.use = opts.use || [];
     opts.use.push(autoprefixer());
-    opts.entrypoints.user = _(overrides).reverse().concat(styles).value();
-    opts.entrypoints.vendor = vendors;
+    opts.entrypoints.vendor = _(overrides).reverse().concat(vendors).value();
+    opts.entrypoints.user = styles;
     return opts;
   });
 
