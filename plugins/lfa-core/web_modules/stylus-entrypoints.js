@@ -6,7 +6,7 @@ module.exports = function () {
   var query = loaderUtils.parseQuery(this.query);
   var entrypoints = this.options.stylus.entrypoints[query.key];
   var result = _.map(entrypoints, function (ep) {
-    return '@import "' + ep + '"';
+    return '@import "' + ep.replace(/\\/g, '\\"+"') + '"';
   });
   return result.join('\n');
 };
