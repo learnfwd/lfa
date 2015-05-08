@@ -8,6 +8,7 @@ var templatesJS = require('./js-templates');
 var entrypointsJS = require('./js-entrypoints');
 var buildInfoJS = require('./js-build-info');
 var liveReloadJS = require('./js-live-reload');
+var textVersionsJS = require('./js-text-versions');
 var stylusSettings = require('./stylus-settings');
 
 var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
@@ -18,6 +19,7 @@ module.exports = function webpackTasks(lfa) {
   entrypointsJS(lfa);
   buildInfoJS(lfa);
   liveReloadJS(lfa);
+  textVersionsJS(lfa);
 
   lfa.task('webpack:deps:gen', ['webpack:gen:*'], function (generatedFiles) {
     this.setDependencyMode(generatedFiles, 'modify');

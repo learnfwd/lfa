@@ -3,7 +3,7 @@ var Chapters = require('./chapters');
 
 function Prefetcher() {
   this.cache = {};
-  this.maxCacheLength = 64 * 1024; //128 kB
+  this.maxCacheLength = 64 * 1024; //64 kB
   this.cacheLength = 0;
   this.chapterPriority = [];
   this.priorityHash = {};
@@ -34,11 +34,17 @@ Prefetcher.prototype.reclaimCache = function(tillPriority) {
       }
     });
     if (maxPri <= tillPriority || !maxCache) { break; }
-    this.cacheLength -= this.cacheSize[maxCache];
-    Chapters.removeLoaded(maxCache);
-    delete this.cache[maxCache];
-    delete this.cacheSize[maxCache];
+    this.invalidateCacheForChapter(maxCache);
   }
+};
+
+Prefetcher.prototype.invalidateCacheForChapter = function(key) {
+  if (this.cache[key]) {
+    this.cacheLength -= this.cacheSize[key];
+    delete this.cache[key];
+    delete this.cacheSize[key];
+  }
+  Chapters.removeLoaded(key);
 };
 
 Prefetcher.prototype.rebalanceCache = function() {

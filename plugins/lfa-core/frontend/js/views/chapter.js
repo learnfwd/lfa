@@ -9,10 +9,42 @@ var Chapters = require('../chapters');
 var Prefetcher = require('../prefetcher');
 var App = require('../app');
 
+var instantiatedChapterViews = {};
+var textVersions = require('text-versions');
+
+if (module.hot) {
+  module.hot.accept('text-versions', function () {
+    var newTextVersions = require('text-versions');
+    _.each(newTextVersions, function (val, key) {
+      if (textVersions[key] !== val) {
+        _.each(instantiatedChapterViews, function (view) {
+          view.invalidatedChapter(key);
+        });
+      }
+    });
+
+    textVersions = newTextVersions;
+  });
+}
+
 var ChapterView = Backbone.View.extend({
   initialize: function(options) {
     this.parent = options.parent;
     this.prefetcher = new Prefetcher();
+    this.chapterViewId = _.uniqueId();
+    instantiatedChapterViews[this.chapterViewId] = this;
+  },
+
+  remove: function() {
+    delete instantiatedChapterViews[this.chapterViewId];
+    Backbone.View.remove.apply(this, arguments);
+  },
+
+  invalidatedChapter: function(chapter) {
+    this.prefetcher.invalidateCacheForChapter(chapter);
+    if (chapter === App.book.currentChapter) { 
+      this.render(chapter);
+    }
   },
 
   render: function(chapter) {
