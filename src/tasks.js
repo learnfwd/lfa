@@ -298,7 +298,7 @@ var LFATasks = {
       } else if (streams.length === 1) {
         return pipeErrors(streams[0]);
       } else {
-        return es.merge.apply(es, streams);
+        return pipeErrors(es.merge.apply(es, streams));
       }
     });
 
