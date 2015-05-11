@@ -5,6 +5,68 @@ var _ = require('lodash');
 var fileMonitor = require('./file-monitor');
 var Server = require('./server');
 
+function _translateEvents() {
+  var self = this;
+  var compiling = 0;
+  var listeningPort = null;
+
+  function retain() {
+    if (!compiling) {
+      self.emit('compiling');
+    }
+    compiling++;
+  }
+
+  function release() {
+    compiling--;
+    if (!compiling) {
+      self.emit('compile-done');
+    }
+    if (compiling < 0) {
+      compiling = 0;
+    }
+  }
+
+  self.on('lfa-compiling', function () {
+    retain();
+  });
+
+  self.on('webpack-compiling', function () {
+    retain();
+  });
+
+  self.on('lfa-compile-done', function () {
+    setTimeout(function () {
+      release();
+    }, 50);
+  });
+
+  self.on('webpack-compile-done', function () {
+    release();
+    if (listeningPort) {
+      self.emit('listening', listeningPort);
+      listeningPort = null;
+    }
+  });
+
+  self.on('webpack-compile-error', function (err) {
+    if (compiling) {
+      self.emit('compile-warning', err);
+    }
+  });
+
+  self.on('lfa-compile-error', function (err) {
+    if (compiling) {
+      compiling = 0;
+      self.emit('compile-error', err);
+    }
+  });
+
+  self.on('webpack-listening', function (port) {
+    listeningPort = port;
+  });
+}
+
 function Watcher(lfa, opts) {
   opts = opts || {};
   opts.port = opts.port || 8080;
@@ -12,6 +74,8 @@ function Watcher(lfa, opts) {
 
   this.lfa = lfa;
   this.opts = opts;
+
+  _translateEvents.call(this);
 }
 
 util.inherits(Watcher, EventEmitter);
@@ -48,19 +112,19 @@ function _compile(ops) {
     saveCurrentCompile: true,
   }, self.opts);
 
-  self.emit('compiling');
+  self.emit('lfa-compiling');
 
   self.waitForCompile = self.lfa.compile(opts)
     .then(function (cache) {
       self.incrementalCache = cache;
-      self.emit('compile-done');
+      self.emit('lfa-compile-done');
       if (self.opts.serve && !self.devServer) {
         _startServer.call(self, cache);
       }
     })
     .catch(function (err) {
       self.incrementalCache = null;
-      self.emit('compile-error', err);
+      self.emit('lfa-compile-error', err);
     })
     .finally(function () {
       self.waitForCompile = when();

@@ -31,6 +31,14 @@ function Server(opts) {
       self.app.close();
     }
 
+    cache.webpackCompiler.plugin('done', function () {
+      opts.watcher.emit('webpack-compile-done');
+    });
+
+    cache.webpackCompiler.plugin('compile', function () {
+      opts.watcher.emit('webpack-compiling');
+    });
+
     self.devServer = new WebpackServer(cache.webpackCompiler, wpOpts);
     self.devServer.close = function() {
       this.app.close();
@@ -42,7 +50,7 @@ function Server(opts) {
       if (self.scheduledForClosing) {
         self.app.close();
       }
-      opts.watcher.emit('listening', opts.port);
+      opts.watcher.emit('webpack-listening', opts.port);
     });
   });
 }

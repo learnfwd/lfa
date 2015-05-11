@@ -41,18 +41,35 @@ module.exports = function compile(cli) {
       }
     });
 
+    var compilingShown = false;
+    function showCompiling(text) {
+      if (!compilingShown) {
+        compilingShown = true;
+        process.stdout.write(chalk.green('compiling... '));
+      }
+      if (text) {
+        compilingShown = false;
+        console.log(text);
+      }
+    }
+
     watcher.on('compiling', function () {
-      process.stdout.write(chalk.green('compiling... '));
+      showCompiling();
     });
 
     watcher.on('compile-done', function () {
-      console.log('done');
+      showCompiling('done');
     });
 
     var errorHandler = prettyErrors(verbose);
 
     watcher.on('compile-error', function (err) {
-      console.log(chalk.red('error'));
+      showCompiling(chalk.red('error'));
+      errorHandler(err);
+    });
+
+    watcher.on('compile-warning', function (err) {
+      showCompiling(chalk.yellow('warning'));
       errorHandler(err);
     });
 
