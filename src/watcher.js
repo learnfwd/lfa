@@ -51,6 +51,12 @@ function _translateEvents() {
 
   self.on('webpack-compile-error', function (err) {
     if (compiling) {
+      self.emit('compile-error', err);
+    }
+  });
+
+  self.on('webpack-compile-warning', function (err) {
+    if (compiling) {
       self.emit('compile-warning', err);
     }
   });
@@ -58,7 +64,7 @@ function _translateEvents() {
   self.on('lfa-compile-error', function (err) {
     if (compiling) {
       compiling = 0;
-      self.emit('compile-error', err);
+      self.emit('compile-fatal-error', err);
     }
   });
 

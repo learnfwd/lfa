@@ -53,6 +53,13 @@ module.exports = function compile(cli) {
       }
     }
 
+    function dismissCompiling() {
+      if (compilingShown) {
+        compilingShown = false;
+        console.log('');
+      }
+    }
+
     watcher.on('compiling', function () {
       showCompiling();
     });
@@ -63,13 +70,20 @@ module.exports = function compile(cli) {
 
     var errorHandler = prettyErrors(verbose);
 
-    watcher.on('compile-error', function (err) {
+    watcher.on('compile-fatal-error', function (err) {
       showCompiling(chalk.red('error'));
       errorHandler(err);
     });
 
+    watcher.on('compile-error', function (err) {
+      dismissCompiling();
+      console.log(chalk.red('Non-fatal Error') + ':');
+      errorHandler(err);
+    });
+
     watcher.on('compile-warning', function (err) {
-      showCompiling(chalk.yellow('warning'));
+      dismissCompiling();
+      console.log(chalk.yellow('Warning') + ':');
       errorHandler(err);
     });
 

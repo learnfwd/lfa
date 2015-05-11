@@ -11,6 +11,11 @@ module.exports = function prettyErrors(verbose) {
       if (err.module) {
         console.log(chalk.blue('In module: ') + err.module.request);
       }
+    } else if (typeof(err) === 'string') {
+      if (!verbose) {
+        err = err.replace(/\n(    at [^)\n]+\)\n)+/, '');
+      }
+      console.log(err);
     } else {
       console.log(err);
     }

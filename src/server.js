@@ -31,7 +31,13 @@ function Server(opts) {
       self.app.close();
     }
 
-    cache.webpackCompiler.plugin('done', function () {
+    cache.webpackCompiler.plugin('done', function (st) {
+      var stats = st.toJson({ errors: true, warnings: true });
+      if (stats.errors.length) {
+        opts.watcher.emit('webpack-compile-error', stats.errors[0]);
+      } else if (stats.warnings.length) {
+        opts.watcher.emit('webpack-compile-warning', stats.warnings[0]);
+      }
       opts.watcher.emit('webpack-compile-done');
     });
 
