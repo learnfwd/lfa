@@ -11,6 +11,9 @@ module.exports = function prettyErrors(verbose) {
       if (err.module) {
         console.log(chalk.blue('In module: ') + err.module.request);
       }
+      if (err.fileName) {
+        console.log(chalk.blue('In file: ') + err.fileName);
+      }
     } else if (typeof(err) === 'string') {
       if (!verbose) {
         err = err.replace(/\n(    at [^)\n]+\)\n)+/, '');

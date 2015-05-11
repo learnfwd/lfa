@@ -102,7 +102,14 @@ module.exports = function textJadeTasks(lfa) {
             var locals = { meta: {} };
             locals.meta.url = url;
             locals.meta.path = tocpath;
-            var text = template(locals);
+            var text;
+
+            try {
+              text = template(locals);
+            } catch (err) {
+              err.fileName = file.path;
+              throw err;
+            }
 
             boilerplate[1] = url;
             boilerplate[3] = JSON.stringify(text);
