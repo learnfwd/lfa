@@ -45,7 +45,7 @@
     "fastclick": "^1.0.6",
     "flux": "^2.0.1",
     "fs-extra": "^0.16.3",
-    "git-cli": "^0.8.2",
+    "git-cli": "git://github.com/dapetcu21/node-git-cli.git#6e4a9d566d3b08b68931ad6975cc7e1e722489c7",
     "glob": "^5.0.3",
     "glob2base": "0.0.12",
     "gulp-concat": "^2.5.1",
