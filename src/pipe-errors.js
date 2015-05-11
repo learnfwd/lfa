@@ -6,12 +6,16 @@
 var EE = require('events').EventEmitter;
 
 function patch(stream) {
-  if (stream.pipe === pipe) {
+  if (stream._peOriginalPipe) {
     return stream;
   }
 
-  stream._peOriginalPipe = stream._peOriginalPipe || stream.pipe;
-  stream.pipe = pipe;
+  stream._peOriginalPipe = stream.pipe;
+
+  Object.defineProperty(stream, "pipe", {
+    set: function (x) { this._peOriginalPipe = x; },
+    get: function () { return pipe; }
+  });
 
   return stream;
 }
