@@ -2,5 +2,8 @@ var CleanCSS = require('clean-css');
 
 module.exports = function (content) {
   this.cacheable(true);
-  return new CleanCSS().minify(content).styles;
+  var opts = {
+    restructuring: false
+  };
+  return new CleanCSS(opts).minify(content).styles;
 };

@@ -101,7 +101,7 @@ module.exports = function webpackTasks(lfa) {
               wpEntries.allcss = path.resolve(__dirname, 'templates', 'allcss.js');
           }
 
-          var cssLoaderString = 'simple-css-loader!' + (debug ? '' : 'css-minify!') + 'stylus-loader!stylus-entrypoints';
+          var cssLoaders = ['style-loader', 'url-fixer', 'simple-css-loader', 'stylus-loader'];
 
           var webpackConfig = {
             entry: wpEntries,
@@ -116,10 +116,9 @@ module.exports = function webpackTasks(lfa) {
                 { test: /\.jsx$/, loaders: ['react-hot', 'jsx?harmony'] },
                 { test: /\.json$/, loaders: ['json-loader'] },
                 { test: /\.css$/, loaders: ['style-loader', 'css-loader'] },
-                { test: /vendorcss.dummy$/, 
-                  loader: ExtractTextPlugin.extract('style-loader!url-fixer', cssLoaderString + '?key=vendor') },
-                { test: /usercss.dummy$/, 
-                  loader: ExtractTextPlugin.extract('style-loader!url-fixer', cssLoaderString + '?key=user') },
+                { test: /vendorcss.dummy$/, loaders: cssLoaders.concat(['stylus-entrypoints?key=vendor']) },
+                { test: /usercss.dummy$/, loaders: cssLoaders.concat(['stylus-entrypoints?key=user']) },
+                { test: /allcss.js$/, loader: ExtractTextPlugin.loader({remove: true}) },
                 { test: /\.styl$/, loaders: ['style-loader', 'css-loader', 'stylus-loader'] },
               ]
             },
