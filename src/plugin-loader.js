@@ -9,6 +9,7 @@ var when = require('when');
 var nodefn = require('when/node');
 var fs = require('fs');
 var _ = require('lodash');
+var child_process = require('child_process');
 
 function loadPlugin(lfa, pluginPath, packageJson) {
   var promise;
@@ -23,13 +24,38 @@ function loadPlugin(lfa, pluginPath, packageJson) {
   }
 
   return promise.then(function (packageJson) {
-    var themes = packageJson.themes || {};
-
     var keywords = packageJson.keywords;
     assert((keywords instanceof Array) && _.contains(keywords, 'lfa-plugin'), 
       'Plugins must have "lfa-plugin" as a keyword in their package.json');
+
+    if (!_.isEmpty(packageJson.dependencies || {})) {
+      // TODO: Also run npm install when dependencies out of date
+      return nodefn.call(fs.stat, path.join(pluginPath, 'node_modules'))
+        .then(function (stat) {
+          return stat.isDirectory();
+        })
+        .catch(function () {
+          return false;
+        })
+        .then(function (hasNodeModules) {
+          if (hasNodeModules) { return; }
+          return when.promise(function (resolve, reject) {
+            child_process.exec('npm install', { cwd: pluginPath }, function (error, stdout, stderr) {
+              if (error) { reject(error); return; }
+              resolve();
+            });
+          });
+        })
+        .then(function() {
+          return packageJson;
+        });
+    }
+    return packageJson;
+
+  }).then(function (packageJson) {
     
     var tasks = [];
+    var themes = packageJson.themes || {};
     
     _.each(themes, function (themePath, name) {
       themePath = path.resolve(pluginPath, path.normalize(themePath));
