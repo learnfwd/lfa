@@ -1,7 +1,11 @@
 var resolveMap = {};
 
 function myRequire(mod) {
-  return __webpack_require__(resolveMap[mod]);
+  var moduleId = resolveMap[mod];
+  if (moduleId === undefined) {
+    throw new Error('Module "' + mod + '" is not available at window.require()');
+  }
+  return __webpack_require__(moduleId);
 }
 
 window.require = myRequire;
