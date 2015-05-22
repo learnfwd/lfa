@@ -115,11 +115,15 @@ module.exports = function webpackTasks(lfa) {
               loaders: [
                 { test: /\.jsx$/, loaders: ['react-hot', 'jsx?harmony'] },
                 { test: /\.json$/, loaders: ['json-loader'] },
-                { test: /\.css$/, loaders: ['style-loader', 'css-loader'] },
+
                 { test: /vendorcss.dummy$/, loaders: cssLoaders.concat(['stylus-entrypoints?key=vendor']) },
                 { test: /usercss.dummy$/, loaders: cssLoaders.concat(['stylus-entrypoints?key=user']) },
                 { test: /allcss.js$/, loader: ExtractTextPlugin.loader({remove: true}) },
-                { test: /\.styl$/, loaders: ['style-loader', 'css-loader', 'stylus-loader'] },
+
+                { test: /\.styl$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader!stylus-loader') },
+                { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader') },
+
+                { test: /\.(png|jpe?g|gif|ogg|mp3|m4a|m4v|mov|webm|ogv|woff|otf|ttf)(\?[^\?]+)?$/, loaders: ['file-loader'] },
               ]
             },
             resolve: {
