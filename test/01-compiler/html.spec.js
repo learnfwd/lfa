@@ -18,7 +18,7 @@ describe('index.html compilation', function () {
       return nodefn.call(fs.readFile, indexPath);
     }).then(function(data) {
       var regexp = /<html[^<>]*>.*<\/html>/;
-      regexp.test(data.toString()).should.equal(true);
+      data.toString().should.match(regexp);
     });
   });
 

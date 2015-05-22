@@ -23,7 +23,7 @@ describe('css compilation', function () {
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
       var regexp = /\.user-colors[^]*\.user-main/;
-      regexp.test(data.toString()).should.equal(true);
+      data.toString().should.match(regexp);
     });
   });
 
@@ -35,7 +35,7 @@ describe('css compilation', function () {
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
       var regexp = /\.user-colors[^]*\.theme-colors[^]*\.theme-main[^]*\.user-main/;
-      regexp.test(data.toString()).should.equal(true);
+      data.toString().should.match(regexp);
     });
   });
 
@@ -47,7 +47,7 @@ describe('css compilation', function () {
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
       var regexp = /\.user-colors[^]*\.user-main/;
-      regexp.test(data.toString()).should.equal(true);
+      data.toString().should.match(regexp);
     });
   });
 
@@ -59,7 +59,7 @@ describe('css compilation', function () {
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
       var regexp = /\.user-colors[^]*\.user-main/;
-      regexp.test(data.toString()).should.equal(false);
+      data.toString().should.not.match(regexp);
     });
   });
 
@@ -71,7 +71,7 @@ describe('css compilation', function () {
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
       var regexp = /\.plugin-colors[^]*\.plugin-main/;
-      regexp.test(data.toString()).should.equal(true);
+      data.toString().should.match(regexp);
     });
   });
 });
