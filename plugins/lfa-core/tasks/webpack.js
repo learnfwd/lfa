@@ -86,7 +86,9 @@ module.exports = function webpackTasks(lfa) {
           if (debug) {
             wpPlugins.push(new CommonsChunkPlugin('commons.js', ['main', 'usercss', 'vendorcss']));
           }
-          wpPlugins.push(new ExtractTextPlugin('main.css', { disable: debug }));
+
+          var extractPlugin = new ExtractTextPlugin('main.css', { allChunks: true, disable: debug });
+          wpPlugins.push(extractPlugin);
 
           mainEntrypoints.push(path.join(lfa.config.tmpPath, 'gen', 'index.js'));
 
@@ -101,8 +103,6 @@ module.exports = function webpackTasks(lfa) {
               wpEntries.allcss = path.resolve(__dirname, 'templates', 'allcss.js');
           }
 
-          var cssLoaders = ['style-loader', 'url-fixer', 'simple-css-loader', 'stylus-loader'];
-
           var webpackConfig = {
             entry: wpEntries,
             output: {
@@ -116,12 +116,11 @@ module.exports = function webpackTasks(lfa) {
                 { test: /\.jsx$/, loaders: ['react-hot', 'jsx?harmony'] },
                 { test: /\.json$/, loaders: ['json-loader'] },
 
-                { test: /vendorcss.dummy$/, loaders: cssLoaders.concat(['stylus-entrypoints?key=vendor']) },
-                { test: /usercss.dummy$/, loaders: cssLoaders.concat(['stylus-entrypoints?key=user']) },
-                { test: /allcss.js$/, loader: ExtractTextPlugin.loader({remove: true}) },
+                { test: /allcss.js$/, loader: extractPlugin.extract('noop-loader') },
 
-                { test: /\.styl$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader!stylus-loader') },
-                { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader') },
+                // TODO: make these pass through extractPlugin
+                { test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader' },
+                { test: /\.css$/, loader: 'style-loader!css-loader' },
 
                 { test: /\.(png|jpe?g|gif|ogg|mp3|m4a|m4v|mov|webm|ogv|woff|otf|ttf)(\?[^\?]+)?$/, loaders: ['file-loader'] },
               ]
