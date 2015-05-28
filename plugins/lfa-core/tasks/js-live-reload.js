@@ -9,7 +9,7 @@ module.exports = function liveReloadDummy(lfa) {
   });
 
   lfa.task('webpack:gen:live-reload', ['live-reload:collect'], function (writtenFiles) {
-    var reload = false;
+    var reload = !!lfa.currentCompile.reloadAnyway;
     var stream = lfa.pipeErrors(through.obj());
 
     writtenFiles.on('data', function () { 

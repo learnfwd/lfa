@@ -12,15 +12,17 @@ module.exports = function defaultAssetsTasks(lfa) {
 
     lfa.currentCompile.assetPaths = assetPaths;
 
-    if (lfa.currentCompile.serve) {
-      return lfa.emptyStream();
-    }
-
     var globs = _.map(assetPaths, function (o) {
       return path.join(o, '**');
     });
 
     this.addFileDependencies(globs);
+
+    if (lfa.currentCompile.serve) {
+      lfa.currentCompile.reloadAnyway = true;
+      return lfa.emptyStream();
+    }
+
     return lfa.src(globs, { buffer: false, filterModified: this });
   });
 };
