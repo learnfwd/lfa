@@ -62,15 +62,28 @@ module.exports = function buildInfoJS(lfa) {
   }
 
   lfa.task('webpack:gen:buildinfo', ['text:files:*'], function (textFiles) {
-    var chapters = {};
+    var previousChapters = lfa.previousCompile ? lfa.previousCompile.chapters : null;
+    var chapters = _.cloneDeep(previousChapters || {});
+    var files = lfa.previousCompile ? (lfa.previousCompile.textFilesToChapters || {}) : {};
     var stream = lfa.pipeErrors(through.obj());
+    var shouldBuild = !lfa.previousCompile;
+    lfa.currentCompile.chapters = chapters;
+    lfa.currentCompile.textFilesToChapters = files;
 
-    // TODO: When caching gets finished, we won't need this anymore
-    if (lfa.previousCompile) { return lfa.emptyStream(); }
-    
+    var deletedFiles = lfa.currentCompile.deletedTextFiles || [];
+    lfa.currentCompile.deletedTextFiles = null;
+
+    _.each(deletedFiles, function(deletedFile) {
+      delete chapters[files[deletedFile]];
+      delete files[deletedFile];
+      shouldBuild = true;
+    });
+
     textFiles.on('data', function (file) {
       if (file.textMeta) {
+        files[file.history[0]] = file.textMeta.path;
         chapters[file.textMeta.path] = file.textMeta;
+        shouldBuild = true;
       }
     });
 
@@ -79,6 +92,11 @@ module.exports = function buildInfoJS(lfa) {
     });
 
     textFiles.on('end', function () {
+      if (!shouldBuild || _.isEqual(previousChapters, chapters)) {
+        stream.end();
+        return;
+      }
+
       var toc = buildToC(chapters);
       var spine = buildSpine(chapters);
 

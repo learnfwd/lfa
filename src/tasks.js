@@ -50,14 +50,20 @@ Task.prototype.addFileDependencies = function addFileDependencies(files) {
   });
 };
 
-Task.prototype.filterModifiedFiles = function filterModifiedFiles(globs) {
+
+Task.prototype.filterModifiedFiles = function filterModifiedFiles(globs, actions) {
   if (!this.lfa._oldCache) { return globs; }
+
+  actions = actions || ['changed', 'created'];
+  if (!(actions instanceof Array)) {
+    actions = [actions];
+  }
 
   var res = [];
   if (typeof(globs) === 'string') { globs = [globs]; }
   var ops = this.lfa._fileOps;
 
-  _.each(['changed', 'created'], function (action) {
+  _.each(actions, function (action) {
     _.each(ops[action] || [], function (file) {
       if (_.reduce(globs, function (acc, glob) {
         return acc || minimatch(file, glob);

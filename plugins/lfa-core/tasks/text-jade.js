@@ -80,7 +80,9 @@ module.exports = function textJadeTasks(lfa) {
         // Mark mixins for recompilation
         lfa.currentCompile.textJadeMixinPathCache = null;
       }
+      lfa.currentCompile.deletedTextFiles = (lfa.currentCompile.deletedTextFiles || []).concat(self.filterModifiedFiles(glob, 'removed'));
     }
+
 
     return lfa.src(glob, { filterModified: filterModified })
       .pipe(through.obj(function (file, enc, cb) {
@@ -115,7 +117,7 @@ module.exports = function textJadeTasks(lfa) {
             boilerplate[3] = JSON.stringify(text);
             var newFile = new File({
               base: '',
-              path: path.join('chapters', url + '.js'),
+              history: file.history.concat([path.join('chapters', url + '.js')]),
               contents: new Buffer(boilerplate.join(''), 'utf8'),
             });
             newFile.textMeta = locals.meta;
