@@ -4,9 +4,11 @@ var Compiler = {};
 
 Compiler.compile = function (opts) {
   var self = this;
+  opts = opts || {};
+
+  if (!opts.inhibitEvents) { self.emit('compile-start'); }
 
   return when.try(function () {
-    opts = opts || {};
     opts.debug = opts.debug || false;
     opts.warningsAsErrors = opts.warningsAsErrors || false;
 
@@ -35,7 +37,11 @@ Compiler.compile = function (opts) {
       stream.on('error', reject);
       stream.on('end', resolve);
     }).then(function () {
+      if (!opts.inhibitEvents) { self.emit('compile-done', self.currentCompile); }
       return self.currentCompile;
+    }, function (err) {
+      if (!opts.inhibitEvents) { self.emit('compile-fatal-error', err); }
+      throw err;
     });
   });
 };

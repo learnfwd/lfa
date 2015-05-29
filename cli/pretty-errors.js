@@ -6,7 +6,11 @@ module.exports = function prettyErrors(verbose) {
       if (verbose) {
         console.log(err.stack.replace(new RegExp('^' + err.name + ':'), chalk.red(err.name) + chalk.blue(': ')));
       } else {
-        console.log(chalk.red(err.name) + chalk.blue(': ')  + err.message);
+        if (err.nameLess) {
+          console.log(err.message);
+        } else {
+          console.log(chalk.red(err.name) + chalk.blue(': ')  + err.message);
+        }
       }
       if (err.module) {
         console.log(chalk.blue('In module: ') + err.module.request);

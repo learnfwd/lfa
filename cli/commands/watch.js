@@ -1,9 +1,10 @@
 var LFA = require('../../');
 var chalk = require('chalk');
 var switchControl = require('../switch');
-var prettyErrors = require('../pretty-errors');
 var when = require('when');
 var openUrl = require('open');
+var prettyErrors = require('../pretty-errors');
+var EventOutput = require('../event-output');
 
 module.exports = function compile(cli) {
   var projPath = cli.flags.book;
@@ -34,57 +35,14 @@ module.exports = function compile(cli) {
       verbose: !!verbose,
     });
 
+    var output = new EventOutput(lfa, verbose);
+
     watcher.on('listening', function (port) {
+      output.dismissCompiling();
       console.log(chalk.green('listening on port ') + chalk.yellow(port));
       if (open) {
         openUrl('http://localhost:' + port);
       }
-    });
-
-    var compilingShown = false;
-    function showCompiling(text) {
-      if (!compilingShown) {
-        compilingShown = true;
-        process.stdout.write(chalk.green('compiling... '));
-      }
-      if (text) {
-        compilingShown = false;
-        console.log(text);
-      }
-    }
-
-    function dismissCompiling() {
-      if (compilingShown) {
-        compilingShown = false;
-        console.log('');
-      }
-    }
-
-    watcher.on('compiling', function () {
-      showCompiling();
-    });
-
-    watcher.on('compile-done', function () {
-      showCompiling('done');
-    });
-
-    var errorHandler = prettyErrors(verbose);
-
-    watcher.on('compile-fatal-error', function (err) {
-      showCompiling(chalk.red('error'));
-      errorHandler(err);
-    });
-
-    watcher.on('compile-error', function (err) {
-      dismissCompiling();
-      console.log(chalk.red('Non-fatal Error') + ':');
-      errorHandler(err);
-    });
-
-    watcher.on('compile-warning', function (err) {
-      dismissCompiling();
-      console.log(chalk.yellow('Warning') + ':');
-      errorHandler(err);
     });
 
     var prom = when.promise(function (resolve, reject) {

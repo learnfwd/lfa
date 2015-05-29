@@ -51,13 +51,13 @@ function _translateEvents() {
 
   self.on('webpack-compile-error', function (err) {
     if (compiling) {
-      self.emit('compile-error', err);
+      self.lfa.emit('compile-error', err);
     }
   });
 
   self.on('webpack-compile-warning', function (err) {
     if (compiling) {
-      self.emit('compile-warning', err);
+      self.lfa.emit('compile-warning', err);
     }
   });
 
@@ -71,6 +71,16 @@ function _translateEvents() {
   self.on('webpack-listening', function (port) {
     listeningPort = port;
   });
+
+  function forwardEvent(from, to) {
+    self.on(from, function () {
+      self.lfa.emit.bind(self.lfa, to).apply(null, arguments);
+    });
+  }
+
+  forwardEvent('compiling', 'compile-start');
+  forwardEvent('compile-done', 'compile-done');
+  forwardEvent('compile-fatal-error', 'compile-fatal-error');
 }
 
 function Watcher(lfa, opts) {
@@ -116,6 +126,7 @@ function _compile(ops) {
     serve: !!self.opts.serve,
     debug: true,
     saveCurrentCompile: true,
+    inhibitEvents: true,
   }, self.opts);
 
   self.emit('lfa-compiling');

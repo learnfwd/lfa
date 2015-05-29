@@ -2,6 +2,7 @@ var LFA = require('../../');
 var chalk = require('chalk');
 var switchControl = require('../switch');
 var prettyErrors = require('../pretty-errors');
+var EventOutput = require('../event-output');
 
 module.exports = function compile(cli) {
   var projPath = cli.flags.book;
@@ -23,18 +24,14 @@ module.exports = function compile(cli) {
     });
 
   }).then(function (lfa) {
-    process.stdout.write(chalk.green('compiling... '));
+    new EventOutput(lfa, verbose);
 
     var task = cli.input.length >= 2 ? cli.input[1] : null;
     return lfa.compile({
       task: task,
       debug: debug,
       warningsAsErrors: werror,
-    }).then(function () {
-      console.log('done');
-    }).catch(function (err) {
-      console.log(chalk.red('error'));
-      throw err;
+    }).catch(function () {
     });
 
   }).catch(prettyErrors(verbose));
