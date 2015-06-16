@@ -13,6 +13,9 @@ module.exports = function buildInfoJS(lfa) {
     };
 
     var keys = _.keys(map);
+    keys = _.filter(keys, function (o) {
+      return !map[o].noToC;
+    });
     keys.sort();
 
     _.each(keys, function (key) {
@@ -57,6 +60,9 @@ module.exports = function buildInfoJS(lfa) {
 
   function buildSpine(map) {
     var files = _.keys(map);
+    files = _.filter(files, function (o) {
+      return !map[o].noSpine;
+    });
     files.sort();
     return _.map(files, function(o) { return map[o].url; });
   }

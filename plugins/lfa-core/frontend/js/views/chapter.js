@@ -67,7 +67,7 @@ var ChapterView = Backbone.View.extend({
       chapterCount = tocUrlOrder.length,
       lastIndex = chapterCount - 1;
     
-    if (chapterCount > 1) {
+    if (chapterCount > 1 && currentIndex !== -1) {
       if (currentIndex === 0) {
         next = currentIndex + 1;
         previous = lastIndex;
@@ -151,7 +151,11 @@ var ChapterView = Backbone.View.extend({
     $('body').addClass(classes.join(' '));
 
     // Add the cssNamespace classes to the <body> element.
-    $('body').addClass(App.tocFindByUrl[chapter].locals.cssNamespace);
+    var cssNamespace = chapter;
+    try {
+      cssNamespace = App.tocFindByUrl[chapter].locals.cssNamespace || cssNamespace;
+    } catch (ex) {}
+    $('body').addClass(cssNamespace);
 
     App.book.trigger('render', {
       chapter: chapter
