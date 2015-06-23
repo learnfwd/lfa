@@ -3,7 +3,13 @@ var through = require('through2');
 var uuid = require('uuid');
 
 module.exports = function liveReloadDummy(lfa) {
-  lfa.task('live-reload:collect', [['default:assets', 'default:html']], function (stream) {
+
+  lfa.task('live-reload:collect:assets', ['default:assets'], function (stream) {
+    this.setDependencyMode(stream, 'modify');
+    return stream;
+  });
+
+  lfa.task('live-reload:collect', ['live-reload:collect:*'], function (stream) {
     this.setDependencyMode(stream, 'modify');
     return stream;
   });

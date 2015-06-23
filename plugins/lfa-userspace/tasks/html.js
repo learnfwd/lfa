@@ -13,4 +13,9 @@ module.exports = function htmlTasks(lfa) {
       .pipe(lfa.hook('html:post-write:*'))
       .pipe(lfa.hook('post-write:*'));
   });
+
+  lfa.task('live-reload:collect:html', ['default:html'], function (stream) {
+    this.setDependencyMode(stream, 'modify');
+    return stream;
+  });
 };

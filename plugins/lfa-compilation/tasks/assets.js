@@ -1,7 +1,7 @@
-var defaultAssetsTasks = require('./assets-default');
+var pluginAssetsTasks = require('./assets-plugins');
 
 module.exports = function assetsTasks(lfa) {
-  defaultAssetsTasks(lfa);
+  pluginAssetsTasks(lfa);
 
   lfa.task('default:assets', ['assets:files:*'], function (files) {
     this.setDependencyMode(files, 'modify');

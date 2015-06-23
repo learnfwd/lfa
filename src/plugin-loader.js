@@ -119,6 +119,7 @@ module.exports = function pluginLoader(lfa) {
     lfa.themes = {};
   }).then(function () {
     var plugins = [
+      loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-compilation')),
       loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-core')),
       loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-analytics')),
     ];
@@ -126,6 +127,7 @@ module.exports = function pluginLoader(lfa) {
     return when.all([
       loadLocalPlugins(lfa, plugins),
     ]).then(function () {
+      plugins.push(loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-userspace')));
       return when.all(plugins);
     });
 

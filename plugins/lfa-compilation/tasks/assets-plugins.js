@@ -4,13 +4,15 @@ var _ = require('lodash');
 module.exports = function defaultAssetsTasks(lfa) {
   var config = lfa.config;
 
-  lfa.task('assets:files:default', function () {
-    var assetPaths = [ path.join(config.projectPath, 'assets') ];
-    _.each(lfa.plugins, function (plugin) {
-      assetPaths.push(path.join(plugin.path, 'frontend', 'assets'));
-    });
+  lfa.task('assets:files:plugins', function () {
+    var assetPaths = [];
+    var confAssetPaths = lfa.currentCompile.assetPaths = lfa.currentCompile.assetPaths || [];
 
-    lfa.currentCompile.assetPaths = assetPaths;
+    _.each(lfa.plugins, function (plugin) {
+      var p = path.join(plugin.path, 'frontend', 'assets');
+      assetPaths.push(p);
+      confAssetPaths.push(p);
+    });
 
     var globs = _.map(assetPaths, function (o) {
       return path.join(o, '**');

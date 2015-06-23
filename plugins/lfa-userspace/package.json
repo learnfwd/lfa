@@ -1,0 +1,7 @@
+{
+  "name": "lfa-userspace",
+  "main": "./tasks/index.js",
+  "keywords": [
+    "lfa-plugin"
+  ]
+}

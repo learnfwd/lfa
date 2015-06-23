@@ -120,12 +120,10 @@ module.exports = function buildInfoJS(lfa) {
       };
 
       var contents = JSON.stringify(json, null, 2);
-      //AMD bullshit
-      contents = 'define(' + contents + ');';
 
       var file = new File({
         base: '',
-        path: 'gen/modules/build-info.js',
+        path: 'gen/modules/build-info.json',
         contents: new Buffer(contents),
       });
       file.webpackAlias = ['build-info', 'searchjson'];
