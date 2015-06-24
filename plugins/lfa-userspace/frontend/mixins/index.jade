@@ -1,12 +1,15 @@
+mixin meta(key, value)
+  - if (self.meta) {
+  -   self.meta[key] = value;
+  - }
+
 mixin title(title, subtitle)
-  - self.meta.title = title;
-  - if (subtitle) { self.meta.subtitle = subtitle; }
+  +meta('title', title)
+  if (subtitle)
+    +meta('subtitle', subtitle)
 
 mixin subtitle(subtitle)
-  - self.meta.subtitle = subtitle;
-
-mixin meta(key, value)
-  - self.meta[key] = value;
+  +meta('subtitle', subtitle)
 
 mixin hidden_from_toc()
   +meta('noToC', true)

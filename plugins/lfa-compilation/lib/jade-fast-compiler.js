@@ -14,8 +14,6 @@ function extractMixins(r) {
 JadeFastCompiler.newContext = function newContext() {
   return {
     jade: jade,
-    jade_mixins: {},
-    self: {},
   };
 };
 
@@ -28,13 +26,14 @@ JadeFastCompiler.shimmedContext = function shimmedContext() {
 JadeFastCompiler.extensibleBundle = function extensibleBundle(code) {
   var template = [
     '(function template(context, locals, use_buf) {',
-      'var buf = [];',
+      'var buf = context.buf = context.buf || [];',
+      'buf.length = 0;',
       'var jade = context.jade;',
       'var jade_mixins = context.jade_mixins = context.jade_mixins || {};',
       'var jade_interp;',
-      'var self = context.self = ((locals === false) ? context.self : (locals || {}));',
-      code,
-      'if (use_buf === false) { return buf.join(""); }',
+      'context.self = ((locals === false) ? context.self : locals) || {};',
+      code.replace(/self/g, 'context.self'),
+      'if (use_buf !== false) { return buf.join(""); }',
     '})'
   ].join('\n');
   return template;

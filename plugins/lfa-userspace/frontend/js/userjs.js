@@ -1,9 +1,9 @@
 var userModuleId = null;
 
 try {
-  var userModuleId = resolve('__REPLACE__');
+  var userModuleId = require.resolve('__PROJ_PATH__/js');
 } catch (ex) {}
 
 if (userModuleId !== null) {
-  __webpack_require__(userModuleId);
+  module.exports = __webpack_require__(userModuleId);
 }

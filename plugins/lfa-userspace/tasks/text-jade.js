@@ -1,4 +1,4 @@
-var JadeFastCompiler = require('./jade-fast-compiler');
+var JadeFastCompiler = require('../../lfa-compilation/lib/jade-fast-compiler');
 var through = require('through2');
 var gutil = require('gulp-util');
 var path = require('path');
@@ -7,6 +7,7 @@ var _ = require('lodash');
 var when = require('when');
 var nodefn = require('when/node');
 var fs = require('fs');
+var safeEval = require('./safe-eval');
 
 var PLUGIN_NAME = 'text-jade';
 var boilerplate = [
@@ -24,7 +25,7 @@ function escapeRegExp(string) {
 // minimal jade context, loaded only with the +meta mixins
 var jadeContext = null;
 function getJadeContext() {
-  if (jadeContext) { return jadeContext; }
+  if (jadeContext) { return when(jadeContext); }
 
   jadeContext = JadeFastCompiler.shimmedContext();
 
@@ -34,8 +35,7 @@ function getJadeContext() {
       return JadeFastCompiler.compileBundle(contents.toString('utf8'), { filename: fpath });
     })
     .then(function (template) {
-      var mixins;
-      eval('mixins = ' + template);
+      var mixins = safeEval(template);
       mixins(jadeContext, false, false);
       return jadeContext;
     });
@@ -61,9 +61,7 @@ module.exports = function textJadeTasks(lfa) {
 
         when
           .try(function () {
-            return JadeFastCompiler.compileBundle(
-              file.contents.toString('utf8'),
-              { filename: file.path });
+            return JadeFastCompiler.compileBundle(file.contents.toString('utf8'), { filename: file.path });
           })
           .then(function (template) {
             // We're now trying to extract the +meta calls from the template
@@ -73,28 +71,32 @@ module.exports = function textJadeTasks(lfa) {
 
             var shimmedFunction = function () {};
             try {
-              eval('shimmedFunction = ' + template);
+              shimmedFunction = safeEval(template);
             } catch (err) {
               err.fileName = file.path;
               throw err;
             }
 
-            // Running the jade file now will probably fail, especially since
-            // there are no mixins loaded, but +meta calls are usually at the start
-            // of the file and we will reach them without failing
-            try {
-              shimmedFunction(getJadeContext(), locals, false);
-            } catch (ex) {}
+            return getJadeContext()
+              .then(function (context) {
+                // Running the jade file now will probably fail, especially since
+                // there are no mixins loaded, but +meta calls are usually at the start
+                // of the file and we will reach them without failing
+                try { shimmedFunction(context, locals, false); } catch (ex) {}
+              })
+              .then(function () {
+                boilerplate[1] = url;
+                boilerplate[3] = template;
 
-            boilerplate[1] = url;
-            boilerplate[3] = template;
-            var newFile = new File({
-              base: '',
-              history: file.history.concat([path.join('chapters', url + '.js')]),
-              contents: new Buffer(boilerplate.join(''), 'utf8'),
-            });
-            newFile.textMeta = locals.meta;
-            cb(null, newFile);
+                var newFile = new File({
+                  base: '',
+                  history: file.history.concat([path.join('chapters', url + '.js')]),
+                  contents: new Buffer(boilerplate.join(''), 'utf8'),
+                });
+
+                newFile.textMeta = locals.meta;
+                cb(null, newFile);
+              });
           })
           .catch(function(err) {
             return cb(new gutil.PluginError(PLUGIN_NAME, err));

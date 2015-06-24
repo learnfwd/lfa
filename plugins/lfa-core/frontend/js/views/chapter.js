@@ -5,6 +5,7 @@ require('stacktable');
 require('fluidbox');
 
 var templates = require('templates');
+var mixinCompiler = require('../mixin-compiler');
 var Chapters = require('../chapters');
 var Prefetcher = require('../prefetcher');
 var App = require('../app');
@@ -119,7 +120,7 @@ var ChapterView = Backbone.View.extend({
     Chapters.asyncLoad(chapter, this.chapterLoaded.bind(this, chapter));
   },
 
-  chapterLoaded: function(chapter, error, htmlData) {
+  chapterLoaded: function(chapter, error, template) {
     // For when the chapters come in the wrong order
     if (App.book.currentChapter !== chapter) { return; }
 
@@ -128,7 +129,7 @@ var ChapterView = Backbone.View.extend({
     });
 
     var front, back;
-    var data = htmlData();
+    var data = mixinCompiler(template);
     if (data && data.indexOf("<section>") !== -1) {
       front = "<article>";
       back = "</article>";
