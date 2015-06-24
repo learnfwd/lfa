@@ -1,24 +1,3 @@
-mixin title(title, subtitle)
-  - self.meta.title = title;
-  - if (subtitle) { self.meta.subtitle = subtitle; }
-
-mixin subtitle(subtitle)
-  - self.meta.subtitle = subtitle;
-
-mixin meta(key, value)
-  - self.meta[key] = value;
-
-mixin hidden_from_toc()
-  +meta('noToC', true)
-
-mixin hidden_from_spine()
-  +meta('noSpine', true)
-
-mixin hidden_chapter()
-  +hidden_from_toc
-  +hidden_from_spine
-
-
 mixin img(path)
   img(src="#{path}")
 

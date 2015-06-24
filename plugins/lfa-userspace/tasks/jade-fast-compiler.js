@@ -11,43 +11,46 @@ function extractMixins(r) {
   return r.replace(/^[^]*var self = locals \|\| {};([^]*)return buf\.join\(""\)[^]*$/, '$1');
 }
 
-JadeFastCompiler.compileFrontMatter = function compileFrontMatter(file, opts) {
-  return nodefn.call(fs.readFile, file)
-    .then(function (contents) {
-      opts = opts || {};
-      opts.self = true; //Simplifies the Jade output
-      opts.filename = file;
-      // Prevent the Jade compiler from optimizing out unused mixins
-      contents += '\nmixin dynamic_dummy\n  - var nop;\n\n+#{"dynamic_dummy"}';
-      return jadeCompiler.compileClient(contents, opts);
-    })
-    .then(function(res) {
-      return extractMixins(res.result);
-    });
+JadeFastCompiler.newContext = function newContext() {
+  return {
+    jade: jade,
+    jade_mixins: {},
+    self: {},
+  };
 };
 
-JadeFastCompiler.compile = function compileFile(contents, matter, opts) {
+JadeFastCompiler.shimmedContext = function shimmedContext() {
+  var ctx = JadeFastCompiler.newContext();
+  // ctx.jade_mixins = new Proxy(...)
+  return ctx;
+};
+
+JadeFastCompiler.extensibleBundle = function extensibleBundle(code) {
+  var template = [
+    '(function template(context, locals, use_buf) {',
+      'var buf = [];',
+      'var jade = context.jade;',
+      'var jade_mixins = context.jade_mixins = context.jade_mixins || {};',
+      'var jade_interp;',
+      'var self = context.self = ((locals === false) ? context.self : (locals || {}));',
+      code,
+      'if (use_buf === false) { return buf.join(""); }',
+    '})'
+  ].join('\n');
+  return template;
+};
+
+JadeFastCompiler.compileBundle = function compileBundle(contents, opts) {
   opts = opts || {};
   opts.self = true;
 
-  return jadeCompiler.compileClient(contents, opts)
-      .then(function (res) {
-        var template = _.flatten([
-            'result = (function template(locals) {',
-            'var buf = [];',
-            'var jade_mixins = {};',
-            'var jade_interp;',
-            'var self = locals || {};',
-            matter,
-            extractMixins(res.result),
-            'return buf.join("");',
-            '})'
-          ]).join('\n');
+  // Prevent the Jade compiler from optimizing out unused mixins
+  contents += '\nmixin dynamic_dummy\n  - var nop;\n\n+#{"dynamic_dummy"}';
 
-        var result;
-        eval(template);
-        return result;
-      });
+  return jadeCompiler.compileClient(contents, opts)
+    .then(function (res) {
+      return JadeFastCompiler.extensibleBundle(extractMixins(res.result));
+    });
 };
 
 module.exports = JadeFastCompiler;
