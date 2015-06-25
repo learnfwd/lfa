@@ -1,5 +1,4 @@
 require('!!../../loaders/replace-project-path.js!./mixins.js');
-require('!!mixin-loader!../mixins/index.jade');
 
 module.exports = {
   BuildInfo: require('build-info'),

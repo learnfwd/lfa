@@ -35,7 +35,7 @@ html(lang=book.language, dir=book.textDirection)
     if serve
       script(src='/webpack-dev-server.js')
     if debug
-      script(src='commons.js?cache=' + cacheBlob)
-      script(src='vendorcss.js?cache=' + cacheBlob)
-      script(src='usercss.js?cache=' + cacheBlob)
-    script(src='main.js?cache=' + cacheBlob)
+      script(src='combined-commons.js?cache=' + cacheBlob)
+      script(src='combined-css-vendor.js?cache=' + cacheBlob)
+      script(src='combined-css-user.js?cache=' + cacheBlob)
+    script(src='combined-js.js?cache=' + cacheBlob)
