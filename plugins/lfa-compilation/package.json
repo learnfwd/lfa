@@ -1,5 +1,5 @@
 {
-  "name": "lfa-core",
+  "name": "lfa-compilation",
   "main": "./tasks/index.js",
   "themes": {
     "default": "./themes/default",

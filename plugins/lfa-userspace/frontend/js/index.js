@@ -5,5 +5,3 @@ module.exports = {
   HotChapterReload: require('./hot-chapter-reload'),
   UserJS: require('!!../../loaders/replace-project-path.js!./userjs.js'),
 };
-
-console.log(module.exports);

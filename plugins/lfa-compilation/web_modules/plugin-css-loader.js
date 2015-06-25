@@ -12,8 +12,8 @@ module.exports.pitch = function () {
 
   // All the different kinds of CSS lfa supports
   var requests = [
-    '!simple-css-loader!stylus-loader!' + path.join(stylesPath, type + '.styl'), // Stylus
-    '!simple-css-loader!' + path.join(stylesPath, type + '.css'), // CSS
+    '!!simple-css-loader!stylus-loader!' + path.join(stylesPath, type + '.styl'), // Stylus
+    '!!simple-css-loader!' + path.join(stylesPath, type + '.css'), // CSS
     path.join(stylesPath, type + '.js'), // CSS-exporting JS
   ];
 
@@ -34,7 +34,6 @@ module.exports.pitch = function () {
 
   buf.push('module.exports = buf.join("");\n');
 
-  console.log(buf.join(''));
   return buf.join('');
 };
 
