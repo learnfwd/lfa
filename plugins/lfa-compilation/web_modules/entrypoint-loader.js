@@ -9,12 +9,13 @@ module.exports.pitch = function () {
   var plugins = this.options.lfaPlugins;
   var dummyFile = this.options.dummyFile;
   var type = utils.parseQuery(this.query).type;
+  var debug = !!this.options.lfa.currentCompile.debug;
 
   var buf = [];
 
   if (type === 'js') {
     buf.push('var o = module.exports = {}\n');
-  } else {
+  } else if (!debug) {
     buf.push('var buf = []\n');
   }
 
@@ -38,17 +39,15 @@ module.exports.pitch = function () {
       buf.push('] = mod');
       buf.push(idx);
       buf.push(';\n');
-    } else {
+    } else if (!debug) {
       buf.push('buf.push(mod');
       buf.push(idx);
       buf.push(');\n');
     }
   });
 
-  if (type !== 'js') {
-    buf.push('module.exports = [[');
-    buf.push(JSON.stringify(type));
-    buf.push(', buf.join(""), ""]];\n');
+  if (type !== 'js' && !debug) {
+    buf.push('module.exports = buf.join("")');
   }
 
   return buf.join('');
