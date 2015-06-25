@@ -74,6 +74,7 @@
     "open": "0.0.5",
     "path": "^0.11.14",
     "prompt": "^0.2.14",
+    "raw-loader": "^0.5.1",
     "react": "^0.13.1",
     "react-hot-loader": "^1.2.4",
     "replace-ext": "0.0.1",

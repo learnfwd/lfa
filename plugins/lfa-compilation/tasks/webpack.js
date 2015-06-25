@@ -59,7 +59,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   var wpEntries = {};
   wpEntries[name + '-js'] = mainEntrypoints;
   wpEntries[name + '-css-user'] = '!!' + userExtractPlugin.extract('entrypoint-loader?type=css-user') + '!' + dummyFile;
-  wpEntries[name + '-css-vendor'] = '!!' + userExtractPlugin.extract('entrypoint-loader?type=css-vendor') + '!' + dummyFile;
+  wpEntries[name + '-css-vendor'] = '!!' + vendorExtractPlugin.extract('entrypoint-loader?type=css-vendor') + '!' + dummyFile;
 
   var webpackConfig = {
     entry: wpEntries,

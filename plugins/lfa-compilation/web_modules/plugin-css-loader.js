@@ -13,10 +13,10 @@ module.exports.pitch = function () {
 
   // All the different kinds of CSS lfa supports
   var requests = [
-    'simple-css-loader!' + path.join(stylesPath, type + '.css'), // CSS
-    'simple-css-loader!stylus-loader!' + path.join(stylesPath, type + '.styl'), // Stylus
-    'simple-css-loader!sass-loader!' + path.join(stylesPath, type + '.scss'), // SCSS
-    'simple-css-loader!sass-loader?indentedSyntax!' + path.join(stylesPath, type + '.sass'), // SASS
+    'raw-loader!' + path.join(stylesPath, type + '.css'), // CSS
+    'raw-loader!stylus-loader!' + path.join(stylesPath, type + '.styl'), // Stylus
+    'raw-loader!sass-loader!' + path.join(stylesPath, type + '.scss'), // SCSS
+    'raw-loader!sass-loader?indentedSyntax!' + path.join(stylesPath, type + '.sass'), // SASS
     path.join(stylesPath, type + '.js'), // CSS-exporting JS
   ];
 
@@ -26,7 +26,7 @@ module.exports.pitch = function () {
     buf.push('try { var modId');
     buf.push(idx);
     buf.push(' = require.resolve(');
-    buf.push(JSON.stringify('!!' + (debug ? 'style-loader!url-fixer!' : '' ) + request));
+    buf.push(JSON.stringify('!!' + (debug ? 'style-loader!' : '' ) + request));
     buf.push('); } catch (ex) {}\n');
     buf.push('if (modId');
     buf.push(idx);
