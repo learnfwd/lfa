@@ -12,8 +12,10 @@ module.exports.pitch = function () {
 
   // All the different kinds of CSS lfa supports
   var requests = [
-    '!!simple-css-loader!stylus-loader!' + path.join(stylesPath, type + '.styl'), // Stylus
     '!!simple-css-loader!' + path.join(stylesPath, type + '.css'), // CSS
+    '!!simple-css-loader!stylus-loader!' + path.join(stylesPath, type + '.styl'), // Stylus
+    '!!simple-css-loader!sass-loader!' + path.join(stylesPath, type + '.scss'), // SCSS
+    '!!simple-css-loader!sass-loader?indentedSyntax!' + path.join(stylesPath, type + '.sass'), // SASS
     path.join(stylesPath, type + '.js'), // CSS-exporting JS
   ];
 
