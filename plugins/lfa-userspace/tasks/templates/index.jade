@@ -32,6 +32,51 @@ html(lang=book.language, dir=book.textDirection)
     aside#rightbar
       p.text-center Nothing here yet.
 
+    script.
+      (function () {
+        var moduleCache = {};
+
+        function define(mod, deps, cb, autorun) {
+          if (!(deps instanceof Array)) {
+            autorun = cb; cb = deps; deps = [];
+          }
+          moduleCache[mod] = { 
+            autorun: !!autorun,
+            cb: cb, 
+            deps: deps,
+            hasRun: false,
+            result: undefined,
+          };
+        }
+
+        function require(mod) {
+          if (moduleCache[mod].hasRun) {
+            return moduleCache[mod].result;
+          }
+          moduleCache[mod].hasRun = true;
+          var resolvedDeps = [];
+          moduleCache[mod].deps.forEach(function (dep) {
+            resolvedDeps.push(require(dep));
+          });
+          return moduleCache[mod].result = moduleCache[mod].cb.apply(window, resolvedDeps);
+        }
+
+        var require = require;
+        function autorun() {
+          for (var mod in moduleCache) {
+            if (moduleCache[mod].autorun) {
+              require(mod);
+            }
+          }
+        }
+
+        window.__lfa_autorun__ = autorun;
+        window.__lfa_require__ = require;
+        window.__lfa_define__ = define;
+        window.require = require;
+        window.define = define;
+      })();
+
     if serve
       script(src='/webpack-dev-server.js')
     if debug
@@ -39,3 +84,6 @@ html(lang=book.language, dir=book.textDirection)
       script(src='combined-css-vendor.js?cache=' + cacheBlob)
       script(src='combined-css-user.js?cache=' + cacheBlob)
     script(src='combined-js.js?cache=' + cacheBlob)
+
+    script.
+      __lfa_autorun__();

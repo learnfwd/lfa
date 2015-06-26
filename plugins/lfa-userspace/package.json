@@ -3,5 +3,10 @@
   "main": "./tasks/index.js",
   "keywords": [
     "lfa-plugin"
-  ]
+  ],
+  "lfa": {
+    "dependencies": [
+      "lfa-core", "jquery", "bootstrap", "backbone", "react", "lodash"
+    ]
+  }
 }

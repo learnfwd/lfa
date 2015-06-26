@@ -13,19 +13,13 @@ module.exports.pitch = function () {
 
   var buf = [];
 
-  if (type === 'js') {
-    buf.push('var o = module.exports = {}\n');
-  } else if (!debug) {
+  if (!debug) {
     buf.push('var buf = []\n');
   }
 
   plugins.forEach(function (plugin, idx) {
-    var loader = (type === 'js') ? 'plugin-js' : 'plugin-css';
-    var pluginPath = (type === 'js') ? plugin.path : path.join(plugin.path, 'frontend', 'styles');
-    var loaderRequest = loader + '?path=' + encodeURIComponent(pluginPath);
-    if (type !== 'js') {
-      loaderRequest += '&type=' + ((type === 'css-vendor') ? 'vendor' : 'main');
-    }
+    var pluginPath = path.join(plugin.path, 'frontend', 'styles');
+    var loaderRequest = 'plugin-css?path=' + encodeURIComponent(pluginPath) + '&type=' + type;
     var queryString = '!!' + loaderRequest + '!' + dummyFile;
 
     buf.push('var mod');
@@ -33,20 +27,14 @@ module.exports.pitch = function () {
     buf.push(' = require(');
     buf.push(JSON.stringify(queryString));
     buf.push(');\n');
-    if (type === 'js') {
-      buf.push('o[');
-      buf.push(JSON.stringify(plugin.name));
-      buf.push('] = mod');
-      buf.push(idx);
-      buf.push(';\n');
-    } else if (!debug) {
+    if (!debug) {
       buf.push('buf.push(mod');
       buf.push(idx);
       buf.push(');\n');
     }
   });
 
-  if (type !== 'js' && !debug) {
+  if (!debug) {
     buf.push('module.exports = buf.join("")');
   }
 

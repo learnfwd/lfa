@@ -7,5 +7,10 @@
   },
   "keywords": [
     "lfa-plugin"
-  ]
+  ],
+  "lfa": {
+    "providedDependencies": [
+      "jquery", "bootstrap", "backbone", "react", "lodash"
+    ]
+  }
 }

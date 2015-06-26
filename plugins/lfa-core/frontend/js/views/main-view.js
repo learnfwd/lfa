@@ -19,7 +19,9 @@ function MainView() {
     AppDispatcher.trigger('ready');
   });
 
-  Backbone.history.start();
+  $(function () {
+    Backbone.history.start();
+  });
 }
 
 module.exports = MainView;

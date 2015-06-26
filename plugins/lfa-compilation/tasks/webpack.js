@@ -4,6 +4,7 @@ var webpack = require('webpack');
 var _ = require('lodash');
 var when = require('when');
 var autoprefixer = require('autoprefixer-stylus');
+var uuid = require('uuid');
 
 var templatesJS = require('./js-templates');
 var liveReloadJS = require('./js-live-reload');
@@ -35,6 +36,32 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     resolveFallback.push(path.join(plugin.path, 'node_modules'));
   });
 
+  // Fetch potential externals from plugins
+  var providedDeps = [];
+  var deps = [];
+  _.each(bundledPlugins, function (plugin) {
+    providedDeps.push(plugin.name);
+    if (!plugin.package.lfa) { return; }
+    try {
+      _.each(plugin.package.lfa.providedDependencies, function (dep) {
+        providedDeps.push(dep);
+      });
+    } catch (ex) {}
+    try {
+      _.each(plugin.package.lfa.dependencies, function (dep) {
+        deps.push(dep);
+      });
+    } catch (ex) {}
+  });
+
+  // Calculate externals
+  var externals = {};
+  _(deps).filter(function (dep) {
+    return !_.contains(providedDeps, dep);
+  }).each(function (external) {
+    externals[external] = 'commonjs ' + external;
+  });
+
   // Hot reload
   var wpPlugins = [];
   var mainEntrypoints = [];
@@ -54,22 +81,25 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   wpPlugins.push(vendorExtractPlugin);
 
   var dummyFile = path.resolve(__dirname, 'templates', 'foo.dummy');
-  mainEntrypoints.push('!!entrypoint-loader?type=js!' + dummyFile);
+  mainEntrypoints.push('!!js-entrypoint-loader!' + dummyFile);
 
   var wpEntries = {};
   wpEntries[name + '-js'] = mainEntrypoints;
-  wpEntries[name + '-css-user'] = '!!' + userExtractPlugin.extract('entrypoint-loader?type=css-user') + '!' + dummyFile;
-  wpEntries[name + '-css-vendor'] = '!!' + vendorExtractPlugin.extract('entrypoint-loader?type=css-vendor') + '!' + dummyFile;
+  wpEntries[name + '-css-user'] = '!!' + userExtractPlugin.extract('css-entrypoint-loader?type=main') + '!' + dummyFile;
+  wpEntries[name + '-css-vendor'] = '!!' + vendorExtractPlugin.extract('css-entrypoint-loader?type=vendor') + '!' + dummyFile;
 
   var webpackConfig = {
     entry: wpEntries,
     output: {
       path: lfa.currentCompile.buildPath,
       filename: '[name].js',
+      library: 'bundle-' + uuid.v4(),
+      libraryTarget: 'this',
+      publicPath: publicPath,
     },
+    externals: [externals],
     debug: debug,
     devtool: debug ? 'eval-source-map' : null,
-    publicPath: publicPath,
     module: {
       loaders: [
         { test: /\.jsx$/, loaders: ['react-hot', 'jsx?harmony'] },
@@ -99,7 +129,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   return webpackConfig;
 }
 
-function compilePlugin(lfa) {
+function compileBundle(lfa) {
   var args = arguments;
   return when.try(function () {
     var compiler = lfa.currentCompile.debug && ((lfa.previousCompile && lfa.previousCompile.webpackCompiler) ||
@@ -183,23 +213,13 @@ module.exports = function webpackTasks(lfa) {
     });
 
     deps.on('end', function () {
-      var action;
-
-      if (lfa.currentCompile.debug) {
-        // Compile all plugins in the same bundle in debug mode
-        action = compilePlugin(lfa, lfa.plugins, aliases, 'combined');
-      } else {
-        // And separate them in release mode
-        action = when.all(_.map(lfa.plugins, function (plugin) {
-          compilePlugin(lfa, [plugin], aliases, plugin.name);
-        }));
-      }
-
-      action.then(function () {
-        stream.end();
-      }).catch(function (err) {
-        stream.emit('error', err);
-      });
+      compileBundle(lfa, lfa.plugins, aliases, 'combined')
+        .then(function () {
+          stream.end();
+        })
+        .catch(function (err) {
+          stream.emit('error', err);
+        });
     });
 
 

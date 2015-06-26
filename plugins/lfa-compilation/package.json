@@ -5,6 +5,7 @@
     "default": "./themes/default",
     "blank": "./themes/blank"
   },
+  "frontend": false,
   "keywords": [
     "lfa-plugin"
   ]
