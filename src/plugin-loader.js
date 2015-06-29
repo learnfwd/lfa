@@ -99,6 +99,9 @@ function loadLocalPlugins(lfa, plugins) {
           return null;
         })
         .then(function (pluginPackageJson) {
+          if (lfa.config.loadPluginFilter && pluginPackageJson.name !== lfa.config.loadPluginFilter) {
+            pluginPackageJson = null;
+          }
           if (pluginPackageJson !== null) {
             plugins.push(loadPlugin(lfa, pluginPath, pluginPackageJson));
           }
@@ -108,19 +111,34 @@ function loadLocalPlugins(lfa, plugins) {
   });
 }
 
-module.exports = function pluginLoader(lfa) {
-  return when.try(function () {
-    var plugins = [
-      loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-compilation')),
-      loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-core')),
-      loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-analytics')),
-      loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-book')),
-    ];
+function loadBuiltInPlugin(lfa, pluginName) {
+  return loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', pluginName));
+}
 
-    return when.all([
-      loadLocalPlugins(lfa, plugins),
-    ]).then(function () {
-      plugins.push(loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-user')));
+module.exports = function pluginLoader(lfa) {
+  if (lfa.config.loadCore === undefined) { lfa.config.loadCore = true; }
+  if (lfa.config.loadPlugins === undefined) { lfa.config.loadPlugins = true; }
+  if (lfa.config.loadUser === undefined) { lfa.config.loadUser = true; }
+
+  return when.try(function () {
+    var plugins = [ loadBuiltInPlugin(lfa, 'lfa-compilation') ];
+
+    if (lfa.config.loadCore) {
+      plugins.push(loadBuiltInPlugin(lfa, 'lfa-core'));
+      plugins.push(loadBuiltInPlugin(lfa, 'lfa-analytics'));
+    }
+
+    var tasks = [];
+
+    if (lfa.config.loadPlugins) {
+      tasks.push(loadLocalPlugins(lfa, plugins));
+    }
+
+    return when.all(tasks).then(function () {
+      if (lfa.config.loadUser) {
+        plugins.push(loadBuiltInPlugin(lfa, 'lfa-book'));
+        plugins.push(loadBuiltInPlugin(lfa, 'lfa-user'));
+      }
       return when.all(plugins);
     });
 

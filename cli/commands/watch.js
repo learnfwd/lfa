@@ -4,6 +4,7 @@ var switchControl = require('../switch');
 var when = require('when');
 var openUrl = require('open');
 var prettyErrors = require('../pretty-errors');
+var configFlags = require('../config-flags');
 var EventOutput = require('../event-output');
 
 module.exports = function compile(cli) {
@@ -15,6 +16,8 @@ module.exports = function compile(cli) {
 
   return LFA.loadPaths(projPath).then(function (config) {
     return switchControl(cli, config);
+  }).then(function (config) {
+    return configFlags(config, cli.flags);
   }).then(function (config) {
     process.stdout.write(chalk.green('loading project... '));
 

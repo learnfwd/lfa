@@ -10,6 +10,7 @@ module.exports.pitch = function () {
   var dummyFile = this.options.dummyFile;
   var type = utils.parseQuery(this.query).type;
   var debug = !!this.options.lfa.currentCompile.debug;
+  var hasStylesTypeKey = (type === 'vendor' ? 'hasVendorStyles' : 'hasMainStyles');
 
   var buf = [];
 
@@ -19,6 +20,7 @@ module.exports.pitch = function () {
 
   plugins.forEach(function (plugin, idx) {
     if (plugin.package.lfa.hasStyles === false) { return; }
+    if (plugin.package.lfa[hasStylesTypeKey] === false) { return; }
 
     var pluginPath = path.join(plugin.path, 'frontend', 'styles');
     var loaderRequest = 'plugin-css?path=' + encodeURIComponent(pluginPath) + '&type=' + type;
