@@ -10,6 +10,8 @@ module.exports = function compile(cli) {
   var verbose = cli.flags.v || cli.flags.verbose;
   var debug = !!cli.flags.debug;
   var werror = cli.flags['warnings-as-errors'] || cli.flags.werror || cli.flags['Werror'];
+  var publicPath = cli.flags.publicPath;
+  var bundleName = cli.flags.bundleName;
 
   return LFA.loadPaths(projPath).then(function (config) {
     return switchControl(cli, config);
@@ -33,6 +35,8 @@ module.exports = function compile(cli) {
     return lfa.compile({
       task: task,
       debug: debug,
+      bundleName: bundleName,
+      publicPath: publicPath,
       warningsAsErrors: werror,
     }).catch(function () {
     });

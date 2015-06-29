@@ -12,6 +12,8 @@ module.exports = function compile(cli) {
   var verbose = cli.flags.v || cli.flags.verbose;
   var port = cli.flags.p || cli.flags.port || process.env.PORT;
   var open = cli.flags.open;
+  var publicPath = cli.flags.publicPath;
+  var bundleName = cli.flags.bundleName;
   if (open === undefined) { open = true; }
 
   return LFA.loadPaths(projPath).then(function (config) {
@@ -35,6 +37,8 @@ module.exports = function compile(cli) {
       task: task,
       serve: true,
       port: port,
+      bundleName: bundleName,
+      publicPath: publicPath,
       verbose: !!verbose,
     });
 

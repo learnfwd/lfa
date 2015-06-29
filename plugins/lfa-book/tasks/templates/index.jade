@@ -80,10 +80,10 @@ html(lang=book.language, dir=book.textDirection)
     if serve
       script(src='/webpack-dev-server.js')
     if debug
-      script(src='combined-commons.js?cache=' + cacheBlob)
-      script(src='combined-css-vendor.js?cache=' + cacheBlob)
-      script(src='combined-css-user.js?cache=' + cacheBlob)
-    script(src='combined-js.js?cache=' + cacheBlob)
+      script(src='book-commons.js?cache=' + cacheBlob)
+      script(src='book-css-vendor.js?cache=' + cacheBlob)
+      script(src='book-css-main.js?cache=' + cacheBlob)
+    script(src='book.js?cache=' + cacheBlob)
 
     script.
       __lfa_autorun__();

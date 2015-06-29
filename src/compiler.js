@@ -20,6 +20,8 @@ Compiler.compile = function (opts) {
       warningsAsErrors: opts.warningsAsErrors,
       saveForIncremental: !!opts.saveCurrentCompile,
       buildPath: opts.debug ? self.config.debugBuildPath : self.config.releaseBuildPath,
+      publicPath: opts.publicPath,
+      bundleName: opts.bundleName,
     };
     self.previousCompile = opts.previousCompile;
 

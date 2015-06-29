@@ -72,7 +72,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   // Separate CSS from JS entrypoints run in the same context. TODO: Do they if I output a library?
   if (debug) {
-    wpPlugins.push(new CommonsChunkPlugin(name + '-commons.js', [name + '-js', name + '-css-user', name + '-css-vendor']));
+    wpPlugins.push(new CommonsChunkPlugin(name + '-commons.js', [name, name + '-css-main', name + '-css-vendor']));
   }
 
   var userExtractPlugin = new ExtractTextPlugin(name + '-user.css', { allChunks: true, disable: debug });
@@ -83,9 +83,19 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   mainEntrypoints.push('!!js-entrypoint-loader!' + dummyFile);
 
   var wpEntries = {};
-  wpEntries[name + '-js'] = mainEntrypoints;
-  wpEntries[name + '-css-user'] = '!!' + userExtractPlugin.extract('css-entrypoint-loader?type=main') + '!' + dummyFile;
-  wpEntries[name + '-css-vendor'] = '!!' + vendorExtractPlugin.extract('css-entrypoint-loader?type=vendor') + '!' + dummyFile;
+  wpEntries[name] = mainEntrypoints;
+
+  var cssMainEntrypoint = '!!' + userExtractPlugin.extract('css-entrypoint-loader?type=main') + '!' + dummyFile;
+  var cssVendorEntrypoint = '!!' + vendorExtractPlugin.extract('css-entrypoint-loader?type=vendor') + '!' + dummyFile;
+
+  if (debug) {
+    wpEntries[name + '-css-main'] = cssMainEntrypoint;
+    wpEntries[name + '-css-vendor'] = cssVendorEntrypoint;
+  } else {
+    // This has the side effect of not emmiting useless -css-*.js files
+    mainEntrypoints.push(cssMainEntrypoint);
+    mainEntrypoints.push(cssVendorEntrypoint);
+  }
 
   var webpackConfig = {
     entry: wpEntries,
@@ -212,7 +222,7 @@ module.exports = function webpackTasks(lfa) {
     });
 
     deps.on('end', function () {
-      compileBundle(lfa, lfa.plugins, aliases, 'combined')
+      compileBundle(lfa, lfa.plugins, aliases, lfa.currentCompile.bundleName || 'book', lfa.currentCompile.publicPath)
         .then(function () {
           stream.end();
         })
