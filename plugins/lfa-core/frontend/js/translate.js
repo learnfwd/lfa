@@ -1,4 +1,4 @@
-var BuildInfo = require('build-info');
+var BuildInfo = require('lfa-book').BuildInfo;
 var $ = require('jquery');
 
 var T = function (/*arguments*/) {

@@ -1,10 +1,10 @@
 {
-  "name": "lfa-userspace",
-  "main": "./tasks/index.js",
+  "name": "lfa-user",
   "keywords": [
     "lfa-plugin"
   ],
   "lfa": {
+    "hasMixins": false,
     "dependencies": [
       "lfa-core", "jquery", "bootstrap", "backbone", "react", "lodash"
     ]

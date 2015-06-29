@@ -28,6 +28,9 @@ function loadPlugin(lfa, pluginPath, packageJson) {
     assert((keywords instanceof Array) && _.contains(keywords, 'lfa-plugin'), 
       'Plugins must have "lfa-plugin" as a keyword in their package.json');
 
+    if (packageJson.lfa === undefined) { packageJson.lfa = {}; };
+    assert(typeof(packageJson.lfa) === 'object', 'The "lfa" key in a plugin\'s package.json must be an object');
+
     if (!_.isEmpty(packageJson.dependencies || {})) {
       // TODO: Also run npm install when dependencies out of date
       return nodefn.call(fs.stat, path.join(pluginPath, 'node_modules'))
@@ -55,26 +58,17 @@ function loadPlugin(lfa, pluginPath, packageJson) {
   }).then(function (packageJson) {
     
     var tasks = [];
-    var themes = packageJson.themes || {};
-    
-    _.each(themes, function (themePath, name) {
-      themePath = path.resolve(pluginPath, path.normalize(themePath));
-      lfa.themes[name] = {
-        name: name,
-        path: themePath,
-      };
-    });
 
     var returnValue;
 
     tasks.push(when.try(function () {
-      //TO DO: Make this async
-      returnValue = require(pluginPath)(lfa);
-    }).catch(function (err) {
-      if (err.message !== 'Cannot find module \'' + pluginPath + '\'') {
-        throw err;
-      }
-    })
+        //TO DO: Make this async
+        returnValue = require(pluginPath)(lfa);
+      }).catch(function (err) {
+        if (err.message !== 'Cannot find module \'' + pluginPath + '\'') {
+          throw err;
+        }
+      })
     );
 
     return when.all(tasks).then(function () {
@@ -116,36 +110,21 @@ function loadLocalPlugins(lfa, plugins) {
 
 module.exports = function pluginLoader(lfa) {
   return when.try(function () {
-    lfa.themes = {};
-  }).then(function () {
     var plugins = [
       loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-compilation')),
       loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-core')),
       loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-analytics')),
+      loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-book')),
     ];
 
     return when.all([
       loadLocalPlugins(lfa, plugins),
     ]).then(function () {
-      plugins.push(loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-userspace')));
+      plugins.push(loadPlugin(lfa, path.resolve(__dirname, '..', 'plugins', 'lfa-user')));
       return when.all(plugins);
     });
 
   }).then(function (loadedPlugins) {
     lfa.plugins = loadedPlugins;
-
-    var config = lfa.config;
-    var themeName = config.package.theme || 'default';
-    assert(typeof(themeName) === 'string', 'packageJson.theme must be a string');
-
-    config.themeName = themeName;
-    var defaultTheme = lfa.themes['default'];
-    var theme = lfa.themes[themeName];
-    lfa.defaultTheme = defaultTheme;
-    lfa.theme = theme;
-
-    if (typeof(theme) !== 'object') {
-      throw new Error('Theme not found "' + themeName + '"');
-    }
   });
 };

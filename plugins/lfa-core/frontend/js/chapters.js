@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var BuildInfo = require('build-info');
+var BuildInfo = require('lfa-book').BuildInfo;
 
 function Chapters() {
   var self = this;

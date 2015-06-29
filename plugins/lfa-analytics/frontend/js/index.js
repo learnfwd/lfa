@@ -1,5 +1,6 @@
-var App = require('lfa-core/app');
-var BuildInfo = require('build-info');
+var App = require('lfa-core').App;
+var Storage = require('lfa-core').Storage;
+var BuildInfo = require('lfa-book').BuildInfo;
 var UAParser = require('ua-parser-js');
 var _ = require('lodash');
 
@@ -38,10 +39,10 @@ function _makeUUID() {
 
 function _getSessionId() {
   var key = 'trackingSessionId';
-  var sessionId = App.storage.getItem(key, { global: true });
+  var sessionId = Storage.getItem(key, { global: true });
   if (!sessionId) {
     sessionId = _makeUUID();
-    App.storage.setItem(key, sessionId, { global: true });
+    Storage.setItem(key, sessionId, { global: true });
   }
   return sessionId;
 }

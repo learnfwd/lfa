@@ -1,4 +1,4 @@
-var BuildInfo = require('build-info');
+var BuildInfo = require('lfa-book').BuildInfo;
 var _ = require('lodash');
 var assert = require('assert');
 

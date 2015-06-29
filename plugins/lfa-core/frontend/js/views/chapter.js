@@ -9,35 +9,18 @@ var mixinCompiler = require('../mixin-compiler');
 var Chapters = require('../chapters');
 var Prefetcher = require('../prefetcher');
 var App = require('../app');
-
-var instantiatedChapterViews = {};
-var textVersions = require('text-versions');
-
-if (module.hot) {
-  module.hot.accept('text-versions', function () {
-    var newTextVersions = require('text-versions');
-    _.each(newTextVersions, function (val, key) {
-      if (textVersions[key] !== val) {
-        _.each(instantiatedChapterViews, function (view) {
-          view.invalidatedChapter(key);
-        });
-      }
-    });
-
-    textVersions = newTextVersions;
-  });
-}
+var HotChapterReload = require('lfa-book').HotChapterReload;
 
 var ChapterView = Backbone.View.extend({
   initialize: function(options) {
     this.parent = options.parent;
     this.prefetcher = new Prefetcher();
     this.chapterViewId = _.uniqueId();
-    instantiatedChapterViews[this.chapterViewId] = this;
+    HotChapterReload.register(this.invalidatedChapter, this);
   },
 
   remove: function() {
-    delete instantiatedChapterViews[this.chapterViewId];
+    HotChapterReload.deregister(this.invalidatedChapter);
     Backbone.View.remove.apply(this, arguments);
   },
 

@@ -18,6 +18,8 @@ module.exports.pitch = function () {
   }
 
   plugins.forEach(function (plugin, idx) {
+    if (plugin.package.lfa.hasStyles === false) { return; }
+
     var pluginPath = path.join(plugin.path, 'frontend', 'styles');
     var loaderRequest = 'plugin-css?path=' + encodeURIComponent(pluginPath) + '&type=' + type;
     var queryString = '!!' + loaderRequest + '!' + dummyFile;

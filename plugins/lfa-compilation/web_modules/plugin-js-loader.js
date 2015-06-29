@@ -12,13 +12,16 @@ module.exports.pitch = function () {
   var mixinRequest = '!!mixin-loader!' + path.join(pluginPath, 'frontend', 'mixins', 'index.jade');
   var jsRequest = path.join(pluginPath, 'frontend', 'js');
 
-  var buf = [
+  var mixinsString = query.mixins ? [
     'try { var modIdMixins = require.resolve(', JSON.stringify(mixinRequest), '); } catch (ex) {}\n',
     'if (modIdMixins) { __webpack_require__(modIdMixins); }\n',
+  ].join('') : '';
+
+  var jsString = query.js ? [
     'try { var modIdJs = require.resolve(', JSON.stringify(jsRequest), '); } catch (ex) {}\n',
     'if (modIdJs) { module.exports = __webpack_require__(modIdJs); }\n',
-  ];
+  ].join('') : '';
 
-  return buf.join('');
+  return mixinsString + jsString;
 };
 

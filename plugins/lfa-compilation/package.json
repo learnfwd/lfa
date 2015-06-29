@@ -1,12 +1,12 @@
 {
   "name": "lfa-compilation",
   "main": "./tasks/index.js",
-  "themes": {
-    "default": "./themes/default",
-    "blank": "./themes/blank"
-  },
-  "frontend": false,
   "keywords": [
     "lfa-plugin"
-  ]
+  ],
+  "lfa": {
+    "hasStyles": false,
+    "hasJS": false,
+    "hasMixins": false
+  }
 }

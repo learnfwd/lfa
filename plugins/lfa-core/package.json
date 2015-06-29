@@ -9,6 +9,9 @@
     "lfa-plugin"
   ],
   "lfa": {
+    "dependencies": [
+      "lfa-book"
+    ],
     "providedDependencies": [
       "jquery", "bootstrap", "backbone", "react", "lodash"
     ]

@@ -12,8 +12,14 @@ module.exports.pitch = function () {
 
   var amdExports = {};
   _.each(plugins, function (plugin) {
-    var loaderRequest = 'plugin-js?path=' + encodeURIComponent(plugin.path);
+    var hasJS = (plugin.package.lfa.hasJS !== false);
+    var hasMixins = (plugin.package.lfa.hasMixins !== false);
+    
+    if (!hasJS && !hasMixins) { return; }
+    
+    var loaderRequest = 'plugin-js-loader?path=' + encodeURIComponent(plugin.path) + '&js=' + hasJS + '&mixins=' + hasMixins;
     var queryString = '!!' + loaderRequest + '!' + dummyFile;
+
     amdExports[plugin.name] = {
       query: queryString,
       autorun: true,
@@ -40,13 +46,6 @@ module.exports.pitch = function () {
     buf.push(JSON.stringify(mod.autorun));
     buf.push(');\n');
   });
-
-  // Run them
-  //_.each(amdExports, function(queryString, moduleName) {
-    //buf.push('require(');
-    //buf.push(JSON.stringify(queryString));
-    //buf.push(');\n');
-  //});
 
   return buf.join('');
 };

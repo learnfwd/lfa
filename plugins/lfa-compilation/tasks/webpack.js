@@ -15,15 +15,15 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   var resolveFallback = [];
   var debug = !!lfa.currentCompile.debug;
+  var dummyFile = path.resolve(__dirname, 'templates', 'foo.dummy');
 
   // Misc library aliases
   aliases.underscore = 'lodash';
 
-  // Plugin JS aliases
-  // TODO: remove these
+  // Plugin JS aliases. $ assures an exact match (no lfa-core/app)
   _.each(bundledPlugins, function (plugin) {
-    aliases[plugin.name] = path.join(plugin.path, 'frontend', 'js');
-    resolveFallback.push(path.join(plugin.path, 'web_modules'));
+    if (plugin.package.lfa.hasJS === false) { return; }
+    aliases[plugin.name + '$'] = path.join(plugin.path, 'frontend', 'js');
   });
 
   // Non-standard library paths
@@ -80,7 +80,6 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   wpPlugins.push(userExtractPlugin);
   wpPlugins.push(vendorExtractPlugin);
 
-  var dummyFile = path.resolve(__dirname, 'templates', 'foo.dummy');
   mainEntrypoints.push('!!js-entrypoint-loader!' + dummyFile);
 
   var wpEntries = {};

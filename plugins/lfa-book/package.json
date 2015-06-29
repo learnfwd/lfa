@@ -1,0 +1,9 @@
+{
+  "name": "lfa-book",
+  "main": "./tasks/index.js",
+  "keywords": [
+    "lfa-plugin"
+  ],
+  "lfa": {
+  }
+}

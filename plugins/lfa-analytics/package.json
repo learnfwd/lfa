@@ -1,4 +1,11 @@
 {
   "name": "lfa-analytics",
-  "keywords": ["lfa-plugin"]
+  "keywords": ["lfa-plugin"],
+  "lfa": {
+    "hasMixins": false,
+    "hasStyles": false,
+    "dependencies": [
+      "lfa-core", "lfa-book", "lodash"
+    ]
+  }
 }
