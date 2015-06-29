@@ -7,8 +7,11 @@ html(lang=book.language, dir=book.textDirection)
 
     title= book.title
     
-    if !debug
-      link(type='text/css', rel='stylesheet', media='screen', href='main.css?cache=' + cacheBlob)
+    each file in vendorCSSFiles 
+      link(type='text/css', rel='stylesheet', media='screen', href=file)
+
+    each file in mainCSSFiles 
+      link(type='text/css', rel='stylesheet', media='screen', href=file)
 
   body
     .menu
@@ -37,11 +40,14 @@ html(lang=book.language, dir=book.textDirection)
 
     if serve
       script(src='/webpack-dev-server.js')
+
     if debug
-      script(src='book-commons.js?cache=' + cacheBlob)
-      script(src='book-css-vendor.js?cache=' + cacheBlob)
-      script(src='book-css-main.js?cache=' + cacheBlob)
-    script(src='book.js?cache=' + cacheBlob)
+      script(src=currentBundle + '-commons.js')
+      script(src=currentBundle + '-css-vendor.js')
+      script(src=currentBundle + '-css-main.js')
+
+    each file in jsFiles
+      script(src=file)
 
     script.
       __lfa_autorun__();

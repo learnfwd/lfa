@@ -21,7 +21,7 @@ Compiler.compile = function (opts) {
       saveForIncremental: !!opts.saveCurrentCompile,
       buildPath: opts.debug ? self.config.debugBuildPath : self.config.releaseBuildPath,
       publicPath: opts.publicPath,
-      bundleName: opts.bundleName,
+      bundleName: opts.bundleName || 'book',
     };
     self.previousCompile = opts.previousCompile;
 

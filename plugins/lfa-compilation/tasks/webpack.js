@@ -75,9 +75,9 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     wpPlugins.push(new CommonsChunkPlugin(name + '-commons.js', [name, name + '-css-main', name + '-css-vendor']));
   }
 
-  var userExtractPlugin = new ExtractTextPlugin(name + '-user.css', { allChunks: true, disable: debug });
+  var mainExtractPlugin = new ExtractTextPlugin(name + '-main.css', { allChunks: true, disable: debug });
   var vendorExtractPlugin = new ExtractTextPlugin(name + '-vendor.css', { allChunks: true, disable: debug });
-  wpPlugins.push(userExtractPlugin);
+  wpPlugins.push(mainExtractPlugin);
   wpPlugins.push(vendorExtractPlugin);
 
   mainEntrypoints.push('!!js-entrypoint-loader!' + dummyFile);
@@ -85,7 +85,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   var wpEntries = {};
   wpEntries[name] = mainEntrypoints;
 
-  var cssMainEntrypoint = '!!' + userExtractPlugin.extract('css-entrypoint-loader?type=main') + '!' + dummyFile;
+  var cssMainEntrypoint = '!!' + mainExtractPlugin.extract('css-entrypoint-loader?type=main') + '!' + dummyFile;
   var cssVendorEntrypoint = '!!' + vendorExtractPlugin.extract('css-entrypoint-loader?type=vendor') + '!' + dummyFile;
 
   if (debug) {
@@ -114,8 +114,8 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
         { test: /\.jsx$/, loaders: ['react-hot', 'jsx?harmony'] },
         { test: /\.json$/, loaders: ['json-loader'] },
 
-        { test: /\.styl$/, loader: userExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify') + '!stylus-loader') },
-        { test: /\.css$/, loader: userExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify')) },
+        { test: /\.styl$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify') + '!stylus-loader') },
+        { test: /\.css$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify')) },
 
         { test: /\.(png|jpe?g|gif|ogg|mp3|m4a|m4v|mov|webm|ogv|woff|otf|ttf)(\?[^\?]+)?$/, loaders: ['file-loader'] },
       ]
