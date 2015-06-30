@@ -62,6 +62,7 @@ module.exports = function newProject(cli) {
     }
 
     var projPath = path.resolve(cli.input[1]);
+    var currentVersion = require('../../package.json').version;
 
     console.log('Creating new project in ' + chalk.yellow(projPath));
 
@@ -90,7 +91,7 @@ module.exports = function newProject(cli) {
               language: result.language,
             },
             engines: {
-              'lfa' : '~0.7.0'
+              'lfa' : '~' + currentVersion,
             }
           };
 

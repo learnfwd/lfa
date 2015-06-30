@@ -116,15 +116,6 @@ function loadBuiltInPlugin(lfa, pluginName) {
 }
 
 module.exports = function pluginLoader(lfa) {
-  function def(a, b, c) {
-    if (a !== undefined) { return a; }
-    if (b !== undefined) { return b; }
-    return c;
-  }
-  lfa.config.loadCore = def(lfa.config.loadCore, lfa.config.package.compileCore, true);
-  lfa.config.loadPlugins = def(lfa.config.loadPlugins, lfa.config.package.compilePlugins, true);
-  lfa.config.loadUser = def(lfa.config.loadUser, lfa.config.package.compileUser, true);
-
   return when.try(function () {
     var plugins = [ loadBuiltInPlugin(lfa, 'lfa-compilation') ];
 

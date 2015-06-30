@@ -37,5 +37,32 @@ module.exports = function parseConfig(config) {
 
   config.defaultTask = packageJson.defaultTask || 'default';
 
+  function def(type, key1, key2, deflt) {
+    var a = config[key1];
+    if (a !== undefined) { 
+      assert(typeof(a) === type, 'config.' + key1 + ' must be a ' + type);
+      return;
+    }
+
+    var b = packageJson[key2];
+    if (b !== undefined) { 
+      assert(typeof(b) === type, 'packageJson.' + key2 + ' must be a ' + type);
+      config[key1] = b;
+      return;
+    }
+
+    config[key1] = deflt;
+  }
+
+  def('boolean', 'loadCore', 'compileCore', true);
+  def('boolean', 'loadPlugins', 'compilePlugins', true);
+  def('boolean', 'loadUser', 'compileUser', true);
+
+  config.externalPlugins = config.externalPlugins || [];
+  var externalPlugins = packageJson.externalPlugins || [];
+  assert(config.externalPlugins instanceof Array, 'config.externalPlugins must be an array');
+  assert(externalPlugins instanceof Array, 'packageJson.externalPlugins must be an array');
+  config.externalPlugins = externalPlugins.concat(config.externalPlugins);
+
   return config;
 };

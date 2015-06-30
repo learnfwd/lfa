@@ -15,7 +15,7 @@ module.exports = function indexHtmlTasks(lfa) {
     var mainCSS = [];
     var js = [];
 
-    _.each(lfa.config.package.externalPlugins || [], function (bundle) {
+    _.each(lfa.config.externalPlugins, function (bundle) {
       vendorCSS.push(bundle + '-vendor.css');
       mainCSS.push(bundle + '-main.css');
       js.push(bundle + '.js');
