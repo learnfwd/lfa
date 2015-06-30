@@ -89,7 +89,4 @@ var TocView = Backbone.View.extend({
 
 });
 
-// For Exercises. Awful
-window.TocView = TocView;
-
 module.exports = TocView;

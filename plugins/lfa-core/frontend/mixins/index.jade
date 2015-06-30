@@ -36,7 +36,8 @@ mixin minitoc(url)
   script.
     (function () {
       var $ = require('jquery');
-      var App = require('lfa-core/app');
+      var App = require('lfa-core').App;
+      var TocView = require('lfa-core')._TocView;
       $(document).ready(function() {
         var url = '#{url}' || App.book.currentChapter;
         new TocView({ el: $('#minitoc_#{id}'), url: url });
@@ -77,7 +78,7 @@ mixin modal(id, title)
               +modal("my-modal", "A title")
                 p Content.
 
-mixin lightbox(path, largerPath)
+mixin lightbox(path)
   a.lightbox(href='#{path}')
     img(src="#{path}", alt="")
 
