@@ -52,7 +52,36 @@ These mixins are special and need to be at the very top of your chapter file, be
 
 ### Content mixins
 
-> TO DO: +img, +lightbox, etc.
+```jade
++img(path_to_image)
+```
+> Adds an image
+
+```jade
++lightbox(path_to_image)
+```
+> Adds an image in a zoomable lightbox
+
+```jade
++minitoc(chapter_url)
+```
+> Adds an inline ToC with the subchapters of the current chapter (or the one specified by `chapter_url`). `chapter_url` is the URL component after `#book/`
+
+```jade
++youtube(video_id)
+```
+> Adds a YouTube video embed. `video_id` is the code after `https://youtube.com/watch?`.
+
+```jade
++vimeo(video_id)
+```
+> Adds a Vimeo video embed. `video_id` is the code after `https://vimeo.com/`.
+
+```jade
++modal(id, title)
+  p Modal content here
+```
+> Add a Bootrap modal with the `id` attribute set to `id` and a `title`.
 
 JS API
 ------
