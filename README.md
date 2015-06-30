@@ -18,15 +18,13 @@ Both have huge power usage potential while also being easy to learn. Go read up 
 Installation
 ------------
 
-Firstly, make sure you have [node.js](http://nodejs.org/) and [npm](https://www.npmjs.org/) installed. There are guides on the net on how to do it, but usually it boils down to `brew install npm` on OS X with [Homebrew](http://brew.sh/) or `sudo apt-get install npm` on Ubuntu-based Linux distros.
+Firstly, make sure you have [node.js](http://nodejs.org/) installed. There are guides on the net on how to do it, but usually it boils down to `brew install node` on OS X with [Homebrew](http://brew.sh/) or `sudo apt-get install nodejs-legacy` on Ubuntu-based Linux distros.
 
 After that, run:
 
 ```bash
 $ npm install -g lfa
 ```
-
-If you get permission issues you most likely have a dodgy node installation. You can probably circumvent it temporarily with `sudo -H npm install -g lfa`.
 
 Usage
 -----
@@ -60,10 +58,7 @@ $ tree
 │   └── index.js
 ├── styles
 │   ├── ...
-│   ├── colors.styl
 │   └── main.styl
-├── plugins
-│   └── ...
 ├── mixins
 │   ├── ...
 │   └── index.jade
@@ -103,6 +98,11 @@ See [Bootstrap](http://getbootstrap.com) to understand what `row` and `col-sm-` 
 The tags starting with `+` are called 'mixins'. Mixins are like functions in Jade (they return HTML snippets). We made a few mixins for you, such as `+img` and `+lightbox`.
 Create your own mixins to make your life easier.
 
+Documentation
+-------------
+
+Detailed documentation can be found [here](docs/index.md)
+
 Contributing
 ------------
 
@@ -117,5 +117,3 @@ Anonymous Statistics
 --------------------
 
 In order to continuously improve our product, this tool is collecting anonymous usage data.
-
-If you want to remove anonymous statistics from the textbooks this tool generates, remove the lines that start with `this._registerAnalyticsBackend` from `addons/lfa-analytics/frontend/js/index.js`
