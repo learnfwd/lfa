@@ -197,7 +197,7 @@ T.translate(text, params)
 ```js
 T.translateElement(element)
 ```
-> Transverse a DOM element or a jQuery object, and replace the content of elements with a `data-translate="translationKey"` attribute with `T(translationKey)`.
+> Traverse a DOM element or a jQuery object, and replace the content of elements with a `data-translate="translationKey"` attribute with `T(translationKey)`.
 >
 > **Example:** `<span data-translate="yes"></span>` could get translated into `<span data-translate="yes">Ja</span>` when `T.translateElement` is called on any of its parents.
 
