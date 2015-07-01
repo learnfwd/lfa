@@ -9,9 +9,7 @@ var T = function (/*arguments*/) {
   return T.translate(text, params);
 };
 
-T.defaultLanguage = 'en';
-
-T.format = function (text, params) {
+T._format = function (text, params) {
   if (!params || params.length === 0) {
     return text;
   }
@@ -30,7 +28,7 @@ T.format = function (text, params) {
 };
 
 T.translate = function (text, params) {
-  var language = T.language || T.defaultLanguage;
+  var language = T.language;
 
   if (typeof(text) !== 'string' || text.length < 1) {
     console.warn('Problem in translation. Invalid parameter ', text, ' for', language);
@@ -42,7 +40,7 @@ T.translate = function (text, params) {
     translations = T[T.defaultLanguage];
     if (!translations || typeof(translations) !== 'object') {
       console.warn('Problem in translation. Cannot find ', text, ' for', language);
-      return T.format(text, params);
+      return T._format(text, params);
     }
   }
 
@@ -50,13 +48,11 @@ T.translate = function (text, params) {
 
   if (typeof(translation) === 'function') {
     return translation(params);
-  } else if (typeof(translation) === 'string') {
-    return T.format(translation, params);
-  } else {
-    return T.format(text, params);
+  } 
+  if (typeof(translation) === 'string') {
+    return T._format(translation, params);
   }
-
-  return '[' + language + ']: ' + text;
+  return T._format(text, params);
 };
 
 T.translateElement = function (element) {
@@ -67,7 +63,7 @@ T.translateElement = function (element) {
 
 T.languageObject = function (lang) {
   if (!lang) {
-    lang = T.language || T.defaultLanguage;
+    lang = T.language;
   }
   if (!T[lang]) {
     T[lang] = {};
@@ -75,44 +71,11 @@ T.languageObject = function (lang) {
   return T[lang];
 };
 
-T.init = function () {
+
+T._init = function () {
+  this.defaultLanguage = 'en';
   this.language = BuildInfo.language || this.defaultLanguage;
 };
 
-T.pluralize = function (what, n) {
-  console.warn('This is a toy! Don\'t use pluralize!');
-  var language = T.language || T.defaultLanguage;
-  
-  if (language !== 'en') {
-    return what;
-  }
-
-  if (Math.abs(n) !== 1) {
-    return what + 's';
-  }
-
-  return what;
-};
-
-T.genitivise = function (what) {
-  console.warn('This is a toy! Don\'t use genitivise!');
-  var language = T.language || T.defaultLanguage;
-
-  switch (language) {
-    case 'en':
-      what = what + '\'s';
-      break;
-    case 'ro':
-      if (what.slice(-1) === 'a') {
-        return what.slice(0, -1) + 'ei';
-      } else {
-        return 'lui ' + what;
-      }
-      break;
-  }
-
-  return what;
-};
-
-T.init();
+T._init();
 module.exports = T;
