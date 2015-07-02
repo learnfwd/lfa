@@ -51,6 +51,12 @@ module.exports = function newProject(cli) {
       message: 'The language must be a 2-letter code (ISO 639-1)',
       pattern: /^[a-z][a-z]$/,
       default: 'en',
+    },{
+      name: 'remote',
+      description: 'Do you wish to use the textbook core from our servers? (faster compiles, always up to date, requires internet)',
+      message: 'Answer with yes or no',
+      pattern: /^(y|Y)(es)?|(n|N)o?$/,
+      default: 'yes',
     }];
 
     _.each(schema, function (pr) {
@@ -94,6 +100,11 @@ module.exports = function newProject(cli) {
               'lfa' : '^' + currentVersion,
             }
           };
+
+          if (/^(y|Y)(es)?$/.test(result.remote)) {
+            packageJson.externalPlugins = [ 'https://plugins.lfwd.io/lfa-core/plugin' ];
+            packageJson.compileCore = false;
+          }
 
           var packageFile = new File({
             base: '',
