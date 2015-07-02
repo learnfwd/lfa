@@ -72,6 +72,15 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     mainEntrypoints.push('webpack/hot/dev-server');
   }
 
+  // Minify JS in production
+  if (!debug) {
+    wpPlugins.push(new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      }
+    }));
+  }
+
   // Separate CSS from JS entrypoints run in the same context. TODO: Do they if I output a library?
   if (debug) {
     wpPlugins.push(new CommonsChunkPlugin(name + '-commons.js', [name, name + '-css-main', name + '-css-vendor']));

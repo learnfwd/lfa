@@ -9,10 +9,9 @@ module.exports = function (content) {
   JadeFastCompiler.compileBundle(content, opts)
     .then(function (bundle) {
       var newContent = [
-        'var lfaMixins = window.lfaMixins = window.lfaMixins || [];\n',
-        'var mixins = ', bundle, ';\n',
-        'lfaMixins.push(mixins);\n',
-        'module.exports = mixins;\n',
+        'module.exports = ', bundle, ';\n',
+        'window.lfaMixins = window.lfaMixins || [];\n',
+        'window.lfaMixins.push(module.exports);\n',
       ].join('');
 
       next(null, newContent);

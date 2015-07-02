@@ -39,7 +39,8 @@ module.exports.pitch = function () {
   });
 
   if (!debug) {
-    buf.push('module.exports = buf.join("")');
+    buf.push('var CleanCSS = require("clean-css");');
+    buf.push('module.exports = new CleanCSS().minify(buf.join("")).styles');
   }
 
   return buf.join('');
