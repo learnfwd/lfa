@@ -122,7 +122,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     },
     resolve: {
       alias: aliases,
-      extensions: ['', '.js', '.jsx', 'json'],
+      extensions: ['', '.js', '.jsx', '.json'],
       fallback: resolveFallback,
     },
     resolveLoader: {
