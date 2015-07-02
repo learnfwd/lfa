@@ -12,6 +12,8 @@ var liveReloadJS = require('./js-live-reload');
 var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+var processStats = require('../../../src/webpack-process-stats');
+
 function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   var resolveFallback = [];
   var debug = !!lfa.currentCompile.debug;
@@ -164,6 +166,8 @@ function compileBundle(lfa) {
         try {
           if (err) { throw err; }
           var stats = st.toJson({ errors: true, warnings: true });
+          stats = processStats(stats);
+
           if (stats.errors.length) {
             throw stats.errors[0];
           }

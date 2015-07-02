@@ -1,6 +1,7 @@
 var WebpackServer = require('webpack-dev-server');
 var express = require('express');
 var _ = require('lodash');
+var processStats = require('./webpack-process-stats');
 
 function Server(opts) {
   var self = this;
@@ -33,6 +34,7 @@ function Server(opts) {
 
     cache.webpackCompiler.plugin('done', function (st) {
       var stats = st.toJson({ errors: true, warnings: true });
+      stats = processStats(stats);
       _.each(stats.errors, function (err) {
         opts.watcher.emit('webpack-compile-error', err);
       });
@@ -47,6 +49,10 @@ function Server(opts) {
     });
 
     self.devServer = new WebpackServer(cache.webpackCompiler, wpOpts);
+    self.devServer._sendStats = function (socket, stats, force) {
+      stats = processStats(stats);
+      WebpackServer.prototype._sendStats(socket, stats, force);
+    };
     self.devServer.close = function() {
       this.app.close();
       this.io.close();
