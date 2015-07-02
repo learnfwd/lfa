@@ -91,7 +91,7 @@ module.exports = function newProject(cli) {
               language: result.language,
             },
             engines: {
-              'lfa' : '~' + currentVersion,
+              'lfa' : '^' + currentVersion,
             }
           };
 
