@@ -111,9 +111,11 @@ This is an object that supports [Backbone Events](http://backbonejs.org/#Events)
 
 #### Defined events
 
-`lfa-core` itself doesn't define any events on `App`. Some plugins do (and they shouldn't, since this is deprecated). 
+`lfa-core` defines the following events on `App`:
 
-`lfa-core` does define, though the following events on `App.book`:
+* `App.trigger('ready')`: Called after the document finished loading.
+
+`lfa-core` defines the following events on `App.book`:
  
 * `App.book.trigger('sidebar:open', sidebarName)`: A sidebar opened.
 * `App.book.trigger('sidebar:close', sidebarName)`: A sidebar closed.

@@ -3,10 +3,6 @@ var flux = require('flux');
 var AppDispatcher = new flux.Dispatcher();
 module.exports = AppDispatcher;
 
-// These should go away
-AppDispatcher.T = require('./translate');
-AppDispatcher.storage = require('./storage');
-
 // Deprecated old evented model
 var Backbone = require('backbone');
 _.extend(AppDispatcher, Backbone.Events);

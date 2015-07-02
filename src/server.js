@@ -33,11 +33,12 @@ function Server(opts) {
 
     cache.webpackCompiler.plugin('done', function (st) {
       var stats = st.toJson({ errors: true, warnings: true });
-      if (stats.errors.length) {
-        opts.watcher.emit('webpack-compile-error', stats.errors[0]);
-      } else if (stats.warnings.length) {
-        opts.watcher.emit('webpack-compile-warning', stats.warnings[0]);
-      }
+      _.each(stats.errors, function (err) {
+        opts.watcher.emit('webpack-compile-error', err);
+      });
+      _.each(stats.warnings, function (err) {
+        opts.watcher.emit('webpack-compile-warning', err);
+      });
       opts.watcher.emit('webpack-compile-done');
     });
 
