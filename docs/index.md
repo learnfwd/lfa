@@ -314,7 +314,7 @@ All of the below files are optional. It's nice to let the compiler know if you'r
 
 ### JS
 
-The main entrypoint of your frontend is `frontend/js/index.js`. You can use the CommonJS format to export stuff from your module or `require()` stuff from `lfa.dependencies`, other files or libraries you installed into `node_modules` or `web_modules`. We're using [Webpack](http://webpack.github.io/), so you can even `require()` CSS or assets.
+The main entrypoint of your frontend is `frontend/js/index.js`. You can use the CommonJS format to export stuff from your module or `require()` stuff from `lfa.dependencies`, other files or libraries you installed into `node_modules` or `web_modules`. We're using [Webpack], so you can even `require()` CSS or assets.
 
 If you need custom Webpack loaders, put them in `web_modules`, then just use them with the standard `require('my-loader!my-file')` syntax.
 
@@ -334,7 +334,123 @@ Compiler plugins
 
 If you provide an `index.js`, LFA will `require()` this and expect it to export a single function. This function will be called with the current `lfa` instance when loading the project.
 
-> TO DO: Compiler plugin API
+### Tasks
+
+Plugins are generally composed of tasks. Tasks must return streams, generally with vinyl files flowing through them. This makes it easy to use any [gulp] plugin.
+
+Tasks can have dependencies. These can be given by name, as globs or as an array of globs or task names. If globs or arrays match more than one task, their streams get merged.
+
+All the streams that are returned as dependencies are patched so that they propagate their errors down when you `.pipe()`. This way, you don't have to worry about error handling.
+
+For example:
+
+```js
+lfa.task('source:1', function () {
+  return lfa.src('some_files/**/*.txt');
+})
+
+lfa.task('source:2', function () {
+  return lfa.src('some_other_files/**/*.txt');
+})
+
+lfa.task('concat', ['source:*'], function (sources) {
+  return sources
+    .pipe(gulpConcat('all.txt'))
+});
+```
+
+### Vinyl functions
+
+```js
+lfa.src()
+```
+Same as [vinyl-fs]'s `.src()`, but with the error piping patch and a `filterModified` gimmick (read on).
+
+```js
+lfa.dst()
+```
+Same as [vinyl-fs]'s `.dest()`.
+
+
+### Incremental compiles
+
+#### File dependencies
+
+When recompiling a project with `lfa.watch()`, we don't need to re-run all the tasks unless needed. Tasks can define dependencies on files:
+
+```js
+lfa.task('source:1', function () {
+  this.addFileDependencies('some_files/**/*.txt');
+  return lfa.src('some_files/**/*.txt');
+});
+```
+
+Have more globs in an array? No problem:
+
+```js
+this.addFileDependencies(['first_glob/**/*.txt', 'second_glob/**/*.png']);
+```
+
+We can get even more granular than that:
+
+```js
+this.addFileDependencies({
+    'first_glob/**/*.txt': ['created', 'changed'] //only care when files matching this glob are created or changed
+    'second_glob/**/*.png': 'all', //equivalent to ['created', 'removed', 'changed']
+});
+```
+
+Sometimes it's useful to know which of our task's files changed. The following method, given some globs, will return only the files that changed from those globs:
+
+```js
+this.filterModifiedFiles(globs, actions)
+```
+* `globs` can be a glob or an array of file globs that will be filtered
+* `actions` is an array of `'created'`, `'removed'` and `'changed'` specifying if we're interested in created, removed or changed files. Defaults to `['created', 'changed']`
+
+Example:
+
+```js
+lfa.task('source:1', function () {
+  var glob = 'some_files/**/*.txt';
+  this.addFileDependencies(glob);
+  // Only read files that have been created or changed
+  return lfa.src(this.filterModifiedFiles(glob));
+});
+```
+
+The above example works, but it has the downside of messing up the `basePath` when using globs. We have a fix for this:
+
+```js
+// Let's say that some_files/a.txt got modified.
+
+// this will wrongly write output_folder/some_files/a.txt
+lfa.src(this.filterModifiedFiles('some_files/**/*.txt'));
+    .pipe(lfa.dst('output_folder')); 
+
+// this will correctly write output_folder/a.txt
+lfa.src('some_files/**/*.txt', { filterModified: this })
+    .pipe(lfa.dst('output_folder')); 
+```
+
+#### Conditional dependency running
+
+By default, when a task is re-run, it will re-run all of its dependencies. We can change that. The following code tells lfa to only run and merge those tasks where the name matches `source:*` and one of its file dependencies changed.
+
+```js
+lfa.task('minify', ['source:*'], function (sources) {
+    this.setDependencyMode(sources, 'modify');
+    return sources.pipe(minify());
+});
+```
+
+We can also tell lfa not to ever re-run the dependency after the initial compile:
+
+```js
+this.setDependencyMode(sources, 'none');
+```
+
+> TO DO: Document `lfa.config`, `lfa.currentCompile`, `lfa.previousCompile`.
 
 External plugins
 ----------------
@@ -362,4 +478,7 @@ For example, if we want to host the core framework separately from the rest of t
 3. In our project, we add `http://public.com/path/lfa-core` to `externalPlugins` and set `compileCore` to `false` so we skip the core from our project's bundle.
 
 [lfa-core]: lfa-core.md
+[Webpack]: http://webpack.github.io/
+[gulp]: http://gulpjs.com/
+[vinyl-fs]: https://github.com/wearefractal/vinyl-fs
 
