@@ -217,6 +217,7 @@ T.languageObject(lang)
 > de.thisAndThat = '%1 unt %2';
 > de.thisOrThat = function (a, b) { return a + ' oder ' + b; };
 >
+> // Now, if the book's language is "de":
 > T('yes'); // 'Ja'
 > T('thisAndThat', 'Alice', 'Bob'); // 'Alice unt Bob'
 > T('thisOrThat', 'Alice', 'Bob'); // 'Alice oder Bob'
