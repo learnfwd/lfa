@@ -117,7 +117,13 @@ function loadBuiltInPlugin(lfa, pluginName) {
 
 module.exports = function pluginLoader(lfa) {
   return when.try(function () {
+
     var plugins = [ loadBuiltInPlugin(lfa, 'lfa-compilation') ];
+
+    if (lfa.config.pluginProject) {
+      plugins.push(loadPlugin(lfa, lfa.config.projectPath, lfa.config.packageJson));
+      return plugins;
+    }
 
     if (lfa.config.loadCore) {
       plugins.push(loadBuiltInPlugin(lfa, 'lfa-core'));
@@ -135,9 +141,11 @@ module.exports = function pluginLoader(lfa) {
         plugins.push(loadBuiltInPlugin(lfa, 'lfa-book'));
         plugins.push(loadBuiltInPlugin(lfa, 'lfa-user'));
       }
-      return when.all(plugins);
+      return plugins;
     });
 
+  }).then(function (plugins) {
+    return when.all(plugins);
   }).then(function (loadedPlugins) {
     lfa.plugins = loadedPlugins;
   });

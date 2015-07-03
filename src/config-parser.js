@@ -17,7 +17,12 @@ module.exports = function parseConfig(config) {
   assert(typeof(config.releaseBuildPath) === 'string', 'config.releaseBuildPath must be a string');
   assert(typeof(config.debugBuildPath) === 'string', 'config.debugBuildPath must be a string');
   assert(typeof(config.package) === 'object', 'config.package must be an object');
-  assert(_.contains(config.package.keywords, 'lfa-book'), 'This is not the package.json of a LFA book');
+  assert(typeof(config.pluginProject) === 'boolean', 'config.pluginProject must be a boolean');
+  if (config.pluginProject) {
+    assert(_.contains(config.package.keywords, 'lfa-plugin'), 'This is not the package.json of a LFA plugin');
+  } else { 
+    assert(_.contains(config.package.keywords, 'lfa-book'), 'This is not the package.json of a LFA book');
+  }
 
   var packageJson = config.package;
 
@@ -37,6 +42,9 @@ module.exports = function parseConfig(config) {
 
   config.defaultTask = packageJson.defaultTask || 'default';
 
+  packageJson.lfa = packageJson.lfa || {};
+  assert(typeof(packageJson.lfa) === 'object', 'packageJson.lfa must be an object');
+
   function def(type, key1, key2, deflt) {
     var a = config[key1];
     if (a !== undefined) { 
@@ -44,9 +52,9 @@ module.exports = function parseConfig(config) {
       return;
     }
 
-    var b = packageJson[key2];
+    var b = packageJson.lfa[key2];
     if (b !== undefined) { 
-      assert(typeof(b) === type, 'packageJson.' + key2 + ' must be a ' + type);
+      assert(typeof(b) === type, 'packageJson.lfa.' + key2 + ' must be a ' + type);
       config[key1] = b;
       return;
     }
@@ -59,9 +67,9 @@ module.exports = function parseConfig(config) {
   def('boolean', 'loadUser', 'compileUser', true);
 
   config.externalPlugins = config.externalPlugins || [];
-  var externalPlugins = packageJson.externalPlugins || [];
+  var externalPlugins = packageJson.lfa.externalPlugins || [];
   assert(config.externalPlugins instanceof Array, 'config.externalPlugins must be an array');
-  assert(externalPlugins instanceof Array, 'packageJson.externalPlugins must be an array');
+  assert(externalPlugins instanceof Array, 'packageJson.lfa.externalPlugins must be an array');
   config.externalPlugins = externalPlugins.concat(config.externalPlugins);
 
   return config;

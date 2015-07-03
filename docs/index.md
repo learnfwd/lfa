@@ -23,6 +23,8 @@ Compiles and serves the project from memory, opens a browser window with the res
 
 * `--book <proj_path>`: The path to the root of the project we're operating on. Defaults to a search in the current directory and its parents.
 * `-v --verbose`: Displays detailed error messages and warnings.
+* `--plugin`: Treat this project as a plugin instead of as a book.
+* `--plugin detect`: Automatically detect if this is a plugin or a book project.
 * `-p --port <port>`: The port on which to start the server. Defaults to `$PORT` or, if that's not set, to `8080`.
 * `--no-open`: Doesn't open a new browser window.
 * `--bundle-name`: The name of the compiled bundle. See [External plugins](#external-plugins). Defaults to `book`.
@@ -41,9 +43,16 @@ Building for production
 lfa compile
 ```
 
+```bash
+# same as lfa compile --plugin
+lfa compile-plugin 
+```
+
 Compiles the project for production. Results are saved in `.lfa/build/release`.
 
 * `--book <proj_path>`: The path to the root of the project we're operating on. Defaults to a search in the current directory and its parents.
+* `--plugin`: Treat this project as a plugin instead of as a book.
+* `--plugin detect`: Automatically detect if this is a plugin or a book project.
 * `-v --verbose`: Displays detailed error messages and warnings.
 * `--debug`: Compile a debug build instead of a production one.
 * `--warnings-as-errors --Werror --werror`: Treat warnings as errors.
@@ -65,9 +74,16 @@ Removing build products
 lfa clean
 ```
 
+```bash
+# same as lfa clean --plugin
+lfa clean-plugin 
+```
+
 Removes everything from the build directory (`.lfa/build`).
 
 * `--book <proj_path>`: The path to the root of the project we're operating on. Defaults to a search in the current directory and its parents.
+* `--plugin`: Treat this project as a plugin instead of as a book.
+* `--plugin detect`: Automatically detect if this is a plugin or a book project.
 * `-v --verbose`: Displays detailed error messages and warnings.
 
 
@@ -192,14 +208,15 @@ var LFA = require('lfa');
 ```
 LFA.loadProject(projectPath);
 ```
-> Loads the project at the specified **absolute** path and returns a promise to a new lfa instance.
+> Loads the project at the specified **absolute** path and returns a promise to a new lfa instance. A subdirectory of the project also works.
 
 ```
 LFA.loadProject(config);
 ```
 > Loads the project with the provided configuration and returns a promise to a new `lfa` instance.
 
-* `config.path`: *string, required* Absolute path to the project.
+* `config.path`: *string, required* Absolute path to the project root or a subdirectory.
+* `config.pluginProject`: *boolean, optional* Treat this project as a plugin instead of as a book. Defaults to `false`. A value of `"detect"` will try to automatically detect the project type.
 * `config.loadCore`: *boolean, optional* Should the core be included in the compilation pipeline. Defaults to `packageJson.compileCore`.
 * `config.loadPlugins`: *boolean, optional* Should local plugins be included in the compilation pipeline. Defaults to `packageJson.compilePlugins`.
 * `config.loadUser`: *boolean, optional* Should project-specific content (chapters and meta-data) be included in the compilation pipeline. Defaults to `packageJson.compileUser`.
@@ -259,6 +276,23 @@ Watcher is an [EventEmitter] triggering the following events:
 * `watcher.emit('compile-error', err)`: Triggered on a recoverable error.
 * `watcher.emit('compile-warning', err)`: Triggered on a compilation warning.
 
+### Cleaning build products
+
+```
+LFA.cleanProject(projectPath);
+```
+> Cleans the project at the specified **absolute** path and returns a promise that resolves when the process is complete. A subdirectory of the project also works.
+
+```
+LFA.cleanProject(config);
+```
+
+> Cleans the project with the provided configuration and returns a promise that resolves when the process is complete.
+
+* `config.path`: *string, required* Absolute path to the project root or a subdirectory.
+* `config.pluginProject`: *boolean, optional* Treat this project as a plugin instead of as a book. Defaults to `false`. A value of `"detect"` will try to automatically detect the project type.
+
+### 2-step project loading
 
 Plugins
 =======

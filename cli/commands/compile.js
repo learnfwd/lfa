@@ -13,7 +13,10 @@ module.exports = function compile(cli) {
   var publicPath = cli.flags.publicPath;
   var bundleName = cli.flags.bundleName;
 
-  return LFA.loadPaths(projPath).then(function (config) {
+  return LFA.loadPaths({
+    path: projPath,
+    pluginProject: cli.flags.plugin,
+  }).then(function (config) {
     return switchControl(cli, config);
   }).then(function (config) {
     return configFlags(config, cli.flags);
