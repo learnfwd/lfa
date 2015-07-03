@@ -6,7 +6,7 @@ Compiler.compile = function (opts) {
   var self = this;
   opts = opts || {};
 
-  if (!opts.inhibitEvents) { self.emit('compile-start'); }
+  if (!opts.inhibitEvents) { self.emit('compile-started'); }
 
   return when.try(function () {
     opts.debug = opts.debug || false;

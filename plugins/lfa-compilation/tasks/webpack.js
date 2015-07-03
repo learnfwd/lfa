@@ -181,11 +181,6 @@ function compileBundle(lfa) {
             throw stats.errors[0];
           }
 
-          // Treat warnings as errors
-          if (lfa.currentCompile.warningsAsErrors && stats.warnings.length) {
-            throw stats.warnings[0];
-          }
-
           _.each(stats.warnings || [], function (warning) {
             lfa.logWarning(warning);
           });

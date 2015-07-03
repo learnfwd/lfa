@@ -5,6 +5,9 @@ Events.logError = function (err) {
 };
 
 Events.logWarning = function (err) {
+  if (this.config.currentCompile && this.config.currentCompile.warningsAsErrors) {
+    throw err;
+  }
   this.emit('compile-warning', err);
 };
 

@@ -5,7 +5,7 @@ function EventOutput(lfa, verbose) {
   var self = this;
   self.compilingShown = false;
 
-  lfa.on('compile-start', function () {
+  lfa.on('compile-started', function () {
     self.showCompiling();
   });
 

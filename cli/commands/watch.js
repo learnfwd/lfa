@@ -10,6 +10,7 @@ var EventOutput = require('../event-output');
 module.exports = function compile(cli) {
   var projPath = cli.flags.book;
   var verbose = cli.flags.v || cli.flags.verbose;
+  var serve = (typeof(cli.flags.serve) === 'boolean') ? cli.flags.serve : true;
   var port = cli.flags.p || cli.flags.port || process.env.PORT;
   var open = cli.flags.open;
   var bundleName = cli.flags.bundleName;
@@ -34,7 +35,7 @@ module.exports = function compile(cli) {
     var task = cli.input.length >= 2 ? cli.input[1] : null;
     var watcher = lfa.watch({
       task: task,
-      serve: true,
+      serve: serve,
       port: port,
       bundleName: bundleName,
       verbose: !!verbose,

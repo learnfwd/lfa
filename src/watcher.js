@@ -12,7 +12,7 @@ function _translateEvents() {
 
   function retain() {
     if (!compiling) {
-      self.emit('compiling');
+      self.emit('compile-started');
     }
     compiling++;
   }
@@ -51,13 +51,13 @@ function _translateEvents() {
 
   self.on('webpack-compile-error', function (err) {
     if (compiling) {
-      self.lfa.emit('compile-error', err);
+      self.emit('compile-error', err);
     }
   });
 
   self.on('webpack-compile-warning', function (err) {
     if (compiling) {
-      self.lfa.emit('compile-warning', err);
+      self.emit('compile-warning', err);
     }
   });
 
@@ -78,8 +78,10 @@ function _translateEvents() {
     });
   }
 
-  forwardEvent('compiling', 'compile-start');
+  forwardEvent('compile-started', 'compile-started');
   forwardEvent('compile-done', 'compile-done');
+  forwardEvent('compile-error', 'compile-error');
+  forwardEvent('compile-warning', 'compile-warning');
   forwardEvent('compile-fatal-error', 'compile-fatal-error');
 }
 
