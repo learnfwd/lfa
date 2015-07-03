@@ -31,7 +31,6 @@ Loader.loadPaths = function (config) {
         packageJson = JSON.parse(contents);
         var isBook = op.canBeBook && _.contains(packageJson.keywords, 'lfa-book');
         var isPlugin = op.canBePlugin && _.contains(packageJson.keywords, 'lfa-plugin');
-        console.log(isBook, isPlugin);
         if (!isBook && !isPlugin) {
           throw new Error('This is not the package.json of a LFA book or plugin');
         }

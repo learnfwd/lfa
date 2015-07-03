@@ -191,11 +191,12 @@ The format is npm-compatible, with a few extensions.
 
 ### Compilation control fields
 
-* `compileCore`: *boolean, optional*. Wether the compilation should include the core framework. Defaults to `true`.
-* `compilePlugins`: *boolean, optional*. Wether the compilation should include plugins from `./plugins`. Defaults to `true`
-* `compileUser`: *boolean, optional*. Wether the compilation should include the actual book chapters and metadata. Defaults to `true`
-* `externalPlugins`: *array, optional*. Array of strings that, when concatenated with `".js"`, `"-main.css"`, `"-vendor.css"`, form URLs to the compiled files of an external plugins.
-* `defaultTask`: *string, optional*. The compilation task that should be run when compiling this book. Defaults to `"default"`
+* `lfa`: *object, optional*. Compilation control settings.
+* `lfa.compileCore`: *boolean, optional*. Wether the compilation should include the core framework. Defaults to `true`.
+* `lfa.compilePlugins`: *boolean, optional*. Wether the compilation should include plugins from `./plugins`. Defaults to `true`
+* `lfa.compileUser`: *boolean, optional*. Wether the compilation should include the actual book chapters and metadata. Defaults to `true`
+* `lfa.externalPlugins`: *array, optional*. Array of strings that, when concatenated with `".js"`, `"-main.css"`, `"-vendor.css"`, form URLs to the compiled files of an external plugins.
+* `lfa.defaultTask`: *string, optional*. The compilation task that should be run when compiling this book. Defaults to `"default"`
 
 Node API
 ========
@@ -239,7 +240,7 @@ lfa.compile(config);
 > Compiles the project and returns a promise that gets resolved when the compilation ended.
 
 * `config.debug`: *boolean* Compile in debug mode. Default: `false`
-* `config.task`: *string* The compilation task that should be run. Default: `packageJson.defaultTask`
+* `config.task`: *string* The compilation task that should be run. Default: `packageJson.lfa.defaultTask`
 * `config.bundleName`: *string* The bundle name of output. Default: `"book"`
 * `config.publicPath`: *string* The public path of the output bundle.
 * `config.warningsAsErrors`: *boolean* Treat warnings as errors. Default: `false`

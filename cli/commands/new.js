@@ -102,8 +102,10 @@ module.exports = function newProject(cli) {
           };
 
           if (/^(y|Y)(es)?$/.test(result.remote)) {
-            packageJson.externalPlugins = [ 'https://plugins.lfwd.io/lfa-core/0.8/plugin' ];
-            packageJson.compileCore = false;
+            packageJson.lfa = {
+              compileCore: false,
+              externalPlugins: [ 'https://plugins.lfwd.io/lfa-core/0.8/plugin' ],
+            };
           }
 
           var packageFile = new File({

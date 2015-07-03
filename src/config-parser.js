@@ -40,10 +40,10 @@ module.exports = function parseConfig(config) {
   assert(typeof(config.book.language) === 'string', 'book.language must be a string');
   assert(typeof(config.book.textDirection) === 'string', 'book.textDirection must be a string');
 
-  config.defaultTask = packageJson.defaultTask || 'default';
-
   packageJson.lfa = packageJson.lfa || {};
   assert(typeof(packageJson.lfa) === 'object', 'packageJson.lfa must be an object');
+  config.defaultTask = packageJson.lfa.defaultTask || 'default';
+  assert(typeof(config.defaultTask) === 'string', 'config.defaultTask must be a string');
 
   function def(type, key1, key2, deflt) {
     var a = config[key1];
