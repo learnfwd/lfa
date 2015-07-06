@@ -25,6 +25,8 @@ Compiles and serves the project from memory, opens a browser window with the res
 * `-v --verbose`: Displays detailed error messages and warnings.
 * `--plugin`: Treat this project as a plugin instead of as a book.
 * `--plugin detect`: Automatically detect if this is a plugin or a book project.
+* `--no-switch`: Don't ask to install lfa locally when project requires an older version of lfa and fail instead.
+* `--no-switch-check`: Continue using this version even if the project needs an older version of lfa. Might obviously fail.
 * `-p --port <port>`: The port on which to start the server. Defaults to `$PORT` or, if that's not set, to `8080`.
 * `--no-open`: Doesn't open a new browser window.
 * `--bundle-name`: The name of the compiled bundle. See [External plugins](#external-plugins). Defaults to `book`.
@@ -51,9 +53,11 @@ lfa compile-plugin
 Compiles the project for production. Results are saved in `.lfa/build/release`.
 
 * `--book <proj_path>`: The path to the root of the project we're operating on. Defaults to a search in the current directory and its parents.
+* `-v --verbose`: Displays detailed error messages and warnings.
 * `--plugin`: Treat this project as a plugin instead of as a book.
 * `--plugin detect`: Automatically detect if this is a plugin or a book project.
-* `-v --verbose`: Displays detailed error messages and warnings.
+* `--no-switch`: Don't ask to install lfa locally when project requires an older version of lfa and fail instead.
+* `--no-switch-check`: Continue using this version even if the project needs an older version of lfa. Might obviously fail.
 * `--debug`: Compile a debug build instead of a production one.
 * `--warnings-as-errors --Werror --werror`: Treat warnings as errors.
 * `--public-path <pub_path>`: The URL where the compiled files will be hosted.
