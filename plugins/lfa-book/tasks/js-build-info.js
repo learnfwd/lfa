@@ -113,6 +113,8 @@ module.exports = function buildInfoJS(lfa) {
         toc: toc,
         spine: spine,
         chapters: _.map(_.values(chapters), function (o) { return o.url; }),
+        version: config.package.version,
+        patchServer: config.package.lfa.patchServer,
         
         // Deprecated:
         language: config.book.language,

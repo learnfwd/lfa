@@ -30,6 +30,8 @@ module.exports = function parseConfig(config) {
   assert(typeof(config.bookId) === 'string', 'packageJson.name must be a string');
   assert(/^[a-z0-9-]+$/.test(config.name), 'packageJson.name must only contain lowercase latin letters, digits and dashes');
 
+  assert(typeof(packageJson.version) === 'string', 'packageJson.version must exist and be a string');
+
   config.book = packageJson.book || {};
   assert(typeof(config.book) === 'object', 'packageJson.book must be an object');
 

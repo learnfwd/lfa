@@ -1,11 +1,94 @@
 (function () {
+  window.__lfa_safe_eval__ = function safeEval(str) {
+    eval(str);
+  };
+})();
+
+(function () {
+  // AJAX
+  function makeRequest(url, cb) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState === XMLHttpRequest.DONE ) {
+       if(xmlhttp.status === 200){
+         cb(xmlhttp.responseText);
+       }
+      }
+    };
+
+    xmlhttp.open('GET', url, true);
+    xmlhttp.send();
+  }
+
+  // Update system
+  function runPatch() {
+    var BuildInfo = require('lfa-book').BuildInfo;
+    var key = 'lfa:' + BuildInfo.bookId + ':' + BuildInfo.version + ':patch';
+    var val = window.localStorage.getItem(key);
+    if (val) {
+      __lfa_safe_eval__(val);
+    }
+  }
+
+  function getPatchMeta() {
+    var BuildInfo = require('lfa-book').BuildInfo;
+    var key = 'lfa:' + BuildInfo.bookId + ':' + BuildInfo.version + ':patch-meta';
+    var val = window.localStorage.getItem(key);
+    if (!val) { return {}; }
+    try {
+      return JSON.parse(val);
+    } catch (ex) {}
+    return {};
+  }
+
+  function setPatch(meta, patch) {
+    var BuildInfo = require('lfa-book').BuildInfo;
+    var keyMeta = 'lfa:' + BuildInfo.bookId + ':' + BuildInfo.version + ':patch-meta';
+    var keyPatch = 'lfa:' + BuildInfo.bookId + ':' + BuildInfo.version + ':patch';
+    window.localStorage.setItem(keyMeta, JSON.stringify(meta));
+    window.localStorage.setItem(keyPatch, patch);
+  }
+
+  function checkForUpdates() {
+    var BuildInfo = require('lfa-book').BuildInfo;
+    if (BuildInfo.patchServer) {
+      var oldMeta = getPatchMeta();
+
+      var uri = BuildInfo.patchServer + '?version=' + BuildInfo.version;
+      uri += '&book=' + BuildInfo.bookId;
+      if (oldMeta.version) {
+        uri += '&patchVersion=' + oldMeta.version;
+      }
+
+      makeRequest(uri, function (rawData) {
+        var d;
+        try {
+          var data = JSON.parse(rawData);
+          if (typeof(data.patch) !== 'string' || typeof(data.meta) !== 'object') { return; }
+
+          setPatch(data.meta, data.patch);
+          d = data;
+        } catch (ex) {}
+
+        if (!d) { return; }
+        if (d.meta.hot) {
+          __lfa_safe_eval__(d.patch);
+        } else {
+          window.location.reload();
+        }
+      });
+    }
+  }
+
+  // The module system
   var moduleCache = {};
 
-  function define(mod, deps, cb, autorun) {
+  function define(mod, deps, cb, autorun, override) {
     if (!(deps instanceof Array)) {
-      autorun = cb; cb = deps; deps = [];
+      override = autorun; autorun = cb; cb = deps; deps = [];
     }
-    if (moduleCache[mod]) {
+    if (!override && moduleCache[mod]) {
       console.warn('Module "' + mod + '"define()-d twice');
     }
     moduleCache[mod] = { 
@@ -15,6 +98,10 @@
       hasRun: false,
       result: undefined,
     };
+  }
+
+  function override(mod, deps, cb, autorun) {
+    define(mod, deps, cb, autorun, true);
   }
 
   function require(mod) {
@@ -44,6 +131,12 @@
   window.__lfa_autorun__ = autorun;
   window.__lfa_require__ = require;
   window.__lfa_define__ = define;
+  window.__lfa_override__ = override;
+  window.__lfa_check_patches__ = function () {
+    runPatch();
+    checkForUpdates();
+  };
+
   window.require = require;
   window.define = define;
 })();
