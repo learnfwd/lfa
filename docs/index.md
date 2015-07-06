@@ -320,6 +320,9 @@ The only required file in a plugin is an npm-compatible `package.json`. Here's a
     "dependencies": [
       "lfa-core", "react" 
     ]
+  },
+  "engines": {
+    "lfa": "~0.8.0"
   }
 }
 ```
@@ -332,6 +335,7 @@ The frontend can also use modules from the `web_modules` directory.
 
 * `name`: *string, required*. Unique plugin name. 
 * `keywords`: *array, required*. Needs to contain `"lfa-plugin"` for this to be recognized as a valid LFA plugin.
+* `engines.lfa`: *string, required*. Semver version range specifying which versions of LFA this project works with.
 
 ### LFA-specific fields
 
