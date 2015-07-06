@@ -17,60 +17,36 @@ describe('css compilation', function () {
 
   it('should compile user styles', function () {
     var lfa;
-    return compileProject(userFixture).then(function (_lfa) {
+    return compileProject(userFixture, { loadCore: false }).then(function (_lfa) {
       lfa = _lfa;
-      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'main.css');
+      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'book-main.css');
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
-      var regexp = /\.user-colors[^]*\.user-main/;
-      data.toString().should.match(regexp);
-    });
-  });
-
-  it('should compile theme styles', function () {
-    var lfa;
-    return compileProject(themeFixture).then(function (_lfa) {
-      lfa = _lfa;
-      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'main.css');
-      return nodefn.call(fs.readFile, cssFilePath);
-    }).then(function(data) {
-      var regexp = /\.user-colors[^]*\.theme-colors[^]*\.theme-main[^]*\.user-main/;
-      data.toString().should.match(regexp);
-    });
-  });
-
-  it('should compile theme with no styles', function () {
-    var lfa;
-    return compileProject(nothemeFixture).then(function (_lfa) {
-      lfa = _lfa;
-      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'main.css');
-      return nodefn.call(fs.readFile, cssFilePath);
-    }).then(function(data) {
-      var regexp = /\.user-colors[^]*\.user-main/;
+      var regexp = /\.user-main/;
       data.toString().should.match(regexp);
     });
   });
 
   it('should compile project with no styles', function () {
     var lfa;
-    return compileProject(noneFixture).then(function (_lfa) {
+    return compileProject(noneFixture, { loadCore: false }).then(function (_lfa) {
       lfa = _lfa;
-      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'main.css');
+      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'book-main.css');
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
-      var regexp = /\.user-colors[^]*\.user-main/;
+      var regexp = /\.user-main/;
       data.toString().should.not.match(regexp);
     });
   });
 
   it('should load stylus from plugin', function () {
     var lfa;
-    return compileProject(pluginFixture).then(function (_lfa) {
+    return compileProject(pluginFixture, { loadCore: false }).then(function (_lfa) {
       lfa = _lfa;
-      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'main.css');
+      var cssFilePath = path.join(lfa.config.releaseBuildPath, 'book-main.css');
       return nodefn.call(fs.readFile, cssFilePath);
     }).then(function(data) {
-      var regexp = /\.plugin-colors[^]*\.plugin-main/;
+      var regexp = /\.plugin-main/;
       data.toString().should.match(regexp);
     });
   });

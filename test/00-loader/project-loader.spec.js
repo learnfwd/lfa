@@ -54,16 +54,6 @@ describe('project loader', function () {
         }));
       });
     });
-
-    it('that require an nonexistant theme', function () {
-      var conf = newConf();
-      conf.package.theme = 'nonexistant_theme';
-      return LFA.loadProject(conf).then(function () {
-        throw new Error('Should have failed');
-      }, function (err) {
-        err.message.should.equal('Theme not found "nonexistant_theme"');
-      });
-    });
   });
 
 });

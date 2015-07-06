@@ -45,7 +45,7 @@ describe('path parser', function () {
       return LFA.loadPaths(noKeywordFixture).then(function () {
         throw new Error('Should have errored out on non-lfa project');
       }).catch(function(err) {
-        err.message.should.equal('This is not the package.json of a LFA book');
+        err.message.should.equal('This is not the package.json of a LFA book or plugin');
       });
     });
 });
