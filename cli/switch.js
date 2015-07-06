@@ -55,7 +55,7 @@ function installLFA(projModulePath, requiredVersion) {
 }
 
 module.exports = function switchControl(cli, config) {
-  if (cli.flags.switch === false) {
+  if (cli.flags.switchCheck === false) {
     return config;
   }
 
@@ -87,6 +87,11 @@ module.exports = function switchControl(cli, config) {
   }).then(function (exists) {
     // if lfa isn't locally installed, ask to install it
     if (!exists) {
+      if (cli.flags.switch === false) {
+        console.log(cantContinue);
+        process.exit(1);
+      }
+
       console.log(installLFAInfo);
       return when.promise(function (resolve) {
         inquirer.prompt({
@@ -109,7 +114,7 @@ module.exports = function switchControl(cli, config) {
     console.log(foundLFA);
   }).then(function () {
     var args = process.argv.slice(2);
-    args.push('--no-switch');
+    args.push('--no-switch-check');
 
     var child = childProcess.fork(lfaPath, args, {
       cwd: process.cwd,
