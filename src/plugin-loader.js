@@ -59,11 +59,11 @@ function loadPlugin(lfa, pluginPath, packageJson) {
     
     var tasks = [];
 
-    var returnValue;
+    var pluginModule;
 
     tasks.push(when.try(function () {
         //TO DO: Make this async
-        returnValue = require(pluginPath)(lfa);
+        pluginModule = require(pluginPath);
       }).catch(function (err) {
         if (err.message !== 'Cannot find module \'' + pluginPath + '\'') {
           throw err;
@@ -76,7 +76,7 @@ function loadPlugin(lfa, pluginPath, packageJson) {
         path: pluginPath,
         name: packageJson.name,
         package: packageJson,
-        returnValue: returnValue,
+        module: pluginModule,
       };
     });
   });
@@ -148,5 +148,10 @@ module.exports = function pluginLoader(lfa) {
     return when.all(plugins);
   }).then(function (loadedPlugins) {
     lfa.plugins = loadedPlugins;
+    _.each(loadedPlugins, function (plugin) {
+      if (plugin.module) {
+        plugin.module.call(plugin, lfa);
+      }
+    });
   });
 };
