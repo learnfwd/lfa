@@ -24,30 +24,33 @@
   // Update system
   function runPatch() {
     var BuildInfo = require('lfa-book').BuildInfo;
-    var key = 'lfa:' + BuildInfo.bookId + ':' + BuildInfo.version + ':patch';
-    var val = window.localStorage.getItem(key);
-    if (val) {
-      __lfa_safe_eval__(val);
-    }
+    var Storage = require('lfa-core').Storage;
+    var key = BuildInfo.version + ':patch';
+    try {
+      var val = Storage.getItem(key);
+      if (val) {
+        __lfa_safe_eval__(val);
+      }
+    } catch (ex) {}
   }
 
   function getPatchMeta() {
     var BuildInfo = require('lfa-book').BuildInfo;
-    var key = 'lfa:' + BuildInfo.bookId + ':' + BuildInfo.version + ':patch-meta';
-    var val = window.localStorage.getItem(key);
-    if (!val) { return {}; }
+    var Storage = require('lfa-core').Storage;
+    var key = BuildInfo.version + ':patch-meta';
     try {
-      return JSON.parse(val);
+      return JSON.parse(Storage.getItem(key)) || {};
     } catch (ex) {}
     return {};
   }
 
   function setPatch(meta, patch) {
     var BuildInfo = require('lfa-book').BuildInfo;
-    var keyMeta = 'lfa:' + BuildInfo.bookId + ':' + BuildInfo.version + ':patch-meta';
-    var keyPatch = 'lfa:' + BuildInfo.bookId + ':' + BuildInfo.version + ':patch';
-    window.localStorage.setItem(keyMeta, JSON.stringify(meta));
-    window.localStorage.setItem(keyPatch, patch);
+    var Storage = require('lfa-core').Storage;
+    var keyMeta = BuildInfo.version + ':patch-meta';
+    var keyPatch = BuildInfo.version + ':patch';
+    Storage.setItem(keyMeta, JSON.stringify(meta));
+    Storage.setItem(keyPatch, patch);
   }
 
   function checkForUpdates() {
