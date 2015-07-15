@@ -3,8 +3,8 @@ var path = require('path');
 var webpack = require('webpack');
 var _ = require('lodash');
 var when = require('when');
-var autoprefixer = require('autoprefixer-stylus');
 var uuid = require('uuid');
+var autoprefixer = require('autoprefixer-core');
 
 var templatesJS = require('./js-templates');
 var liveReloadJS = require('./js-live-reload');
@@ -13,6 +13,8 @@ var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var processStats = require('../../../src/webpack-process-stats');
+
+var browserList = ['Firefox >= 25, FirefoxAndroid >= 25, Chrome >= 31, ChromeAndroid >= 31, Android >= 4.03, iOS >= 7.1, Safari >= 7.0, Explorer >= 10, ExplorerMobile >= 10'];
 
 function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   var resolveFallback = [];
@@ -125,8 +127,10 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
         { test: /\.jsx$/, loaders: ['react-hot', 'jsx?harmony'] },
         { test: /\.json$/, loaders: ['json-loader'] },
 
-        { test: /\.styl$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify') + '!stylus-loader') },
-        { test: /\.css$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify')) },
+        { test: /\.styl$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify') + '!postcss-loader!stylus-loader') },
+        { test: /\.scss$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify') + '!postcss-loader!sass-loader') },
+        { test: /\.sass$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify') + '!postcss-loader!sass-loader?indentedSyntax') },
+        { test: /\.css$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify') + '!postcss-loader') },
 
         { test: /\.(png|jpe?g|gif|ogg|mp3|m4a|m4v|mov|webm|ogv|woff|otf|ttf)(\?[^\?]+)?$/, loaders: ['file-loader'] },
       ]
@@ -142,7 +146,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     lfaPlugins: bundledPlugins,
     dummyFile: dummyFile,
     plugins: wpPlugins,
-    stylus: { use: [autoprefixer()] },
+    postcss: [ autoprefixer({ browsers: browserList }) ],
     lfa: lfa,
   };
 

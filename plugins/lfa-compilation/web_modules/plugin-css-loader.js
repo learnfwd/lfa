@@ -11,12 +11,14 @@ module.exports.pitch = function () {
   var type = query.type;
   var debug = !!this.options.lfa.currentCompile.debug;
 
+  var rawLoader = 'raw-loader!postcss-loader!';
+
   // All the different kinds of CSS lfa supports
   var requests = [
-    'raw-loader!' + path.join(stylesPath, type + '.css'), // CSS
-    'raw-loader!stylus-loader!' + path.join(stylesPath, type + '.styl'), // Stylus
-    'raw-loader!sass-loader!' + path.join(stylesPath, type + '.scss'), // SCSS
-    'raw-loader!sass-loader?indentedSyntax!' + path.join(stylesPath, type + '.sass'), // SASS
+    rawLoader + path.join(stylesPath, type + '.css'), // CSS
+    rawLoader + 'stylus-loader!' + path.join(stylesPath, type + '.styl'), // Stylus
+    rawLoader + 'sass-loader!' + path.join(stylesPath, type + '.scss'), // SCSS
+    rawLoader + 'sass-loader?indentedSyntax!' + path.join(stylesPath, type + '.sass'), // SASS
     path.join(stylesPath, type + '.js'), // CSS-exporting JS
   ];
 
