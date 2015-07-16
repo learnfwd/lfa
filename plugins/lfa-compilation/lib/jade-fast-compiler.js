@@ -30,6 +30,7 @@ JadeFastCompiler.extensibleBundle = function extensibleBundle(code) {
       'buf.length = 0;',
       'var jade = context.jade;',
       'var jade_mixins = context.jade_mixins = context.jade_mixins || {};',
+      'jade_mixins.dynamic_dummy = function () { return ""; };',
       'var jade_interp;',
       'context.self = ((locals === false) ? context.self : locals) || {};',
       code.replace(/self/g, 'context.self'),
@@ -44,7 +45,7 @@ JadeFastCompiler.compileBundle = function compileBundle(contents, opts) {
   opts.self = true;
 
   // Prevent the Jade compiler from optimizing out unused mixins
-  contents += '\nmixin dynamic_dummy\n  - var nop;\n\n+#{"dynamic_dummy"}';
+  contents += '\n+#{"dynamic_dummy"}';
 
   return jadeCompiler.compileClient(contents, opts)
     .then(function (res) {
