@@ -183,6 +183,7 @@ The format is npm-compatible, with a few extensions.
 ### Minimally required fields
 
 * `name`: *string, required*. A unique project identifier. This should be different from any other book's. Only lower-case letters and hyphens allowed.
+* `version`: *string, required*. The version (edition) of this book.
 * `keywords`: *array, required*. Needs to contain `"lfa-book"` for this to be recognized as a valid LFA project.
 * `engines.lfa`: *string, required*. Semver version range specifying which versions of LFA this project works with.
 
@@ -201,6 +202,9 @@ The format is npm-compatible, with a few extensions.
 * `lfa.compileUser`: *boolean, optional*. Wether the compilation should include the actual book chapters and metadata. Defaults to `true`
 * `lfa.externalPlugins`: *array, optional*. Array of strings that, when concatenated with `".js"`, `"-main.css"`, `"-vendor.css"`, form URLs to the compiled files of an external plugins.
 * `lfa.defaultTask`: *string, optional*. The compilation task that should be run when compiling this book. Defaults to `"default"`
+* `lfa.dependencies`: *array, optional*. LFA plugins or modules exported by plugins that this book's JS code depends on. These will be available to `require()` and will not be included in the final bundle. The following modules are automatically included in this list: `lfa-core`, `jquery`, `bootstrap`, `backbone`, `react`, `lodash`.
+* `lfa.patchServer`: *string, optional*. [Patch server](#remote-updates) URL
+
 
 Node API
 ========
@@ -493,7 +497,50 @@ We can also tell lfa not to ever re-run the dependency after the initial compile
 this.setDependencyMode(sources, 'none');
 ```
 
-> TO DO: Document `lfa.config`, `lfa.currentCompile`, `lfa.previousCompile`.
+### The project configuration object
+
+`lfa.config` - Object with per-project configuration variables.
+
+* `lfa.config.projectPath`: *string*. Absolute path to the project.
+* `lfa.config.pluginProject`: *boolean*. Wether the project is a plugin or a book.
+* `lfa.config.packagePath`: *string*. Absolute path to the project's `package.json`.
+* `lfa.config.package`: *object*. The project's `package.json` as JSON.
+* `lfa.config.tmpPath`: *string*. Absolute path to a temporary folder where you can write intermediary build products.
+* `lfa.config.debugBuildPath`: *string*. Absolute path to debug build products.
+* `lfa.config.releaseBuildPath`: *string*. Absolute path to non-debug build products.
+* `lfa.config.book`: *object*. Book metadata. Derived from `lfa.config.package.book`.
+* `lfa.config.defaultTask`: *string*. The default compilation task.
+* `lfa.config.loadCore`: *boolean* Should the core be included in the compilation pipeline.
+* `lfa.config.loadPlugins`: *boolean* Should local plugins be included in the compilation pipeline.
+* `lfa.config.loadUser`: *boolean* Should project-specific content (chapters and meta-data) be included in the compilation pipeline.
+
+### Compile-bound configuration
+
+`lfa.currentCompile` - Object with the configuration of the current compile cycle.
+
+In incremental compiles, `lfa.currentCompile` will be made available as `lfa.previousCompile` in the next compile cycle. Therefore, you can use `lfa.currentCompile` to store things that need to persist across compiles.
+
+> TO DO: Document `lfa.currentCompile`
+
+Remote updates
+--------------
+
+Sometimes, you might need to deploy the book to a static medium that you don't have control over (like a CD/DVD). If a bug surfaces in such a situation, you would normally be in big trouble. LFA allows you to set `lfa.patchServer` in your book's `package.json` to the URL of a server. Every time the book starts up, it will try to fire a GET request of the form `<patch server URL>?book=<book's packageJson.name>&version=<book's packageJson.version>&patchVersion=<version of currently applied patch, if any>`.
+
+If, based on the above information, you determine that your book needs a patch applied to it, your server should return a JSON of the form:
+```
+{
+    "meta": {
+        "version": required, string // The version of the patch. will be returned as `patchVersion` in subsequent update checks.
+        "hot": optional, boolean, default false // A hot patch will be ran immediately, without reloading the page.
+    },
+    "patch": required, string // A string of arbitrary Javascript. The patch's body. Will replace the previously stored patch.
+}
+```
+
+If you determine there is no newer patch for your book, just return 200 and `{}`.
+
+If the patch is hot, it will be applied immediately, otherwise the page is reloaded. The latest patch is stored in the user's `localStorage` and will run every time they start up / reload the book.
 
 External plugins
 ----------------
