@@ -45,6 +45,12 @@ These mixins are special and need to be at the very top of your chapter file, be
 > Removes this chapter from the ToC and the spine. It will only be reachable with the link
 
 ```jade
++no_content
+```
+
+> Signals that this chapter should only exist as an entry in the ToC (a container for other chapters) and doesn't actually contain textual content.
+
+```jade
 +meta(key, value)
 ```
 

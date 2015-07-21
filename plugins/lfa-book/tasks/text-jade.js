@@ -91,7 +91,7 @@ module.exports = function textJadeTasks(lfa) {
                 var newFile = new File({
                   base: '',
                   history: file.history.concat([path.join('chapters', url + '.js')]),
-                  contents: new Buffer(boilerplate.join(''), 'utf8'),
+                  contents: locals.meta.noContent ? null : new Buffer(boilerplate.join(''), 'utf8'),
                 });
 
                 newFile.textMeta = locals.meta;

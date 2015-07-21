@@ -78,6 +78,7 @@ var TocView = Backbone.View.extend({
   render: function() {
     var self = this;
 
+    console.log(this.chapters);
     this.$el.html(templates.toc.toc(this.chapters));
     this.calculateHeights();
 

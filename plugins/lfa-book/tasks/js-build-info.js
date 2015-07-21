@@ -61,7 +61,7 @@ module.exports = function buildInfoJS(lfa) {
   function buildSpine(map) {
     var files = _.keys(map);
     files = _.filter(files, function (o) {
-      return !map[o].noSpine;
+      return !map[o].noSpine && !map[o].noContent;
     });
     files.sort();
     return _.map(files, function(o) { return map[o].url; });

@@ -3,12 +3,19 @@ mixin toc(chapters)
     each chapter in chapters
       li.fold(data-url="#{chapter.url}")
         - var hasChildren = (chapter.children && chapter.children.length);
+        - var noContent = chapter.locals.noContent;
+        - var chapterUrl = noContent ? undefined : ('#book/' + chapter.url);
+        - var linkClasses = [];
+        - if (hasChildren) { linkClasses.push('foldable') };
+        - if (noContent) { linkClasses.push('no-content') };
+        - linkClasses = linkClasses.join(' ');
+
         if chapter.locals.subtitle
-          a.subtitled(href="#book/#{chapter.url}", class = hasChildren ? 'foldable' : '')
+          a.subtitled(href=chapterUrl, class=linkClasses)
             span.title= chapter.locals.title
             span.subtitle= chapter.locals.subtitle
         else
-          a(href="#book/#{chapter.url}", class = hasChildren ? 'foldable' : '')
+          a(href=chapterUrl, class=linkClasses)
             span.title
               = chapter.locals.title
         if hasChildren
