@@ -520,7 +520,14 @@ this.setDependencyMode(sources, 'none');
 
 In incremental compiles, `lfa.currentCompile` will be made available as `lfa.previousCompile` in the next compile cycle. Therefore, you can use `lfa.currentCompile` to store things that need to persist across compiles.
 
-> TO DO: Document `lfa.currentCompile`
+* `lfa.currentCompile.buildPath`: *string*. Absolute path of the final output.
+* `lfa.currentCompile.publicPath`: *string*. Path where the output will be hosted.
+* `lfa.currentCompile.bundleName`: *string*. The name of the final JS/CSS bundle.
+* `lfa.currentCompile.debug`: *boolean*. Wether we're in debug mode or not.
+* `lfa.currentCompile.warningsAsErrors`: *boolean*. Wether you should treat warnings as errors.
+* `lfa.currentCompile.serve`: *boolean*. Wether this compile is meant to be served by [webpack-dev-server]. Used for `.watch()`.
+* `lfa.currentCompile.watcher`: *Watcher*. The watcher instance from an incremental compile.
+* `lfa.currentCompile.saveForIncremental`: *boolean*. Wether this `lfa.currentCompile` will be saved as `lfa.previousCompile` as part of the incremental compilation process.
 
 Remote updates
 --------------
@@ -571,4 +578,4 @@ For example, if we want to host the core framework separately from the rest of t
 [Webpack]: http://webpack.github.io/
 [gulp]: http://gulpjs.com/
 [vinyl-fs]: https://github.com/wearefractal/vinyl-fs
-
+[webpack-dev-server]: http://webpack.github.io/docs/webpack-dev-server.html
