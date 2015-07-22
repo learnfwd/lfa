@@ -4,7 +4,9 @@ var Chapters = require('./chapters');
 function Prefetcher() {
   this.cache = {};
   this.maxCacheLength = 64 * 1024; //64 kB
+  this.maxCachedChapters = 10;
   this.cacheLength = 0;
+  this.cachedChapters = 0;
   this.chapterPriority = [];
   this.priorityHash = {};
   this.cacheSize = {};
@@ -17,13 +19,14 @@ Prefetcher.prototype.chapterFinishedCaching = function(key, err, value) {
     this.cache[key] = true;
     this.cacheSize[key] = value.length;
     this.cacheLength += value.length;
+    this.cachedChapters++;
   }
   this.rebalanceCache();
 };
 
 Prefetcher.prototype.reclaimCache = function(tillPriority) {
   var hash = this.priorityHash;
-  while (this.cacheLength > this.maxCacheLength) {
+  while (this.cacheLength > this.maxCacheLength || this.cachedChapters > this.maxCachedChapters) {
     var maxPri = -1;
     var maxCache = null;
     _.each(this.cache, function(value, key) {
@@ -41,6 +44,7 @@ Prefetcher.prototype.reclaimCache = function(tillPriority) {
 Prefetcher.prototype.invalidateCacheForChapter = function(key) {
   if (this.cache[key]) {
     this.cacheLength -= this.cacheSize[key];
+    this.cachedChapters--;
     delete this.cache[key];
     delete this.cacheSize[key];
   }
@@ -55,7 +59,7 @@ Prefetcher.prototype.rebalanceCache = function() {
     if (cacheQ === 2) { return; } //loading
     if (!cacheQ) {
       this.reclaimCache(priority);
-      if (this.cacheLength <= this.maxCacheLength) {
+      if (this.cacheLength <= this.maxCacheLength && this.cachedChapters <= this.maxCachedChapters) {
         this.cache[ch] = 2;
         Chapters.asyncLoad(ch, this.chapterFinishedCaching.bind(this, ch));
       }
