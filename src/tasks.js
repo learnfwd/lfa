@@ -52,12 +52,15 @@ Task.prototype.addFileDependencies = function addFileDependencies(files) {
 
 
 Task.prototype.filterModifiedFiles = function filterModifiedFiles(globs, actions) {
-  if (!this.lfa._oldCache) { return globs; }
-
   actions = actions || ['changed', 'created'];
   if (!(actions instanceof Array)) {
     actions = [actions];
   }
+
+  if (!this.lfa._oldCache) { 
+    return (_.contains(actions, 'created') || _.contains(actions, 'changed')) ? globs : [];
+  }
+
 
   var res = [];
   if (typeof(globs) === 'string') { globs = [globs]; }

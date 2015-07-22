@@ -68,25 +68,23 @@ module.exports = function buildInfoJS(lfa) {
   }
 
   lfa.task('webpack:gen:buildinfo', ['text:files:*'], function (textFiles) {
-    var previousChapters = lfa.previousCompile ? lfa.previousCompile.chapters : null;
-    var chapters = _.cloneDeep(previousChapters || {});
-    var files = lfa.previousCompile ? (lfa.previousCompile.textFilesToChapters || {}) : {};
-    var stream = lfa.pipeErrors(through.obj());
-    var shouldBuild = !lfa.previousCompile;
+    var previousChapters = (lfa.previousCompile ? lfa.previousCompile.chapters : {}) || {};
+    var previousFiles = lfa.previousCompile ? (lfa.previousCompile.textFilesToChapters || {}) : {};
+    var chapters = _.cloneDeep(previousChapters);
+    var files = _.cloneDeep(previousFiles);
     lfa.currentCompile.chapters = chapters;
     lfa.currentCompile.textFilesToChapters = files;
 
-    var deletedFiles = lfa.currentCompile.deletedTextFiles || [];
-    lfa.currentCompile.deletedTextFiles = null;
-
-    _.each(deletedFiles, function(deletedFile) {
-      delete chapters[files[deletedFile]];
-      delete files[deletedFile];
-      shouldBuild = true;
-    });
+    var stream = lfa.pipeErrors(through.obj());
+    var shouldBuild = !lfa.previousCompile;
 
     textFiles.on('data', function (file) {
-      if (file.textMeta) {
+      if (file.deleted) {
+        var deletedPath = file.history[0];
+        delete chapters[files[deletedPath]];
+        delete files[deletedPath];
+        shouldBuild = true;
+      } else if (file.textMeta) {
         files[file.history[0]] = file.textMeta.path;
         chapters[file.textMeta.path] = file.textMeta;
         shouldBuild = true;
@@ -98,7 +96,8 @@ module.exports = function buildInfoJS(lfa) {
     });
 
     textFiles.on('end', function () {
-      if (!shouldBuild || _.isEqual(previousChapters, chapters)) {
+      if (lfa.previousCompile && 
+          (!shouldBuild || _.isEqual(previousChapters, chapters))) {
         stream.end();
         return;
       }

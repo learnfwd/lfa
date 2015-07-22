@@ -8,6 +8,7 @@ var when = require('when');
 var nodefn = require('when/node');
 var fs = require('fs');
 var safeEval = require('./safe-eval');
+var es = require('event-stream');
 
 var PLUGIN_NAME = 'text-jade';
 var boilerplate = [
@@ -50,7 +51,20 @@ module.exports = function textJadeTasks(lfa) {
 
     self.addFileDependencies(glob);
 
-    return lfa.src(glob, { filterModified: this })
+    var removedFiles = self.filterModifiedFiles(glob, ['removed']);
+    var removedStream = lfa.pipeErrors(through.obj());
+    process.nextTick(function () {
+      _.each(removedFiles, function (removedFile) {
+        var file = new File({
+          path: removedFile
+        });
+        file.deleted = true;
+        removedStream.write(file);
+      });
+      removedStream.end();
+    });
+
+    var filesStream = lfa.src(glob, { filterModified: self })
       .pipe(through.obj(function (file, enc, cb) {
         if (file.isStream()) {
           return cb(new gutil.PluginError(PLUGIN_NAME, 'Streaming not supported'));
@@ -103,5 +117,7 @@ module.exports = function textJadeTasks(lfa) {
           });
 
       }));
+
+    return es.merge(removedStream, filesStream);
   });
 };
