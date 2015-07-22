@@ -123,23 +123,20 @@ var ChapterView = Backbone.View.extend({
 
     this.$el.html([front, data, back].join(''));
 
-    // Remove previous cssNamespace classes, if they exist.
-    var classes = _.filter(
-      $('body')[0].className.split(' '),
-      function(cls) {
-        return cls.indexOf('lf-') === -1;
-      }
-    );
-    // `classes` should no longer contain strings that start with `lf-`.
-    $('body').removeClass();
-    $('body').addClass(classes.join(' '));
+    // Remove previous cssNamespace class, if it exists
+    var body = $('body');
+    var oldCssNamespace = body.data('chapterNamespace');
+    if (oldCssNamespace) { 
+      body.removeClass(oldCssNamespace);
+    }
 
     // Add the cssNamespace classes to the <body> element.
     var cssNamespace = chapter;
     try {
       cssNamespace = App.tocFindByUrl[chapter].locals.cssNamespace || cssNamespace;
     } catch (ex) {}
-    $('body').addClass(cssNamespace);
+    body.addClass(cssNamespace);
+    body.data('chapterNamespace', cssNamespace);
 
     App.book.trigger('render', {
       chapter: chapter
