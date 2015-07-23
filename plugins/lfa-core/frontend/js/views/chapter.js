@@ -5,11 +5,24 @@ require('stacktable');
 require('fluidbox');
 
 var templates = require('templates');
-var mixinCompiler = require('../mixin-compiler');
-var Chapters = require('../chapters');
+var Chapters = require('lfa-book').Chapters || require('../chapters-poly');
 var Prefetcher = require('../prefetcher');
 var App = require('../app');
 var HotChapterReload = require('lfa-book').HotChapterReload;
+
+function errorMessage(ex) {
+  var trace = ex.stack || ex.toString();
+  return [
+    '<div class=".jade-error">',
+      '<h2 class=".jade-error-title">',
+        'Chapter loading error',
+      '</h2>',
+      '<pre class=".jade-error-trace">',
+        trace,
+      '</pre>',
+    '</div>',
+  ].join('');
+}
 
 var ChapterView = Backbone.View.extend({
   initialize: function(options) {
@@ -78,7 +91,7 @@ var ChapterView = Backbone.View.extend({
     $('#previous-chapter').prop('href', '#book/' + previousUrl);
 
     // If not cached, put up a loading screen
-    if (Chapters.chapterLoaded(chapter)) {
+    if (Chapters.isChapterLoaded(chapter)) {
       this.$el.html(templates['error-message']());
     }
 
@@ -100,7 +113,7 @@ var ChapterView = Backbone.View.extend({
     }
     this.prefetcher.setChapterPriority(priority);
 
-    Chapters.asyncLoad(chapter, this.chapterLoaded.bind(this, chapter));
+    Chapters.loadChapter(chapter, this.chapterLoaded.bind(this, chapter));
   },
 
   chapterLoaded: function(chapter, error, template) {
@@ -111,8 +124,13 @@ var ChapterView = Backbone.View.extend({
       chapter: chapter
     });
 
-    var front, back;
-    var data = mixinCompiler(template);
+    var front, back, data;
+    try {
+      data = template();
+    } catch (ex) {
+      data = errorMessage(ex);
+    }
+
     if (data && data.indexOf("<section>") !== -1) {
       front = "<article>";
       back = "</article>";

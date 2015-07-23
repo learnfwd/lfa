@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var Chapters = require('./chapters');
+var Chapters = require('lfa-book').Chapters || require('./chapters-poly');
 
 function Prefetcher() {
   this.cache = {};
@@ -48,7 +48,7 @@ Prefetcher.prototype.invalidateCacheForChapter = function(key) {
     delete this.cache[key];
     delete this.cacheSize[key];
   }
-  Chapters.removeLoaded(key);
+  Chapters.removeLoadedChapter(key);
 };
 
 Prefetcher.prototype.rebalanceCache = function() {
@@ -61,7 +61,7 @@ Prefetcher.prototype.rebalanceCache = function() {
       this.reclaimCache(priority);
       if (this.cacheLength <= this.maxCacheLength && this.cachedChapters <= this.maxCachedChapters) {
         this.cache[ch] = 2;
-        Chapters.asyncLoad(ch, this.chapterFinishedCaching.bind(this, ch));
+        Chapters.loadChapter(ch, this.chapterFinishedCaching.bind(this, ch));
       }
       return;
     }

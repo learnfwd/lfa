@@ -1,11 +1,11 @@
-var _ = require('lodash');
-var BuildInfo = require('lfa-book').BuildInfo;
+var BuildInfo = require('build-info');
+var mixinCompiler = require('./mixin-compiler');
 
 function Chapters() {
   var self = this;
   self.loadedChapters = {};
   self.existingChapters = {};
-  _.each(BuildInfo.chapters, function (ch) {
+  BuildInfo.chapters.forEach(function (ch) {
     self.existingChapters[ch] = true;
   });
 
@@ -18,9 +18,13 @@ function Chapters() {
 
     opts.loaded = true;
     opts.loading = false;
-    opts.content = json.content;
-    _.each(opts.callbacks, function (cb) { 
-      cb(null, json.content);
+    opts.content = function () { return mixinCompiler(json.content); };
+    if (opts.element) {
+      window.document.head.removeChild(opts.element);
+      opts.element = null;
+    }
+    opts.callbacks.forEach(function (cb) { 
+      cb(null, opts.content);
     });
   };
 }
@@ -29,7 +33,7 @@ Chapters.prototype.chapterExists = function(chapter) {
   return !!this.existingChapters[chapter];
 };
 
-Chapters.prototype.asyncLoad = function (chapter, cb) {
+Chapters.prototype.loadChapter = function (chapter, cb) {
   if (!this.chapterExists(chapter)) {
     return cb(new Error('Chapter does not exist'));
   }
@@ -53,12 +57,12 @@ Chapters.prototype.asyncLoad = function (chapter, cb) {
   }
 };
 
-Chapters.prototype.removeLoaded = function (chapter) {
+Chapters.prototype.removeLoadedChapter = function (chapter) {
   var opts = this.loadedChapters[chapter];
   if (!opts) { return; }
 
   if (opts.loading) {
-    _.each(opts.callbacks, function (cb) {
+    opts.callbacks.forEach(function (cb) {
       cb(new Error('Loading cancelled'), null);
     });
   }
@@ -68,7 +72,7 @@ Chapters.prototype.removeLoaded = function (chapter) {
   delete this.loadedChapters[chapter];
 };
 
-Chapters.prototype.chapterLoaded = function (chapter) {
+Chapters.prototype.isChapterLoaded = function (chapter) {
   var opts = this.loadedChapters[chapter];
   return opts && opts.loaded;
 };
