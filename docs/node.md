@@ -25,7 +25,6 @@ LFA.loadProject(config);
 ### Events available on `lfa`
 
 `lfa` is an [EventEmitter] triggering the following events:
-[EventEmitter]: https://nodejs.org/api/events.html
 
 * `lfa.emit('compile-started')`: Triggered when a compilation started.
 * `lfa.emit('compile-done')`: Triggered when a compilation ended successfully.
@@ -42,7 +41,7 @@ lfa.compile(config);
 * `config.debug`: *boolean* Compile in debug mode. Default: `false`
 * `config.task`: *string* The compilation task that should be run. Default: `packageJson.lfa.defaultTask`
 * `config.bundleName`: *string* The bundle name of output. Default: `"book"`
-* `config.publicPath`: *string* The [public path](http://webpack.github.io/docs/configuration.html#output-publicpath) of the output bundle.
+* `config.publicPath`: *string* The [public path] of the output bundle.
 * `config.warningsAsErrors`: *boolean* Treat warnings as errors. Default: `false`
 
 ### Continuously compiling the project
@@ -96,3 +95,6 @@ LFA.cleanProject(config);
 ### 2-step project loading
 
 > TODO: example
+
+[EventEmitter]:https://nodejs.org/api/events.html
+[public path]:http://webpack.github.io/docs/configuration.html#output-publicpath

@@ -225,3 +225,6 @@ In incremental compiles, `lfa.currentCompile` will be made available as `lfa.pre
 * `lfa.currentCompile.saveForIncremental`: *boolean*. Wether this `lfa.currentCompile` will be saved as `lfa.previousCompile` as part of the incremental compilation process.
 
 [Webpack]:http://webpack.github.io/
+[webpack-dev-server]:http://webpack.github.io/docs/webpack-dev-server.html
+[gulp]:http://gulpjs.com/
+[vinyl-fs]:https://github.com/wearefractal/vinyl-fs

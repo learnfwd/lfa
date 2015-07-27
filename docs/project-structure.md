@@ -46,11 +46,7 @@ The Table of Contents is determined based on the directory hierarchy of the Jade
 
 If this seems confusing, look at the samples from a new project's `text/` directory. You'll intuitively get it.
 
-If you need, you can define your own mixins in `mixins/index.jade`, then use them directly in the chapters. This is faster than using [include] to include a common jade file in all your chapters.
-
-[include]:http://jade-lang.com/reference/includes/
-[lfa-book]:lfa-book.md
-[Jade]:http://jade-lang.com
+If you need, you can define your own mixins in `mixins/index.jade`, then use them directly in the chapters. This is faster than using [include][sass-include] to include a common jade file in all your chapters.
 
 ### Custom styling
 
@@ -61,13 +57,9 @@ Write your CSS rules in `styles/main.sass`. If you use big CSS libraries or othe
 
 Since not everybody might like SaSS, you can also use the SCSS syntax, [Stylus], plain CSS, or even a JS module that exports a CSS string. Just use `.scss/.styl/.css/.js` instead of `.sass` as the file extension. You can even mix and match more than one type (`main.sass` and `main.styl` in the same project, for example).
 
-[SaSS]:http://sass-lang.com/
-[Stylus]:http://learnboost.github.io/stylus/
-
 ### Custom JS
 
 If you need custom JS inside your book, you can place it in `js/index.js`. We use [CommonJS] for modules. Please refer to the [reader core documentation][lfa-core] for the APIs available.
-
 
 ### Assets directory
 
@@ -112,7 +104,7 @@ The format is npm-compatible, with a few extensions.
 
 * `book`: *object, optional*. Book metadata.
 * `book.title`: *string, optional*. The title of the book. Defaults to the capitalized, hyphen-less `name`
-* `book.language`: *string, optional*. Language of the book in [2-letter code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format. Defaults to `"en"`
+* `book.language`: *string, optional*. Language of the book in [2-letter code][langs] format. Defaults to `"en"`
 * `book.textDirection`: *string, optional*. Reading direction (`"ltr"`/`"rtl"`). Defaults to `"ltr"`
 
 ### Compilation control fields
@@ -146,4 +138,15 @@ If, based on the above information, you determine that your book needs a patch a
 If you determine there is no newer patch for your book, just return 200 and `{}`.
 
 If the patch is hot, it will be applied immediately, otherwise the page is reloaded. The latest patch is stored in the user's `localStorage` and will run every time they start up / reload the book.
+
+
+[SaSS]:http://sass-lang.com/
+[Stylus]:http://learnboost.github.io/stylus/
+[Jade]:http://jade-lang.com
+[sass-include]:http://jade-lang.com/reference/includes/
+[CommonJS]:http://webpack.github.io/docs/commonjs.html
+[lfa-book]:lfa-book.md
+[lfa-core]:lfa-core.md
+[using-plugins]:using-plugins.md
+[langs]:https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 
