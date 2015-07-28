@@ -123,7 +123,7 @@ function _compile(ops) {
 
   var opts = _.extend({
     previousCompile: self.incrementalCache,
-    fileOperations: ops,
+    fileOperations: self.incrementalCache ? ops : null,
     watcher: self,
     serve: !!self.opts.serve,
     debug: true,
@@ -135,7 +135,7 @@ function _compile(ops) {
 
   self.waitForCompile = self.lfa.compile(opts)
     .then(function (cache) {
-      self.incrementalCache = cache;
+      self.incrementalCache = _.extend(self.incrementalCache || {}, cache);
       self.emit('lfa-compile-done');
       if (self.opts.serve && !self.devServer) {
         _startServer.call(self, cache);
