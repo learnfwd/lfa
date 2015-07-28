@@ -26,6 +26,8 @@ After that, run:
 $ npm install -g lfa
 ```
 
+If it is easier for you, we also povide an official Docker distibution. Follow the instructions at https://registry.hub.docker.com/u/learnfwd/lfa/ to get started.
+
 Usage
 -----
 
