@@ -1,4 +1,4 @@
-FROM iojs:onbuild
+FROM node
 MAINTAINER Learn Forward @learnfwd
 RUN npm install -g lfa
-ENTRYPOINT ['lfa']
+ENTRYPOINT ["lfa"]
