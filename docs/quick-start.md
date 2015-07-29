@@ -8,6 +8,8 @@ Installation is simple. First, make sure you have [Node] installed, then simply 
 npm install -g lfa
 ```
 
+If it is easier for you, we also provide an official Docker distribution. Follow the instructions at the [Docker Registry](https://registry.hub.docker.com/u/learnfwd/lfa/) to get started.
+
 ## Creating a project
 
 Run the following command:
