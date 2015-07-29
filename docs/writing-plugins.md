@@ -82,6 +82,8 @@ Plugins are generally composed of tasks. Tasks must return streams, generally wi
 
 Tasks can have dependencies. These can be given by name, as globs or as an array of globs or task names. If globs or arrays match more than one task, their streams get merged.
 
+By default, LFA starts the compile with the `"default"` task. This can be controlled, though with `lfa.defaultTask`.
+
 All the streams that are returned as dependencies are patched so that they propagate their errors down when you `.pipe()`. This way, you don't have to worry about error handling.
 
 For example:

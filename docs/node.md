@@ -9,7 +9,7 @@ var LFA = require('lfa');
 ```
 LFA.loadProject(projectPath);
 ```
-> Loads the project at the specified **absolute** path and returns a promise to a new lfa instance. A subdirectory of the project also works.
+> Loads the project at the specified **absolute** path and returns a [promise] to a new lfa instance. A subdirectory of the project also works.
 
 ```
 LFA.loadProject(config);
@@ -24,7 +24,7 @@ LFA.loadProject(config);
 
 ### Events available on `lfa`
 
-`lfa` is an [EventEmitter] triggering the following events:
+`lfa` is an node [EventEmitter] triggering the following events:
 
 * `lfa.emit('compile-started')`: Triggered when a compilation started.
 * `lfa.emit('compile-done')`: Triggered when a compilation ended successfully.
@@ -40,7 +40,7 @@ lfa.compile(config);
 
 * `config.debug`: *boolean* Compile in debug mode. Default: `false`
 * `config.task`: *string* The compilation task that should be run. Default: `packageJson.lfa.defaultTask`
-* `config.bundleName`: *string* The bundle name of output. Default: `"book"`
+* `config.bundleName`: *string* The name of the compiled bundle. Default: `"book"`
 * `config.publicPath`: *string* The [public path] of the output bundle.
 * `config.warningsAsErrors`: *boolean* Treat warnings as errors. Default: `false`
 
@@ -49,7 +49,7 @@ lfa.compile(config);
 ```js
 var watcher = lfa.watch(config);
 ```
-> Returns a watcher object. `config` is given in the same format as the one from `compile` with some additions:
+> Returns a watcher object. `config` is given in the same format as the one from `.compile()` with some additions:
 
 * `config.serve`: *boolean* Start a development server with hot reload. Default: `false`
 * `config.port`: *number* The port for the server. Default: `8080`
@@ -92,9 +92,6 @@ LFA.cleanProject(config);
 * `config.path`: *string, required* Absolute path to the project root or a subdirectory.
 * `config.pluginProject`: *boolean, optional* Treat this project as a plugin instead of as a book. Defaults to `false`. A value of `"detect"` will try to automatically detect the project type.
 
-### 2-step project loading
-
-> TODO: example
-
 [EventEmitter]:https://nodejs.org/api/events.html
 [public path]:http://webpack.github.io/docs/configuration.html#output-publicpath
+[promise]:https://promisesaplus.com/

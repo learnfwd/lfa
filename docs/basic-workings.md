@@ -12,9 +12,11 @@ LFA works in terms of bundles. A bundle is made up of 3 required files plus addi
 
 Each time you run `lfa compile`, LFA takes your input files and outputs a bundle (by default, named `"book"`).
 
-More bundles can be loaded from different sources in one single book. This is achieved by adding their URLs to `externalPlugins`. LFA will create a launcher `index.html` file that loads your external bundles and your local bundle.
+A bundle contains CSS styles and exports JavaScript modules accessible via `require()`.
 
-There are 3 classes of content that LFA can put in your bundle:
+More bundles can be loaded from different sources into one single book. This is achieved by adding their URLs to `lfa.externalPlugins` in your `package.json` (see [Project structure][project-structure]). LFA will create a launcher `index.html` file that loads your local and external bundles.
+
+There are 3 classes of content that LFA can place in your bundle:
 
 ### User content
 
@@ -60,4 +62,5 @@ This is what happens when you run `lfa watch`:
 
 [lfa-book]:lfa-book.md
 [lfa-core]:lfa-core.md
+[project-structure]:project-structure.md
 [webpack-dev-server]:http://webpack.github.io/docs/webpack-dev-server.html
