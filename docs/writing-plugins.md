@@ -5,12 +5,12 @@ Plugins can have 2 parts (both optional): compile-time and run-time (frontend).
 
 At compile time you can affect the way LFA compiles your plugin's assets, JS, CSS.
 
-At run-time you can add more functionality through CSS, JS and mixins to the final result, the same way you would in a project.
+At run-time you can add more functionality through CSS, JS and mixins to the final result, the same way you would in a book project.
 
 Plugin configuration
 ---------------------
 
-The only required file in a plugin is an npm-compatible `package.json`. Here's an example:
+The only required file in a plugin project is an npm-compatible `package.json`. Here's an example:
 
 ```json
 {
@@ -32,7 +32,9 @@ The only required file in a plugin is an npm-compatible `package.json`. Here's a
 
 You can use `npm install --save` or the `dependencies` field like with any npm module to install dependencies for both the frontend and the compile-time part.
 
-The frontend can also use modules from the `web_modules` directory.
+The frontend can also use modules placed in the `./web_modules` directory.
+
+[Webpack] will allow you to use CommonJS or AMD modules from both `./node_modules` and `./web_modules` with a simple `require()`
 
 ### Minimally required fields
 
@@ -56,7 +58,7 @@ All of the below files are optional. It's nice to let the compiler know if you'r
 
 ### JS
 
-The main entrypoint of your frontend is `frontend/js/index.js`. You can use the CommonJS format to export stuff from your module or `require()` stuff from `lfa.dependencies`, other files in your plugin or libraries you installed into `./node_modules` or `./web_modules`. We're using [Webpack], so you can even `require()` CSS or assets.
+The main entrypoint of your frontend is `frontend/js/index.js`. You can use the CommonJS format to export stuff from your module or to `require()` stuff from `lfa.dependencies`, other files in your plugin or libraries you installed into `./node_modules` or `./web_modules`. We're using [Webpack], so you can even `require()` CSS or assets.
 
 If you need custom Webpack loaders, put them in `web_modules`, then just use them with the standard `require('my-loader!my-file')` syntax.
 
@@ -64,12 +66,11 @@ We've built in loaders for CSS, JSON, JSX, Stylus and most kinds of images and f
 
 ### Styles
 
-The same `vendor`/`main` model and file types that we use in projects apply here as well. Just start editing `frontend/styles/main.css` or any of the other supported extensions.
+The same `vendor`/`main` model and file types that we use in projects apply here as well. Just start editing `frontend/styles/main.sass` or any of the other supported extensions.
 
 ### Mixins
 
-You can define more Jade mixins that will be dynamically usable in a project's chapters by adding them to `frontend/styles/index.jade`.
-
+You can define more Jade mixins that will be dynamically usable in a book project's chapters by adding them to `frontend/styles/index.jade`.
 
 Compiler plugins
 ----------------
@@ -78,9 +79,13 @@ If you provide an `index.js` or a `main` entry in `package.json`, LFA will `requ
 
 ### Tasks
 
-Plugins are generally composed of tasks. Tasks must return streams, generally with vinyl files flowing through them. This makes it easy to use any [gulp] plugin.
+Plugins are generally composed of tasks. Tasks must return streams, generally with [vinyl files][vinyl] flowing through them. This makes it easy to use any [gulp] plugin inside LFA tasks.
 
 Tasks can have dependencies. These can be given by name, as globs or as an array of globs or task names. If globs or arrays match more than one task, their streams get merged.
+
+By default, LFA starts the compile with the `"default"` task. This can be controlled, though with `lfa.defaultTask`.
+
+The `"default"` task depends on `"default:*`, so any task that you write with a name like `"default:something"` will be picked up and run when a project is compiled.
 
 All the streams that are returned as dependencies are patched so that they propagate their errors down when you `.pipe()`. This way, you don't have to worry about error handling.
 
@@ -186,7 +191,7 @@ lfa.task('minify', ['source:*'], function (sources) {
 });
 ```
 
-We can also tell lfa not to ever re-run the dependency after the initial compile:
+We can also tell LFA not to ever re-run the dependency after the initial compile:
 
 ```js
 this.setDependencyMode(sources, 'none');
@@ -205,7 +210,7 @@ this.setDependencyMode(sources, 'none');
 * `lfa.config.releaseBuildPath`: *string*. Absolute path to non-debug build products.
 * `lfa.config.book`: *object*. Book metadata. Derived from `lfa.config.package.book`.
 * `lfa.config.defaultTask`: *string*. The default compilation task.
-* `lfa.config.loadCore`: *boolean* Should the core be included in the compilation pipeline.
+* `lfa.config.loadCore`: *boolean* Should the reader core tasks and frontend be included in the compilation pipeline.
 * `lfa.config.loadPlugins`: *boolean* Should local plugins be included in the compilation pipeline.
 * `lfa.config.loadUser`: *boolean* Should project-specific content (chapters and meta-data) be included in the compilation pipeline.
 
@@ -213,7 +218,7 @@ this.setDependencyMode(sources, 'none');
 
 `lfa.currentCompile` - Object with the configuration of the current compile cycle.
 
-In incremental compiles, `lfa.currentCompile` will be made available as `lfa.previousCompile` in the next compile cycle. Therefore, you can use `lfa.currentCompile` to store things that need to persist across compiles.
+In incremental compiles, the keys of `lfa.currentCompile` will be accumulated and made available as `lfa.previousCompile` in the next compile cycle. Therefore, you can use `lfa.currentCompile` to store things that need to persist across compiles. Think of it as `Object.assign(lfa.previousCompile, lfa.currentCompile)` being run after each compile cycle.
 
 * `lfa.currentCompile.buildPath`: *string*. Absolute path of the final output.
 * `lfa.currentCompile.publicPath`: *string*. Path where the output will be hosted.
@@ -227,4 +232,5 @@ In incremental compiles, `lfa.currentCompile` will be made available as `lfa.pre
 [Webpack]:http://webpack.github.io/
 [webpack-dev-server]:http://webpack.github.io/docs/webpack-dev-server.html
 [gulp]:http://gulpjs.com/
+[vinyl]:https://github.com/wearefractal/vinyl
 [vinyl-fs]:https://github.com/wearefractal/vinyl-fs

@@ -8,6 +8,8 @@ Installation is simple. First, make sure you have [Node] installed, then simply 
 npm install -g lfa
 ```
 
+If it is easier for you, we also provide an official Docker distribution. Follow the instructions at the [Docker Registry](https://registry.hub.docker.com/u/learnfwd/lfa/) to get started.
+
 ## Creating a project
 
 Run the following command:
@@ -52,7 +54,7 @@ Every book is structured in chapters. Chapters are scrollable pages of text that
 
 Sometimes you may need to reuse blocks of code across your chapters. Jade has a feature called [mixins]. You can and should put your mixins in `mixins/index.jade` and then directly use them in your chapters. 
 
-You might have seen that we have some pre-defined mixins like `+title` and `+subtitle`. These are documented in the [book bundle documentation][lfa-book].
+You might have seen that we have some pre-defined mixins like `+title` and `+subtitle`. These are documented in the [book module documentation][lfa-book].
 
 ### Styles
 
@@ -68,7 +70,7 @@ For more about what you can do in Javascript, read the [reader core documentatio
 
 Throw images, sounds, videos, fonts or anything else in `assets/`. These files will be copied as they are to the output folder.
 
-For example, if I place a photo of a kitten at `assets/img/kitten.jpg`, I can then use it in my chapters with `img(src='img/kitten.jpg')`
+For example, if you place a photo of a kitten at `assets/img/kitten.jpg`, you can then use it in your chapters with `img(src='img/kitten.jpg')`
 
 ### Advanced use
 

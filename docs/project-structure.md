@@ -18,8 +18,8 @@ $ tree
 │   └── index.js
 ├── styles
 │   ├── ...
-│   ├── main.styl
-│   └── vendor.styl
+│   ├── main.sass
+│   └── vendor.sass
 ├── plugins
 │   └── ...
 ├── mixins
@@ -46,16 +46,16 @@ The Table of Contents is determined based on the directory hierarchy of the Jade
 
 If this seems confusing, look at the samples from a new project's `text/` directory. You'll intuitively get it.
 
-If you need, you can define your own mixins in `mixins/index.jade`, then use them directly in the chapters. This is faster than using [include][sass-include] to include a common jade file in all your chapters.
+If you need, you can define your own mixins in `mixins/index.jade`, then use them directly in the chapters. This is faster than using [include][jade-include] to include a common jade file in all your chapters.
 
 ### Custom styling
 
-CSS in LFA is structured in two bundles: a `main` bundle and a `vendor` bundle. Long, rarely edited or library CSS code should go into `vendor`. Common CSS should go into `main`. `vendor` will be loaded before `main`, so it's safe to override `vendor` rules from within `main`.
+CSS in LFA is structured in two bundles: a `main` bundle and a `vendor` bundle. Long, rarely edited or library CSS code should go in `vendor`. Common CSS should go in `main`. `vendor` will be loaded before `main`, so it's safe to override `vendor` rules from within `main`.
 
 We use and recommend [SaSS]'s indented sintax as it's powerful and easy to write.
 Write your CSS rules in `styles/main.sass`. If you use big CSS libraries or otherwise have big code that won't change too often, place it in or include it from `styles/vendor.sass`.
 
-Since not everybody might like SaSS, you can also use the SCSS syntax, [Stylus], plain CSS, or even a JS module that exports a CSS string. Just use `.scss/.styl/.css/.js` instead of `.sass` as the file extension. You can even mix and match more than one type (`main.sass` and `main.styl` in the same project, for example).
+Since not everybody might like SaSS, you can also use the SCSS syntax, [Stylus], plain CSS, or even a JS module that exports a CSS string. Just use `.scss/.styl/.css/.js` instead of `.sass` as the file extension. You can even mix and match more than one type (for example, `main.sass` and `main.styl` in the same project).
 
 ### Custom JS
 
@@ -96,9 +96,9 @@ The format is npm-compatible, with a few extensions.
 ### Minimally required fields
 
 * `name`: *string, required*. A unique project identifier. This should be different from any other book's. Only lower-case letters and hyphens allowed.
-* `version`: *string, required*. The version (edition) of this book.
+* `version`: *string, required*. The version (edition) of this book. Use [semver] versions.
 * `keywords`: *array, required*. Needs to contain `"lfa-book"` for this to be recognized as a valid LFA project.
-* `engines.lfa`: *string, required*. Semver version range specifying which versions of LFA this project works with.
+* `engines.lfa`: *string, required*. [Semver][semver] version range specifying which versions of LFA this project works with.
 
 ### Metadata fields
 
@@ -110,11 +110,11 @@ The format is npm-compatible, with a few extensions.
 ### Compilation control fields
 
 * `lfa`: *object, optional*. Compilation control settings.
-* `lfa.compileCore`: *boolean, optional*. Wether the compilation should include the core framework. Defaults to `true`.
-* `lfa.compilePlugins`: *boolean, optional*. Wether the compilation should include plugins from `./plugins`. Defaults to `true`
-* `lfa.compileUser`: *boolean, optional*. Wether the compilation should include the actual book chapters and metadata. Defaults to `true`
-* `lfa.externalPlugins`: *array, optional*. Array of strings that, when concatenated with `".js"`, `"-main.css"`, `"-vendor.css"`, form URLs to the compiled files of an external plugins.
-* `lfa.defaultTask`: *string, optional*. The compilation task that should be run when compiling this book. Defaults to `"default"`
+* `lfa.compileCore`: *boolean, optional*. Wether the bundle should include the editor core. Defaults to `true`.
+* `lfa.compilePlugins`: *boolean, optional*. Wether the bundle should include plugins from `./plugins`. Defaults to `true`
+* `lfa.compileUser`: *boolean, optional*. Wether the bundle should include book content. Defaults to `true`
+* `lfa.externalPlugins`: *array, optional*. Array of strings that, when concatenated with `".js"`, `"-main.css"`, `"-vendor.css"`, form URLs to the compiled files of external bundles to link this bundle with. See [External plugins](using-plugins.md#external-plugins) for a detailed explanation.
+* `lfa.defaultTask`: *string, optional*. The [compilation task](writing-plugins.md#tasks) that should be run when compiling this book. Defaults to `"default"`
 * `lfa.dependencies`: *array, optional*. LFA plugins or modules exported by plugins that this book's JS code depends on. These will be available to `require()` and will not be included in the final bundle. The following modules are automatically included in this list: `lfa-core`, `jquery`, `bootstrap`, `backbone`, `react`, `lodash`.
 * `lfa.patchServer`: *string, optional*. [Patch server](#remote-updates) URL
 
@@ -143,10 +143,10 @@ If the patch is hot, it will be applied immediately, otherwise the page is reloa
 [SaSS]:http://sass-lang.com/
 [Stylus]:http://learnboost.github.io/stylus/
 [Jade]:http://jade-lang.com
-[sass-include]:http://jade-lang.com/reference/includes/
+[jade-include]:http://jade-lang.com/reference/includes/
 [CommonJS]:http://webpack.github.io/docs/commonjs.html
 [lfa-book]:lfa-book.md
 [lfa-core]:lfa-core.md
 [using-plugins]:using-plugins.md
 [langs]:https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-
+[semver]:http://semver.org/
