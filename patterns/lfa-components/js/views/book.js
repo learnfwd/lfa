@@ -14,35 +14,6 @@ define([
 ], function($, _, Backbone, Store, Modernizr, FastClick, SearchJSON, LeftbarView, RightbarView, ChapterView, MenuView) {
   'use strict';
 
-  var Setting = Backbone.Model.extend({
-    defaults: {
-      title: '',
-      value: false
-    },
-
-    toggle: function () {
-      this.save({
-        completed: !this.get('value')
-      });
-    }
-  });
-
-  var SettingsCollection = Backbone.Collection.extend({
-    model: Setting,
-    localStorage: new Store('lfa-settings')
-  });
-
-  var Settings = new SettingsCollection();
-  // Fetch from localStorage.
-  Settings.fetch();
-
-  // Initialize settings if they don't exist.
-  if (!Settings.findWhere({ title: 'Animations' })) {
-    var animDefault = new Setting({ title: 'Animations', value: true });
-    Settings.add(animDefault);
-    animDefault.save();
-  }
-
   var BookView = Backbone.View.extend({
     html: $('html'),
 
@@ -91,11 +62,7 @@ define([
       $(window).on('keyup', this.onKeyUp.bind(this));
       this.keyNavigationEnabled = true;
 
-      if (Settings.findWhere({ title: 'Animations' }).get('value')) {
-        this.$el.addClass('animated');
-      } else {
-        this.$('#animations-toggle').addClass('active');
-      }
+      this.$el.addClass('animated');
 
       var self = this;
       // Close the sidebars when we tap anywhere on the textbook.
@@ -250,7 +217,6 @@ define([
         this.$el.toggleClass('animated');
         this.$('#animations-toggle').toggleClass('active');
         this.closeSidebars();
-        Settings.findWhere({ title: 'Animations' }).set('value', this.$el.hasClass('animated')).save();
       }
     }
   });

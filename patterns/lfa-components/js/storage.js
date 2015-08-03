@@ -103,30 +103,36 @@ define(function (require, exports, module) {
     return 'lfa:' + SearchJSON.bookId + ':' + key;
   }
 
+  function trigger() {
+    if (window.App) {
+      window.App.trigger.apply(window.App, arguments);
+    }
+  }
+
   var Storage = function() {
     var s  = localStorage || new CookieStorage('localStorage');
 
     return {
       length: 0,
       clear: function () {
-        window.App.trigger('storage:clear');
+        trigger('storage:clear');
         // This is super dangerous, as it kills the whole localStorage
         return s.clear();
       },
 
       getItem: function (key, opts) {
-        window.App.trigger('storage:getItem', key, s);
+        trigger('storage:getItem', key, s);
         return s.getItem(_fixKey(key, opts));
       },
 
       removeItem: function (key, opts) {
-        window.App.trigger('storage:removeItem', key, s);
+        trigger('storage:removeItem', key, s);
         return s.removeItem(_fixKey(key, opts));
       },
 
       setItem: function (key, value, opts) {
         var args = _.extend({}, opts || {}, {key: key, value:value});
-        window.App.trigger('storage:setItem', args, s);
+        trigger('storage:setItem', args, s);
         return s.setItem(_fixKey(key, opts), value);
       },
     };
