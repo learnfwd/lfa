@@ -1,5 +1,4 @@
 var assetsTask = require('./assets');
-var indexHtmlTask = require('./html');
 var textTasks = require('./text');
 
 var buildInfoTask = require('./js-build-info');
@@ -15,7 +14,6 @@ module.exports = function (lfa) {
   this.package.lfa.dependencies = pluginDeps.concat(userDeps);
 
   assetsTask(lfa);
-  indexHtmlTask(lfa);
   textTasks(lfa);
 
   buildInfoTask(lfa);
