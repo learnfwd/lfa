@@ -1,5 +1,6 @@
 var assetsTask = require('./assets');
 var textTasks = require('./text');
+var indexHtmlTask = require('./html');
 
 var buildInfoTask = require('./js-build-info');
 var textVersionsTask = require('./js-text-versions');
@@ -16,6 +17,7 @@ module.exports = function (lfa) {
   assetsTask(lfa);
   textTasks(lfa);
 
+  indexHtmlTask(lfa);
   buildInfoTask(lfa);
   textVersionsTask(lfa);
 };
