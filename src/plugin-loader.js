@@ -118,7 +118,7 @@ function loadBuiltInPlugin(lfa, pluginName) {
 module.exports = function pluginLoader(lfa) {
   return when.try(function () {
 
-    var plugins = [ loadBuiltInPlugin(lfa, 'lfa-compilation') ];
+    var plugins = [ loadBuiltInPlugin(lfa, 'lfa-compilation'), loadBuiltInPlugin(lfa, 'lfa-analytics') ];
 
     if (lfa.config.pluginProject) {
       plugins.push(loadPlugin(lfa, lfa.config.projectPath, lfa.config.packageJson));
@@ -127,7 +127,6 @@ module.exports = function pluginLoader(lfa) {
 
     if (lfa.config.loadCore) {
       plugins.push(loadBuiltInPlugin(lfa, 'lfa-core'));
-      plugins.push(loadBuiltInPlugin(lfa, 'lfa-analytics'));
     }
 
     var tasks = [];
