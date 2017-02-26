@@ -4,7 +4,7 @@ var webpack = require('webpack');
 var _ = require('lodash');
 var when = require('when');
 var uuid = require('uuid');
-var autoprefixer = require('autoprefixer-core');
+var autoprefixer = require('autoprefixer');
 
 var templatesJS = require('./js-templates');
 var liveReloadJS = require('./js-live-reload');
@@ -165,8 +165,8 @@ function compileBundle(lfa) {
     });
 
   }).then(function (compiler) {
-    lfa.currentCompile.webpackCompiler = compiler; 
-    if (lfa.currentCompile.watcher) { 
+    lfa.currentCompile.webpackCompiler = compiler;
+    if (lfa.currentCompile.watcher) {
       lfa.currentCompile.watcher.webpackCompiler = compiler;
     }
 
