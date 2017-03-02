@@ -42,9 +42,9 @@ html(lang=book.language, dir=book.textDirection)
       script(src='/webpack-dev-server.js')
 
     if debug
-      script(src=currentBundle + '-commons.js')
       script(src=currentBundle + '-css-vendor.js')
       script(src=currentBundle + '-css-main.js')
+      //- script(src=currentBundle + '-commons.js')
 
     each file in jsFiles
       script(src=file)

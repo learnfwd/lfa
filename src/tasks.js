@@ -58,7 +58,7 @@ Task.prototype.filterModifiedFiles = function filterModifiedFiles(globs, actions
   }
 
   if (!this.lfa._oldCache) { 
-    return (_.contains(actions, 'created') || _.contains(actions, 'changed')) ? globs : [];
+    return (_.includes(actions, 'created') || _.includes(actions, 'changed')) ? globs : [];
   }
 
 

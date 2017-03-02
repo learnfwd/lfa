@@ -103,7 +103,6 @@ module.exports = function textJadeTasks(lfa) {
                 boilerplate[3] = template;
 
                 var newFile = new File({
-                  base: '',
                   history: file.history.concat([path.join('chapters', url + '.js')]),
                   contents: locals.meta.noContent ? null : new Buffer(boilerplate.join(''), 'utf8'),
                 });

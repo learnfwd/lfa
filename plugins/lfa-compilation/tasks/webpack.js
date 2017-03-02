@@ -19,7 +19,9 @@ var browserList = ['Firefox >= 25', 'FirefoxAndroid >= 25', 'Chrome >= 31', 'Chr
 function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   var resolveFallback = [];
   var debug = !!lfa.currentCompile.debug;
-  var dummyFile = path.resolve(__dirname, 'templates', 'foo.dummy');
+  var dummyFile = path.resolve(__dirname, 'templates', 'foo1.dummy');
+  var dummyFile2 = path.resolve(__dirname, 'templates', 'foo2.dummy');
+  var dummyFile3 = path.resolve(__dirname, 'templates', 'foo3.dummy');
 
   // Misc library aliases
   aliases.underscore = 'lodash';
@@ -39,6 +41,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   _.each(lfa.plugins, function (plugin) {
     resolveFallback.push(path.join(plugin.path, 'node_modules'));
   });
+  resolveFallback.push('node_modules')
 
   // Fetch potential externals from plugins
   var providedDeps = [];
@@ -61,7 +64,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   // Calculate externals
   var externals = {};
   _(deps).filter(function (dep) {
-    return !_.contains(providedDeps, dep);
+    return !_.includes(providedDeps, dep);
   }).each(function (external) {
     externals[external] = 'commonjs ' + external;
   });
@@ -84,22 +87,33 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   }
 
   // Separate CSS from JS entrypoints run in the same context. TODO: Do they if I output a library?
-  if (debug) {
-    wpPlugins.push(new CommonsChunkPlugin(name + '-commons.js', [name, name + '-css-main', name + '-css-vendor']));
-  }
+  // if (debug) {
+  //   wpPlugins.push(new CommonsChunkPlugin({
+  //     filename: name + '-commons.js',
+  //     names: [name, name + '-css-main', name + '-css-vendor']
+  //   }));
+  // }
 
-  var mainExtractPlugin = new ExtractTextPlugin(name + '-main.css', { allChunks: true, disable: debug });
-  var vendorExtractPlugin = new ExtractTextPlugin(name + '-vendor.css', { allChunks: true, disable: debug });
+  var mainExtractPlugin = new ExtractTextPlugin({
+    filename: name + '-main.css',
+    allChunks: true,
+    disable: debug
+  });
+  var vendorExtractPlugin = new ExtractTextPlugin({
+    filename: name + '-vendor.css',
+    allChunks: true,
+    disable: debug
+  });
+
   wpPlugins.push(mainExtractPlugin);
   wpPlugins.push(vendorExtractPlugin);
-
-  mainEntrypoints.push('!!js-entrypoint-loader!' + dummyFile);
+  mainEntrypoints.push(dummyFile);
 
   var wpEntries = {};
   wpEntries[name] = mainEntrypoints;
 
-  var cssMainEntrypoint = '!!' + mainExtractPlugin.extract('css-entrypoint-loader?type=main') + '!' + dummyFile;
-  var cssVendorEntrypoint = '!!' + vendorExtractPlugin.extract('css-entrypoint-loader?type=vendor') + '!' + dummyFile;
+  var cssMainEntrypoint = dummyFile2;
+  var cssVendorEntrypoint = dummyFile3;
 
   if (debug) {
     wpEntries[name + '-css-main'] = cssMainEntrypoint;
@@ -109,6 +123,27 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     mainEntrypoints.push(cssMainEntrypoint);
     mainEntrypoints.push(cssVendorEntrypoint);
   }
+
+  var postcssLoader = {
+    loader: 'postcss-loader',
+    options: {
+      plugins: function () {
+        var postcssPlugins = [autoprefixer({ browsers: browserList })]
+        if (debug) {
+          postcssPlugins.push(require('cssnano'))
+        }
+        return postcssPlugins
+      }
+    }
+  };
+
+  var cssLoader = {
+    loader: 'css-loader',
+    options: {
+      url: false,
+      import: false
+    }
+  };
 
   var webpackConfig = {
     entry: wpEntries,
@@ -120,35 +155,82 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
       publicPath: publicPath,
     },
     externals: [externals],
-    debug: debug,
-    devtool: debug ? 'eval-source-map' : null,
+    devtool: debug ? 'eval-source-map' : false,
     module: {
-      loaders: [
-        { test: /\.jsx$/, loaders: ['react-hot', 'jsx?harmony'] },
-        { test: /\.json$/, loaders: ['json-loader'] },
+      rules: [
+        { test: /\.jsx$/, use: ['react-hot', 'jsx?harmony'] },
+        { test: /\.json$/, use: ['json-loader'] },
 
-        { test: /\.styl$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify') + '!postcss-loader!stylus-loader') },
-        { test: /\.scss$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify') + '!postcss-loader!sass-loader') },
-        { test: /\.sass$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify') + '!postcss-loader!sass-loader?indentedSyntax') },
-        { test: /\.css$/, loader: mainExtractPlugin.extract('style-loader', 'css-loader' + (debug ? '' : '!css-minify') + '!postcss-loader') },
+        { test: /foo1.dummy$/, use: ['js-entrypoint-loader'] },
+        { test: /foo2.dummy$$/,
+          use: mainExtractPlugin.extract('css-entrypoint-loader?type=main')
+        },
+        { test: /foo3.dummy$$/,
+          use: vendorExtractPlugin.extract('css-entrypoint-loader?type=vendor')
+        },
 
-        { test: /\.(png|jpe?g|gif|ogg|mp3|m4a|m4v|mov|webm|ogv|woff|otf|ttf)(\?[^\?]+)?$/, loaders: ['file-loader'] },
+
+        { test: /\.styl$/, exclude: /(^|\/)vendor\.styl$/, use: mainExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssLoader, postcssLoader, 'stylus-loader']
+        }) },
+        { test: /(^|\/)vendor\.styl$/, use: vendorExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssLoader, postcssLoader, 'stylus-loader']
+        }) },
+
+        { test: /\.scss$/, exclude: /(^|\/)vendor\.scss$/, use: mainExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssLoader, postcssLoader, 'sass-loader']
+        }) },
+        { test: /(^|\/)vendor\.scss$/, use: vendorExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssLoader, postcssLoader, 'sass-loader']
+        }) },
+
+        { test: /\.sass$/, exclude: /(^|\/)vendor\.sass$/, use: mainExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
+        }) },
+        { test: /(^|\/)vendor\.sass$/, use: vendorExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
+        }) },
+
+        { test: /\.css$/, exclude: /(^|\/)vendor\.css$/, use: mainExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssLoader, postcssLoader]
+        }) },
+        { test: /(^|\/)vendor\.css$/, use: vendorExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssLoader, postcssLoader]
+        }) },
+
+
+        { test: /\.(png|jpe?g|gif|ogg|mp3|m4a|m4v|mov|webm|ogv|woff|otf|ttf)(\?[^\?]+)?$/,
+          use: ['file-loader']
+        },
       ]
     },
     resolve: {
       alias: aliases,
-      extensions: ['', '.js', '.jsx', '.json'],
-      fallback: resolveFallback,
+      extensions: ['*', '.js', '.jsx', '.json'],
+      modules: resolveFallback,
     },
     resolveLoader: {
-      fallback: resolveFallback,
+      modules: resolveFallback,
     },
-    lfaPlugins: bundledPlugins,
-    dummyFile: dummyFile,
     plugins: wpPlugins,
-    postcss: [ autoprefixer({ browsers: browserList }) ],
-    lfa: lfa,
   };
+
+  wpPlugins.push(new webpack.LoaderOptionsPlugin({
+    options: {
+      lfaPlugins: bundledPlugins,
+      dummyFile: dummyFile,
+      lfa: lfa,
+      debug: debug,
+    }
+  }));
 
   return webpackConfig;
 }
@@ -182,6 +264,7 @@ function compileBundle(lfa) {
           stats = processStats(stats);
 
           if (stats.errors.length) {
+            console.log(stats.errors)
             throw stats.errors[0];
           }
 
@@ -209,8 +292,7 @@ module.exports = function webpackTasks(lfa) {
       .pipe(lfa.hook('webpack:tmp-pre-write:*'))
       .pipe(lfa.dst(lfa.config.tmpPath))
       .pipe(lfa.hook('webpack:tmp-post-write:*'))
-      .pipe(lfa.hook('tmp-post-write:*'));
-  });
+      .pipe(lfa.hook('tmp-post-write:*')); });
 
   lfa.task('default:webpack', ['webpack:deps:*'], function (deps) {
     var stream = lfa.pipeErrors(through.obj());

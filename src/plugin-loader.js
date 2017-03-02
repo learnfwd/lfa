@@ -25,7 +25,7 @@ function loadPlugin(lfa, pluginPath, packageJson) {
 
   return promise.then(function (packageJson) {
     var keywords = packageJson.keywords;
-    assert((keywords instanceof Array) && _.contains(keywords, 'lfa-plugin'), 
+    assert((keywords instanceof Array) && _.includes(keywords, 'lfa-plugin'), 
       'Plugins must have "lfa-plugin" as a keyword in their package.json');
 
     if (packageJson.lfa === undefined) { packageJson.lfa = {}; };

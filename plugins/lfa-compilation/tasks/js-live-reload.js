@@ -18,7 +18,7 @@ module.exports = function liveReloadDummy(lfa) {
     var reload = !!lfa.currentCompile.reloadAnyway;
     var stream = lfa.pipeErrors(through.obj());
 
-    writtenFiles.on('data', function () { 
+    writtenFiles.on('data', function () {
       reload = true;
     });
 
@@ -26,7 +26,6 @@ module.exports = function liveReloadDummy(lfa) {
       if (reload || !lfa.previousCompile) {
         var contents = 'module.exports = "' + uuid.v4() + '";';
         var file = new File({
-          base: '',
           path: 'gen/live-reload-dummy.js',
           contents: new Buffer(contents),
         });
