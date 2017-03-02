@@ -15,9 +15,9 @@ module.exports.pitch = function () {
 
   var buf = [];
 
-  if (!debug) {
-    buf.push('var buf = []\n');
-  }
+  // if (!debug) {
+    // buf.push('var buf = []\n');
+  // }
 
   plugins.forEach(function (plugin, idx) {
     if (plugin.package.lfa.hasStyles === false) { return; }

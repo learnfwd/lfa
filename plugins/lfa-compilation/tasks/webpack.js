@@ -20,8 +20,6 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   var resolveFallback = [];
   var debug = !!lfa.currentCompile.debug;
   var dummyFile = path.resolve(__dirname, 'templates', 'foo1.dummy');
-  var dummyFile2 = path.resolve(__dirname, 'templates', 'foo2.dummy');
-  var dummyFile3 = path.resolve(__dirname, 'templates', 'foo3.dummy');
 
   // Misc library aliases
   aliases.underscore = 'lodash';
@@ -108,13 +106,13 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   wpPlugins.push(mainExtractPlugin);
   wpPlugins.push(vendorExtractPlugin);
-  mainEntrypoints.push(dummyFile);
+  mainEntrypoints.push('!!js-entrypoint-loader!' + dummyFile);
 
   var wpEntries = {};
   wpEntries[name] = mainEntrypoints;
 
-  var cssMainEntrypoint = dummyFile2;
-  var cssVendorEntrypoint = dummyFile3;
+  var cssMainEntrypoint = '!!css-entrypoint-loader?type=main!' + dummyFile;
+  var cssVendorEntrypoint = '!!css-entrypoint-loader?type=vendor!' + dummyFile;
 
   if (debug) {
     wpEntries[name + '-css-main'] = cssMainEntrypoint;
@@ -161,14 +159,6 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
       rules: [
         { test: /\.jsx$/, use: ['react-hot', 'jsx?harmony'] },
         { test: /\.json$/, use: ['json-loader'] },
-
-        { test: /foo1.dummy$/, use: ['js-entrypoint-loader'] },
-        { test: /foo2.dummy$$/,
-          use: mainExtractPlugin.extract('css-entrypoint-loader?type=main')
-        },
-        { test: /foo3.dummy$$/,
-          use: vendorExtractPlugin.extract('css-entrypoint-loader?type=vendor')
-        },
 
 
         { test: /\.styl$/, exclude: /(^|\/)vendor\.styl$/, use: mainExtractPlugin.extract({
