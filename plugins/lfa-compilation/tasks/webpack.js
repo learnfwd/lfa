@@ -25,6 +25,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   // Misc library aliases
   aliases.underscore = 'lodash';
+  aliases.fs = path.resolve(__dirname, '..', 'web_modules', 'mock-fs.js')
 
   // Plugin JS aliases. $ assures an exact match (no lfa-core/app)
   _.each(bundledPlugins, function (plugin) {

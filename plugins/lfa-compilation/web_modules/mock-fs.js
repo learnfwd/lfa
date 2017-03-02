@@ -1,0 +1,1 @@
+throw new Error('Module "fs" not supported in browser context')
