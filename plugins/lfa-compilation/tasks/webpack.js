@@ -128,7 +128,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     options: {
       plugins: function () {
         var postcssPlugins = [autoprefixer({ browsers: browserList })]
-        if (debug) {
+        if (!debug) {
           postcssPlugins.push(require('cssnano'))
         }
         return postcssPlugins
