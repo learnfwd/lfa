@@ -73,7 +73,8 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   var mainEntrypoints = [];
   if (lfa.currentCompile.serve && lfa.currentCompile.watcher.opts.hot) {
     wpPlugins.push(new webpack.HotModuleReplacementPlugin());
-    mainEntrypoints.push('webpack/hot/dev-server');
+    mainEntrypoints.push('react-hot-loader/patch');
+    mainEntrypoints.push('webpack/hot/only-dev-server');
   }
 
   // Minify JS in production
@@ -144,6 +145,20 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     }
   };
 
+  var cssUrlLoader = 'css-loader';
+
+  var babelConfig = {
+    presets: [
+      [require.resolve('babel-preset-latest'), { es2015: { modules: false } }],
+      require.resolve('babel-preset-react')
+    ],
+    plugins: []
+  }
+
+  if (debug) {
+    babelConfig.plugins.push(require.resolve('react-hot-loader/babel'))
+  }
+
   var webpackConfig = {
     entry: wpEntries,
     output: {
@@ -157,11 +172,18 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     devtool: debug ? 'eval-source-map' : false,
     module: {
       rules: [
-        { test: /\.jsx$/, use: ['react-hot', 'jsx?harmony'] },
+        { test: /\.jsx?$/,
+          exclude: /(web|node)_modules/,
+          use: { loader: 'babel-loader', options: babelConfig
+        } },
         { test: /\.json$/, use: ['json-loader'] },
 
 
-        { test: /\.styl$/, exclude: /(^|\/)vendor\.styl$/, use: mainExtractPlugin.extract({
+        { test: /\.styl$/, exclude: /(^|\/)(vendor|main)\.styl$/, use: mainExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssUrlLoader, postcssLoader, 'stylus-loader']
+        }) },
+        { test: /(^|\/)main\.styl$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader, 'stylus-loader']
         }) },
@@ -170,7 +192,11 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
           use: [cssLoader, postcssLoader, 'stylus-loader']
         }) },
 
-        { test: /\.scss$/, exclude: /(^|\/)vendor\.scss$/, use: mainExtractPlugin.extract({
+        { test: /\.scss$/, exclude: /(^|\/)(vendor|main)\.scss$/, use: mainExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssUrlLoader, postcssLoader, 'sass-loader']
+        }) },
+        { test: /(^|\/)main\.scss$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader, 'sass-loader']
         }) },
@@ -179,7 +205,11 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
           use: [cssLoader, postcssLoader, 'sass-loader']
         }) },
 
-        { test: /\.sass$/, exclude: /(^|\/)vendor\.sass$/, use: mainExtractPlugin.extract({
+        { test: /\.sass$/, exclude: /(^|\/)(vendor|main)\.sass$/, use: mainExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssUrlLoader, postcssLoader, 'sass-loader?indentedSyntax']
+        }) },
+        { test: /(^|\/)main\.sass$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
         }) },
@@ -188,7 +218,11 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
           use: [cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
         }) },
 
-        { test: /\.css$/, exclude: /(^|\/)vendor\.css$/, use: mainExtractPlugin.extract({
+        { test: /\.css$/, exclude: /(^|\/)(vendor|main)\.css$/, use: mainExtractPlugin.extract({
+          fallback: 'style-loader',
+          use: [cssUrlLoader, postcssLoader]
+        }) },
+        { test: /(^|\/)main\.css$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader]
         }) },
