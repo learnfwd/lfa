@@ -70,11 +70,12 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   // Hot reload
   var wpPlugins = [];
-  var mainEntrypoints = [];
+  var mainEntrypoints = ['babel-polyfill'];
   if (lfa.currentCompile.serve && lfa.currentCompile.watcher.opts.hot) {
     wpPlugins.push(new webpack.HotModuleReplacementPlugin());
     mainEntrypoints.push('react-hot-loader/patch');
-    mainEntrypoints.push('webpack/hot/only-dev-server');
+    mainEntrypoints.push('webpack-dev-server/client?http://localhost:' + lfa.currentCompile.watcher.opts.port);
+    mainEntrypoints.push('webpack/hot/dev-server');
   }
 
   // Minify JS in production

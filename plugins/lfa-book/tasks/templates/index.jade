@@ -38,9 +38,6 @@ html(lang=book.language, dir=book.textDirection)
     script
       include ./lfa-require.js
 
-    if serve
-      script(src='/webpack-dev-server.js')
-
     if debug
       script(src=currentBundle + '-css-vendor.js')
       script(src=currentBundle + '-css-main.js')
