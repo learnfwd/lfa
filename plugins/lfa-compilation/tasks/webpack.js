@@ -9,7 +9,6 @@ var autoprefixer = require('autoprefixer');
 var templatesJS = require('./js-templates');
 var liveReloadJS = require('./js-live-reload');
 
-var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var processStats = require('../../../src/webpack-process-stats');
@@ -88,12 +87,13 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   }
 
   // Separate CSS from JS entrypoints run in the same context. TODO: Do they if I output a library?
-  // if (debug) {
-  //   wpPlugins.push(new CommonsChunkPlugin({
-  //     filename: name + '-commons.js',
-  //     names: [name, name + '-css-main', name + '-css-vendor']
-  //   }));
-  // }
+  if (debug) {
+    wpPlugins.push(new webpack.optimize.CommonsChunkPlugin({
+      name: name + '-commons',
+      filename: name + '-commons.js',
+      chunks: [name, name + '-css-main', name + '-css-vendor']
+    }));
+  }
 
   var mainExtractPlugin = new ExtractTextPlugin({
     filename: name + '-main.css',
