@@ -18,7 +18,7 @@ var browserList = ['Firefox >= 45', 'FirefoxAndroid >= 25', 'Chrome >= 49', 'Chr
 function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   var resolveFallback = [];
   var debug = !!lfa.currentCompile.debug;
-  var dummyFile = path.resolve(__dirname, 'templates', 'foo1.dummy');
+  var dummyFile = path.resolve(__dirname, 'templates', 'foo.dummy');
 
   // Misc library aliases
   aliases.underscore = 'lodash';
