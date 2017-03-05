@@ -69,7 +69,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   // Hot reload
   var wpPlugins = [];
-  var mainEntrypoints = ['babel-polyfill'];
+  var mainEntrypoints = ['import-babel-polyfill'];
   if (lfa.currentCompile.serve && lfa.currentCompile.watcher.opts.hot) {
     wpPlugins.push(new webpack.HotModuleReplacementPlugin());
     mainEntrypoints.push('react-hot-loader/patch');
@@ -160,7 +160,13 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   var babelConfig = {
     presets: [
-      [require.resolve('babel-preset-latest'), { es2015: { modules: false } }],
+      [require.resolve('babel-preset-env'), {
+        useBuiltIns: true, // Transform import babel-polyfill
+        modules: false,
+        targets: {
+          browsers: browserList
+        }
+      }],
       require.resolve('babel-preset-react')
     ],
     plugins: []
