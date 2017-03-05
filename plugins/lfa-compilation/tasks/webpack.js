@@ -314,7 +314,6 @@ function compileBundle(lfa) {
           stats = processStats(stats);
 
           if (stats.errors.length) {
-            console.log(stats.errors)
             throw stats.errors[0];
           }
 
