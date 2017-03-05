@@ -69,9 +69,10 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   // Hot reload
   var wpPlugins = [];
-  var mainEntrypoints = ['import-babel-polyfill'];
+  var mainEntrypoints = [];
   if (lfa.currentCompile.serve && lfa.currentCompile.watcher.opts.hot) {
     wpPlugins.push(new webpack.HotModuleReplacementPlugin());
+    mainEntrypoints.push('import-babel-polyfill');
     mainEntrypoints.push('react-hot-loader/patch');
     mainEntrypoints.push('webpack-dev-server/client?http://localhost:' + lfa.currentCompile.watcher.opts.port);
     mainEntrypoints.push('webpack/hot/dev-server');
