@@ -22,6 +22,8 @@ var upgradeSteps = [{
   manualChanges: [
     'Make sure you also update the plugin versions in your dependencies, as 0.8 plugins won\'t work with 0.9.',
     'Several dependencies (like React) bundled with ' + chalk.yellow('lfa-core') + ' have been updated to their latest versions. Make sure your book and plugins still work.',
+    'Lodash has deprecated some functions. Most notably, ' + chalk.yellow('_.contains') + ' must be replaced with ' + chalk.yellow('_.includes') + '.',
+    'React has slightly changed its API. Most notably, ' + chalk.yellow('React.render') + ' must be replaced with ' + chalk.yellow('ReactDOM.render') + '.',
     'We now use Babel to precompile JS files, so you can now use modern Javascript features.',
   ]
 }];
