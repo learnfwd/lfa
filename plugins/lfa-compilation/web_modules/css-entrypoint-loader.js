@@ -14,6 +14,7 @@ module.exports.pitch = function () {
   var hasStylesTypeKey = (type === 'vendor' ? 'hasVendorStyles' : 'hasMainStyles');
 
   var buf = [];
+  buf.push('require("empty-css-file.css");\n');
 
   plugins.forEach(function (plugin, idx) {
     if (plugin.package.lfa.hasStyles === false) { return; }
