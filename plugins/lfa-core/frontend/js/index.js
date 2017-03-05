@@ -1,5 +1,3 @@
-require('babel-polyfill');
-
 var LFACore = {
   AppDispatcher: require('./app'),
   Storage: require('./storage'),
