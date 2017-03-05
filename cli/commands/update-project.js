@@ -16,6 +16,14 @@ var upgradeSteps = [{
     'Use ' + chalk.yellow('require("lfa-core").Translate') + ' instead of ' + chalk.yellow('App.T') + '.',
     chalk.yellow('config.styl') + ', or any other form of overriding ' + chalk.yellow('lfa-core') + ' Stylus variables is not supported anymore.',
   ]
+}, {
+  from: '0.8.15',
+  to: '^0.9.0',
+  manualChanges: [
+    'Make sure you also update the plugin versions in your dependencies, as 0.8 plugins won\'t work with 0.9.',
+    'Several dependencies (like React) bundled with ' + chalk.yellow('lfa-core') + ' have been updated to their latest versions. Make sure your book and plugins still work.',
+    'We now use Babel to precompile JS files, so you can now use modern Javascript features.',
+  ]
 }];
 
 module.exports = function compile(cli) {
@@ -26,6 +34,7 @@ module.exports = function compile(cli) {
     var versionRange = config.package.engines.lfa;
     _.each(upgradeSteps, function (step) {
 
+      console.log('satisfies', step.from, versionRange)
       if (!semver.satisfies(step.from, versionRange)) { return; }
       console.log(chalk.green('Converting from ') + chalk.yellow(versionRange) + chalk.green(' to ') + chalk.yellow(step.to));
 
