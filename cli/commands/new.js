@@ -78,7 +78,7 @@ module.exports = function newProject(cli) {
     return nodefn.call(prompt.get.bind(prompt), schema)
       .then(function (result) {
         process.stdout.write(chalk.green('scaffolding project... '));
-        
+
         var skelPath = path.resolve(__dirname, '..', '..', 'skel');
         var packageStream = pipeErrors(through.obj());
         var destinationStream = vfs.dest(projPath);
@@ -104,7 +104,7 @@ module.exports = function newProject(cli) {
           if (/^(y|Y)(es)?$/.test(result.remote)) {
             packageJson.lfa = {
               compileCore: false,
-              externalPlugins: [ 'https://plugins.lfwd.io/lfa-core/0.8/plugin' ],
+              externalPlugins: [ 'https://plugins.lfwd.io/lfa-core/0.9/plugin' ],
             };
           }
 
