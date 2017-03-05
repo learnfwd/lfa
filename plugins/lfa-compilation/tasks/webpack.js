@@ -13,7 +13,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var processStats = require('../../../src/webpack-process-stats');
 
-var browserList = ['Firefox >= 25', 'FirefoxAndroid >= 25', 'Chrome >= 31', 'ChromeAndroid >= 31', 'Android >= 4.03', 'iOS >= 7.1', 'Safari >= 7.0', 'Explorer >= 10', 'ExplorerMobile >= 10'];
+var browserList = ['Firefox >= 45', 'FirefoxAndroid >= 25', 'Chrome >= 49', 'ChromeAndroid >= 54', 'Android >= 4.03', 'iOS >= 7.1', 'Safari >= 7.0', 'Explorer >= 10', 'ExplorerMobile >= 10'];
 
 function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   var resolveFallback = [];
