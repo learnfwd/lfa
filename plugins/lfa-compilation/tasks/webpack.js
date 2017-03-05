@@ -77,6 +77,12 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     mainEntrypoints.push('webpack/hot/dev-server');
   }
 
+  // Make a prod or dev build of React
+  wpPlugins.push(new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify(debug ? 'development' : 'production'),
+    '__DEV__': JSON.stringify(debug)
+  }));
+
   // Minify JS in production
   if (!debug) {
     wpPlugins.push(new webpack.optimize.UglifyJsPlugin({
@@ -95,6 +101,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     }));
   }
 
+  // Extract CSS separately in the production build
   var mainExtractPlugin = new ExtractTextPlugin({
     filename: name + '-main.css',
     allChunks: true,
@@ -108,6 +115,8 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   wpPlugins.push(mainExtractPlugin);
   wpPlugins.push(vendorExtractPlugin);
+
+  // Add main entrypoints for JS and CSS
   mainEntrypoints.push('!!js-entrypoint-loader!' + dummyFile);
 
   var wpEntries = {};
@@ -125,6 +134,7 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     mainEntrypoints.push(cssVendorEntrypoint);
   }
 
+  // Configure various loaders
   var postcssLoader = {
     loader: 'postcss-loader',
     options: {
@@ -158,8 +168,15 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   if (debug) {
     babelConfig.plugins.push(require.resolve('react-hot-loader/babel'))
+  } else {
+    babelConfig.plugins.push([
+      require.resolve('babel-plugin-transform-react-remove-prop-types'), {
+        ignoreFilenames: ['node_modules']
+      }
+    ]);
   }
 
+  // Configure Webpack
   var webpackConfig = {
     entry: wpEntries,
     output: {
