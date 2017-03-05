@@ -341,7 +341,8 @@ module.exports = function webpackTasks(lfa) {
       .pipe(lfa.hook('webpack:tmp-pre-write:*'))
       .pipe(lfa.dst(lfa.config.tmpPath))
       .pipe(lfa.hook('webpack:tmp-post-write:*'))
-      .pipe(lfa.hook('tmp-post-write:*')); });
+      .pipe(lfa.hook('tmp-post-write:*'));
+  });
 
   lfa.task('default:webpack', ['webpack:deps:*'], function (deps) {
     var stream = lfa.pipeErrors(through.obj());
