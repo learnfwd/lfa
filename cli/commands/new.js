@@ -109,7 +109,6 @@ module.exports = function newProject(cli) {
           }
 
           var packageFile = new File({
-            base: '',
             path: path.join('.lfa', 'package.json'),
             contents: new Buffer(JSON.stringify(packageJson, null, 2)),
           });
@@ -129,12 +128,12 @@ module.exports = function newProject(cli) {
           process.stdout.write(chalk.green('creating git repository... '));
 
         }).then(function () {
-          return nodefn.call(Repository.init.bind(Repository), projPath);
+          return Repository.init(projPath);
         }).then(function (repo) {
-          return nodefn.call(repo.add.bind(repo))
+          return repo.add()
             .then(function () { return repo; });
         }).then(function (repo) {
-          return nodefn.call(repo.commit.bind(repo), 'Initial commit');
+          return repo.commit('Initial commit');
         }).then(function () {
           console.log('done');
         }).catch(function (err) {
