@@ -148,13 +148,13 @@ require('fluidbox.css');
 							data.imgScale = $w.height()*settings.viewportFill/$img.height();
 						} else {
 							data.imgScale = $w.width()*settings.viewportFill/$img.width();
-						}						
+						}
 					}
 
-					imageProp();					
+					imageProp();
 
 					// Rerun everything on imageload, to overcome issue in Firefox
-					$img.load(imageProp);
+					$img.on('load', imageProp);
 				}
 			},
 			fbClickHandler = function(e) {
@@ -176,7 +176,7 @@ require('fluidbox.css');
 						// Wait for ghost image to be loaded successfully first, then do the rest
 						$('<img />', {
 							src: $img.attr('src')
-						}).load(function () {
+						}).on('load', function () {
 							// What are we doing here:
 							// 1. Append overlay in fluidbox
 							// 2. Toggle fluidbox state with data attribute
@@ -214,7 +214,7 @@ require('fluidbox.css');
 							// Preload ghost image
 							$('<img />', {
 								src: $activeFb.attr('href')
-							}).load(function() {
+							}).on('load', function() {
 								$ghost.css({ 'background-image': 'url('+$activeFb.attr('href')+')' });
 							});
 
@@ -312,14 +312,14 @@ require('fluidbox.css');
 					.after('<div class="fluidbox-ghost" />')
 					.each(function(){
 						var $img = $(this);
-						
+
 						if ($img.width() > 0 && $img.height() > 0) {
 							// if image is already loaded (from cache)
 							funcCalc($fbItem);
 							$fbItem.click(fbClickHandler);
 						} else {
 							// wait for image to load
-							$img.load(function(){
+							$img.on('load', function(){
 								funcCalc($fbItem);
 								$fbItem.click(fbClickHandler);
 							});
