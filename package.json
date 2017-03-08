@@ -62,7 +62,7 @@
     "gulp-replace": "^0.5.0",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-util": "^3.0.3",
-    "hammerjs": "^2.x.x",
+    "hammerjs": "1.x.x",
     "highland": "^2.4.0",
     "inquirer": "^3.0.4",
     "jade": "^1.10.0",
