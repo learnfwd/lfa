@@ -204,54 +204,54 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
         { test: /\.json$/, use: ['json-loader'] },
 
 
-        { test: /\.styl$/, exclude: /(^|\/)(vendor|main)\.styl$/, use: mainExtractPlugin.extract({
+        { test: /\.styl$/, exclude: /(^|\/|\\)(vendor|main)\.styl$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssUrlLoader, postcssLoader, 'stylus-loader']
         }) },
-        { test: /(^|\/)main\.styl$/, use: mainExtractPlugin.extract({
+        { test: /(^|\/|\\)main\.styl$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader, 'stylus-loader']
         }) },
-        { test: /(^|\/)vendor\.styl$/, use: vendorExtractPlugin.extract({
+        { test: /(^|\/|\\)vendor\.styl$/, use: vendorExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader, 'stylus-loader']
         }) },
 
-        { test: /\.scss$/, exclude: /(^|\/)(vendor|main)\.scss$/, use: mainExtractPlugin.extract({
+        { test: /\.scss$/, exclude: /(^|\/|\\)(vendor|main)\.scss$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssUrlLoader, postcssLoader, 'sass-loader']
         }) },
-        { test: /(^|\/)main\.scss$/, use: mainExtractPlugin.extract({
+        { test: /(^|\/|\\)main\.scss$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader, 'sass-loader']
         }) },
-        { test: /(^|\/)vendor\.scss$/, use: vendorExtractPlugin.extract({
+        { test: /(^|\/|\\)vendor\.scss$/, use: vendorExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader, 'sass-loader']
         }) },
 
-        { test: /\.sass$/, exclude: /(^|\/)(vendor|main)\.sass$/, use: mainExtractPlugin.extract({
+        { test: /\.sass$/, exclude: /(^|\/|\\)(vendor|main)\.sass$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssUrlLoader, postcssLoader, 'sass-loader?indentedSyntax']
         }) },
-        { test: /(^|\/)main\.sass$/, use: mainExtractPlugin.extract({
+        { test: /(^|\/|\\)main\.sass$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
         }) },
-        { test: /(^|\/)vendor\.sass$/, use: vendorExtractPlugin.extract({
+        { test: /(^|\/|\\)vendor\.sass$/, use: vendorExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
         }) },
 
-        { test: /\.css$/, exclude: /(^|\/)(vendor|main)\.css$/, use: mainExtractPlugin.extract({
+        { test: /\.css$/, exclude: /(^|\/|\\)(vendor|main)\.css$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssUrlLoader, postcssLoader]
         }) },
-        { test: /(^|\/)main\.css$/, use: mainExtractPlugin.extract({
+        { test: /(^|\/|\\)main\.css$/, use: mainExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader]
         }) },
-        { test: /(^|\/)vendor\.css$/, use: vendorExtractPlugin.extract({
+        { test: /(^|\/|\\)vendor\.css$/, use: vendorExtractPlugin.extract({
           fallback: 'style-loader',
           use: [cssLoader, postcssLoader]
         }) },
