@@ -6,7 +6,7 @@ module.exports = function () {};
 
 module.exports.pitch = function () {
   this.cacheable(true);
-  var query = utils.parseQuery(this.query);
+  var query = utils.getOptions(this);
   var pluginPath = query.path;
 
   var mixinRequest = '!!mixin-loader!' + path.join(pluginPath, 'frontend', 'mixins', 'index.jade');

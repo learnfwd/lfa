@@ -37,21 +37,19 @@
   position: relative;
   transition: all 0.25s ease-in-out;
   /* To prevent flickering, we delay the showing of the image */ }
-  .fluidbox-closed .fluidbox-wrap img {
-    transition: opacity 0s ease-in-out 0.25s; }
+
+.fluidbox-closed .fluidbox-wrap img {
+  transition: opacity 0s ease-in-out 0.25s; }
 
 .fluidbox-ghost {
   background-size: 100% 100%;
   background-position: center center;
   position: absolute;
-  -webkit-transition-property: opacity, -webkit-transform;
-  -moz-transition-property: opacity, -moz-transform;
-  -o-transition-property: opacity, -o-transform;
-  transition-property: opacity, transform;
-  transition-duration: 0s, 0.25s;
-  transition-delay: 0.25s, 0s; }
-  .fluidbox-opened .fluidbox-ghost {
-    transition-delay: 0s, 0s; }
+  transition-property: opacity 0s ease 0.25s, transform 0.25s ease 0s;
+}
+
+.fluidbox-opened .fluidbox-ghost {
+  transition-delay: 0s, 0s; }
 
 .fluidbox-loader {
   perspective: 200px;

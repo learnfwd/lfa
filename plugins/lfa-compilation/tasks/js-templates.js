@@ -32,15 +32,20 @@ module.exports = function templatesJS(lfa) {
         .then(function (paths) {
           paths = _.filter(paths, function (o) { return o !== null; });
           var opts = {
-            dontRemoveMixins: true,
+            transformMixins: true,
           };
-          var content = paths.length ? 
-            templatizer(paths, null, opts).replace('require("fs")', '(function () { throw new Error("No such module"); })()') :
-            'define({});';
 
+          if (!paths.length) { return 'define({});'; }
 
+          return when.promise(function (resolve, reject) {
+            templatizer(paths, null, opts, function (err, result) {
+              if (err) { reject(err); }
+              resolve(result.replace('require("fs")', '(function () { throw new Error("No such module"); })()'));
+            })
+          })
+        })
+        .then(function (content) {
           var file = new File({
-            base: '',
             path: 'gen/modules/templates.js',
             contents: new Buffer(content)
           });

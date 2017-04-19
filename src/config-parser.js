@@ -19,9 +19,9 @@ module.exports = function parseConfig(config) {
   assert(typeof(config.package) === 'object', 'config.package must be an object');
   assert(typeof(config.pluginProject) === 'boolean', 'config.pluginProject must be a boolean');
   if (config.pluginProject) {
-    assert(_.contains(config.package.keywords, 'lfa-plugin'), 'This is not the package.json of a LFA plugin');
+    assert(_.includes(config.package.keywords, 'lfa-plugin'), 'This is not the package.json of a LFA plugin');
   } else { 
-    assert(_.contains(config.package.keywords, 'lfa-book'), 'This is not the package.json of a LFA book');
+    assert(_.includes(config.package.keywords, 'lfa-book'), 'This is not the package.json of a LFA book');
   }
 
   var packageJson = config.package;
