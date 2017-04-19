@@ -17,10 +17,10 @@ function GoogleAnalytics(manager) {
   });
 }
 
-GoogleAnalytics.prototype.trackEvent = function(manager, key, data) {
+GoogleAnalytics.prototype.trackEvent = function (manager, key, data) {
   if (window.ga) {
     var d = manager.debug ? _.extend({ debug: true }, data) : data;
-    window.ga(this.gaTrackerName + '.send', 'event', manager.bookId, key, JSON.stringify(d));
+    window.ga('send', 'event', key, manager.bookId, JSON.stringify(d));
   }
 };
 
