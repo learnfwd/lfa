@@ -13,7 +13,7 @@
       "lfa-book"
     ],
     "providedDependencies": [
-      "jquery", "bootstrap", "backbone", "react", "lodash"
+      "jquery", "bootstrap", "backbone", "react", "react-dom", "lodash"
     ]
   }
 }

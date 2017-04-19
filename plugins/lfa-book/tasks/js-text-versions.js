@@ -14,7 +14,7 @@ module.exports = function textVersions(lfa) {
     var versions = (lfa.previousCompile ? lfa.previousCompile.textVersions : null ) || {};
     lfa.currentCompile.textVersions = versions;
 
-    writtenFiles.on('data', function (file) { 
+    writtenFiles.on('data', function (file) {
       if (file.textMeta) {
         reload = true;
         var url = file.textMeta.url;
@@ -26,7 +26,6 @@ module.exports = function textVersions(lfa) {
       if (reload || !lfa.previousCompile) {
         var contents = 'module.exports = ' + JSON.stringify(versions) + ';';
         var file = new File({
-          base: '',
           path: 'gen/text-versions.js',
           contents: new Buffer(contents),
         });

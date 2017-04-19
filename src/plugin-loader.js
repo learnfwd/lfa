@@ -25,7 +25,7 @@ function loadPlugin(lfa, pluginPath, packageJson) {
 
   return promise.then(function (packageJson) {
     var keywords = packageJson.keywords;
-    assert((keywords instanceof Array) && _.contains(keywords, 'lfa-plugin'), 
+    assert((keywords instanceof Array) && _.includes(keywords, 'lfa-plugin'),
       'Plugins must have "lfa-plugin" as a keyword in their package.json');
 
     if (packageJson.lfa === undefined) { packageJson.lfa = {}; };
@@ -56,7 +56,7 @@ function loadPlugin(lfa, pluginPath, packageJson) {
     return packageJson;
 
   }).then(function (packageJson) {
-    
+
     var tasks = [];
 
     var pluginModule;
@@ -118,7 +118,7 @@ function loadBuiltInPlugin(lfa, pluginName) {
 module.exports = function pluginLoader(lfa) {
   return when.try(function () {
 
-    var plugins = [ loadBuiltInPlugin(lfa, 'lfa-compilation'), loadBuiltInPlugin(lfa, 'lfa-analytics') ];
+    var plugins = [ loadBuiltInPlugin(lfa, 'lfa-compilation') ];
 
     if (lfa.config.pluginProject) {
       plugins.push(loadPlugin(lfa, lfa.config.projectPath, lfa.config.packageJson));
@@ -126,6 +126,7 @@ module.exports = function pluginLoader(lfa) {
     }
 
     if (lfa.config.loadCore) {
+      plugins.push(loadBuiltInPlugin(lfa, 'lfa-analytics'));
       plugins.push(loadBuiltInPlugin(lfa, 'lfa-core'));
     }
 

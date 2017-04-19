@@ -78,7 +78,7 @@ module.exports = function newProject(cli) {
     return nodefn.call(prompt.get.bind(prompt), schema)
       .then(function (result) {
         process.stdout.write(chalk.green('scaffolding project... '));
-        
+
         var skelPath = path.resolve(__dirname, '..', '..', 'skel');
         var packageStream = pipeErrors(through.obj());
         var destinationStream = vfs.dest(projPath);
@@ -104,12 +104,11 @@ module.exports = function newProject(cli) {
           if (/^(y|Y)(es)?$/.test(result.remote)) {
             packageJson.lfa = {
               compileCore: false,
-              externalPlugins: [ 'https://plugins.lfwd.io/lfa-core/0.8/plugin' ],
+              externalPlugins: [ 'https://plugins.lfwd.io/lfa-core/0.9/plugin' ],
             };
           }
 
           var packageFile = new File({
-            base: '',
             path: path.join('.lfa', 'package.json'),
             contents: new Buffer(JSON.stringify(packageJson, null, 2)),
           });
@@ -129,12 +128,12 @@ module.exports = function newProject(cli) {
           process.stdout.write(chalk.green('creating git repository... '));
 
         }).then(function () {
-          return nodefn.call(Repository.init.bind(Repository), projPath);
+          return Repository.init(projPath);
         }).then(function (repo) {
-          return nodefn.call(repo.add.bind(repo))
+          return repo.add()
             .then(function () { return repo; });
         }).then(function (repo) {
-          return nodefn.call(repo.commit.bind(repo), 'Initial commit');
+          return repo.commit('Initial commit');
         }).then(function () {
           console.log('done');
         }).catch(function (err) {

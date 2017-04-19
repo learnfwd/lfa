@@ -96,7 +96,7 @@ module.exports = function buildInfoJS(lfa) {
     });
 
     textFiles.on('end', function () {
-      if (lfa.previousCompile && 
+      if (lfa.previousCompile &&
           (!shouldBuild || _.isEqual(previousChapters, chapters))) {
         stream.end();
         return;
@@ -114,7 +114,7 @@ module.exports = function buildInfoJS(lfa) {
         chapters: _.map(_.values(chapters), function (o) { return o.url; }),
         version: config.package.version,
         patchServer: config.package.lfa.patchServer,
-        
+
         // Deprecated:
         language: config.book.language,
         textDirection: config.book.textDirection,
@@ -123,7 +123,6 @@ module.exports = function buildInfoJS(lfa) {
       var contents = JSON.stringify(json, null, 2);
 
       var file = new File({
-        base: '',
         path: 'gen/modules/build-info.json',
         contents: new Buffer(contents),
       });
