@@ -6,7 +6,7 @@ var processStats = require('./webpack-process-stats');
 function Server(opts) {
   var self = this;
   var cache = opts.compileCache;
-  var tmpPort = opts.port + 1000;
+  var tmpPort = parseInt(opts.port, 10) + 1000;
 
   var wpOpts = {
     proxy: { '*': 'http://localhost:' + tmpPort },
