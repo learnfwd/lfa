@@ -11,11 +11,11 @@ mixin toc(chapters)
         - linkClasses = linkClasses.join(' ');
 
         if chapter.locals.subtitle
-          a.subtitled(href=chapterUrl, class=linkClasses)
+          a.subtitled(href=chapterUrl, class=linkClasses, title=chapter.locals.title)
             span.title= chapter.locals.title
             span.subtitle= chapter.locals.subtitle
         else
-          a(href=chapterUrl, class=linkClasses)
+          a(href=chapterUrl, class=linkClasses, title=chapter.locals.title)
             span.title
               = chapter.locals.title
         if hasChildren

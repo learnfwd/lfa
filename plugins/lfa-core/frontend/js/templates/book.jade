@@ -1,22 +1,15 @@
 mixin index()
-  .menu
-    .menu-item.menu-item-left#leftbar-toggle: i.fa.fa-bars.fa-fw.menu-item-contents
-    .menu-item.menu-item-right#rightbar-toggle: i.fa.fa-question.fa-fw.menu-item-contents
-  .navigation-menu
-    a.menu-item.menu-item-left#previous-chapter: i.fa.fa-chevron-left.menu-item-contents
-    a.menu-item.menu-item-right#next-chapter: i.fa.fa-chevron-right.menu-item-contents
-
   nav#leftbar
-    //- this will be done on runtime
-    //- +toc(toc)
-
+  #menu
+    #rightbar-toggle
+    #leftbar-toggle.menu-item: i.fa.fa-bars
+    #go-fullscreen.menu-item.hide-small: i.fa.fa-arrows-alt
   #content
     #scrollview
       #textbook
-        article
-          section
-            include ./error-message.jade
-
-  aside#rightbar
-    p.text-center Nothing here yet.
-
+        include ./error-message.jade
+      #navigation-menu
+        a#previous-chapter.navigation-button: i.fa.fa-arrow-left
+        #navigation-slider
+          input#navigator-slider-page.hidden(type='text', style='width:96%')
+        a#next-chapter.navigation-button: i.fa.fa-arrow-right

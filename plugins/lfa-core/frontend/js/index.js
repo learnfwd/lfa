@@ -15,3 +15,5 @@ module.exports = LFACore;
 // Bootstrap our app
 var MainView = require('./views/main-view');
 new MainView();
+
+require('./print-view')
