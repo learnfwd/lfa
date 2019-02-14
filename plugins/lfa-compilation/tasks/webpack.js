@@ -195,10 +195,10 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
           use: ['style-loader', cssUrlLoader, postcssLoader, 'sass-loader'],
         },
         { test: /(^|\/|\\)main\.scss$/,
-          use: ['style-loader', cssUrlLoader, postcssLoader, 'sass-loader'],
+          use: ['style-loader', cssLoader, postcssLoader, 'sass-loader'],
         },
         { test: /(^|\/|\\)vendor\.scss$/,
-          use: ['style-loader', cssUrlLoader, postcssLoader, 'sass-loader'],
+          use: ['style-loader', cssLoader, postcssLoader, 'sass-loader'],
         },
 
         { test: /\.sass$/, exclude: /(^|\/|\\)(vendor|main)\.sass$/,
