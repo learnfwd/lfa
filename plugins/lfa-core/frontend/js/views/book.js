@@ -2,18 +2,20 @@ var $ = require('jquery');
 var _ = require('lodash');
 var Backbone = require('backbone');
 var BuildInfo = require('lfa-book').BuildInfo;
+var templates = require('templates');
 var App = require('../app');
 var LeftbarView = require('./leftbar');
-var RightbarView = require('./rightbar');
 var ChapterView = require('./chapter');
 var MenuView = require('./menu');
-var templates = require('templates');
+
+SLIDER_ENABLED = false; // set this to true to enable the dotty navigation progress bar
+var NavigatorSliderView = SLIDER_ENABLED ? require('./navigator') : {};
 
 var BookView = Backbone.View.extend({
   html: $('html'),
 
-  initialize: function() {
-    // Render initial HTML
+  initialize: function () {
+    // Initialize index HTML
     $('body').append(templates.book.index())
 
     // Initialize/alias some helpful arrays and hashtables.
@@ -28,7 +30,7 @@ var BookView = Backbone.View.extend({
     // TOC chapters are supposed to be consumed.
     App.tocUrlOrder = App.tocUrlOrder || BuildInfo.spine || [];
 
-    var getChildrenUrls = function(toc) {
+    var getChildrenUrls = function (toc) {
       var result = {};
 
       for (var i = 0; i < toc.length; i++) {
@@ -61,60 +63,42 @@ var BookView = Backbone.View.extend({
 
     var self = this;
     // Close the sidebars when we tap anywhere on the textbook.
-    this.$('#content').on('click', function() {
-      self.closeSidebars();
+    this.$('#content').on('click', function (e) {
+      if ($('body').hasClass('leftbar-active')) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        self.closeSidebars();
+      }
     });
-    if ( BuildInfo.textDirection === 'rtl') {
-      $(document).ready(function() {
-        $('aside#rightbar').attr('id','leftbar');
-        $('nav#leftbar').attr('id','rightbar');
-        $('#leftbar-toggle').removeClass('menu-item-left').addClass('menu-item-right');
-        $('#rightbar-toggle').removeClass('menu-item-right').addClass('menu-item-left');
-        $('#previous-chapter').removeClass('menu-item-left').addClass('menu-item-right').html('<i class="fa fa-chevron-right menu-item-contents"></i>');
-        $('#next-chapter').removeClass('menu-item-right').addClass('menu-item-left').html('<i class="fa fa-chevron-left menu-item-contents"></i>');
-      });
-      this.leftbar = new LeftbarView({
-        el: this.$('#rightbar'),
-        parent: this,
-        classActive: 'leftbar-active',
-        closeGesture: 'dragleft'
-      });
 
-      this.rightbar = new RightbarView({
-        el: this.$('#leftbar'),
-        parent: this,
-        classActive: 'rightbar-active',
-        closeGesture: 'dragright'
-      });
-    } else {
-      this.leftbar = new LeftbarView({
-        el: this.$('#leftbar'),
-        parent: this,
-        classActive: 'leftbar-active',
-        closeGesture: 'dragleft'
-      });
+    this.leftbar = new LeftbarView({
+      el: this.$('#leftbar'),
+      parent: this,
+      classActive: 'leftbar-active',
+      closeGesture: 'dragleft',
+    });
 
-      this.rightbar = new RightbarView({
-        el: this.$('#rightbar'),
-        parent: this,
-        classActive: 'rightbar-active',
-        closeGesture: 'dragright'
-      });
-    }
     this.chapter = new ChapterView({
       el: this.$('#textbook'),
-      parent: this
+      parent: this,
     });
 
     this.menu = new MenuView({
-      el: this.$('.menu'),
-      parent: this
+      el: this.$('#menu'),
+      parent: this,
     });
 
-    this.menu = new MenuView({
-      el: this.$('.navigation-menu'),
-      parent: this
+    this.navigator = new MenuView({
+      el: this.$('#navigation-menu'),
+      parent: this,
     });
+
+    if (SLIDER_ENABLED) {
+      this.navigatorSlider = new NavigatorSliderView({
+        el: this.$('#navigation-slider'),
+        parent: this,
+      });
+    }
   },
 
   showNextChapter: function () {
@@ -127,12 +111,12 @@ var BookView = Backbone.View.extend({
     App.router.navigate(previousChapterUrl, { trigger: true });
   },
 
-  showFirstChapter: function() {
+  showFirstChapter: function () {
     var firstChapterUrl = 'book/' + App.tocUrlOrder[0];
     App.router.navigate(firstChapterUrl, { replace: true, trigger: true });
   },
 
-  show: function(chapter, id) {
+  show: function (chapter, id) {
     var changeChapter = App.book.currentChapter !== chapter;
 
     var scrollView = $('#scrollview');
@@ -192,7 +176,7 @@ var BookView = Backbone.View.extend({
       return;
     }
     var body = $('body');
-    if (body.hasClass('leftbar-active') || body.hasClass('rightbar-active')) {
+    if (body.hasClass('leftbar-active')) {
       return;
     }
     if (keyCode === 39) {
@@ -202,13 +186,12 @@ var BookView = Backbone.View.extend({
     }
   },
 
-  closeSidebars: function() {
+  closeSidebars: function () {
     this.leftbar.close();
-    this.rightbar.close();
   },
 
   events: {
-  }
+  },
 });
 
 module.exports = BookView;

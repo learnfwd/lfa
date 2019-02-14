@@ -1,0 +1,45 @@
+mixin print-spread(pages)
+  each page in pages
+    +print-page(page)
+
+mixin print-page(page)
+  -var image = page.image
+  -var imgEscaped = page.image.replace(/\W/g, '-').toLowerCase();
+  -var hotspots = page.hotspots
+
+  div.lfa-print-page-container(id='lfa-print-page-container-#{imgEscaped}')
+    script.
+      (function(){
+        var _ = require('lodash');
+        var $ = require('jquery');
+        var App = require('lfa-core').App;
+
+        var scale = 1614 / 1614;
+        var $img = $('#lfa-print-page-container-#{imgEscaped} img');
+
+        var lazyResize = _.throttle(function () {
+          scale = $img.width() / 1614;
+          App.book.trigger('lfa-print-page-resized', scale);
+        }, 100);
+
+        $(window).on('resize', function () {
+           lazyResize();
+        });
+        lazyResize();
+      })();
+
+    img.lfa-print-page.box-shadow--8dp(src='img/pages/#{image}')
+    each hotspot in hotspots
+      +print-hotspot(hotspot)
+
+mixin print-hotspot(hotspot)
+  -var className = hotspot.className || '';
+
+  div.lfa-print-zone(data-atom='#{hotspot.atom}', data-href='#{hotspot.href || ""}', style='top: #{hotspot.top}%; left: #{hotspot.left}%; width: #{hotspot.width}%; height: #{hotspot.height}%;' class='lfa-print-zone-hotspot-#{hotspot.type} #{className}')
+
+mixin atom(opts)
+  -var id='lfa-atom-definition-' + opts.id;
+  div.lfa-atom.well.center-block(id='#{id}' class='#{opts.class}')
+    if(block)
+      block
+

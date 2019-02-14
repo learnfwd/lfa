@@ -1,0 +1,140 @@
+body.lfa-atom-shown
+  #textbook
+    .lfa-print-spread
+      display: none !important
+    section
+      display: flex
+      flex-flow: row nowrap
+      align-items: center
+      justify-content: center
+      height: calc(100vh - 60px)
+  #navigation-menu
+    display: none !important
+
+  #lfa-hide-modal
+    display: block
+
+#lfa-hide-modal
+  display: none
+  color: white
+  font-weight: 100
+  line-height: 36px
+  text-transform: uppercase
+  i
+    margin-right: 0.8em
+
+
+.open-wide
+  display: block !important
+  overflow: auto
+  padding: 1em !important
+  z-index: 101
+  max-width: 45em
+  max-height:calc(100vh - 60px)
+  align-self: center
+
+#scrollview.lfa-web-view
+  #textbook
+    background: #fff
+
+#scrollview.lfa-print-view
+  padding: 0
+  #textbook
+    width: 100%
+    padding: 0
+    margin: 0
+
+.modal-body
+  text-align: initial
+
+.lfa-print-spread
+  width: 100%
+  max-width: 100%
+  display: flex
+  flex-flow: row wrap
+  justify-content: center
+  margin: 0 !important
+  padding: 0
+
+.lfa-print-page-container
+  max-width: 100%
+  display: inline-block
+  position: relative
+  margin: 7px 0
+
+.lfa-web-view-one-col
+  img.lfa-print-page
+    height:auto
+    width: 100%
+    margin: 0 auto
+    display: inline-block
+
+.lfa-web-view-two-cols
+  img.lfa-print-page
+    height:calc(100vh - 20px)
+    width: auto
+    margin: 0 auto
+    display: inline-block
+
+  .lfa-print-page--right img
+    float: right
+
+  .lfa-print-page--left img
+    float: left
+
+.lfa-print-zone
+  background: rgba(0, 0, 0, 0)
+  border-radius: 2px
+  transition: all .2s ease-out
+  position: absolute
+  cursor: pointer
+
+.lfa-print-zone:hover
+  transition: all .2s ease-out
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12)
+  background-color: rgba(0, 0, 0, 0.1)
+  background-repeat: no-repeat
+  background-size: contain
+  background-position: center
+
+.box-shadow--2dp
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12)
+.box-shadow--3dp
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .14), 0 3px 3px -2px rgba(0, 0, 0, .2), 0 1px 8px 0 rgba(0, 0, 0, .12)
+.box-shadow--4dp
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
+.box-shadow--6dp
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12), 0 3px 5px -1px rgba(0, 0, 0, .2)
+.box-shadow--8dp
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2)
+.box-shadow--16dp
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, .14), 0 6px 30px 5px rgba(0, 0, 0, .12), 0 8px 10px -5px rgba(0, 0, 0, .2)
+
+.lfa-atom
+  background: white
+  margin: 0 !important
+  padding: 0
+  border: none
+  box-shadow: none
+
+.lfa-print-toggle-btn.selected
+  background: red !important
+
+#test-font
+  font-family: Arial;
+  display: none;
+  position: absolute;
+  top: 140px;
+  left: 200px;
+  // background: red;
+  z-index: 10000;
+  width: 150px;
+  background: white;
+
+  .arial-14
+    font-size: 14px;
+    line-height: 14px;
+
+  .arial-12
+    font-size: 12px;
+    line-height: 12px;

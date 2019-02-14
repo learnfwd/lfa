@@ -1,68 +1,66 @@
 body
-  // The fixed menus that contains the sidebar and navigation buttons.
-  .menu, .navigation-menu
-    font-family: font-family-sans-serif
-    user-select: none
-    position: fixed
-    width: 100%
-    z-index: 1000
-    color: white
-  
-    // Make the menu fade out when we scroll down on desktops.
-    &.pinned
-      opacity: 1
-
-    &.unpinned
-      opacity: 0.1
-
-  .menu
+  #menu
+    position: fixed;
+    left: 0
     top: 0
-  
-  .navigation-menu
-    bottom: 0
+    z-index: 200
+    background: #222
+    height: 100vh;
+    box-shadow: 4px 0px 5px rgba(0, 0, 0, 0.4)
 
-  // Fade the menu back in if we actually activate one of the toggles.
-  &.leftbar-active .menu.unpinned
-  &.rightbar-active .menu.unpinned
-    opacity: 1
+    hr
+      border: 0;
+      border-bottom: 1px dotted white !important;
+      padding: 0 32px;
+      margin: 0;
 
   // Change the top buttons to be part of a solid navbar on mobiles.
   @media max-phone
-    .menu
-      height: 3em
-      background: #222
+    .lfa-atom-shown
+      #menu
+        transform: translate3d(-72px, 0, 0) !important
 
-      // Reposition the buttons so they're prettier.
-      .menu-item
-        top: 0
-  
-      // Hide the menu when we scroll down on mobile.
+    #menu
+      background-color: transparent !important
+      position: absolute !important
+      // top: 50vh !important
+      // margin-top: -50% !important
+      border: none !important
+
+      box-shadow: none
+      .hide-small
+        display: none
+
       &.pinned
         transform: translate3d(0, 0, 0)
-  
+
       &.unpinned
-        transform: translate3d(0, -3em, 0)
-        
-    .navigation-menu
-      height: 3em
-      background: #222
+        transform: translate3d(-72px, 0, 0)
 
-      .menu-item
-        bottom: 0
-      
-      &.pinned
-        transform: translate3d(0, 0, 0)
-  
-      &.unpinned
-        transform: translate3d(0, 3em, 0)
-  
-    #leftbar-toggle, #previous-chapter
-      left: 0
+@media max-phone
+  body.lfa-atom-shown
+    #menu
+      transform: translate3d(-72px, 0, 0) !important
 
-    #rightbar-toggle, #next-chapter
-      right: 0
+:fullscreen
+  body
+    @media max-phone
+      .lfa-atom-shown
+        #menu
+          transform: translate3d(-72px, 0, 0) !important
 
-    // Extra margin top to accomodate the menu.
-    #textbook
-      padding-top: 3em
-      padding-bottom: 3em
+      #menu
+        background-color: transparent !important
+        position: absolute !important
+        // top: 50vh !important
+        // margin-top: -50% !important
+        border: none !important
+
+        box-shadow: none
+
+        &.pinned
+          transform: translate3d(0, 0, 0)
+
+        &.unpinned
+          transform: translate3d(-72px, 0, 0)
+

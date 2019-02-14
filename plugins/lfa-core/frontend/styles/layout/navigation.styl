@@ -1,0 +1,89 @@
+#navigation-menu
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  // align-items: center
+  width: calc(100% - 3.5em);
+  position: absolute
+  bottom: .5em
+  pointer-events: none; // we need this to make sure the click goes through the bar to the page elements behind it
+
+  // padding: toggle-hitbox / 2
+  // margin: toggle-hitbox / 2 0
+
+  #previous-chapter
+    order: 1
+    flex: 0 1 toggle-hitbox
+    pointer-events: auto;
+
+  #navigation-slider
+    order: 2
+    flex: 1 1 auto;
+    width: 10em;
+    text-align: center
+    input
+      width: 100%
+      pointer-events: auto;
+
+  #next-chapter
+    order: 3
+    flex: 0 1 toggle-hitbox
+    pointer-events: auto;
+
+  .navigation-button
+    transition: all 0.2s ease;
+    cursor: pointer
+    width: toggle-hitbox
+    height: toggle-hitbox
+    background: none
+    font-size: 18px
+    color: #fff
+    border-radius: 50%
+    border: 1px solid rgba(255,255, 255, 0.3)
+    margin: toggle-margin;
+    text-align: center
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover
+    &:focus
+      color: #ddd
+      background: #ff9900
+      border: 1px solid #ff9900
+      text-decoration: none
+
+@media max-phone
+  #navigation-menu
+    padding-left: 0
+    padding-right: 0
+    width: 100%;
+
+
+#navigation-slider
+  transition: all 0.2s ease;
+  .slider-track
+    transition: all 0.2s ease;
+    opacity: 0.8
+    background: #555
+    box-shadow: inset 0px 18px 12px -17px rgba(0,0,0,0.52);
+
+  .slider-tick
+    background: #555
+    box-shadow: inset 0px 18px 12px -17px rgba(0,0,0,0.52);
+    opacity: 1
+    &.in-selection
+      box-shadow: none
+      background: #888
+
+  .slider-selection
+    background: #888
+    box-shadow: none
+
+  .slider-handle
+    background: #ff9900
+    box-shadow: none
+
+  .tooltip-inner
+    overflow: hidden
+    text-overflow: ellipsis

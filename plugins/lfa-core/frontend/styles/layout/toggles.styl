@@ -1,40 +1,28 @@
-// Position the sidebar buttons correctly and style them.
 .menu-item
-  position: absolute
+  cursor: pointer
   width: toggle-hitbox
   height: toggle-hitbox
-  cursor: pointer
   background: #222
-  color: white
+  color: #fff
+  border-radius: 50%
+  border: 1px solid rgba(255,255, 255, 0.3)
+  margin: toggle-margin;
+  text-align: center
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i
+    font-size: toggle-hitbox / 2;
+    align-self: flex-center
+
+  &.fullscreen-button
+    align-self: flex-end
+    order: 99
 
   &:hover
   &:focus
-    color: white
+    background: #ff9900
+    border: 1px solid #ff9900
     text-decoration: none
 
-  .menu-item-contents
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate3d(-50%, -50%, 0)
-    font-size: 1.5em
-
-.menu .menu-item
-  top: 1.5em
-
-.navigation-menu .menu-item
-  bottom: 1.5em
-
-html[dir='ltr']
-  #leftbar-toggle, #previous-chapter
-    left: 1em
-
-  #rightbar-toggle, #next-chapter
-    right: 1em
-
-html[dir='rtl']
-  #leftbar-toggle, #previous-chapter
-    right: 1em
-
-  #rightbar-toggle, #next-chapter
-    left: 1em
