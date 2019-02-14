@@ -9,8 +9,6 @@ var autoprefixer = require('autoprefixer');
 var templatesJS = require('./js-templates');
 var liveReloadJS = require('./js-live-reload');
 
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
 var processStats = require('../../../src/webpack-process-stats');
 
 var browserList = ['Firefox >= 45', 'FirefoxAndroid >= 25', 'Chrome >= 49', 'ChromeAndroid >= 54', 'Android >= 4.03', 'iOS >= 7.1', 'Safari >= 7.0', 'Explorer >= 10', 'ExplorerMobile >= 10'];
@@ -73,7 +71,6 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   if (lfa.currentCompile.serve && lfa.currentCompile.watcher.opts.hot) {
     wpPlugins.push(new webpack.HotModuleReplacementPlugin());
     mainEntrypoints.push('import-babel-polyfill');
-    mainEntrypoints.push('react-hot-loader/patch');
     mainEntrypoints.push('webpack-dev-server/client?http://localhost:' + lfa.currentCompile.watcher.opts.port);
     mainEntrypoints.push('webpack/hot/dev-server');
   }
@@ -92,30 +89,6 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
       }
     }));
   }
-
-  // Separate CSS from JS entrypoints run in the same context. TODO: Do they if I output a library?
-  if (debug) {
-    wpPlugins.push(new webpack.optimize.CommonsChunkPlugin({
-      name: name + '-commons',
-      filename: name + '-commons.js',
-      chunks: [name, name + '-css-main', name + '-css-vendor']
-    }));
-  }
-
-  // Extract CSS separately in the production build
-  var mainExtractPlugin = new ExtractTextPlugin({
-    filename: name + '-main.css',
-    allChunks: true,
-    disable: debug
-  });
-  var vendorExtractPlugin = new ExtractTextPlugin({
-    filename: name + '-vendor.css',
-    allChunks: true,
-    disable: debug
-  });
-
-  wpPlugins.push(mainExtractPlugin);
-  wpPlugins.push(vendorExtractPlugin);
 
   // Add main entrypoints for JS and CSS
   mainEntrypoints.push('!!js-entrypoint-loader!' + dummyFile);
@@ -161,21 +134,18 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   var babelConfig = {
     presets: [
-      [require.resolve('babel-preset-env'), {
-        useBuiltIns: true, // Transform import babel-polyfill
+      [require.resolve('@babel/preset-env'), {
+        useBuiltIns: 'entry', // Transform import @babel/polyfill
         modules: false,
-        targets: {
-          browsers: browserList
-        }
+        targets: browserList,
       }],
-      require.resolve('babel-preset-react')
+      require.resolve('@babel/preset-react'),
+      require.resolve('@babel/preset-flow'),
     ],
     plugins: []
   }
 
-  if (debug) {
-    babelConfig.plugins.push(require.resolve('react-hot-loader/babel'))
-  } else {
+  if (!debug) {
     babelConfig.plugins.push([
       require.resolve('babel-plugin-transform-react-remove-prop-types'), {
         ignoreFilenames: ['node_modules']
@@ -194,67 +164,62 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
       publicPath: publicPath,
     },
     externals: [externals],
-    devtool: debug ? 'eval-source-map' : false,
+    mode: debug ? 'development' : 'production',
+    optimization: {
+      // Separate CSS from JS entrypoints run in the same context. TODO: Do they if I output a library?
+      splitChunks: debug ? {
+        chunks: 'initial',
+        name: name + '-commons',
+        filename: name + '-commons.js',
+      } : undefined,
+    },
+
     module: {
       rules: [
         { test: /\.jsx?$/,
           exclude: /(web|node)_modules/,
           use: { loader: 'babel-loader', options: babelConfig
         } },
-        { test: /\.json$/, use: ['json-loader'] },
 
+        { test: /\.styl$/, exclude: /(^|\/|\\)(vendor|main)\.styl$/,
+          use: ['style-loader', cssUrlLoader, postcssLoader, 'stylus-loader']
+        },
+        { test: /(^|\/|\\)main\.styl$/,
+          use: ['style-loader', cssLoader, postcssLoader, 'stylus-loader']
+        },
+        { test: /(^|\/|\\)vendor\.styl$/,
+          use: ['style-loader', cssLoader, postcssLoader, 'stylus-loader']
+        },
 
-        { test: /\.styl$/, exclude: /(^|\/|\\)(vendor|main)\.styl$/, use: mainExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssUrlLoader, postcssLoader, 'stylus-loader']
-        }) },
-        { test: /(^|\/|\\)main\.styl$/, use: mainExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssLoader, postcssLoader, 'stylus-loader']
-        }) },
-        { test: /(^|\/|\\)vendor\.styl$/, use: vendorExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssLoader, postcssLoader, 'stylus-loader']
-        }) },
+        { test: /\.scss$/, exclude: /(^|\/|\\)(vendor|main)\.scss$/,
+          use: ['style-loader', cssUrlLoader, postcssLoader, 'sass-loader'],
+        },
+        { test: /(^|\/|\\)main\.scss$/,
+          use: ['style-loader', cssUrlLoader, postcssLoader, 'sass-loader'],
+        },
+        { test: /(^|\/|\\)vendor\.scss$/,
+          use: ['style-loader', cssUrlLoader, postcssLoader, 'sass-loader'],
+        },
 
-        { test: /\.scss$/, exclude: /(^|\/|\\)(vendor|main)\.scss$/, use: mainExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssUrlLoader, postcssLoader, 'sass-loader']
-        }) },
-        { test: /(^|\/|\\)main\.scss$/, use: mainExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssLoader, postcssLoader, 'sass-loader']
-        }) },
-        { test: /(^|\/|\\)vendor\.scss$/, use: vendorExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssLoader, postcssLoader, 'sass-loader']
-        }) },
+        { test: /\.sass$/, exclude: /(^|\/|\\)(vendor|main)\.sass$/,
+          use: ['style-loader', cssUrlLoader, postcssLoader, 'sass-loader?indentedSyntax']
+        },
+        { test: /(^|\/|\\)main\.sass$/,
+          use: ['style-loader', cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
+        },
+        { test: /(^|\/|\\)vendor\.sass$/,
+          use: ['style-loader', cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
+        },
 
-        { test: /\.sass$/, exclude: /(^|\/|\\)(vendor|main)\.sass$/, use: mainExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssUrlLoader, postcssLoader, 'sass-loader?indentedSyntax']
-        }) },
-        { test: /(^|\/|\\)main\.sass$/, use: mainExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
-        }) },
-        { test: /(^|\/|\\)vendor\.sass$/, use: vendorExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
-        }) },
-
-        { test: /\.css$/, exclude: /(^|\/|\\)(vendor|main)\.css$/, use: mainExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssUrlLoader, postcssLoader]
-        }) },
-        { test: /(^|\/|\\)main\.css$/, use: mainExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssLoader, postcssLoader]
-        }) },
-        { test: /(^|\/|\\)vendor\.css$/, use: vendorExtractPlugin.extract({
-          fallback: 'style-loader',
-          use: [cssLoader, postcssLoader]
-        }) },
+        { test: /\.css$/, exclude: /(^|\/|\\)(vendor|main)\.css$/,
+          use: ['style-loader', cssUrlLoader, postcssLoader]
+        },
+        { test: /(^|\/|\\)main\.css$/,
+          use: ['style-loader', cssLoader, postcssLoader]
+        },
+        { test: /(^|\/|\\)vendor\.css$/,
+          use: ['style-loader', cssLoader, postcssLoader]
+        },
 
 
         { test: /\.(png|jpe?g|gif|ogg|mp3|m4a|m4v|mov|webm|ogv|woff|otf|ttf)(\?[^\?]+)?$/,
