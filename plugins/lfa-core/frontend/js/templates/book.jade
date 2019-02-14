@@ -1,0 +1,22 @@
+mixin index()
+  .menu
+    .menu-item.menu-item-left#leftbar-toggle: i.fa.fa-bars.fa-fw.menu-item-contents
+    .menu-item.menu-item-right#rightbar-toggle: i.fa.fa-question.fa-fw.menu-item-contents
+  .navigation-menu
+    a.menu-item.menu-item-left#previous-chapter: i.fa.fa-chevron-left.menu-item-contents
+    a.menu-item.menu-item-right#next-chapter: i.fa.fa-chevron-right.menu-item-contents
+
+  nav#leftbar
+    //- this will be done on runtime
+    //- +toc(toc)
+
+  #content
+    #scrollview
+      #textbook
+        article
+          section
+            include ./error-message.jade
+
+  aside#rightbar
+    p.text-center Nothing here yet.
+
