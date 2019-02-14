@@ -57,7 +57,7 @@ function Server(opts) {
       this.app.close();
       this.io.close();
     };
-    self.devServer.listen(opts.port, function (err) {
+    self.devServer.listen(opts.port, '0.0.0.0', function (err) {
       if (err) { throw err; }
       self.listening = true;
       if (self.scheduledForClosing) {
