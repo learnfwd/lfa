@@ -7,11 +7,15 @@ var LeftbarView = require('./leftbar');
 var RightbarView = require('./rightbar');
 var ChapterView = require('./chapter');
 var MenuView = require('./menu');
+var templates = require('templates');
 
 var BookView = Backbone.View.extend({
   html: $('html'),
 
   initialize: function() {
+    // Render initial HTML
+    $('body').append(templates.book.index())
+
     // Initialize/alias some helpful arrays and hashtables.
 
     // Alias the BuildInfo to our global namespace.
