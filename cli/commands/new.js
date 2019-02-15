@@ -56,7 +56,7 @@ module.exports = function newProject(cli) {
       description: 'Do you wish to use the textbook core from our servers? (faster compiles, always up to date, requires internet)',
       message: 'Answer with yes or no',
       pattern: /^(y|Y)(es)?|(n|N)o?$/,
-      default: 'yes',
+      default: 'no',
     }];
 
     _.each(schema, function (pr) {
