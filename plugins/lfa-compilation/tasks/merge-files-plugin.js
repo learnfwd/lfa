@@ -46,7 +46,7 @@ mergeFilesWebpack.prototype.apply = function mergeFilesWebpackApply(compiler) {
         in the filename option merging all the filtered entries, delete the entries from the assets object leaving
         only our new file and the files that didn´t pass the fitler.
     */
-    compiler.plugin('emit', (function (compilation, callback) {
+    compiler.hooks.emit.tapAsync('MergeFilesPlugin', (function (compilation, callback) {
         var assets = compilation.assets;
         // array of file names e.g.  [entry1.js, entry1.style.css,...]
         var files = Object.keys(assets);

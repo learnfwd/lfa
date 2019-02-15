@@ -27,7 +27,7 @@ module.exports = function liveReloadDummy(lfa) {
         var contents = 'module.exports = "' + uuid.v4() + '";';
         var file = new File({
           path: 'gen/live-reload-dummy.js',
-          contents: new Buffer(contents),
+          contents: Buffer.from(contents),
         });
         stream.write(file);
       }

@@ -27,7 +27,7 @@ module.exports = function textVersions(lfa) {
         var contents = 'module.exports = ' + JSON.stringify(versions) + ';';
         var file = new File({
           path: 'gen/text-versions.js',
-          contents: new Buffer(contents),
+          contents: Buffer.from(contents),
         });
         file.webpackAlias = 'text-versions';
         stream.write(file);

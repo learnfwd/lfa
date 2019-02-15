@@ -110,7 +110,7 @@ module.exports = function newProject(cli) {
 
           var packageFile = new File({
             path: path.join('.lfa', 'package.json'),
-            contents: new Buffer(JSON.stringify(packageJson, null, 2)),
+            contents: Buffer.from(JSON.stringify(packageJson, null, 2)),
           });
 
           packageStream.write(packageFile);
