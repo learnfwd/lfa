@@ -1,5 +1,3 @@
-var when = require('when');
-var nodefn = require('when/node');
 var fs = require('fs-extra');
 
 var Cleaner = {};
@@ -16,14 +14,14 @@ Cleaner.cleanProject = function (config) {
       config = r;
     });
   } else {
-    prom = when();
+    prom = Promise.resolve();
   }
 
   return prom.then(function () {
-    return when.all([
-      nodefn.call(fs.remove, config.debugBuildPath),
-      nodefn.call(fs.remove, config.releaseBuildPath),
-      nodefn.call(fs.remove, config.tmpPath),
+    return Promise.all([
+      fs.remove(config.debugBuildPath),
+      fs.remove(config.releaseBuildPath),
+      fs.remove(config.tmpPath),
     ]);
   });
 };

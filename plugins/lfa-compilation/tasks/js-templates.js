@@ -47,7 +47,7 @@ module.exports = function templatesJS(lfa) {
         .then(function (content) {
           var file = new File({
             path: 'gen/modules/templates.js',
-            contents: new Buffer(content)
+            contents: Buffer.from(content)
           });
           file.webpackAlias = 'templates';
           stream.write(file);

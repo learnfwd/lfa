@@ -124,7 +124,7 @@ module.exports = function buildInfoJS(lfa) {
 
       var file = new File({
         path: 'gen/modules/build-info.json',
-        contents: new Buffer(contents),
+        contents: Buffer.from(contents),
       });
       file.webpackAlias = ['build-info', 'searchjson'];
       stream.write(file);
