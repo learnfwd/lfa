@@ -81,15 +81,6 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     '__DEV__': JSON.stringify(debug)
   }));
 
-  // Minify JS in production
-  if (!debug) {
-    wpPlugins.push(new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      }
-    }));
-  }
-
   // Add main entrypoints for JS and CSS
   mainEntrypoints.push('!!js-entrypoint-loader!' + dummyFile);
 
