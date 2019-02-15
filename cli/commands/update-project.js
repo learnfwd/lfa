@@ -27,7 +27,7 @@ var upgradeSteps = [{
     'We now use Babel to precompile JS files, so you can now use modern Javascript features.',
   ]
 }, {
-  from: '0.9.0',
+  from: '0.9.6',
   to: '^0.10.0',
   manualChanges: [
     'There are no hard breaking changes in 0.10.0, but the books are compiled with Webpack 4 and React and jQuery ' +
@@ -43,7 +43,6 @@ module.exports = function compile(cli) {
     var versionRange = config.package.engines.lfa;
     _.each(upgradeSteps, function (step) {
 
-      console.log('satisfies', step.from, versionRange)
       if (!semver.satisfies(step.from, versionRange)) { return; }
       console.log(chalk.green('Converting from ') + chalk.yellow(versionRange) + chalk.green(' to ') + chalk.yellow(step.to));
 
