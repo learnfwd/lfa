@@ -32,7 +32,7 @@ function Server(opts) {
       self.app.close();
     }
 
-    cache.webpackCompiler.plugin('done', function (st) {
+    cache.webpackCompiler.hooks.done.tap('LFAServer', function (st) {
       var stats = st.toJson({ errors: true, warnings: true });
       stats = processStats(stats);
       _.each(stats.errors, function (err) {
@@ -44,7 +44,7 @@ function Server(opts) {
       opts.watcher.emit('webpack-compile-done');
     });
 
-    cache.webpackCompiler.plugin('compile', function () {
+    cache.webpackCompiler.hooks.compile.tap('LFAServer', function () {
       opts.watcher.emit('webpack-compiling');
     });
 
