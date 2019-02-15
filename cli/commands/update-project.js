@@ -30,6 +30,8 @@ var upgradeSteps = [{
   from: '0.9.0',
   to: '^0.10.0',
   manualChanges: [
+    'There are no hard breaking changes in 0.10.0, but the books are compiled with Webpack 4 and React and jQuery ' +
+    'have been updated. Re-compile all plugins and make sure the changes don\'t break anything.'
   ]
 }];
 
