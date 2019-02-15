@@ -8,7 +8,8 @@ var LeftbarView = require('./leftbar');
 var ChapterView = require('./chapter');
 var MenuView = require('./menu');
 
-SLIDER_ENABLED = false; // set this to true to enable the dotty navigation progress bar
+// set book.slider to true in .lfa/package.json to enable the dotty navigation progress bar
+SLIDER_ENABLED = require('lfa-book').BuildInfo.book.slider;
 var NavigatorSliderView = SLIDER_ENABLED ? require('./navigator') : {};
 
 var BookView = Backbone.View.extend({
