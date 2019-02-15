@@ -5,11 +5,13 @@ var _ = require('lodash');
 var when = require('when');
 var uuid = require('uuid');
 var autoprefixer = require('autoprefixer');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 var templatesJS = require('./js-templates');
 var liveReloadJS = require('./js-live-reload');
 
 var processStats = require('../../../src/webpack-process-stats');
+var MergeFilesPlugin = require('./merge-files-plugin');
 
 var browserList = ['Firefox >= 45', 'FirefoxAndroid >= 25', 'Chrome >= 49', 'ChromeAndroid >= 54', 'Android >= 4.03', 'iOS >= 7.1', 'Safari >= 7.0', 'Explorer >= 10', 'ExplorerMobile >= 10'];
 
@@ -70,7 +72,6 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
   var mainEntrypoints = [];
   if (lfa.currentCompile.serve && lfa.currentCompile.watcher.opts.hot) {
     wpPlugins.push(new webpack.HotModuleReplacementPlugin());
-    mainEntrypoints.push('import-babel-polyfill');
     mainEntrypoints.push('webpack-dev-server/client?http://localhost:' + lfa.currentCompile.watcher.opts.port);
     mainEntrypoints.push('webpack/hot/dev-server');
   }
@@ -83,20 +84,15 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   // Add main entrypoints for JS and CSS
   mainEntrypoints.push('!!js-entrypoint-loader!' + dummyFile);
+  mainEntrypoints.push('!!css-entrypoint-loader?type=main!' + dummyFile);
+  mainEntrypoints.push('!!css-entrypoint-loader?type=vendor!' + dummyFile);
 
-  var wpEntries = {};
-  wpEntries[name] = mainEntrypoints;
-
-  var cssMainEntrypoint = '!!css-entrypoint-loader?type=main!' + dummyFile;
-  var cssVendorEntrypoint = '!!css-entrypoint-loader?type=vendor!' + dummyFile;
-
-  if (debug) {
-    wpEntries[name + '-css-main'] = cssMainEntrypoint;
-    wpEntries[name + '-css-vendor'] = cssVendorEntrypoint;
-  } else {
-    // This has the side effect of not emmiting useless -css-*.js files
-    mainEntrypoints.push(cssMainEntrypoint);
-    mainEntrypoints.push(cssVendorEntrypoint);
+  // Merge the stub .js files generated for the CSS chunks with the main .js
+  if (!debug) {
+    wpPlugins.push(new MergeFilesPlugin({
+      filename: name + '.js',
+      test: new RegExp(name.replace(/([^a-zA-Z0-9])/g, "\\$1") + '(|-main|-vendor).js'),
+    }));
   }
 
   // Configure various loaders
@@ -123,10 +119,14 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   var cssUrlLoader = 'css-loader';
 
+  if (!debug) {
+    wpPlugins.push(new MiniCssExtractPlugin());
+  }
+  var styleLoader = debug ? 'style-loader' : MiniCssExtractPlugin.loader;
+
   var babelConfig = {
     presets: [
       [require.resolve('@babel/preset-env'), {
-        useBuiltIns: 'entry', // Transform import @babel/polyfill
         modules: false,
         targets: browserList,
       }],
@@ -146,7 +146,9 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
 
   // Configure Webpack
   var webpackConfig = {
-    entry: wpEntries,
+    entry: {
+      [name]: mainEntrypoints,
+    },
     output: {
       path: lfa.currentCompile.buildPath,
       filename: '[name].js',
@@ -158,11 +160,22 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
     mode: debug ? 'development' : 'production',
     optimization: {
       // Separate CSS from JS entrypoints run in the same context. TODO: Do they if I output a library?
-      splitChunks: debug ? {
-        chunks: 'initial',
-        name: name + '-commons',
-        filename: name + '-commons.js',
-      } : undefined,
+      splitChunks: {
+        cacheGroups: {
+          vendorStyles: {
+            name: name + '-vendor',
+            test: /(^|\/|\\)vendor\.(styl|sass|scss|css)/,
+            chunks: 'all',
+            enforce: true,
+          },
+          mainStyles: {
+            name: name + '-main',
+            test: /(^|\/|\\)(.(?!endor))*\.(styl|sass|scss|css)/,
+            chunks: 'all',
+            enforce: true,
+          },
+        },
+      },
     },
 
     module: {
@@ -173,43 +186,31 @@ function getConfig(lfa, bundledPlugins, aliases, name, publicPath) {
         } },
 
         { test: /\.styl$/, exclude: /(^|\/|\\)(vendor|main)\.styl$/,
-          use: ['style-loader', cssUrlLoader, postcssLoader, 'stylus-loader']
+          use: [styleLoader, cssUrlLoader, postcssLoader, 'stylus-loader']
         },
-        { test: /(^|\/|\\)main\.styl$/,
-          use: ['style-loader', cssLoader, postcssLoader, 'stylus-loader']
-        },
-        { test: /(^|\/|\\)vendor\.styl$/,
-          use: ['style-loader', cssLoader, postcssLoader, 'stylus-loader']
+        { test: /(^|\/|\\)(vendor|main)\.styl$/,
+          use: [styleLoader, cssLoader, postcssLoader, 'stylus-loader']
         },
 
         { test: /\.scss$/, exclude: /(^|\/|\\)(vendor|main)\.scss$/,
-          use: ['style-loader', cssUrlLoader, postcssLoader, 'sass-loader'],
+          use: [styleLoader, cssUrlLoader, postcssLoader, 'sass-loader'],
         },
-        { test: /(^|\/|\\)main\.scss$/,
-          use: ['style-loader', cssLoader, postcssLoader, 'sass-loader'],
-        },
-        { test: /(^|\/|\\)vendor\.scss$/,
-          use: ['style-loader', cssLoader, postcssLoader, 'sass-loader'],
+        { test: /(^|\/|\\)(vendor|main)\.scss$/,
+          use: [styleLoader, cssLoader, postcssLoader, 'sass-loader'],
         },
 
         { test: /\.sass$/, exclude: /(^|\/|\\)(vendor|main)\.sass$/,
-          use: ['style-loader', cssUrlLoader, postcssLoader, 'sass-loader?indentedSyntax']
+          use: [styleLoader, cssUrlLoader, postcssLoader, 'sass-loader?indentedSyntax']
         },
-        { test: /(^|\/|\\)main\.sass$/,
-          use: ['style-loader', cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
-        },
-        { test: /(^|\/|\\)vendor\.sass$/,
-          use: ['style-loader', cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
+        { test: /(^|\/|\\)(vendor|main)\.sass$/,
+          use: [styleLoader, cssLoader, postcssLoader, 'sass-loader?indentedSyntax']
         },
 
         { test: /\.css$/, exclude: /(^|\/|\\)(vendor|main)\.css$/,
-          use: ['style-loader', cssUrlLoader, postcssLoader]
+          use: [styleLoader, cssUrlLoader, postcssLoader]
         },
-        { test: /(^|\/|\\)main\.css$/,
-          use: ['style-loader', cssLoader, postcssLoader]
-        },
-        { test: /(^|\/|\\)vendor\.css$/,
-          use: ['style-loader', cssLoader, postcssLoader]
+        { test: /(^|\/|\\)(vendor|main)\.css$/,
+          use: [styleLoader, cssLoader, postcssLoader]
         },
 
 
