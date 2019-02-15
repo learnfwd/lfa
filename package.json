@@ -72,7 +72,6 @@
     "minimatch": "^3.0.4",
     "modernizr": "^3.6.0",
     "node-sass": "^4.11.0",
-    "npm": "^6.8.0",
     "open": "0.0.5",
     "path": "^0.12.7",
     "postcss-loader": "^3.0.0",

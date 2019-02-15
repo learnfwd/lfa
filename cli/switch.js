@@ -4,7 +4,6 @@ var when = require('when');
 var path = require('path');
 var chalk = require('chalk');
 var inquirer = require('inquirer');
-var npm = require('npm');
 var fs = require('fs');
 var nodefn = require('when/node');
 
@@ -41,19 +40,6 @@ var foundLFA = [
   'Found locally-installed lfa. Switching to that'
 ].join('');
 
-function installLFA(projModulePath, requiredVersion) {
-  var conf = {
-    prefix: projModulePath
-  };
-
-  return nodefn.call(npm.load.bind(npm), conf).then(function () {
-    npm.on('log', function (msg) {
-      console.log(msg);
-    });
-    return nodefn.call(npm.install.bind(npm), 'lfa@' + requiredVersion);
-  });
-}
-
 module.exports = function switchControl(cli, config) {
   if (cli.flags.switchCheck === false) {
     return config;
@@ -85,31 +71,10 @@ module.exports = function switchControl(cli, config) {
   }, function () {
     return false;
   }).then(function (exists) {
-    // if lfa isn't locally installed, ask to install it
+    // if lfa isn't locally installed, bail
     if (!exists) {
-      if (cli.flags.switch === false) {
-        console.log(cantContinue);
-        process.exit(1);
-      }
-
-      console.log(installLFAInfo);
-      return when.promise(function (resolve) {
-        inquirer.prompt({
-          message: installLFAPrompt,
-          name: 'install',
-          type: 'confirm',
-          default: false,
-        }, function (ans) {
-          resolve(ans.install);
-        });
-      }).then(function (install) {
-        if (!install) {
-          console.log(cantContinue);
-          process.exit(1);
-        }
-      }).then(function () {
-        return installLFA(projModulePath, requiredVersion);
-      });
+      console.log(cantContinue);
+      process.exit(1);
     }
     console.log(foundLFA);
   }).then(function () {
@@ -127,7 +92,7 @@ module.exports = function switchControl(cli, config) {
       }
       process.exit(code);
     });
-      
+
     return when.promise(function () {}); //Endless promise to stall execution
   });
 };
