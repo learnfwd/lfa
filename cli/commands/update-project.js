@@ -26,6 +26,11 @@ var upgradeSteps = [{
     'React has slightly changed its API. Most notably, ' + chalk.yellow('React.render') + ' must be replaced with ' + chalk.yellow('ReactDOM.render') + '.',
     'We now use Babel to precompile JS files, so you can now use modern Javascript features.',
   ]
+}, {
+  from: '0.9.0',
+  to: '^0.10.0',
+  manualChanges: [
+  ]
 }];
 
 module.exports = function compile(cli) {
