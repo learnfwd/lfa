@@ -4,7 +4,6 @@ var BuildInfo = require('lfa-book').BuildInfo;
 var UAParser = require('ua-parser-js');
 var _ = require('lodash');
 
-var KeenAnalytics = require('./keen');
 var MixpanelAnalytics = require('./mixpanel');
 var GoogleAnalytics = require('./ga');
 var IntercomAnalytics = require('./intercom');
@@ -20,7 +19,6 @@ function AnalyticsManager() {
 
   this._backends = [];
 
-  this._registerAnalyticsBackend(new KeenAnalytics(this));
   this._registerAnalyticsBackend(new MixpanelAnalytics(this));
   this._registerAnalyticsBackend(new GoogleAnalytics(this));
   this._registerAnalyticsBackend(new IntercomAnalytics(this));
