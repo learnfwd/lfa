@@ -1,6 +1,5 @@
 var JadeFastCompiler = require('../../lfa-compilation/lib/jade-fast-compiler');
 var through = require('through2');
-var gutil = require('gulp-util');
 var path = require('path');
 var File = require('vinyl');
 var _ = require('lodash');
@@ -9,6 +8,7 @@ var nodefn = require('when/node');
 var fs = require('fs');
 var safeEval = require('./safe-eval');
 var es = require('event-stream');
+var PluginError = require('plugin-error');
 
 var PLUGIN_NAME = 'text-jade';
 var boilerplate = [
@@ -67,7 +67,7 @@ module.exports = function textJadeTasks(lfa) {
     var filesStream = lfa.src(glob, { filterModified: self })
       .pipe(through.obj(function (file, enc, cb) {
         if (file.isStream()) {
-          return cb(new gutil.PluginError(PLUGIN_NAME, 'Streaming not supported'));
+          return cb(new PluginError(PLUGIN_NAME, 'Streaming not supported'));
         }
 
         var tocpath = file.relative.replace(/\.jade$/, '');
@@ -112,7 +112,7 @@ module.exports = function textJadeTasks(lfa) {
               });
           })
           .catch(function(err) {
-            return cb(new gutil.PluginError(PLUGIN_NAME, err));
+            return cb(new PluginError(PLUGIN_NAME, err));
           });
 
       }));

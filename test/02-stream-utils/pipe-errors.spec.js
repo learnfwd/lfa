@@ -2,7 +2,6 @@
 'use strict';
 
 var pipeErrors = require('../../src/pipe-errors');
-var gulpUtil = require('gulp-util');
 var util = require('util');
 var through2 = require('through2');
 var es = require('event-stream');
@@ -18,7 +17,7 @@ util.inherits(ErroringStream, Readable);
 ErroringStream.prototype._read = function() {
   // If I were to emit right now, Stream would throw at pipeline creation time,
   // which is ok. Those errors are caught by when.try() in lfa.compile()
-  
+
   var self = this;
 
   if (!this._firstTime) {
@@ -156,7 +155,7 @@ describe('piped errors', function () {
 
     behavesOk(
       new ErroringStream()
-        .pipeErrors() 
+        .pipeErrors()
         .pipe(realNoop()),
       done
     );

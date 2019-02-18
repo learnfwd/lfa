@@ -1,0 +1,40 @@
+<!doctype html>
+<html
+  lang=${JSON.stringify(obj.book.language)}
+  dir=${JSON.stringify(obj.book.textDirection)}
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title><%- obj.book.title %></title>
+
+    <% obj.vendorCSSFiles.forEach(function (file) { %>
+      <link type="text/css" rel="stylesheet", href=${JSON.stringify(file)} />
+    <% }) %>
+
+    <% obj.mainCSSFiles.forEach(function (file) { %>
+      <link type="text/css" rel="stylesheet", href=${JSON.stringify(file)} />
+    <% }) %>
+
+  <body>
+    <script>
+      <%= obj.requireScript %>
+    </script>
+
+    <% if (obj.debug) { %>
+      <script src=${JSON.stringify(obj.currentBundle + '-vendor.js')}></script>
+      <script src=${JSON.stringify(obj.currentBundle + '-main.js')}></script>
+    <% } %>
+
+    <% obj.jsFiles.forEach(function (file) { %>
+      <script src=${JSON.stringify(file)}></script>
+    <% }) %>
+
+    <script>
+      __lfa_check_patches__();
+      __lfa_autorun__();
+    </script>
+  </body>
+</html>

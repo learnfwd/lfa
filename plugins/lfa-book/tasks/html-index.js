@@ -1,12 +1,14 @@
-var gulpJade = require('gulp-jade');
 var path = require('path');
+var fs = require('fs');
 var uuid = require('uuid');
-var _ = require('lodash');
+const gulpTemplate = require('gulp-template');
 
 module.exports = function indexHtmlTasks(lfa) {
   lfa.task('html:files:index.html', function () {
-    var template = path.join(__dirname, 'templates', 'index.jade');
+    var template = path.join(__dirname, 'templates', 'index.html');
+    var requireScript = path.join(__dirname, 'templates', 'lfa-require.js');
     this.addFileDependencies(template);
+    this.addFileDependencies(requireScript);
 
     var currentBundle = lfa.currentCompile.bundleName;
     var debug = lfa.currentCompile.debug;
@@ -15,7 +17,7 @@ module.exports = function indexHtmlTasks(lfa) {
     var mainCSS = [];
     var js = [];
 
-    _.each(lfa.config.externalPlugins, function (bundle) {
+    lfa.config.externalPlugins.forEach(function (bundle) {
       vendorCSS.push(bundle + '-vendor.css');
       mainCSS.push(bundle + '-main.css');
       js.push(bundle + '.js');
@@ -27,21 +29,20 @@ module.exports = function indexHtmlTasks(lfa) {
       mainCSS.push(currentBundle + '-main.css');
     }
 
-    var opts = {
-      locals: {
-        book: lfa.config.book,
-        debug: debug,
-        cacheBlob: uuid.v4(),
-        serve: !!lfa.currentCompile.serve,
-        watcher: lfa.currentCompile.watcher,
-        currentBundle: currentBundle,
-        vendorCSSFiles: vendorCSS,
-        mainCSSFiles: mainCSS,
-        jsFiles: js,
-      },
+    var data = {
+      book: lfa.config.book,
+      debug: debug,
+      cacheBlob: uuid.v4(),
+      serve: !!lfa.currentCompile.serve,
+      watcher: lfa.currentCompile.watcher,
+      currentBundle: currentBundle,
+      vendorCSSFiles: vendorCSS,
+      mainCSSFiles: mainCSS,
+      jsFiles: js,
+      requireScript: fs.readFileSync(requireScript, { encoding: 'utf-8' }),
     };
 
     return lfa.src(template)
-      .pipe(gulpJade(opts));
+      .pipe(gulpTemplate(data, { variable: 'obj' }));
   });
 };

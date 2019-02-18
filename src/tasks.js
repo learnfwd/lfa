@@ -1,7 +1,6 @@
 var vfs = require('vinyl-fs');
 var minimatch = require('minimatch');
 var _ = require('lodash');
-var gutil = require('gulp-util');
 var es = require('event-stream');
 var pipeErrors = require('./pipe-errors');
 var glob = require('glob');
@@ -57,7 +56,7 @@ Task.prototype.filterModifiedFiles = function filterModifiedFiles(globs, actions
     actions = [actions];
   }
 
-  if (!this.lfa._oldCache) { 
+  if (!this.lfa._oldCache) {
     return (_.includes(actions, 'created') || _.includes(actions, 'changed')) ? globs : [];
   }
 
@@ -136,7 +135,7 @@ var LFATasks = {
   },
 
   emptyStream: function () {
-    var s = pipeErrors(gutil.noop());
+    var s = pipeErrors(through.obj());
     s.resume();
     process.nextTick(function () {
       s.end();
@@ -181,7 +180,7 @@ var LFATasks = {
   },
 
   hook: function(glob) {
-    var r = pipeErrors(gutil.noop());
+    var r = pipeErrors(through.obj());
     var self = this;
     _.each(this.solve(glob), function (task) {
       var stream = self._start(task, r);
@@ -286,7 +285,7 @@ var LFATasks = {
             case 2: //leaf
               return self._start(dependency, null, false);
             case false:
-              if (mode === 'modify') { 
+              if (mode === 'modify') {
                 return self.emptyStream();
               }
 
