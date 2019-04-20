@@ -130,24 +130,26 @@ require('fluidbox.css');
 						data	= $img.data();
 
 					function imageProp() {
+						var imgWidth = $img[0].width;
+						var imgHeight = $img[0].height;
 						// Store image dimensions in jQuery object
-						data.imgWidth	= $img.width();
-						data.imgHeight	= $img.height();
-						data.imgRatio	= $img.width()/$img.height();
+						data.imgWidth	= imgWidth;
+						data.imgHeight	= imgHeight;
+						data.imgRatio	= imgWidth/imgHeight;
 
 						// Resize and position ghost element
 						$ghost.css({
-							width: $img.width(),
-							height: $img.height(),
+							width: imgWidth,
+							height: imgHeight,
 							top: $img.offset().top - $wrap.offset().top + parseInt($img.css('borderTopWidth')) + parseInt($img.css('paddingTop')),
 							left: $img.offset().left - $wrap.offset().left + parseInt($img.css('borderLeftWidth')) + parseInt($img.css('paddingLeft'))
 						});
 
 						// Calculate scale based on orientation
 						if(vpRatio > data.imgRatio) {
-							data.imgScale = $w.height()*settings.viewportFill/$img.height();
+							data.imgScale = $w.height()*settings.viewportFill/imgHeight;
 						} else {
-							data.imgScale = $w.width()*settings.viewportFill/$img.width();
+							data.imgScale = $w.width()*settings.viewportFill/imgWidth;
 						}
 					}
 
@@ -293,7 +295,7 @@ require('fluidbox.css');
 			// 2. Contains one and ONLY one child
 			// 3. The only child is an image element, <img>
 			if($(this).is('a') && $(this).children().length === 1 && $(this).children().is('img')) {
-
+				var $fbItem = $(this);
 				// Define wrap
 				var $fbInnerWrap = $('<div />', {
 					class: 'fluidbox-wrap',
@@ -303,7 +305,6 @@ require('fluidbox.css');
 				});
 
 				// Add class
-				var $fbItem = $(this);
 				$fbItem
 				.addClass('fluidbox')
 				.wrapInner($fbInnerWrap)
@@ -312,8 +313,11 @@ require('fluidbox.css');
 					.after('<div class="fluidbox-ghost" />')
 					.each(function(){
 						var $img = $(this);
+						var imgWidth = $img[0].width;
+						var imgHeight = $img[0].height;
 
-						if ($img.width() > 0 && $img.height() > 0) {
+						console.log('$img :', $img);
+						if (imgWidth > 0 && imgHeight > 0) {
 							// if image is already loaded (from cache)
 							funcCalc($fbItem);
 							$fbItem.click(fbClickHandler);
