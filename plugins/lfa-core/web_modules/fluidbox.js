@@ -316,7 +316,6 @@ require('fluidbox.css');
 						var imgWidth = $img[0].width;
 						var imgHeight = $img[0].height;
 
-						console.log('$img :', $img);
 						if (imgWidth > 0 && imgHeight > 0) {
 							// if image is already loaded (from cache)
 							funcCalc($fbItem);
