@@ -98,7 +98,10 @@ App.book.on('render', function() {
   });
 
   $('#content').click(function() {
-    if (!$('body').hasClass('leftbar-active')) {
+    if (
+      !$('body').hasClass('leftbar-active') &&
+      $('#scrollview').hasClass('lfa-print-view')
+    ) {
       hideAtom();
     }
   });
@@ -221,7 +224,7 @@ App.book.once('render', function() {
   });
 
   var $closeButton = $(
-    '<div id="lfa-hide-modal"><span><i class="fa fa-arrow-left"></i>Înapoi</span></div>'
+    '<div id="lfa-hide-modal"><span><i class="fa fa-arrow-left"></i>Înapoi</span></div>',
   );
   $('#scrollview').append($closeButton);
 });
