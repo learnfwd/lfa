@@ -70,7 +70,7 @@
     "minimatch": "^3.0.4",
     "modernizr": "^3.6.0",
     "node-sass": "^4.11.0",
-    "open": "0.0.5",
+    "open": "6.0.0",
     "path": "^0.12.7",
     "plugin-error": "^1.0.1",
     "postcss-loader": "^3.0.0",
