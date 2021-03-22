@@ -12,12 +12,12 @@ mixin toc(chapters)
 
         if chapter.locals.subtitle
           a.subtitled(href=chapterUrl, class=linkClasses, title=chapter.locals.title)
-            span.title= chapter.locals.title
+            span.title!= chapter.locals.title
             span.subtitle= chapter.locals.subtitle
         else
           a(href=chapterUrl, class=linkClasses, title=chapter.locals.title)
             span.title
-              = chapter.locals.title
+              != chapter.locals.title
         if hasChildren
           .fold-button
             i.fold-icon.fa.fa-fw.fa-chevron-down
